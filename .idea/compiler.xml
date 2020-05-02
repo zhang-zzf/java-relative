@@ -7,12 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="java-relative" />
-        <module name="learn-junit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="java-relative" target="1.8" />
-      <module name="learn-junit" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,9 +1,11 @@
 package com.feng.learn.spring.config.async;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 用于@Async异步任务.
@@ -16,7 +18,7 @@ public class AsyncThreadPoolForSomeTaskConfig {
 
     public static final String THREAD_POOL_NAME = "someTask";
 
-//    @Bean(THREAD_POOL_NAME)
+    @Bean(THREAD_POOL_NAME)
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         // 获取cpu核数

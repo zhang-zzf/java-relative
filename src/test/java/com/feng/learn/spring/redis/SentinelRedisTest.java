@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,10 +19,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.feng.learn.spring.redis.ClusterRedisTest.ClusterRedisConfig.REDIS_TEMPLATE;
-import static org.assertj.core.api.Assertions.assertThat;
-
+import static com.feng.learn.spring.redis.SentinelRedisTest.SentinelRedisConfig.REDIS_TEMPLATE;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
@@ -30,9 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {
-    ClusterRedisTest.ClusterRedisConfig.class,
+    SentinelRedisTest.SentinelRedisConfig.class,
 })
-public class ClusterRedisTest {
+public class SentinelRedisTest {
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
@@ -50,29 +52,30 @@ public class ClusterRedisTest {
     @Test
     @Ignore
     public void testCluster() {
-        for (int i = 0; i < 100; i++) {
-            String str = String.valueOf(i);
-            stringRedisTemplate.opsForValue().set(str, str);
-        }
 
-        for (int i = 0; i < 100; i++) {
-            String str = stringRedisTemplate.opsForValue().get(String.valueOf(i));
-            assertThat(str).isEqualTo(String.valueOf(i));
-        }
+        List<String> stringList = Stream.iterate(0, i11 -> i11 + 1).limit(1000).map(String::valueOf)
+            .collect(Collectors.toList());
+
+        stringList.forEach(str -> stringRedisTemplate.delete(str));
+
+        stringList.forEach(str -> stringRedisTemplate.opsForValue().set(str, str));
+
+        then(Stream.iterate(0, i1 -> i1 + 1).limit(1000).map(String::valueOf)
+            .allMatch(str -> stringRedisTemplate.opsForValue().get(str).equals(str))).isTrue();
     }
 
     @Configuration
-    public static class ClusterRedisConfig {
+    public static class SentinelRedisConfig {
 
-        public static final String REDIS_FACTORY = "cluster";
+        public static final String REDIS_FACTORY = "sentinel";
         public static final String STRING_REDIS_TEMPLATE = REDIS_FACTORY + "StringRedisTemplate";
         public static final String REDIS_TEMPLATE = REDIS_FACTORY + "RedisTemplate";
 
-
         @Bean(REDIS_FACTORY)
         public RedisConnectionFactory redisConnectionFactory() {
-            return new JedisConnectionFactory(new RedisClusterConfiguration()
-                .clusterNode("macmini", 7700));
+            return new JedisConnectionFactory(new RedisSentinelConfiguration()
+                .master("m_s")
+                .sentinel("macmini", 27700));
         }
 
         @Bean(STRING_REDIS_TEMPLATE)

@@ -1,18 +1,12 @@
 package com.feng.learn.spring.cache;
 
-import static com.feng.learn.spring.config.cache.SpringCacheConfig.LOCAL_REMOTE_CACHE_LOCAL_TTL;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
-
 import com.feng.learn.spring.cache.PersonServiceWithLocalRemoteComposeCache.Person;
 import com.feng.learn.spring.cache.PersonServiceWithRedisCacheTest.ContextMock;
 import com.feng.learn.spring.config.cache.SpringCacheConfig;
 import com.feng.learn.spring.config.redis.EmbeddedServer;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -23,6 +17,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import static com.feng.learn.spring.config.cache.SpringCacheConfig.LOCAL_REMOTE_CACHE_LOCAL_TTL;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 /**
  * @author zhanfeng.zhang
@@ -36,6 +39,8 @@ import org.springframework.test.context.junit4.SpringRunner;
     ContextMock.class,
 })
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
+@Ignore
+@Disabled
 public class PersonServiceWithLocalRemoteComposeCacheTest {
 
     @Autowired

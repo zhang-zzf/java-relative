@@ -1,18 +1,46 @@
 package com.feng.learn.fastjson;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import lombok.Data;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.BDDAssertions.*;
 
 /**
  * @author zhanfeng.zhang
  * @date 2020/05/19
  */
 public class BasicTest {
+
+    @Test
+    void givenBoolean_whenConvertToInt_thenSuccess() {
+        // boolean to int
+        //language=JSON
+        String json = "{\"flag\": true}";
+        Holder holder = JSON.parseObject(json, Holder.class);
+        then(holder.getFlag()).isEqualTo(1);
+        json = "{\"flag\": false}";
+        holder = JSON.parseObject(json, Holder.class);
+        then(holder.getFlag()).isEqualTo(0);
+        // int to boolean
+        json = "{\"aInt\": 1}";
+        holder = JSON.parseObject(json, Holder.class);
+        then(holder.getAInt()).isTrue();
+        json = "{\"aInt\": 0}";
+        holder = JSON.parseObject(json, Holder.class);
+        then(holder.getAInt()).isFalse();
+    }
+
+    @Test
+    void givenString_whenConvertToLong_thenSuccess() {
+        //language=JSON
+        String json = "{\"numStr\": \"55\"}";
+        Holder holder = JSON.parseObject(json, Holder.class);
+        then(holder.getNumStr()).isEqualTo(55L);
+    }
 
     @Test
     void givenNull_whenParseObject_thenReturnNull() {
@@ -54,5 +82,11 @@ public class BasicTest {
         then(jsonObject.getBooleanValue(field)).isFalse();
     }
 
+    @Data
+    public static class Holder {
+        Long numStr;
+        Integer flag;
+        Boolean aInt;
+    }
 
 }

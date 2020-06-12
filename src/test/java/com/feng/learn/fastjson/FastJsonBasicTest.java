@@ -13,7 +13,33 @@ import static org.assertj.core.api.BDDAssertions.*;
  * @author zhanfeng.zhang
  * @date 2020/05/19
  */
-public class BasicTest {
+public class FastJsonBasicTest {
+
+    @Test
+    void givenJsonObject() {
+        String json = "{\"flag\":true}";
+        JSONObject jsonObject = JSON.parseObject(json, JSONObject.class);
+        then(jsonObject.getBooleanValue("flag")).isTrue();
+        then(JSON.toJSONString(jsonObject)).isEqualTo(json);
+    }
+
+    @Test
+    void givenNull_whenToJsonString_thenSuccess() {
+        String str = null;
+        String jsonStr = JSON.toJSONString(str);
+        then(jsonStr).isNull();
+    }
+
+    @Test
+    void givenInheritModel_whenConvertJson_thenSuccess() {
+        Parent sub = new Sub();
+        sub.setAge(1);
+        ((Sub) sub).setName("zhanfeng");
+        String json = JSON.toJSONString(sub);
+
+        Parent parent = JSON.parseObject(json, Parent.class);
+        Sub sub1 = JSON.parseObject(json, Sub.class);
+    }
 
     @Test
     void givenBoolean_whenConvertToInt_thenSuccess() {
@@ -89,4 +115,14 @@ public class BasicTest {
         Boolean aInt;
     }
 
+
+    @Data
+    public static class Parent {
+        private int age;
+    }
+
+    @Data
+    public static class Sub extends Parent {
+        private String name;
+    }
 }

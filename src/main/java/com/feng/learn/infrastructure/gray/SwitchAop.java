@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * @date 2020/06/12
  */
 @Configuration
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @Aspect
 @Slf4j
 @RequiredArgsConstructor

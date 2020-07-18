@@ -8,7 +8,9 @@ import org.apache.kafka.clients.consumer.ConsumerInterceptor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +49,8 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
         Consumer.class,
         Config.class
 })
+@Ignore
+@Disabled
 public class KafkaBatchConsumeWithConverterTest {
 
     /**

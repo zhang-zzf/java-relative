@@ -16,6 +16,14 @@ import static org.assertj.core.api.BDDAssertions.*;
 public class FastJsonBasicTest {
 
     @Test
+    void givenNullField_whenConvertToJsonString_thenDoNotContainNull() {
+        Holder h = new Holder();
+        h.setAInt(true);
+        String jsonString = JSON.toJSONString(h);
+        then(jsonString).doesNotContain("null");
+    }
+
+    @Test
     void givenJsonObject() {
         String json = "{\"flag\":true}";
         JSONObject jsonObject = JSON.parseObject(json, JSONObject.class);
@@ -27,7 +35,7 @@ public class FastJsonBasicTest {
     void givenNull_whenToJsonString_thenSuccess() {
         String str = null;
         String jsonStr = JSON.toJSONString(str);
-        then(jsonStr).isNull();
+        then(jsonStr).isEqualTo("null");
     }
 
     @Test

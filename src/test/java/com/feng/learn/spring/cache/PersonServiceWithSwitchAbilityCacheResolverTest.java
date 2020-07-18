@@ -1,7 +1,9 @@
 package com.feng.learn.spring.cache;
 
 import com.feng.learn.spring.config.cache.SpringCacheConfigWithSwitchControl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -28,6 +30,8 @@ import static org.mockito.Mockito.times;
     PersonServiceWithSwitchAbilityCacheResolverTest.ContextMock.class,
     SpringCacheConfigWithSwitchControl.class,
 })
+@Ignore
+@Disabled
 public class PersonServiceWithSwitchAbilityCacheResolverTest {
 
     @Autowired

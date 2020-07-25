@@ -1,15 +1,10 @@
 package com.feng.learn.spring.config.cache;
 
-import static com.feng.learn.spring.config.redis.StandaloneRedisConfig.REDIS_FACTORY;
-
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import com.feng.learn.spring.config.cache.jvmredis.LocalRemoteComposeCacheManager;
 import com.feng.learn.spring.config.redis.StandaloneRedisConfig;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Sets;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -27,6 +22,12 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import static com.feng.learn.spring.config.redis.StandaloneRedisConfig.REDIS_FACTORY;
 
 /**
  * @author zhanfeng.zhang
@@ -113,7 +114,6 @@ public class SpringCacheConfig {
         RedisCacheConfiguration defaultConf = RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofMinutes(16))
             .serializeValuesWith(SerializationPair.fromSerializer(new GenericFastJsonRedisSerializer()));
-
         return RedisCacheManager.builder(factory)
             .disableCreateOnMissingCache()
             .initialCacheNames(Sets.newHashSet()).cacheDefaults(defaultConf)

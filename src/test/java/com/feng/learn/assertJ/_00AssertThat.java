@@ -1,13 +1,10 @@
 package com.feng.learn.assertJ;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
-
 import lombok.Value;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
@@ -67,6 +64,14 @@ public class _00AssertThat {
         //then
         then(me).matches(p -> p.getAge() < 30 && p.getName().startsWith("zhang"))
             .extracting(Person::getName).isOfAnyClassIn(String.class);
+    }
+
+    @Test
+    void testMultiFieldOfObject() {
+        Person person = Person.valueOf("zhanfeng.zhang", 22);
+        then(person)
+            .returns("zhanfeng.zhang", from(Person::getName))
+            .returns(22, from(Person::getAge));
     }
 
 }

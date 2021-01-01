@@ -1,4 +1,4 @@
-package com.github.learn.spring.rabbitmq.consumer;
+package com.github.learn.spring.rabbitmq;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +29,65 @@ public class RabbitMqTest {
     final String QUEUE = "queue.test";
     final String shutdown = "shutdown";
     final String durableQueue = "durable.queue.test";
+
+    /**
+     * 一个 Channel 可以注册 N 个 Consumer，一个 Channel 的所有消息同一时间只会在一个线程中被执行（Channel 不存在并发）
+     * <p> Connection 可以创建 N 个 Channel</p>
+     */
+    @Test
+    public void givenThreeConsumerAndQos1_when_then() throws IOException, TimeoutException, InterruptedException {
+        ConnectionFactory cf = new ConnectionFactory();
+        cf.setThreadFactory(r -> new Thread(r, "rabbit_threads"));
+        Connection connection = cf.newConnection();
+        // consumerOne
+        Channel channel1 = connection.createChannel();
+        // 1. declare QUEUE
+        // 2. send message
+        channel1.queueDeclare(QUEUE, false, false, false, null);
+        // prefetchCount = 1
+        channel1.basicQos(1);
+        channel1.basicConsume(QUEUE, (consumerTag, message) -> {
+            log.info("{} => {}", consumerTag, new String(message.getBody(), StandardCharsets.UTF_8));
+            try {
+                Thread.sleep(15000);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            channel1.basicAck(message.getEnvelope().getDeliveryTag(), false);
+        }, consumerTag -> {});
+        // consumerTwo
+        Channel channel2 = connection.createChannel();
+        // 1. declare QUEUE
+        // 2. send message
+        channel2.queueDeclare(QUEUE, false, false, false, null);
+        // prefetchCount = 1
+        channel2.basicQos(1);
+        channel2.basicConsume(QUEUE, (consumerTag, message) -> {
+            log.info("{} => {}", consumerTag, new String(message.getBody(), StandardCharsets.UTF_8));
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            channel2.basicAck(message.getEnvelope().getDeliveryTag(), false);
+        }, consumerTag -> {});
+        // consumer Three
+        channel2.basicConsume(QUEUE, (consumerTag, message) -> {
+            log.info("{} => {}", consumerTag, new String(message.getBody(), StandardCharsets.UTF_8));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            channel2.basicAck(message.getEnvelope().getDeliveryTag(), false);
+        }, consumerTag -> {});
+        // send message
+        Channel producer1 = connection.createChannel();
+        for (int i = 0; i < 1000; i++) {
+            producer1.basicPublish("", QUEUE, null, ("" + i).getBytes(StandardCharsets.UTF_8));
+        }
+        new CountDownLatch(1).await();
+    }
 
     /**
      * 在 exchange 没有绑定任何队列的前提发送消息到 exchange，然后绑定 queue 消费消息。绑定之前的消息会丢失
@@ -153,7 +212,7 @@ public class RabbitMqTest {
         CountDownLatch latch = new CountDownLatch(1);
         startOneConsumer(latch, 1);
         sendMessage("Hello, World");
-        sendMessage(shutdown);
+        //  sendMessage(shutdown);
         latch.await();
     }
 

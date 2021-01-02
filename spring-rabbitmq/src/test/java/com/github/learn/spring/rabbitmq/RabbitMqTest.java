@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSONObject;
 
+import com.google.common.collect.ImmutableMap;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -29,6 +30,60 @@ public class RabbitMqTest {
     final String QUEUE = "queue.test";
     final String shutdown = "shutdown";
     final String durableQueue = "durable.queue.test";
+
+    /**
+     * 死信队列
+     */
+    @Test
+    public void givenDLX_whenNack_then() throws IOException, TimeoutException, InterruptedException {
+        final String QUEUE = "normal.queue";
+        final String DLX_EX = "dlx.exchange.of.normal.queue";
+        final String DLX_EX_Q = "queue.of.dlx.exchange";
+
+        ConnectionFactory cf = new ConnectionFactory();
+        cf.setThreadFactory(r -> new Thread(r, "rabbit_threads"));
+        Connection connection = cf.newConnection();
+        // consumerOne
+        Channel channel1 = connection.createChannel();
+        // declare dead_letter_exchange
+        channel1.exchangeDeclare(DLX_EX, BuiltinExchangeType.TOPIC, true);
+        /**
+         * producer does not know any thing about the queues of his exchange
+         // declare a tmp queue bind to the dead_letter_exchange
+         channel1.queueDeclare(DLX_EX_Q, true, false, false, null);
+         // receive any message that send to the exchange
+         channel1.queueBind(DLX_EX_Q, DLX_EX, "#");
+         */
+        // declare a normal queue with a dlx
+        channel1.queueDeclare(QUEUE, true, false, false,
+            ImmutableMap.of("x-dead-letter-exchange", DLX_EX));
+        // prefetchCount = 1
+        channel1.basicQos(1);
+        channel1.basicConsume(QUEUE, (consumerTag, message) -> {
+            log.info("{} =>({}) {}", consumerTag, QUEUE, new String(message.getBody(), StandardCharsets.UTF_8));
+            // requeue must be false
+            channel1.basicNack(message.getEnvelope().getDeliveryTag(), false, false);
+        }, consumerTag -> {});
+        // producer
+        Channel channel2 = connection.createChannel();
+        for (int i = 0; i < 10; i++) {
+            channel2.basicPublish("", QUEUE, null, ("" + i).getBytes(StandardCharsets.UTF_8));
+        }
+        // dead_letter_exchange_queue_consumer
+        Channel channel3 = connection.createChannel();
+        // declare dead_letter_exchange
+        channel3.exchangeDeclare(DLX_EX, BuiltinExchangeType.TOPIC, true);
+        // declare a tmp queue bind to the dead_letter_exchange
+        channel3.queueDeclare(DLX_EX_Q, true, false, false, null);
+        // receive any message that send to the exchange
+        channel3.queueBind(DLX_EX_Q, DLX_EX, "#");
+        // consume message from dead_letter_exchange_queue
+        channel3.basicConsume(DLX_EX_Q, (consumerTag, message) -> {
+            log.info("{} =>({}) {}", consumerTag, DLX_EX_Q, new String(message.getBody(), StandardCharsets.UTF_8));
+            channel3.basicAck(message.getEnvelope().getDeliveryTag(), false);
+        }, consumerTag -> {});
+        Thread.currentThread().join();
+    }
 
     /**
      * 一个 Channel 可以注册 N 个 Consumer，一个 Channel 的所有消息同一时间只会在一个线程中被执行（Channel 不存在并发）

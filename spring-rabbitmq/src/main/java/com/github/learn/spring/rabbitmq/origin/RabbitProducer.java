@@ -1,4 +1,4 @@
-package com.github.learn.spring.rabbitmq.producer;
+package com.github.learn.spring.rabbitmq.origin;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

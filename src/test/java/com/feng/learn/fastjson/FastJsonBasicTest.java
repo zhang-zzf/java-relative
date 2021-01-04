@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.BDDAssertions.*;
 
@@ -14,6 +16,37 @@ import static org.assertj.core.api.BDDAssertions.*;
  * @date 2020/05/19
  */
 public class FastJsonBasicTest {
+
+    /**
+     * 测试 LocalDateTime
+     */
+    @Test
+    void givenLocalDateTime_thenJson_then() {
+        JSONObject j = new JSONObject();
+        LocalDateTime now = LocalDateTime.now();
+        j.put("time", now);
+        String s = j.toJSONString();
+        JSONObject jsonObject = JSON.parseObject(s);
+        LocalDateTime time = jsonObject.getObject("time", LocalDateTime.class);
+        then(now).isEqualTo(time);
+    }
+
+    /**
+     * 测试静态内部类的 json 序列化/反序列化
+     */
+    @Test
+    void givenStaticInnerClass_whenJson_then() {
+        Person p = new Person(1L);
+        p.setName("zzf.zhang");
+        Person.Address a = new Person.Address();
+        a.setHome("home");
+        a.setStreet("street");
+        p.setAddress(a);
+        String json = JSON.toJSONString(p);
+        Person person = JSON.parseObject(json, Person.class);
+        then(person).returns(1L, from(Person::getId))
+            .extracting(Person::getAddress).isNotNull();
+    }
 
     @Test
     void givenNullField_whenConvertToJsonString_thenDoNotContainNull() {

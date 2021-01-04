@@ -7,7 +7,13 @@
     <groupId>com.github.learn</groupId>
     <artifactId>java-relative</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
+
+    <modules>
+        <module>batch-cache</module>
+        <module>spring-rabbitmq</module>
+    </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

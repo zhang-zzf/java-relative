@@ -9,6 +9,7 @@ import org.aspectj.lang.reflect.SourceLocation;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -23,6 +24,7 @@ public class UserServiceAspect {
 
     @After(value = "execution(* com..UserService.save(..)) && args(id, name)", argNames = "jp,id,name")
     public void afterSaveMethodOfUserService1(JoinPoint jp, long id, String name) {
+        log.info("method: {} => args: {}", jp.getSignature().toShortString(), Arrays.asList(jp.getArgs()));
         Object[] args = jp.getArgs();
         String kind = jp.getKind();
         Signature signature = jp.getSignature();

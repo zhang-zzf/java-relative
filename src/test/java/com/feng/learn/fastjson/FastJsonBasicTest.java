@@ -4,18 +4,40 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.BDDAssertions.*;
+import static org.assertj.core.api.Assertions.as;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.from;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
  * @date 2020/05/19
  */
 public class FastJsonBasicTest {
+
+    /**
+     * 测试数组
+     */
+    @Test
+    void givenArrayJson_whenDeserialize_then() {
+        final String chinaDefault = "{\n  "
+            + "  \"lat\": [3, 54],\n"
+            + "  \"lon\": [73, 136]\n"
+            + "}";
+        CoordinateLimit limit = JSONObject.parseObject(chinaDefault, CoordinateLimit.class);
+        then(limit.getLat()).hasSize(2);
+    }
+
+    @Data
+    public static class CoordinateLimit {
+        double lat[];
+        double lon[];
+    }
 
     /**
      * 测试 LocalDateTime

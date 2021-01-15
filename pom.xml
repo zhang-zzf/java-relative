@@ -14,6 +14,7 @@
         <module>batch-cache</module>
         <module>spring-rabbitmq</module>
         <module>spring-event-framework</module>
+        <module>redis-lbs</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

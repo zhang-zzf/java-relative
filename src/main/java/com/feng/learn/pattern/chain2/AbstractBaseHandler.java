@@ -9,8 +9,9 @@ public abstract class AbstractBaseHandler implements Handler {
     private Handler successor;
 
     @Override
-    public void setNext(Handler successor) {
+    public Handler setNext(Handler successor) {
         this.successor = successor;
+        return successor;
     }
 
     @Override
@@ -18,6 +19,7 @@ public abstract class AbstractBaseHandler implements Handler {
         if (successor != null) {
             return successor.handle(request);
         }
-        throw new IllegalArgumentException();
+        // default behavior for the chain
+        return new Object();
     }
 }

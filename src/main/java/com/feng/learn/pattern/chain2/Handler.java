@@ -10,8 +10,9 @@ public interface Handler {
      * next handler
      *
      * @param successor next processor in the chain
+     * @return successor
      */
-    void setNext(Handler successor);
+    Handler setNext(Handler successor);
 
     /**
      * handle a command

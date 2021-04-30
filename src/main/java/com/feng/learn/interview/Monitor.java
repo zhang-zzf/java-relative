@@ -24,20 +24,25 @@ public class Monitor {
     public static class MonitorValue {
         private final AtomicInteger counter = new AtomicInteger();
         private final AtomicLong totalTime = new AtomicLong();
-        double avgTime;
+        // volatile 可见性问题
+        private double avgTime;
     }
 
     private final Map<MonitorKey, MonitorValue> monitors = new ConcurrentHashMap<>();
 
     public void visit(String url, String desc, long timeCost) {
         MonitorKey key = new MonitorKey(url, desc);
+        // MonitorKey does not override hashCode() and equals() will lead to memory explode
         MonitorValue value = monitors.get(key);
         if (value == null) {
             value = new MonitorValue();
+            // concurrency problem
             monitors.put(key, value);
+            monitors.putIfAbsent(key, value);
         }
         int afterCount = value.counter.addAndGet(1);
-        long afterTime = value.totalTime.getAndAdd(timeCost);
+        long afterTime = value.totalTime.addAndGet(timeCost);
         value.avgTime = afterTime / afterCount;
     }
+
 }

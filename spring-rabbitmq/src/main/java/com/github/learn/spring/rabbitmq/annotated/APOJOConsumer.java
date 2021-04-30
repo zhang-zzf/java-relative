@@ -40,12 +40,12 @@ public class APOJOConsumer {
         try {
             log.info("recv msg: {}", message);
             channel.basicAck(deliveryTag, false);
-        } catch (IllegalStateException e) {
-            // 需要重新消费消息的异常
-            channel.basicNack(deliveryTag, false, true);
         } catch (IllegalArgumentException e) {
             // 不需要
             channel.basicNack(deliveryTag, false, false);
+        } catch (Throwable e) {
+            // 需要重新消费消息的异常
+            channel.basicNack(deliveryTag, false, true);
         }
     }
 
@@ -60,11 +60,11 @@ public class APOJOConsumer {
         containerFactory = BConfiguration.CONTAIN_FACTORY
     )
     public void onMessage2(String message, Channel channel,
-                          @Header(value = AmqpHeaders.RECEIVED_EXCHANGE, required = false) String recvExchange,
-                          @Header(AmqpHeaders.CONSUMER_QUEUE) String recvQueue,
-                          @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String recvRoutingKey,
-                          @Header(AmqpHeaders.DELIVERY_TAG) Long deliveryTag,
-                          org.springframework.amqp.core.Message coreMessage) throws IOException {
+                           @Header(value = AmqpHeaders.RECEIVED_EXCHANGE, required = false) String recvExchange,
+                           @Header(AmqpHeaders.CONSUMER_QUEUE) String recvQueue,
+                           @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String recvRoutingKey,
+                           @Header(AmqpHeaders.DELIVERY_TAG) Long deliveryTag,
+                           org.springframework.amqp.core.Message coreMessage) throws IOException {
         try {
             log.info("recv msg: {}", message);
             channel.basicAck(deliveryTag, false);

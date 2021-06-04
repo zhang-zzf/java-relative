@@ -20,14 +20,21 @@
         <junit5.version>5.5.2</junit5.version>
         <mockito.junit5.version>2.25.1</mockito.junit5.version>
         <junit4.version>4.12</junit4.version>
-        <assertj-core.version>3.14.0</assertj-core.version>
+        <assertj-core.version>3.19.0</assertj-core.version>
 
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.jeasy</groupId>
-            <artifactId>easy-rules</artifactId>
+            <artifactId>easy-rules-core</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-support</artifactId>
             <version>4.1.0</version>
         </dependency>
 

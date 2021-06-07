@@ -18,6 +18,7 @@
         <module>spring-data-redis-lua</module>
         <module>sentinel-demo</module>
         <module>java-easy-rules</module>
+        <module>spring-data-es</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

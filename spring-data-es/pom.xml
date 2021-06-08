@@ -62,7 +62,7 @@
 			<artifactId>guava</artifactId>
 			<groupId>com.google.guava</groupId>
 			<scope>test</scope>
-			<version>28.1-jre</version>
+			<version>29.0-jre</version>
 		</dependency>
 	</dependencies>
 

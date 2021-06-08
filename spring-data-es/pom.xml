@@ -58,6 +58,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<artifactId>guava</artifactId>
+			<groupId>com.google.guava</groupId>
+			<scope>test</scope>
+			<version>28.1-jre</version>
+		</dependency>
 	</dependencies>
 
 	<build>

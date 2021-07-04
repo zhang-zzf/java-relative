@@ -31,17 +31,18 @@ public class UserServiceTest extends AbstractJUnit4Mockito {
         // given
         final String name = "zhang.zzf";
         // stub
-        given(userRepo.getById(any())).willReturn(Optional.of(buildUser(name)));
+        Long id = 1L;
+        given(userRepo.getById(any())).willReturn(Optional.of(buildUser(name, id)));
         // when
-        final String nameById = userService.getNameById(1L);
+        final Optional<User> byId = userService.getById(1L);
         // then
         // mockito verify
         BDDMockito.then(userRepo).should(times(1)).getById(1L);
         // result assert
-        BDDAssertions.then(nameById).isEqualTo(name);
+        BDDAssertions.then(byId).isPresent().get().returns(id, User::getId).returns(name, User::getName);
     }
 
-    private User buildUser(String name) {
-        return User.builder().name(name).build();
+    private User buildUser(String name, Long id) {
+        return User.builder().id(id).name(name).build();
     }
 }

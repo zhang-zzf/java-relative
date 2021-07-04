@@ -22,10 +22,10 @@ public class UserService {
      * @param userId id
      * @return User
      */
-    public String getNameById(Long userId) {
+    public Optional<User> getById(Long userId) {
         Optional<User> u = userRepo.getById(userId);
         // some algorithm
-        return u.map(User::getName).orElse(null);
+        return u;
     }
 
 

@@ -20,6 +20,7 @@
         <module>java-easy-rules</module>
         <module>spring-data-es</module>
         <module>java-unit-test</module>
+        <module>spring-validation</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

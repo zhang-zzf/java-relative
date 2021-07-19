@@ -2,7 +2,7 @@ package com.github.learn.spring_data_es.infra.es.repo.impl;
 
 import static java.util.stream.Collectors.toList;
 
-import com.github.learn.spring_data_es.infra.es.entity.Knight;
+import com.github.learn.spring_data_es.domain.model.Knight;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;

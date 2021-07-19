@@ -2,10 +2,10 @@ package com.github.learn.spring_data_es.infra.es.repo.impl;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import com.github.learn.spring_data_es.infra.es.entity.Knight;
-import com.github.learn.spring_data_es.infra.es.entity.Knight.Account;
-import com.github.learn.spring_data_es.infra.es.entity.Knight.Identity;
-import com.github.learn.spring_data_es.infra.es.entity.Knight.Register;
+import com.github.learn.spring_data_es.domain.model.Knight;
+import com.github.learn.spring_data_es.domain.model.Knight.Account;
+import com.github.learn.spring_data_es.domain.model.Knight.Identity;
+import com.github.learn.spring_data_es.domain.model.Knight.Register;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;

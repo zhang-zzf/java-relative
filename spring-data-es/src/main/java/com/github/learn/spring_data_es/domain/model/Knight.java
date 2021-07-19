@@ -1,4 +1,4 @@
-package com.github.learn.spring_data_es.infra.es.entity;
+package com.github.learn.spring_data_es.domain.model;
 
 import static org.springframework.data.elasticsearch.annotations.DateFormat.basic_date_time_no_millis;
 

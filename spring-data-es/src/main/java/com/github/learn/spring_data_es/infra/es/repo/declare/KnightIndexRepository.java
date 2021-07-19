@@ -1,6 +1,6 @@
 package com.github.learn.spring_data_es.infra.es.repo.declare;
 
-import com.github.learn.spring_data_es.infra.es.entity.Knight;
+import com.github.learn.spring_data_es.domain.model.Knight;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.elasticsearch.annotations.Query;

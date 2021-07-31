@@ -21,6 +21,7 @@
         <module>spring-data-es</module>
         <module>java-unit-test</module>
         <module>spring-validation</module>
+        <module>flow-limit</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

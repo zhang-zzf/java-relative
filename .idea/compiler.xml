@@ -7,11 +7,42 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="java-relative" />
+        <module name="java-easy-rules" />
+        <module name="spring-data-redis-lua" />
+        <module name="spring-validation" />
+        <module name="spring-rabbitmq" />
+        <module name="sentinel-demo" />
+        <module name="batch-cache" />
+        <module name="java-unit-test" />
+        <module name="flow-limit" />
+        <module name="spring-event-framework" />
+        <module name="redis-lbs" />
+        <module name="spring-data-es" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="batch-cache" target="1.8" />
+      <module name="flow-limit" target="1.8" />
+      <module name="java-easy-rules" target="1.8" />
       <module name="java-relative" target="1.8" />
+      <module name="java-unit-test" target="1.8" />
+      <module name="redis-lbs" target="1.8" />
+      <module name="sentinel-demo" target="1.8" />
+      <module name="spring-data-es" target="1.8" />
+      <module name="spring-data-redis-lua" target="1.8" />
+      <module name="spring-event-framework" target="1.8" />
+      <module name="spring-rabbitmq" target="1.8" />
+      <module name="spring-validation" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="batch-cache" options="-parameters" />
+      <module name="redis-lbs" options="-parameters" />
+      <module name="spring-data-es" options="-parameters" />
+      <module name="spring-data-redis-lua" options="-parameters" />
+      <module name="spring-rabbitmq" options="-parameters" />
+      <module name="spring-validation" options="-parameters" />
+    </option>
   </component>
 </project>

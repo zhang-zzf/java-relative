@@ -2,6 +2,10 @@ package com.feng.learn.springvalidation.infra.mysql.repo.impl;
 
 import com.feng.learn.springvalidation.domain.model.Person;
 import com.feng.learn.springvalidation.domain.repo.PersonRepo;
+import java.util.Collections;
+import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -22,6 +26,11 @@ public class PersonRepoMysqlImpl implements PersonRepo {
     @Override
     public int updatePerson(Person person) {
         return 0;
+    }
+
+    @Override
+    public List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList) {
+        return Collections.emptyList();
     }
 
 }

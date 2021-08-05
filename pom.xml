@@ -22,6 +22,7 @@
         <module>java-unit-test</module>
         <module>spring-validation</module>
         <module>flow-limit</module>
+        <module>java-date</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

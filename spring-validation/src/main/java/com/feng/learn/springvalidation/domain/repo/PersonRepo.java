@@ -1,8 +1,10 @@
 package com.feng.learn.springvalidation.domain.repo;
 
 import com.feng.learn.springvalidation.domain.model.Person;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -27,6 +29,14 @@ public interface PersonRepo {
      * @return updated number
      */
     int updatePerson(@NotNull @Valid Person person);
+
+    /**
+     * batch get by id
+     *
+     * @param idList id
+     * @return data
+     */
+    List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList);
 
 
 }

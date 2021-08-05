@@ -6,6 +6,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.feng.learn.springvalidation.domain.model.Person;
 import com.feng.learn.springvalidation.domain.model.Person.Address;
 import com.feng.learn.springvalidation.domain.repo.PersonRepo;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +44,19 @@ class PersonRepoMysqlImpl_IT {
         final Throwable throwable = catchThrowable(() -> personRepo.getById(5L));
         then(throwable).isNotNull();
     }
+
+    @Test
+    void givenNullList_whenBatchGetById_thenFail() {
+        final Throwable throwable = catchThrowable(() -> personRepo.batchGetById(null));
+        then(throwable).isNotNull();
+    }
+
+    @Test
+    void givenEmptyList_whenBatchGetById_thenFail() {
+        final Throwable throwable = catchThrowable(() -> personRepo.batchGetById(new ArrayList<>()));
+        then(throwable).isNotNull();
+    }
+
 
 
 }

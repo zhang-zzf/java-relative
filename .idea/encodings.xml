@@ -3,8 +3,12 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/batch-cache/src/main/java" charset="UTF-8" />
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/flow-limit/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flow-limit/src/main/resources" charset="UTF-8" />
+=======
+    <file url="file://$PROJECT_DIR$/java-date/src/main/java" charset="UTF-8" />
+>>>>>>> adfaa59... idea file
     <file url="file://$PROJECT_DIR$/java-easy-rules/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java-easy-rules/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/java-unit-test/src/main/java" charset="UTF-8" />

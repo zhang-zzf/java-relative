@@ -5,6 +5,7 @@ import com.feng.learn.springvalidation.domain.repo.PersonRepo;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,11 +20,11 @@ public class PersonService {
 
     final PersonRepo personRepo;
 
-    public Person getById(@NotNull Long id) {
+    public @NotNull Person getById(@NotNull Long id) {
         return personRepo.getById(id);
     }
 
-    public int updatePerson(@NotNull @Valid Person person) {
+    public @Range(min = 0L) int updatePerson(@NotNull @Valid Person person) {
         return 0;
     }
 

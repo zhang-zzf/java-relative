@@ -24,6 +24,7 @@
         <module>flow-limit</module>
         <module>java-date</module>
         <module>spring-async</module>
+        <module>spring-self</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

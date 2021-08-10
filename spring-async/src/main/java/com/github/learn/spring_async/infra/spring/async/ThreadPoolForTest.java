@@ -1,6 +1,7 @@
 package com.github.learn.spring_async.infra.spring.async;
 
 import com.github.learn.spring_async.infra.spring.async.SpringAsyncConfig.NamedThreadFactory;
+import com.github.learn.spring_async.infra.spring.async.task_decorator.ContextPropagateDecorator;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,8 @@ public class ThreadPoolForTest {
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 守护进程
         taskExecutor.setDaemon(false);
+        // 上下文传递
+        taskExecutor.setTaskDecorator(new ContextPropagateDecorator(r -> r));
         return taskExecutor;
     }
 

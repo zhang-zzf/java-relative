@@ -12,6 +12,15 @@
     </build>
     <dependencies>
         <dependency>
+            <artifactId>lombok</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <version>1.18.16</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
             <artifactId>spring-boot-starter</artifactId>
             <groupId>org.springframework.boot</groupId>
         </dependency>

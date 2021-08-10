@@ -1,5 +1,8 @@
 package com.github.learn.spring_async.infra.spring.async;
 
+import com.github.learn.spring_async.infra.spring.async.task_decorator.ContextPropagateDecorator;
+import com.github.learn.spring_async.infra.spring.async.task_decorator.LogDecorator;
+import com.github.learn.spring_async.infra.spring.async.task_decorator.TimedDecorator;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import lombok.Getter;
@@ -53,6 +56,7 @@ public class SpringAsyncConfig {
         taskExecutor.setKeepAliveSeconds(300);
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
         taskExecutor.setThreadFactory(new NamedThreadFactory(ASYNC_THREAD));
+        taskExecutor.setTaskDecorator(new ContextPropagateDecorator(new TimedDecorator(new LogDecorator(r -> r))));
         return taskExecutor;
     }
 

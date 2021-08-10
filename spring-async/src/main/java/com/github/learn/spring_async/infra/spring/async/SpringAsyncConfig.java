@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -43,16 +44,15 @@ public class SpringAsyncConfig {
      * <p>@Async 可以指定使用哪个线程池执行异步处理，未指定时使用'taskExecutor'线程池</p>
      */
     @Bean(name = ASYNC_THREAD)
-    public ThreadPoolTaskExecutor taskExecutor() {
+    public AsyncTaskExecutor taskExecutor() {
         int cpuNum = Runtime.getRuntime().availableProcessors();
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutorWrapper();
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(1);
         taskExecutor.setMaxPoolSize(cpuNum * 2);
         taskExecutor.setQueueCapacity(1024);
         taskExecutor.setKeepAliveSeconds(300);
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
         taskExecutor.setThreadFactory(new NamedThreadFactory(ASYNC_THREAD));
-        // 包装，增强功能
         return taskExecutor;
     }
 

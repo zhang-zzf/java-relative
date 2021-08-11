@@ -2,7 +2,6 @@ package com.github.learn.mapstruct_demo.infra.es.localhost.model;
 
 import com.github.learn.mapstruct_demo.domain.Person;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -10,9 +9,9 @@ import org.mapstruct.factory.Mappers;
  * @date 2021/08/11
  */
 @Mapper
-public interface PersonMapper {
+public interface PersonEntityMapper {
 
-    PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
+    PersonEntityMapper INSTANCE = Mappers.getMapper(PersonEntityMapper.class);
 
     /**
      * toEntity
@@ -20,8 +19,7 @@ public interface PersonMapper {
      * @param domain data
      * @return entity
      */
-    @Mapping(ignore = true, target = "statistic")
-    PersonEntity toEntity(Person domain);
+    PersonEntity fromDomain(Person domain);
 
     /**
      * toDomain
@@ -29,7 +27,6 @@ public interface PersonMapper {
      * @param entity data
      * @return domain model
      */
-    @Mapping(ignore = true, target = "statistic")
     Person toDomain(PersonEntity entity);
 
 }

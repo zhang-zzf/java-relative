@@ -7,7 +7,6 @@ import com.github.learn.mapstruct_demo.domain.Person.Health;
 import com.github.learn.mapstruct_demo.domain.Person.Identity;
 import com.github.learn.mapstruct_demo.domain.Person.Register;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -38,8 +37,6 @@ public class PersonEntity {
     private Register register;
 
     private Identity identity;
-
-    private Map<String, Object> statistic;
 
     private Health health;
 

@@ -1,6 +1,5 @@
 package com.github.learn.spring_cycle_dependency.domain;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -9,36 +8,28 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author zhanfeng.zhang
- * @date 2021/08/11
+ * @date 2021/08/12
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
-public class ServiceA {
+public class ServiceC {
 
-    private ServiceB serviceB;
-    private ServiceA self;
+    private ServiceC self;
 
-    @Lazy
     @Autowired
-    private void setServiceB(ServiceB serviceB) {
-        this.serviceB = serviceB;
-    }
-
     @Lazy
-    @Autowired
-    private void setSelf(ServiceA self) {
+    public void setSelf(ServiceC self) {
         this.self = self;
     }
 
-    @Async
     public void methodA() {
-        log.info("serviceA.methodA");
+        log.info("{} methodA", Thread.currentThread().getName());
+        self.methodB();
     }
 
+    @Async
     public void methodB() {
-        log.info("serviceA.methodB");
-        serviceB.methodB();
-        self.methodA();
+        log.info("{} methodB", Thread.currentThread().getName());
     }
+
 }

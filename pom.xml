@@ -27,6 +27,7 @@
         <module>spring-self</module>
         <module>spring-cycle-dependency</module>
         <module>mapstruct-demo</module>
+        <module>spring-retry</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

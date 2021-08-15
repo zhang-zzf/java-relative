@@ -1,6 +1,7 @@
 package com.github.learn.leetcode_sqrt.domain.service;
 
 import javax.validation.constraints.PositiveOrZero;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -10,7 +11,8 @@ import org.springframework.validation.annotation.Validated;
  */
 @Service
 @Validated
-public class SqrtServiceImpl implements SqrtService {
+@Slf4j
+public class SqrtServiceForceCrackImpl implements SqrtService {
 
     /**
      * <p>开根号</p>
@@ -22,14 +24,18 @@ public class SqrtServiceImpl implements SqrtService {
      */
     @Override
     public @PositiveOrZero double sqrt(@PositiveOrZero int v, @PositiveOrZero double t) {
+        int cnt = 0;
         for (int i = 0; i < v; i++) {
             if (i * i > v + t) {
                 for (double j = i - 1; j < i; j += t) {
                     if (j * j > v - t) {
+                        log.info("cnt: {}", cnt);
                         return j;
                     }
+                    cnt += 1;
                 }
             }
+            cnt += 1;
         }
         return 0;
     }

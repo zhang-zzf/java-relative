@@ -2,8 +2,10 @@ package com.github.learn.id.generator.domain.service;
 
 import com.github.learn.id.generator.domain.model.Sequence;
 import com.github.learn.id.generator.infra.config.ConfigCenterService;
+import com.github.learn.id.generator.infra.spring.async.SpringAsyncConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +28,7 @@ import java.util.concurrent.Future;
 public class IdGeneratorService {
 
     final SequenceService sequenceService;
+    @Qualifier(SpringAsyncConfig.ASYNC_THREAD)
     final AsyncTaskExecutor asyncTaskExecutor;
     final ConfigCenterService configCenterService;
 

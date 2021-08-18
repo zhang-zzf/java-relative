@@ -30,6 +30,7 @@
         <module>spring-retry</module>
         <module>leetcode-sqrt</module>
         <module>distribute-id-generator</module>
+        <module>snowflake-time</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

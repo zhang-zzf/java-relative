@@ -1,5 +1,6 @@
 package com.github.learn.springself.self.domain;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
  * @date 2021/08/10
  */
 @Service
+@Slf4j
 public class NoInterfaceService {
 
     private NoInterfaceService self;
@@ -17,6 +19,14 @@ public class NoInterfaceService {
     }
 
     public void methodB() {
+        self.methodC();
+    }
+
+    /**
+     * 测试 default 方法会不会被代理
+     */
+    void methodC() {
+        log.info("methodC");
     }
 
     @Autowired

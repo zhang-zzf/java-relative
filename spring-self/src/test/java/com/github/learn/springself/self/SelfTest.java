@@ -21,7 +21,7 @@ class SelfTest {
     @Test
     void test() {
         interfaceService.methodA();
-        noInterfaceService.methodA();
+        noInterfaceService.methodB();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.github.learn.springself.aop.domain;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
  * @date 2021/08/10
  */
 @Service
+@Slf4j
 public class AopNoInterfaceService {
 
     AopNoInterfaceService self;
@@ -16,8 +18,11 @@ public class AopNoInterfaceService {
         self.methodB();
     }
 
-    public void methodB() {
-
+    /**
+     *
+     */
+    void methodB() {
+        log.info("methodB");
     }
 
     @Autowired

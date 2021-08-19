@@ -36,4 +36,17 @@ class ArrayUnionServiceTest {
         then(result).hasSize(2).contains(4, 9);
     }
 
+    /**
+     * 输入：
+     * [3,1,2]
+     * [1,1]
+     * 预期结果：
+     * [1]
+     */
+    @Test
+    void givenCaseThree_whenUnit_thenSuccess() {
+        int[] result = service.union(new int[]{3, 1, 2}, new int[]{1, 1});
+        then(result).hasSize(1).contains(1);
+    }
+
 }

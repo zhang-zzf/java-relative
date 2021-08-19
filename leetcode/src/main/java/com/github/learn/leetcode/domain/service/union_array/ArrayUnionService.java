@@ -38,6 +38,6 @@ public interface ArrayUnionService {
      * 来源：力扣（LeetCode）
      * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
      */
-    @NotNull int[] union(@NotNull int[] a1, @NotNull int[] a2);
+    @NotNull int[] union(@NotNull int[] num1, @NotNull int[] num2);
 
 }

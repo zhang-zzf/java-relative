@@ -1,10 +1,11 @@
-package com.github.learn.leetcode_sqrt.domain.service;
+package com.github.learn.leetcode.domain.service.sqrt;
 
-import javax.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.PositiveOrZero;
 
 /**
  * @author zhanfeng.zhang

@@ -28,7 +28,7 @@
         <module>spring-cycle-dependency</module>
         <module>mapstruct-demo</module>
         <module>spring-retry</module>
-        <module>leetcode-sqrt</module>
+        <module>leetcode</module>
         <module>distribute-id-generator</module>
         <module>snowflake-time</module>
     </modules>

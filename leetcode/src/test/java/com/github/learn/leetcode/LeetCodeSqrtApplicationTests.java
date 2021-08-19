@@ -1,4 +1,4 @@
-package com.github.learn.leetcode_sqrt;
+package com.github.learn.leetcode;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

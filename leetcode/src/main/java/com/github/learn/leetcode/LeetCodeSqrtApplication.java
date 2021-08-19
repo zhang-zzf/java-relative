@@ -1,4 +1,4 @@
-package com.github.learn.leetcode_sqrt;
+package com.github.learn.leetcode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

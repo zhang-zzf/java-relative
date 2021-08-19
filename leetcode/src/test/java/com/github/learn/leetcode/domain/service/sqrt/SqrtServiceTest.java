@@ -1,13 +1,14 @@
-package com.github.learn.leetcode_sqrt.domain.service;
+package com.github.learn.leetcode.domain.service.sqrt;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.offset;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
-
-import javax.validation.ConstraintViolationException;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author zhanfeng.zhang

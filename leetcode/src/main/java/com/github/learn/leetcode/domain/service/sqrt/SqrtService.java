@@ -1,4 +1,4 @@
-package com.github.learn.leetcode_sqrt.domain.service;
+package com.github.learn.leetcode.domain.service.sqrt;
 
 import javax.validation.constraints.PositiveOrZero;
 

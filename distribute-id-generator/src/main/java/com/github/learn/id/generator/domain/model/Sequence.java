@@ -33,7 +33,15 @@ public class Sequence {
     /**
      * 下一个可用的id
      */
-    private final AtomicLong NEXT_ID = new AtomicLong(startId);
+    private final AtomicLong NEXT_ID;
+
+    public Sequence(String key, long startId, long endId, int step) {
+        this.key = key;
+        this.startId = startId;
+        this.NEXT_ID = new AtomicLong(startId);
+        this.endId = endId;
+        this.step = step;
+    }
 
     /**
      * 初始化 sequence

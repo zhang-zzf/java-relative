@@ -53,6 +53,8 @@ hs_err_pid*
 .idea/**/encodings.xml
 .idea/**/jarRepositories.xml
 
+.idea/**/leetcode-pro/
+
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
@@ -147,3 +149,4 @@ Temporary Items
 .apdisk
 
 # End of https://www.gitignore.io/api/java,macos,jetbrains
+/.idea/leetcode-pro/

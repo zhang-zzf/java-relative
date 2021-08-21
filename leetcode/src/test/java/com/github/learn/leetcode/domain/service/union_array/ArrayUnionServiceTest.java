@@ -15,7 +15,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ArrayUnionServiceTest {
 
     @Autowired
-    @Qualifier("arrayUnionServiceForceCrack")
+    @Qualifier("arrayUnionServiceHashCrash")
     ArrayUnionService service;
 
     /**

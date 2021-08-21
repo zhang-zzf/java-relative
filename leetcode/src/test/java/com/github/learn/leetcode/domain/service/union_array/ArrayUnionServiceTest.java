@@ -2,6 +2,7 @@ package com.github.learn.leetcode.domain.service.union_array;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 class ArrayUnionServiceTest {
 
     @Autowired
+    @Qualifier("arrayUnionServiceForceCrack")
     ArrayUnionService service;
 
     /**

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * @author zhanfeng.zhang
@@ -20,23 +20,23 @@ import java.util.stream.Collectors;
 @Validated
 public class ArrayUnionServiceForceCrack implements ArrayUnionService {
 
-    /**
-     * 错误算法
-     *
-     * @param num1
-     * @param num2
-     * @return
-     */
     @Override
-    public @NotNull int[] union(@NotNull int[] num1, @NotNull int[] num2) {
-        int[] small = num1, large = num2;
-        if (num1.length > num2.length) {
-            small = num2;
-            large = num1;
+    public @NotNull int[] union(@NotNull int[] nums1, @NotNull int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        List<Integer> ret = new ArrayList<>();
+        for (int i = 0, j = 0; i < nums1.length && j < nums2.length; ) {
+            if (nums1[i] < nums2[j]) {
+                i += 1;
+            } else if (nums1[i] > nums2[j]) {
+                j += 1;
+            } else {
+                ret.add(nums1[i]);
+                i += 1;
+                j += 1;
+            }
         }
-        Set<Integer> largeSet = Arrays.stream(large).boxed().collect(Collectors.toSet());
-        int[] ret = Arrays.stream(small).filter(i -> largeSet.contains(i)).toArray();
-        return ret;
+        return ret.stream().mapToInt(Integer::intValue).toArray();
     }
 
 }

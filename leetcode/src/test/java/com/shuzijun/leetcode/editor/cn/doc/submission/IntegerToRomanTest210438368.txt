@@ -1,0 +1,47 @@
+    class Solution {
+        public String intToRoman(int num) {
+            if (num < 0 || num > 3999) {
+                throw new IllegalArgumentException();
+            }
+            int[] number = {1000, 500, 100, 50, 10, 5, 1};
+            String[] str = {"M", "D", "C", "L", "X", "V", "I"};
+            StringBuilder ret = new StringBuilder();
+            for (int i = 0; i < number.length; ) {
+                if (num >= number[i]) {
+                    num -= number[i];
+                    ret.append(str[i]);
+                    continue;
+                }
+                if (i + 2 < number.length) {
+                    int _9 = number[i] - number[i + 2];
+                    if (num >= _9) {
+                        num -= _9;
+                        ret.append(str[i + 2]).append(str[i]);
+                        continue;
+                    }
+                }
+                if (i + 1 < number.length) {
+                    if (num >= number[i + 1]) {
+                        num -= number[i + 1];
+                        ret.append(str[i + 1]);
+                        continue;
+                    }
+                }
+                if (i + 2 < number.length) {
+                    int _4 = number[i + 1] - number[i + 2];
+                    if (num >= _4) {
+                        num -= _4;
+                        ret.append(str[i + 2]).append(str[i + 1]);
+                        continue;
+                    }
+
+                }
+                // 向后跳动2个
+                i += 2;
+            }
+            return ret.toString();
+        }
+    }
+
+//runtime:4 ms
+//memory:37.9 MB

@@ -31,6 +31,7 @@
         <module>leetcode</module>
         <module>distribute-id-generator</module>
         <module>snowflake-time</module>
+        <module>java-multi-thread</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

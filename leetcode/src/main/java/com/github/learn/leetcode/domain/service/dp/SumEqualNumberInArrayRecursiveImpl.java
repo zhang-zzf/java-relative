@@ -25,7 +25,7 @@ public class SumEqualNumberInArrayRecursiveImpl implements SumEqualNumberInArray
         if (sum == 0) {
             return true;
         }
-        if (array[length - 1] > sum) {
+        if (sum < 0) {
             return false;
         }
         return subSum(array, length - 1, sum - array[length - 1])

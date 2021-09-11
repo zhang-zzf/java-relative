@@ -19,6 +19,7 @@ public class LocalJvmThreadSafeObject {
      * <p>对数据的读写都用锁保护才能说是线程安全的对象</p>
      */
     private final Lock lock = new ReentrantLock();
+
     @GuardedBy("this.lock")
     private Object data;
 

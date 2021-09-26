@@ -57,32 +57,19 @@ public class TrappingRainWaterTest {
             if (height.length < 3) {
                 return 0;
             }
-            int dp[] = new int[height.length];
-            int left = 0, right = 1;
-            for (; right < height.length; right++) {
-                if (height[right] <= height[right - 1]) {
-                    continue;
-                }
-                int slotHeight = height[left] == 0 ? 0 : Math.min(height[left], height[right]);
-                // 站在全局的角度看： 中间所有的雨水量清 0；
-                int heightSum = 0;
-                for (int i = right - 1; i > left; i--) {
-                    int sub = slotHeight - height[i];
-                    if (sub <= 0) {
-                        break;
-                    }
-                    heightSum += sub;
-                    dp[i] = 0;
-                }
-                dp[right] = heightSum;
-                // 右指针 >= 左指针，右指针向右移动时，和左指针之间不会容纳更多的雨水，迁移左指针到右指针位置
-                if (height[right] >= height[left]) {
-                    left = right;
-                }
+            int[] dpRight = new int[height.length];
+            dpRight[height.length - 1] = 0;
+            for (int i = height.length - 2; i >= 0; i--) {
+                dpRight[i] = Math.max(height[i + 1], dpRight[i + 1]);
+            }
+            int[] dpLeft = new int[height.length];
+            dpLeft[0] = 0;
+            for (int i = 1; i < height.length; i++) {
+                dpLeft[i] = Math.max(height[i - 1], dpLeft[i - 1]);
             }
             int sum = 0;
-            for (int i : dp) {
-                sum += i;
+            for (int i = 0; i < height.length; i++) {
+                sum += Math.max(0, Math.min(dpLeft[i], dpRight[i]) - height[i]);
             }
             return sum;
         }

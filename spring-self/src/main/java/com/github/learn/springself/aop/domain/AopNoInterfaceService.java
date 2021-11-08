@@ -18,9 +18,6 @@ public class AopNoInterfaceService {
         self.methodB();
     }
 
-    /**
-     *
-     */
     void methodB() {
         log.info("methodB");
     }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
-@EnableAspectJAutoProxy()
+@EnableAspectJAutoProxy
 @Slf4j
 public class PointCuts {
 

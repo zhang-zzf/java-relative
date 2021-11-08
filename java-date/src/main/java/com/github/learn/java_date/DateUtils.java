@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -56,5 +57,17 @@ public class DateUtils {
     public static LocalDateTime parse(String value, String pattern) {
         return LocalDateTime.parse(value, ofPattern(pattern));
     }
+
+    /**
+     * 时间转字符串
+     *
+     * @param localDateTime 时间
+     * @param format 格式
+     * @return data
+     */
+    public static String getDateString(LocalDateTime localDateTime, String format) {
+        return localDateTime.format(DateTimeFormatter.ofPattern(format));
+    }
+
 
 }

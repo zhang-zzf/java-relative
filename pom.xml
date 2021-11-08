@@ -32,6 +32,8 @@
         <module>snowflake-time</module>
         <module>java-multi-thread</module>
         <module>java-basic</module>
+        <module>java-encrypt</module>
+        <module>java-sftp</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

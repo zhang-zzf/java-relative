@@ -18,15 +18,8 @@ public class NoInterfaceService {
         self.methodB();
     }
 
-    public void methodB() {
-        self.methodC();
-    }
-
-    /**
-     * 测试 default 方法会不会被代理
-     */
-    void methodC() {
-        log.info("methodC");
+    void methodB() {
+        log.info("methodB");
     }
 
     @Autowired

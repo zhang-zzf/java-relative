@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class InterfaceServiceImpl implements InterfaceService {
 
+    /**
+     * 注入接口自己
+     */
     private InterfaceService self;
 
     @Override

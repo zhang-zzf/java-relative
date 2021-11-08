@@ -1,6 +1,7 @@
 package com.github.learn.springself.aop.api.impl;
 
 import com.github.learn.springself.aop.api.AopInterfaceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,10 @@ import org.springframework.stereotype.Service;
  * @date 2021/08/10
  */
 @Service
+@Slf4j
 public class AopInterfaceServiceImpl implements AopInterfaceService {
 
-    AopInterfaceService self;
+    AopInterfaceServiceImpl self;
 
     @Override
     public void methodA() {
@@ -24,7 +26,8 @@ public class AopInterfaceServiceImpl implements AopInterfaceService {
     }
 
     @Autowired
-    public void setSelf(AopInterfaceService self) {
+    public void setSelf(AopInterfaceServiceImpl self) {
         this.self = self;
     }
+
 }

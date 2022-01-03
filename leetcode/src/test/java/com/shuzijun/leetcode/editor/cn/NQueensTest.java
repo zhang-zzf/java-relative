@@ -62,6 +62,9 @@ public class NQueensTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        /**
+         * 解题思路：https://www.yuque.com/u1147067/vzaha9/zdbwvt#shXau
+         */
         public List<List<String>> solveNQueens(int n) {
             List<List<String>> ret = new ArrayList<>();
             List<Integer> selectedColumn = new ArrayList<>(n);

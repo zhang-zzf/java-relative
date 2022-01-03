@@ -58,27 +58,34 @@ public class PermutationsTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        /**
+         * 解答思路：https://www.yuque.com/u1147067/vzaha9/zdbwvt#xb3V1
+         */
         public List<List<Integer>> permute(int[] nums) {
             List<List<Integer>> ret = new ArrayList<>();
-            List<Integer> list = new ArrayList<>(3);
+            // 保存已经选择的数字的下标
+            List<Integer> list = new ArrayList<>(nums.length);
             backTrack(nums, ret, list);
             return ret;
         }
 
         private void backTrack(int[] nums, List<List<Integer>> ret, List<Integer> list) {
-            // 遍历结束条件
             if (list.size() == nums.length) {
-                ret.add(new ArrayList<>(list));
-                return;
+                // 保存一次全排列
+                List aResult = new ArrayList<Integer>(nums.length);
+                for (int i = 0; i < nums.length; i++) {
+                    aResult.add(nums[list.get(i)]);
+                }
+                ret.add(aResult);
             }
             for (int i = 0; i < nums.length; i++) {
-                // 选择
-                if (list.contains(nums[i])) {
+                if (list.contains(i)) {
                     continue;
                 }
-                list.add(nums[i]);
+                // 选择
+                list.add(i);
                 backTrack(nums, ret, list);
-                // 撤销最后一次选择
+                // 撤销选择
                 list.remove(list.size() - 1);
             }
         }

@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -16,6 +18,19 @@ import org.junit.jupiter.api.Test;
  */
 @Slf4j
 class DateUtilsTest {
+
+
+    @Test
+    public void givenNow_whenEndMonth_then() {
+        final LocalDateTime endMonthOf = DateUtils.endMonthOf(LocalDateTime.now());
+       then(endMonthOf).isNotNull();
+    }
+
+    @Test
+    public void givenyyyyMMdd_whenParse_thenSuccess() {
+        final LocalDate parsed = DateUtils.parseLocalDate("19880329", "yyyyMMdd");
+        then(parsed).isNotNull();
+    }
 
     /**
      * 格式必须一一对应

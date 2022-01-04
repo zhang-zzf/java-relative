@@ -20,10 +20,10 @@ public class MainTest {
     @Test
     public void givenJSch_whenSftp_then() throws JSchException, SftpException, IOException {
         JSch jSch = new JSch();
-        jSch.addIdentity("/Volumes/RamDisk/id_rsa_pkcs1");
+        // jSch.addIdentity("/Volumes/RamDmisk/sftp/id_rsa_pkcs1");
         // String serverPublicKey = "192.168.56.8 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD5fJe6Qm8SyF3XPOGaU6LrTomSVvpjrOy5TlrRdB7mKND3uQfHHbUibnUDCrPiuyof/BTACdZG6ph6lML4gzmU=";
         // jSch.setKnownHosts(new ByteArrayInputStream(serverPublicKey.getBytes(StandardCharsets.UTF_8)));
-        final Session session = jSch.getSession("feng", "192.168.56.8");
+        final Session session = jSch.getSession("feng", "c008");
         session.setConfig("StrictHostKeyChecking", "no");
         session.connect(30000);
         final ChannelSftp sftp = (ChannelSftp) session.openChannel("sftp");

@@ -2,11 +2,9 @@ package com.github.learn.java_date;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
 /**
@@ -59,6 +57,17 @@ public class DateUtils {
     }
 
     /**
+     * String -> LocalDate
+     *
+     * @param value value
+     * @param pattern pattern
+     * @return data
+     */
+    public static LocalDate parseLocalDate(String value, String pattern) {
+        return LocalDate.parse(value, ofPattern(pattern));
+    }
+
+    /**
      * 时间转字符串
      *
      * @param localDateTime 时间
@@ -69,5 +78,16 @@ public class DateUtils {
         return localDateTime.format(DateTimeFormatter.ofPattern(format));
     }
 
+    public static LocalDateTime endDayOf(LocalDateTime localDateTime) {
+        return LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.MAX);
+    }
+
+    public static LocalDateTime startDayOf(LocalDateTime localDateTime) {
+        return LocalDateTime.of(localDateTime.toLocalDate(), LocalTime.MIN);
+    }
+
+    public static LocalDateTime endMonthOf(LocalDateTime localDateTime) {
+        return endDayOf(localDateTime.with(TemporalAdjusters.lastDayOfMonth()));
+    }
 
 }

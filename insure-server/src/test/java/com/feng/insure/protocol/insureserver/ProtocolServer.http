@@ -1,0 +1,44 @@
+### Send POST request with json body
+POST http://localhost:8080/contracts
+Content-Type: application/json
+x-client-public-key: aaaa
+
+{
+  "insureNo": "2021120312482850421中文knightId_1111",
+  "insured": {
+    "certType": "1003",
+    "certNo": "91350121MA33FNRL3B",
+    "certName": "福建省睿谷产业园有限公司",
+    "bizId": "agencyId_20162244",
+    "id": "agencyId_20162244"
+  },
+  "insureProd": {
+    "prodCode": "YW0001",
+    "prodName": "骑手意外险",
+    "prodType": "YW",
+    "description": "骑手意外险",
+    "insuranceCarrierProd": {
+      "insuranceCarrier": {
+        "carrierNo": "PingAn",
+        "name": "平安保险"
+      },
+      "prodCode": "PAYW0001",
+      "description": "骑手意外险（平安）",
+      "premium": 180,
+      "insuredAmount": 216000000
+    }
+  },
+  "insurant": {
+    "certType": "01",
+    "certNo": "41272119******5813",
+    "certName": "张*峰",
+    "mobile": "156****6513",
+    "bizId": "knightId_1111"
+  },
+  "period": {
+    "start": "2021-12-03 12:48:28",
+    "end": "2021-12-03 23:59:59"
+  },
+  "createdAt": "2021-12-03 12:48:28"
+}
+

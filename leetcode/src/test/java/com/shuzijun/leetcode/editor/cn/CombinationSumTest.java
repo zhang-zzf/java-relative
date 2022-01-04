@@ -80,6 +80,9 @@ public class CombinationSumTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        /**
+         * 解题思路 https://www.yuque.com/u1147067/vzaha9/wlvhdn#bIUZ9
+         */
         public List<List<Integer>> combinationSum(int[] candidates, int target) {
             List<List<Integer>> ret = new ArrayList<>();
             List<Integer> track = new ArrayList<>();

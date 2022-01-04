@@ -1,0 +1,10 @@
+logging:
+  level:
+    - root: debug
+spring:
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null

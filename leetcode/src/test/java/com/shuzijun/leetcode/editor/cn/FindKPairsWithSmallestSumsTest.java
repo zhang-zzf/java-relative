@@ -42,7 +42,7 @@
 // nums1 和 nums2 均为升序排列 
 // 1 <= k <= 1000 
 // 
-// Related Topics 数组 堆（优先队列） 👍 368 👎 0
+// Related Topics 数组 堆（优先队列） 👍 369 👎 0
 
 
 package com.shuzijun.leetcode.editor.cn;
@@ -50,7 +50,11 @@ package com.shuzijun.leetcode.editor.cn;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 
 public class FindKPairsWithSmallestSumsTest {
@@ -59,95 +63,31 @@ public class FindKPairsWithSmallestSumsTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-
-    }
-
-    public static class Heap<T extends Comparable<T>> {
-
-        private final HeapType heapType;
-        private final int capacity;
-        private int size;
-        private T[] data;
-
-        public Heap(HeapType heapType, int capacity) {
-            this.heapType = heapType;
-            this.capacity = capacity;
-            data = (T[]) new Object[capacity];
-        }
-
-        public void initData(T[] data) {
-            if (data.length > capacity) {
-                throw new IllegalArgumentException();
-            }
-            for (T t : data) {
-                data[size++] = t;
-                siftUp();
-            }
-        }
-
-        private void siftUp() {
-
-        }
-
-        public T peek() {
-            return null;
-        }
-
-        public T pop() {
-            return null;
-        }
-
-        public static class HeapType {
-
-            public static final HeapType MIN = new HeapType(-1);
-            public static final HeapType MAX = new HeapType(1);
-
-            private final int type;
-
-            public HeapType(int type) {
-                this.type = type;
-            }
-
-        }
-
+        final List<List<Integer>> lists = solution.kSmallestPairs(new int[]{1, 7, 11}, new int[]{2, 4}, 3);
+        then(lists.get(0)).contains(1, 2);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
         public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-            Pair[] list = new Pair[nums1.length * nums2.length];
-            int i = 0;
-            for (int i1 : nums1) {
-                for (int i2 : nums2) {
-                    final Pair p = new Pair();
-                    p.i1 = i1;
-                    p.i2 = i2;
-                    list[i++] = p;
-                }
+            PriorityQueue<int[]> pq = new PriorityQueue<>(k,
+                    Comparator.comparing(ints -> nums1[ints[0]] + nums2[ints[1]]));
+            for (int i = 0; i < Math.min(k, nums1.length); i++) {
+                pq.add(new int[]{i, 0});
             }
             List<List<Integer>> ret = new ArrayList<>(k);
-            for (i = 0; i < k; i++) {
-                Pair topK = findTopK(list, k);
+            while (k-- > 0 && !pq.isEmpty()) {
+                final int[] smallIdx = pq.poll();
                 ret.add(new ArrayList<Integer>(2) {{
-                    add(topK.i1);
-                    add(topK.i2);
+                    add(nums1[smallIdx[0]]);
+                    add(nums2[smallIdx[1]]);
                 }});
+                if (smallIdx[1] + 1 < nums2.length) {
+                    pq.add(new int[]{smallIdx[0], smallIdx[1] + 1});
+                }
             }
             return ret;
-        }
-
-
-        private Pair findTopK(Pair[] list, int k) {
-
-            return null;
-        }
-
-        public class Pair {
-
-            int i1;
-            int i2;
-
         }
 
     }

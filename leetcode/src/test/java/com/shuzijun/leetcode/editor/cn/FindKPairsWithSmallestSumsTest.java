@@ -134,8 +134,9 @@ public class FindKPairsWithSmallestSumsTest {
                     add(topK.i2);
                 }});
             }
-
+            return ret;
         }
+
 
         private Pair findTopK(Pair[] list, int k) {
 

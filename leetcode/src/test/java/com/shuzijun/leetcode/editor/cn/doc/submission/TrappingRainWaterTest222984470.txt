@@ -1,0 +1,40 @@
+    class Solution {
+
+        public int trap(int[] height) {
+            if (height.length < 3) {
+                return 0;
+            }
+            int dp[] = new int[height.length];
+            int left = 0, right = 1;
+            for (; right < height.length; right++) {
+                if (height[right] <= height[right - 1]) {
+                    continue;
+                }
+                int slotHeight = height[left] == 0 ? 0 : Math.min(height[left], height[right]);
+                // 站在全局的角度看： 中间所有的雨水量清 0；
+                int heightSum = 0;
+                for (int i = right - 1; i > left; i--) {
+                    int sub = slotHeight - height[i];
+                    if (sub <= 0) {
+                        break;
+                    }
+                    heightSum += sub;
+                    dp[i] = 0;
+                }
+                dp[right] = heightSum;
+                // 右指针 >= 左指针，右指针向右移动时，和左指针之间不会容纳更多的雨水，迁移左指针到右指针位置
+                if (height[right] >= height[left]) {
+                    left = right;
+                }
+            }
+            int sum = 0;
+            for (int i : dp) {
+                sum += i;
+            }
+            return sum;
+        }
+
+    }
+
+//runtime:1 ms
+//memory:38.2 MB

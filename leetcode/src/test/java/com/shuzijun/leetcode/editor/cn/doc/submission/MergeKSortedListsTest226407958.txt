@@ -1,0 +1,81 @@
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     * int val;
+     * ListNode next;
+     * ListNode() {}
+     * ListNode(int val) { this.val = val; }
+     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    class Solution {
+
+        public ListNode mergeKLists(ListNode[] lists) {
+            final int length = lists.length;
+            ListNode[] curNodeArray = new ListNode[length];
+            int heapSize = 0;
+            // init
+            for (int i = 0, j = 0; i < length; i++) {
+                if (lists[i] != null) {
+                    heapSize += 1;
+                    curNodeArray[j++] = lists[i];
+                }
+            }
+            if (heapSize == 0) {
+                return null;
+            }
+            // build min heap
+            for (int i = ((length - 1) - 1) / 2; i >= 0; i--) {
+                siftDown(curNodeArray, i, heapSize);
+            }
+            if (heapSize <= 0) {
+                return null;
+            }
+            ListNode dummy = new ListNode();
+            ListNode tail = dummy;
+            while (curNodeArray[0] != null) {
+                tail.next = curNodeArray[0];
+                tail.next = curNodeArray[0];
+                tail = tail.next;
+                // move forward
+                curNodeArray[0] = curNodeArray[0].next;
+                // move heap last item to top
+                while (curNodeArray[0] == null && heapSize > 0) {
+                    curNodeArray[0] = curNodeArray[--heapSize];
+                }
+                // rebuild heap
+                siftDown(curNodeArray, 0, heapSize);
+            }
+            return dummy.next;
+        }
+
+        private void siftDown(ListNode[] curNodeArray, int curNode, int heapSize) {
+            while (true) {
+                int minIdx = curNode;
+                final int leftChild = (curNode + 1) * 2 - 1;
+                if (leftChild < heapSize && curNodeArray[leftChild].val < curNodeArray[minIdx].val) {
+                    minIdx = leftChild;
+                }
+                final int rightChildIdx = leftChild + 1;
+                if (rightChildIdx < heapSize && curNodeArray[rightChildIdx].val < curNodeArray[minIdx].val) {
+                    minIdx = rightChildIdx;
+                }
+                swap(curNodeArray, curNode, minIdx);
+                if (minIdx == curNode) {
+                    break;
+                }
+                curNode = minIdx;
+            }
+        }
+
+        private void swap(ListNode[] array, int i1, int i2) {
+            ListNode tmp = array[i1];
+            array[i1] = array[i2];
+            array[i2] = tmp;
+        }
+
+    }
+
+//runtime:2 ms
+//memory:40.1 MB

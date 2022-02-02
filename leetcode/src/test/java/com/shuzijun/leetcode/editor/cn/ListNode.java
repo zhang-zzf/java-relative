@@ -4,19 +4,19 @@ package com.shuzijun.leetcode.editor.cn;
  * @author 张占峰 (Email: zhang.zzf@alibaba-inc.com / ID: 235668)
  * @date 2022/1/28
  */
-public class ListNode {
+public class ListNode<T> {
 
-    int val;
+    T val;
     ListNode next;
 
     ListNode() {
     }
 
-    ListNode(int val) {
+    ListNode(T val) {
         this.val = val;
     }
 
-    ListNode(int val, ListNode next) {
+    ListNode(T val, ListNode next) {
         this.val = val;
         this.next = next;
     }

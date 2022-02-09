@@ -76,14 +76,10 @@ public class SurroundedRegionsTest {
         public void solve(char[][] board) {
             for (int i = 0; i < board[0].length; i++) {
                 dfsMarkOToM(board, 0, i);
-            }
-            for (int i = 0; i < board[0].length; i++) {
                 dfsMarkOToM(board, board.length - 1, i);
             }
             for (int i = 0; i < board.length; i++) {
                 dfsMarkOToM(board, i, 0);
-            }
-            for (int i = 0; i < board.length; i++) {
                 dfsMarkOToM(board, i, board[0].length - 1);
             }
             for (int i = 0; i < board.length; i++) {

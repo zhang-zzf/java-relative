@@ -49,73 +49,28 @@ public class GenerateParenthesesTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        class Track {
-
-            private final int length;
-
-            public Track(int n) {
-                length = n;
-            }
-
-            StringBuilder buf = new StringBuilder();
-            //（ 的数量
-            int _0 = 0;
-            // ) 的数量
-            int _1 = 0;
-
-            public boolean isFullFilled() {
-                return buf.length() == 2 * length;
-            }
-
-            @Override
-            public String toString() {
-                return buf.toString();
-            }
-
-            public boolean select(char c) {
-                if ('(' == c && _0 < length) {
-                    _0 += 1;
-                    buf.append(c);
-                    return true;
-                } else if (')' == c && _1 - _0 < 0) {
-                    _1 += 1;
-                    buf.append(c);
-                    return true;
-                }
-                return false;
-            }
-
-            public void deSelect() {
-                final int lastChar = buf.length() - 1;
-                final char c = buf.charAt(lastChar);
-                if ('(' == c) {
-                    _0 -= 1;
-                } else {
-                    _1 -= 1;
-                }
-                buf.delete(lastChar, buf.length());
-            }
-
-        }
-
         public List<String> generateParenthesis(int n) {
             List<String> ret = new ArrayList<>();
-            backTrack(new Track(n), ret);
+            backTrack(n, 0, 0, new StringBuilder(), ret);
             return ret;
         }
 
-        private final char[] candidate = {'(', ')'};
-
-        private void backTrack(Track data, List<String> ret) {
-            if (data.isFullFilled()) {
-                ret.add(data.toString());
+        private void backTrack(int n, int lc, int rc, StringBuilder buf, List<String> ret) {
+            if (lc == n && rc == n) {
+                ret.add(buf.toString());
                 return;
             }
-            for (char c : candidate) {
-                if (data.select(c)) {
-                    backTrack(data, ret);
-                    data.deSelect();
-                }
+            if (lc < n) {
+                // 选择
+                backTrack(n, lc + 1, rc, buf.append('('), ret);
+                // 回退选择
+                buf.delete(buf.length() - 1, buf.length());
+            }
+            if (rc < lc) {
+                // 选择
+                backTrack(n, lc, rc + 1, buf.append(")"), ret);
+                // 回退选择
+                buf.delete(buf.length() - 1, buf.length());
             }
         }
 

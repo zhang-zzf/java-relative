@@ -21,6 +21,11 @@ public class ListNode<T> {
         this.next = next;
     }
 
+    ListNode<T> addToTail(ListNode<T> next) {
+        this.next = next;
+        return next;
+    }
+
 }
 
 

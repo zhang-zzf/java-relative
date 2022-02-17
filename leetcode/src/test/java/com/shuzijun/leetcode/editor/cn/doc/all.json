@@ -25800,7 +25800,7 @@
     "level": 1,
     "nodeType": "def",
     "questionId": "1518",
-    "status": "not_started",
+    "status": "tried",
     "submitted": 0,
     "title": "换酒问题",
     "titleSlug": "water-bottles"
@@ -27908,7 +27908,7 @@
     "level": 2,
     "nodeType": "def",
     "questionId": "1642",
-    "status": "not_started",
+    "status": "ac",
     "submitted": 0,
     "title": "可以到达的最远建筑",
     "titleSlug": "furthest-building-you-can-reach"
@@ -42749,7 +42749,7 @@
     "level": 2,
     "nodeType": "def",
     "questionId": "面试题 17.14",
-    "status": "not_started",
+    "status": "ac",
     "submitted": 0,
     "title": "最小K个数",
     "titleSlug": "smallest-k-lcci"

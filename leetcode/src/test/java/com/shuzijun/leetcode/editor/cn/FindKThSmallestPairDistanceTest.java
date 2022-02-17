@@ -30,8 +30,6 @@ package com.shuzijun.leetcode.editor.cn;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -42,8 +40,8 @@ public class FindKThSmallestPairDistanceTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-        final int ret = solution.smallestDistancePair(new int[]{1, 8, 4, 7}, 2);
-        then(ret).isEqualTo(3);
+        final int ret = solution.smallestDistancePair(new int[]{1, 3, 1}, 1);
+        then(ret).isEqualTo(5);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -51,25 +49,34 @@ public class FindKThSmallestPairDistanceTest {
 
         public int smallestDistancePair(int[] nums, int k) {
             Arrays.sort(nums);
-            // 大堆
-            PriorityQueue<Integer> pq = new PriorityQueue<>(k + 1, Comparator.reverseOrder());
-            for (int i = 0; i < nums.length; i++) {
-                for (int j = i + 1; j < nums.length; j++) {
-                    if (pq.size() == k && pq.peek() < nums[j] - nums[i]) {
-                        // 跳出一层循环
-                        break;
-                    }
-                    pq.add(nums[j] - nums[i]);
-                    if (pq.size() > k) {
-                        pq.poll();
-                    }
+            int minVal = 0, maxVal = nums[nums.length - 1] - nums[0];
+            while (minVal < maxVal) {
+                int midVal = minVal + ((maxVal - minVal) >> 1);
+                int cnt = getCntLeThan(midVal, nums);
+                if (cnt < k) {
+                    minVal = midVal + 1;
+                } else {
+                    // 注意：这里不能减1
+                    maxVal = midVal;
                 }
             }
-            return pq.poll();
+            return minVal;
         }
 
+        private int getCntLeThan(int midVal, int[] nums) {
+            int cnt = 0;
+            int left = 0;
+            for (int right = 0; right < nums.length; right++) {
+                while (nums[right] - nums[left] > midVal) {
+                    left += 1;
+                }
+                cnt += right - left;
+            }
+            return cnt;
+        }
 
     }
+
 //leetcode submit region end(Prohibit modification and deletion)
 
 

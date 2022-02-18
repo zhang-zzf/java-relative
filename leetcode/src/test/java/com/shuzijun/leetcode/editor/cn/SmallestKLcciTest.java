@@ -20,6 +20,7 @@ package com.shuzijun.leetcode.editor.cn;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -39,41 +40,88 @@ public class SmallestKLcciTest {
     class Solution {
 
         public int[] smallestK(int[] arr, int k) {
-            if (arr.length == 0 || k == 0) {
-                return new int[0];
+            QuickSortK algorithm = new QuickSortK();
+            QuickSortK.Item<Integer, Object>[] items = new QuickSortK.Item[arr.length];
+            for (int i = 0; i < arr.length; i++) {
+                items[i] = algorithm.new Item<>(arr[i], null);
             }
-            quickSortK(arr, k, 0, arr.length - 1);
-            return Arrays.copyOf(arr, k);
+            final QuickSortK.Item<Integer, Object>[] sortK = algorithm.sortK(items, k);
+            return Arrays.stream(sortK).mapToInt(i -> i.value).toArray();
         }
 
-        private void quickSortK(int[] arr, int k, int left, int right) {
-            int pivotIdx = partition(arr, left, right);
-            if (pivotIdx == k - 1 || pivotIdx == k || left >= right) {
-                return;
-            } else if (pivotIdx > k) {
-                quickSortK(arr, k, left, pivotIdx - 1);
-            } else {
-                quickSortK(arr, k, pivotIdx + 1, right);
+
+        class QuickSortK {
+
+            private final Comparator<? super Item> comparator;
+
+            public QuickSortK(Comparator<? super Item> comparator) {
+                this.comparator = comparator;
             }
 
-        }
+            public QuickSortK() {
+                this(null);
+            }
 
-        private int partition(int[] arr, int left, int right) {
-            int pivot = arr[right];
-            int ptr = left - 1;
-            for (int i = left; i < right; i++) {
-                if (arr[i] < pivot) {
-                    swap(arr, ++ptr, i);
+            public Item[] sortK(Item[] array, int k) {
+                if (array.length == 0 || k == 0) {
+                    return new Item[0];
+                }
+                quickSortK(array, k, 0, array.length - 1);
+                return Arrays.copyOf(array, k);
+            }
+
+            private void quickSortK(Item[] arr, int k, int left, int right) {
+                int pivotIdx = partition(arr, left, right);
+                if (pivotIdx == k - 1 || pivotIdx == k || left >= right) {
+                    return;
+                } else if (pivotIdx > k) {
+                    quickSortK(arr, k, left, pivotIdx - 1);
+                } else {
+                    quickSortK(arr, k, pivotIdx + 1, right);
                 }
             }
-            swap(arr, ptr + 1, right);
-            return ptr + 1;
-        }
 
-        private void swap(int[] arr, int i, int i1) {
-            int tmp = arr[i];
-            arr[i] = arr[i1];
-            arr[i1] = tmp;
+            private int partition(Item[] arr, int left, int right) {
+                Item pivot = arr[right];
+                int ptr = left - 1;
+                for (int i = left; i < right; i++) {
+                    if (this.comparator != null) {
+                        if (this.comparator.compare(arr[i], pivot) < 0) {
+                            swap(arr, ++ptr, i);
+                        }
+                    } else {
+                        if (arr[i].value.compareTo(pivot.value) < 0) {
+                            swap(arr, ++ptr, i);
+                        }
+                    }
+                }
+                swap(arr, ptr + 1, right);
+                return ptr + 1;
+            }
+
+            private void swap(Item[] arr, int i, int i1) {
+                Item tmp = arr[i];
+                arr[i] = arr[i1];
+                arr[i1] = tmp;
+            }
+
+            class Item<V extends Comparable<V>, D> implements Comparable<Item> {
+
+                V value;
+                D extraData;
+
+                public Item(V value, D extraData) {
+                    this.value = value;
+                    this.extraData = extraData;
+                }
+
+                @Override
+                public int compareTo(Item o) {
+                    return this.value.compareTo((V) o.value);
+                }
+
+            }
+
         }
 
     }

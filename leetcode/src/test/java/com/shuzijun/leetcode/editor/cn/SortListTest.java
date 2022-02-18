@@ -45,6 +45,9 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -93,69 +96,16 @@ public class SortListTest {
     class Solution {
 
         public ListNode sortList(ListNode head) {
-            if (head == null) {
-                return null;
-            }
-            // length of the list
-            int lng = 0;
+            ListNode dummy = new ListNode(), tail = dummy;
+            PriorityQueue<ListNode> pq = new PriorityQueue<>(Comparator.comparing(listNode -> listNode.val));
             for (ListNode ptr = head; ptr != null; ptr = ptr.next) {
-                lng += 1;
+                pq.add(ptr);
             }
-            final ListNode dummy = new ListNode(0, head);
-            for (int subLng = 1; subLng < lng; subLng <<= 1) {
-                ListNode pre = dummy, cur = dummy.next;
-                while (cur != null) {
-                    // 第1段链表
-                    ListNode head1 = cur;
-                    for (int i = 1; i < subLng && cur.next != null; i++) {
-                        cur = cur.next;
-                    }
-                    ListNode head2 = cur.next;
-                    cur.next = null;
-                    // 第1段链表
-                    // 第2段链表
-                    cur = head2;
-                    for (int i = 1; i < subLng && cur != null && cur.next != null; i++) {
-                        cur = cur.next;
-                    }
-                    ListNode next = null;
-                    if (cur != null) {
-                        next = cur.next;
-                        cur.next = null;
-                    }
-                    // 第2段链表
-                    // 排序
-                    pre.next = mergeSort(head1, head2);
-                    // 链接
-                    while (pre.next != null) {
-                        pre = pre.next;
-                    }
-                    cur = next;
-                }
-
-            }
-            return dummy.next;
-        }
-
-        private ListNode mergeSort(ListNode ptr1, ListNode ptr2) {
-            final ListNode dummy = new ListNode();
-            ListNode tail = dummy;
-            while (ptr1 != null && ptr2 != null) {
-                if (ptr1.val < ptr2.val) {
-                    tail.next = ptr1;
-                    ptr1 = ptr1.next;
-                } else {
-                    tail.next = ptr2;
-                    ptr2 = ptr2.next;
-                }
+            while (!pq.isEmpty()) {
+                tail.next = pq.poll();
                 tail = tail.next;
             }
-            if (ptr1 != null) {
-                tail.next = ptr1;
-            }
-            if (ptr2 != null) {
-                tail.next = ptr2;
-            }
+            tail.next = null;
             return dummy.next;
         }
 

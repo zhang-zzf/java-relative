@@ -1,12 +1,23 @@
 package com.shuzijun.leetcode.editor.cn;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * @author zhanfeng.zhang
  * @date 2022/02/18
  */
 public class QuickSortK {
+
+    private final Comparator<? super Item> comparator;
+
+    public QuickSortK(Comparator<? super Item> comparator) {
+        this.comparator = comparator;
+    }
+
+    public QuickSortK() {
+        this(null);
+    }
 
     public Item[] sortK(Item[] array, int k) {
         if (array.length == 0 || k == 0) {
@@ -31,8 +42,14 @@ public class QuickSortK {
         Item pivot = arr[right];
         int ptr = left - 1;
         for (int i = left; i < right; i++) {
-            if (arr[i].value.compareTo(pivot.value) < 0) {
-                swap(arr, ++ptr, i);
+            if (this.comparator != null) {
+                if (this.comparator.compare(arr[i], pivot) < 0) {
+                    swap(arr, ++ptr, i);
+                }
+            } else {
+                if (arr[i].value.compareTo(pivot.value) < 0) {
+                    swap(arr, ++ptr, i);
+                }
             }
         }
         swap(arr, ptr + 1, right);
@@ -45,16 +62,25 @@ public class QuickSortK {
         arr[i1] = tmp;
     }
 
-    class Item<V extends Comparable<V>, D> {
+    class Item<V extends Comparable<V>, D> implements Comparable<Item> {
 
-        Comparable<V> value;
+        V value;
         D extraData;
 
-        public Item(Comparable<V> value, D extraData) {
+        public Item(V value, D extraData) {
             this.value = value;
             this.extraData = extraData;
+        }
+
+        @Override
+        public int compareTo(Item o) {
+            return this.value.compareTo((V) o.value);
         }
 
     }
 
 }
+
+
+
+

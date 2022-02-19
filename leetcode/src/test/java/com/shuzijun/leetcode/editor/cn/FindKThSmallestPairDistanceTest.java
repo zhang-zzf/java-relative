@@ -40,8 +40,8 @@ public class FindKThSmallestPairDistanceTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-        final int ret = solution.smallestDistancePair(new int[]{1, 3, 1}, 1);
-        then(ret).isEqualTo(5);
+        final int ret = solution.smallestDistancePair(new int[]{62, 100, 4}, 2);
+        then(ret).isEqualTo(58);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -49,30 +49,31 @@ public class FindKThSmallestPairDistanceTest {
 
         public int smallestDistancePair(int[] nums, int k) {
             Arrays.sort(nums);
-            int minVal = 0, maxVal = nums[nums.length - 1] - nums[0];
-            while (minVal < maxVal) {
-                int midVal = minVal + ((maxVal - minVal) >> 1);
-                int cnt = getCntLeThan(midVal, nums);
+            // 值域 [0...nums[nums.length-1] - nums[0]]
+            int left = 0, right = nums[nums.length - 1] - nums[0];
+            while (left <= right) {
+                int mid = left + ((right - left) >> 1);
+                int cnt = getLessEqualThan(nums, mid);
                 if (cnt < k) {
-                    minVal = midVal + 1;
+                    left = mid + 1;
                 } else {
-                    // 注意：这里不能减1
-                    maxVal = midVal;
+                    right = mid - 1;
                 }
             }
-            return minVal;
+            return left;
         }
 
-        private int getCntLeThan(int midVal, int[] nums) {
-            int cnt = 0;
+        private int getLessEqualThan(int[] nums, int pivot) {
+            int ret = 0;
             int left = 0;
             for (int right = 0; right < nums.length; right++) {
-                while (nums[right] - nums[left] > midVal) {
-                    left += 1;
+                while (nums[right] - nums[left] > pivot) {
+                    left++;
                 }
-                cnt += right - left;
+                // 小于等于 pivot 的距离对
+                ret += (right - left);
             }
-            return cnt;
+            return ret;
         }
 
     }

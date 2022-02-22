@@ -46,6 +46,8 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 
 public class HeatersTest {
 
@@ -60,40 +62,34 @@ public class HeatersTest {
     class Solution {
 
         public int findRadius(int[] houses, int[] heaters) {
-            // 根据题目 解的值空间为 [0, 10⁹]
-            int l = 0, r = 1000000000;
-            while (l < r) {
-                int m = l + ((r - l) >> 1);
-                if (coverAllHouses(houses, heaters, m)) {
-                    r = m;
-                } else {
-                    l = m + 1;
-                }
+            // 排序
+            Arrays.sort(heaters);
+            int ans = 0;
+            for (int house : houses) {
+                int leftHeater = binarySearch(heaters, house);
+                int leftRadius = (leftHeater == -1) ?
+                        Integer.MAX_VALUE : (house - heaters[leftHeater]);
+                int rightRadius = (leftHeater + 1 >= heaters.length) ?
+                        Integer.MAX_VALUE : heaters[leftHeater + 1] - house;
+                ans = Math.max(ans, Math.min(leftRadius, rightRadius));
             }
-            return l;
+            return ans;
         }
 
-        private boolean coverAllHouses(int[] houses, int[] heaters, int radius) {
-            int heaterIdx = 0;
-            for (int i = 0; i < houses.length; i++) {
-                int house = houses[i];
-                // 采用 - 法，注意数越界
-                // int leftBoarder = heaters[heaterIdx] - radius
-                if (house < heaters[heaterIdx] - radius) {
-                    return false;
-                }
-                // int rightBoarder = heaters[heaterIdx] + radius;
-                if (house - heaters[heaterIdx] > radius) {
-                    // 重要：有上界
-                    if (heaterIdx + 1 >= heaters.length) {
-                        return false;
-                    }
-                    heaterIdx += 1;
-                    // 再来一次，判断下一个 heater 是否可以覆盖此 house
-                    i -= 1;
+        // 找出 <= house 的最大 heater
+        private int binarySearch(int[] heaters, int house) {
+            int ans = -1;
+            int l = 0, r = heaters.length - 1;
+            while (l <= r) {
+                int m = l + ((r - l) >> 1);
+                if (heaters[m] <= house) {
+                    ans = m;
+                    l = m + 1;
+                } else {
+                    r = m - 1;
                 }
             }
-            return true;
+            return ans;
         }
 
     }

@@ -3,7 +3,9 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Queue;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -42,7 +44,7 @@ public class SwimInRisingWaterTest {
             int l = 0, r = max;
             while (l < r) {
                 int m = l + ((r - l) >> 1);
-                if (bfsTouchEnd(grid, m)) {
+                if (bfsTouchEnd(grid, new int[grid.length * grid.length], m)) {
                     r = m;
                 } else {
                     l = m + 1;
@@ -51,34 +53,31 @@ public class SwimInRisingWaterTest {
             return l;
         }
 
-        private boolean bfsTouchEnd(int[][] grid, int pivot) {
+        private boolean bfsTouchEnd(int[][] grid, int[] touched, int pivot) {
             if (grid[0][0] > pivot) {
                 return false;
             }
             final int lng = grid.length;
             final int lastVal = grid[lng - 1][lng - 1];
-            Set<Item> touched = new HashSet<>(lng * lng);
             Queue<Item> queue = new LinkedList<>();
-            final Item first = new Item(0, 0, grid[0][0]);
-            queue.add(first);
-            touched.add(first);
+            queue.add(new Item(0, 0));
+            touched[0] = 1;
             while (!queue.isEmpty()) {
                 // 上下左右
                 final Item item = queue.poll();
-                if (item.val == lastVal) {
+                if (grid[item.row][item.column] == lastVal) {
                     return true;
                 }
                 for (int[] arrow : arrows) {
                     int row = item.row + arrow[0];
                     int column = item.column + arrow[1];
-                    int val;
                     if (row >= 0 && row < lng
                             && column >= 0 && column < lng
-                            && (val = grid[row][column]) <= pivot) {
-                        final Item tmp = new Item(row, column, val);
-                        if (touched.add(tmp)) {
-                            queue.add(tmp);
-                        }
+                            && touched[row * lng + column] == 0
+                            && grid[row][column] <= pivot) {
+                        // 别忘记置位
+                        touched[row * lng + column] = 1;
+                        queue.offer(new Item(row, column));
                     }
                 }
             }
@@ -89,12 +88,10 @@ public class SwimInRisingWaterTest {
 
             int row;
             int column;
-            int val;
 
-            public Item(int row, int column, int val) {
+            public Item(int row, int column) {
                 this.row = row;
                 this.column = column;
-                this.val = val;
             }
 
             @Override

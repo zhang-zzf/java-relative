@@ -72,33 +72,33 @@ public class FindFirstAndLastPositionOfElementInSortedArrayTest {
                 return ans;
             }
             int left = 0, right = nums.length - 1;
-            while (left < right) {
+            while (left <= right) {
                 // 默认向下取整
                 int mid = left + ((right - left) >> 1);
                 if (nums[mid] >= target) {
-                    right = mid;
+                    right = mid - 1;
+                    if (nums[mid] == target) {
+                        ans[0] = mid;
+                    }
                 } else {
                     left = mid + 1;
                 }
             }
-            if (nums[left] == target) {
-                ans[0] = left;
-            } else {
+            if (ans[0] == -1) {
                 return ans;
             }
             left = 0;
             right = nums.length - 1;
-            while (left < right) {
-                // 核心点：向上取整
-                int mid = left + ((right - left) >> 1) + 1;
+            while (left <= right) {
+                int mid = left + ((right - left) >> 1);
                 if (nums[mid] <= target) {
-                    left = mid;
+                    left = mid + 1;
+                    if (nums[mid] == target) {
+                        ans[1] = mid;
+                    }
                 } else {
                     right = mid - 1;
                 }
-            }
-            if (nums[left] == target) {
-                ans[1] = left;
             }
             return ans;
         }

@@ -40,8 +40,8 @@ public class FindKThSmallestPairDistanceTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-        final int ret = solution.smallestDistancePair(new int[]{62, 100, 4}, 2);
-        then(ret).isEqualTo(58);
+        final int ret = solution.smallestDistancePair(new int[]{1,3,1}, 1);
+        then(ret).isEqualTo(0);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -49,31 +49,31 @@ public class FindKThSmallestPairDistanceTest {
 
         public int smallestDistancePair(int[] nums, int k) {
             Arrays.sort(nums);
-            // 值域 [0...nums[nums.length-1] - nums[0]]
-            int left = 0, right = nums[nums.length - 1] - nums[0];
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                int cnt = getLessEqualThan(nums, mid);
+            int l = nums[1] - nums[0], r = nums[nums.length - 1] - nums[0];
+            while (l <= r) {
+                int m = l + ((r - l) >> 1);
+                // <= m 的距离对的个数
+                int cnt = getCnt(nums, m);
                 if (cnt < k) {
-                    left = mid + 1;
+                    l = m + 1;
                 } else {
-                    right = mid - 1;
+                    r = m - 1;
                 }
             }
-            return left;
+            // 分析 l=r 后根据动指针的条件判断
+            return l;
         }
 
-        private int getLessEqualThan(int[] nums, int pivot) {
-            int ret = 0;
-            int left = 0;
-            for (int right = 0; right < nums.length; right++) {
-                while (nums[right] - nums[left] > pivot) {
-                    left++;
+        private int getCnt(int[] nums, int m) {
+            int ans = 0;
+            int left = 0, right = 0;
+            for (; right < nums.length; right++) {
+                while (nums[right] - nums[left] > m) {
+                    left += 1;
                 }
-                // 小于等于 pivot 的距离对
-                ret += (right - left);
+                ans += (right - left);
             }
-            return ret;
+            return ans;
         }
 
     }

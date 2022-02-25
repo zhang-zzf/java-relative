@@ -146,18 +146,24 @@ class Node {
     class Solution {
 
         public Node connect(Node root) {
-            if (root == null) {
-                return null;
+            Node cur = root;
+            while (cur != null) {
+                Node dummy = new Node(), pre = dummy;
+                while (cur != null) {
+                    // 遍历当前层
+                    if (cur.left != null) {
+                        pre.next = cur.left;
+                        pre = pre.next;
+                    }
+                    if (cur.right != null) {
+                        pre.next = cur.right;
+                        pre = pre.next;
+                    }
+                    cur = cur.next;
+                }
+                // 去一下层
+                cur = dummy.next;
             }
-            if (root.left == null || root.right == null) {// 完美2叉树的规则
-                return root;
-            }
-            root.left.next = root.right;
-            if (root.next != null) {
-                root.right.next = root.next.left;
-            }
-            connect(root.left);
-            connect(root.right);
             return root;
         }
 

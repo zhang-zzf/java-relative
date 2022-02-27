@@ -3,12 +3,13 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
 
-public class ValidateBinarySearchTreeTest {
+class ValidateBinarySearchTreeTest {
 
     final Solution solution = new Solution();
 
@@ -44,26 +45,20 @@ public class ValidateBinarySearchTreeTest {
     class Solution {
 
         public boolean isValidBST(TreeNode root) {
-            if (root == null) {
-                return true;
-            }
-            return midOrder(root, new AtomicLong(Long.MIN_VALUE));
-        }
-
-        private boolean midOrder(TreeNode root, AtomicLong max) {
-            if (root == null) {
-                return true;
-            }
-            if (!midOrder(root.left, max)) {
-                return false;
-            }
-            if (root.val > max.get()) {
-                max.set(root.val);
-            } else {
-                return false;
-            }
-            if (!midOrder(root.right, max)) {
-                return false;
+            // 中序遍历
+            Deque<TreeNode> stack = new LinkedList<>();
+            long max = Long.MIN_VALUE;
+            while (!stack.isEmpty() || root != null) {
+                while (root != null) {
+                    stack.push(root);
+                    root = root.left;
+                }
+                root = stack.pop();
+                if (root.val <= max) {
+                    return false;
+                }
+                max = root.val;
+                root = root.right;
             }
             return true;
         }

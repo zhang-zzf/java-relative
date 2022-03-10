@@ -40,27 +40,15 @@ public class DeleteLeavesWithAGivenValueTest {
     class Solution {
 
         public TreeNode removeLeafNodes(TreeNode root, int target) {
-            final TreeNode dummy = new TreeNode(target - 1, root, null);
-            dfs(dummy, target);
-            return dummy.left;
-        }
-
-        private boolean dfs(TreeNode root, int target) {
             if (root == null) {
-                return false;
+                return null;
             }
-            final boolean left = dfs(root.left, target);
-            final boolean right = dfs(root.right, target);
-            if (left) {
-                root.left = null;
-            }
-            if (right) {
-                root.right = null;
-            }
+            root.left = removeLeafNodes(root.left, target);
+            root.right = removeLeafNodes(root.right, target);
             if (root.left == null && root.right == null && root.val == target) {
-                return true;
+                return null;
             }
-            return false;
+            return root;
         }
 
     }

@@ -49,34 +49,17 @@ public class MinimumAbsoluteDifferenceInBstTest {
     class Solution {
 
         public int getMinimumDifference(TreeNode root) {
-            int ans = Integer.MAX_VALUE;
-            Integer prev = null;
-            while (root != null) {
-                if (root.left != null) {
-                    // 存在左子树,遍历左子树
-                    TreeNode predecessor = root.left;
-                    while (predecessor.right != null
-                            && predecessor.right != root) {
-                        predecessor = predecessor.right;
-                    }
-                    if (predecessor.right == null) {
-                        predecessor.right = root;
-                        root = root.left;
-                        continue;
-                    } else {
-                        predecessor.right = null;
-                    }
-                }
-                // 中序遍历
-                int tmp;
-                if (prev != null && (tmp = root.val - prev) < ans) {
-                    ans = tmp;
-                }
-                prev = root.val;
-                // 遍历右子树
-                root = root.right;
+            int max = 10 * 10 * 10 * 10 * 10;
+            return dfs(root, -max, max);
+        }
+
+        private int dfs(TreeNode root, int min, int max) {
+            if (root == null) {
+                return max - min;
             }
-            return ans;
+            int left = dfs(root.left, min, root.val);
+            int right = dfs(root.right, root.val, max);
+            return Math.min(left, right);
         }
 
     }

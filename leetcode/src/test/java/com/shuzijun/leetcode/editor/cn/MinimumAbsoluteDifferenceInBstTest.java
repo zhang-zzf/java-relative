@@ -3,8 +3,6 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -19,6 +17,16 @@ public class MinimumAbsoluteDifferenceInBstTest {
         final TreeNode root = codec.deserialize(tree);
         final int difference = solution.getMinimumDifference(root);
         then(difference).isEqualTo(1);
+    }
+
+
+    @Test
+    public void givenFailedCaseOne_when_then() {
+        String tree = "[236,104,701,null,227,null,911]";
+        final SerializeAndDeserializeBinaryTreeTest.Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
+        final TreeNode root = codec.deserialize(tree);
+        final int ans = solution.getMinimumDifference(root);
+        then(ans).isEqualTo(9);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -41,28 +49,34 @@ public class MinimumAbsoluteDifferenceInBstTest {
     class Solution {
 
         public int getMinimumDifference(TreeNode root) {
-            final AtomicInteger ans = new AtomicInteger(Integer.MAX_VALUE);
-            dfs(root, null, null, ans);
-            return ans.get();
-        }
-
-        private void dfs(TreeNode root, Integer min, Integer max, AtomicInteger ans) {
-            if (root == null) {
-                return;
+            int ans = Integer.MAX_VALUE;
+            Integer prev = null;
+            while (root != null) {
+                if (root.left != null) {
+                    // 存在左子树,遍历左子树
+                    TreeNode predecessor = root.left;
+                    while (predecessor.right != null
+                            && predecessor.right != root) {
+                        predecessor = predecessor.right;
+                    }
+                    if (predecessor.right == null) {
+                        predecessor.right = root;
+                        root = root.left;
+                        continue;
+                    } else {
+                        predecessor.right = null;
+                    }
+                }
+                // 中序遍历
+                int tmp;
+                if (prev != null && (tmp = root.val - prev) < ans) {
+                    ans = tmp;
+                }
+                prev = root.val;
+                // 遍历右子树
+                root = root.right;
             }
-            if (root.left != null) {
-                dfs(root.left, min, root.val, ans);
-            }
-            if (root.right != null) {
-                dfs(root.right, root.val, max, ans);
-            }
-            int tmp;
-            if (min != null && (tmp = root.val - min) < ans.get()) {
-                ans.set(tmp);
-            }
-            if (max != null && (tmp = max - root.val) < ans.get()) {
-                ans.set(tmp);
-            }
+            return ans;
         }
 
     }

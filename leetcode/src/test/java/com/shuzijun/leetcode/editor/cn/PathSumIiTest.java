@@ -90,26 +90,30 @@ public class PathSumIiTest {
     class Solution {
 
         public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-            List<List<Integer>> ret = new ArrayList<>();
-            dfs(root, targetSum, new ArrayList<>(), ret);
-            return ret;
-        }
-
-        private void dfs(TreeNode root, int targetSum, List<Integer> track, List<List<Integer>> ret) {
+            List<List<Integer>> path = new ArrayList(0);
             if (root == null) {
-                return;
+                return path;
             }
-            // 选择
-            track.add(root.val);
-            targetSum -= root.val;
-            if (root.left == null && root.right == null && targetSum == 0) {
+            if (root.left == null && root.right == null) {
                 // 叶子节点
-                ret.add(new ArrayList<>(track));
+                if (root.val == targetSum) {
+                    path.add(new ArrayList<Integer>() {{
+                        add(root.val);
+                    }});
+                }
+                return path;
             }
-            dfs(root.left, targetSum, track, ret);
-            dfs(root.right, targetSum, track, ret);
-            // 回溯选择
-            track.remove(track.size() - 1);
+            // 左 -> 右 -> 本节点 典型后序遍历
+            if (root.left != null) {
+                path.addAll(pathSum(root.left, targetSum - root.val));
+            }
+            if (root.right != null) {
+                path.addAll(pathSum(root.right, targetSum - root.val));
+            }
+            for (List<Integer> list : path) {
+                list.add(0, root.val);
+            }
+            return path;
         }
 
     }

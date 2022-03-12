@@ -27,10 +27,15 @@ public class ErChaShuDeShenDuLcofTest {
     class Solution {
 
         public int maxDepth(TreeNode root) {
+            return dfsUpToDown(root, 0);
+        }
+
+        private int dfsUpToDown(TreeNode root, int depth) {
+            // 先序遍历，up to down
             if (root == null) {
-                return 0;
+                return depth;
             }
-            return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+            return Math.max(dfsUpToDown(root.left, depth + 1), dfsUpToDown(root.right, depth + 1));
         }
 
     }

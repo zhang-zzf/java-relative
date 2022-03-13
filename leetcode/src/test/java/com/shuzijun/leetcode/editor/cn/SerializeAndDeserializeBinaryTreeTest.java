@@ -39,6 +39,16 @@ public class SerializeAndDeserializeBinaryTreeTest {
         then(serialize).isEqualTo(data);
     }
 
+    public static String serialize(TreeNode root) {
+        final Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
+        return codec.serialize(root);
+    }
+
+    public static TreeNode deserialize(String tree) {
+        final Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
+        return codec.deserialize(tree);
+    }
+
     //leetcode submit region begin(Prohibit modification and deletion)
 
     /**

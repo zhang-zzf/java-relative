@@ -42,11 +42,11 @@ public class MaximumWidthOfBinaryTreeTest {
     class Solution {
 
         public int widthOfBinaryTree(TreeNode root) {
-            Queue<Item> queue = new LinkedList<>();
             int ans = 0;
             if (root == null) {
                 return 0;
             }
+            Queue<Item> queue = new LinkedList<>();
             queue.add(new Item(root, 0, 0));
             int curDepth = 0, left = 0;
             // BFS

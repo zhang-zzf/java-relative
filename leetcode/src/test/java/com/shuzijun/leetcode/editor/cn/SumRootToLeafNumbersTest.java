@@ -3,8 +3,7 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -42,18 +41,18 @@ public class SumRootToLeafNumbersTest {
     class Solution {
 
         public int sumNumbers(TreeNode root) {
-            List<Integer> nums = new ArrayList<Integer>();
-            dfs(root, 0, nums);
-            return nums.stream().mapToInt(Integer::intValue).sum();
+            AtomicInteger ans = new AtomicInteger(0);
+            dfs(root, 0, ans);
+            return ans.get();
         }
 
-        private void dfs(TreeNode root, int parentValue, List<Integer> nums) {
+        private void dfs(TreeNode root, int parentValue, AtomicInteger nums) {
             if (root == null) {
                 return;
             }
             int curValue = parentValue * 10 + root.val;
             if (root.left == null && root.right == null) {
-                nums.add(curValue);
+                nums.getAndAdd(curValue);
             }
             if (root.left != null) {
                 dfs(root.left, curValue, nums);

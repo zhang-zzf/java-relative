@@ -40,24 +40,15 @@ public class BinaryTreePruningTest {
     class Solution {
 
         public TreeNode pruneTree(TreeNode root) {
-            final TreeNode dummy = new TreeNode(0, root, null);
-            dfs(dummy);
-            return dummy.left;
-        }
-
-        private boolean dfs(TreeNode root) {
             if (root == null) {
-                return true;
+                return null;
             }
-            boolean left = dfs(root.left);
-            boolean right = dfs(root.right);
-            if (left) {
-                root.left = null;
+            root.left = pruneTree(root.left);
+            root.right = pruneTree(root.right);
+            if (root.left == null && root.right == null && root.val == 0) {
+                return null;
             }
-            if (right) {
-                root.right = null;
-            }
-            return (root.val == 0) && left && right;
+            return root;
         }
 
     }

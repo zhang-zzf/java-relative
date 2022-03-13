@@ -3,6 +3,9 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -39,34 +42,23 @@ public class SmallestSubtreeWithAllTheDeepestNodesTest {
     class Solution {
 
         public TreeNode subtreeWithAllDeepest(TreeNode root) {
-            return dfs(root, null, 1).node;
+            final AtomicReference<TreeNode> ans = new AtomicReference<>();
+            final AtomicInteger maxDepth = new AtomicInteger(0);
+            dfsMaxDepth(root, 1, maxDepth, ans);
+            return ans.get();
         }
 
-        private Item dfs(TreeNode root, TreeNode parent, int depth) {
+        private int dfsMaxDepth(TreeNode root, int depth, AtomicInteger maxDepth, AtomicReference<TreeNode> ans) {
             if (root == null) {
-                return new Item(parent, depth);
+                return depth - 1;
             }
-            final Item left = dfs(root.left, root, depth + 1);
-            final Item right = dfs(root.right, root, depth + 1);
-            if (left.depth == right.depth) {
-                return new Item(root, left.depth);
-            } else if (left.depth > right.depth) {
-                return left;
-            } else {
-                return right;
+            int left = dfsMaxDepth(root.left, depth + 1, maxDepth, ans);
+            int right = dfsMaxDepth(root.right, depth + 1, maxDepth, ans);
+            if (left == right && left >= maxDepth.get()) {
+                ans.set(root);
+                maxDepth.set(left);
             }
-        }
-
-        class Item {
-
-            TreeNode node;
-            int depth;
-
-            public Item(TreeNode node, int depth) {
-                this.node = node;
-                this.depth = depth;
-            }
-
+            return Math.max(left, right);
         }
 
     }

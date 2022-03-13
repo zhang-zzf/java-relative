@@ -3,6 +3,8 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class BinaryTreeTiltTest {
 
@@ -33,22 +35,23 @@ public class BinaryTreeTiltTest {
     class Solution {
 
         public int findTilt(TreeNode root) {
-            return dfs(root);
+            AtomicInteger ans = new AtomicInteger(0);
+            dfs(root, ans);
+            return ans.get();
         }
 
-        private int dfs(TreeNode root) {
+        /**
+         * 返回包含 root 在内的子树的和
+         */
+        private int dfs(TreeNode root, AtomicInteger ans) {
             if (root == null) {
                 return 0;
             }
-            int ans = Math.abs(dfsInner(root.left) - dfsInner(root.right));
-            return ans + dfs(root.left) + dfs(root.right);
-        }
-
-        private int dfsInner(TreeNode root) {
-            if (root == null) {
-                return 0;
-            }
-            return root.val + dfsInner(root.left) + dfsInner(root.right);
+            int leftSum = dfs(root.left, ans);
+            int rightSum = dfs(root.right, ans);
+            ans.getAndAdd(Math.abs(leftSum - rightSum));
+            // 返回子树的和
+            return root.val + leftSum + rightSum;
         }
 
     }

@@ -3,10 +3,7 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -54,52 +51,31 @@ public class BinaryTreeMaximumPathSumTest {
     class Solution {
 
         public int maxPathSum(TreeNode root) {
-            Map<TreeNode, int[]> cache = new HashMap<TreeNode, int[]>();
-            dfs(root, cache);
-            int maxSum = root.val;
-            Queue<TreeNode> queue = new LinkedList<>();
-            queue.add(root);
-            while (!queue.isEmpty()) {
-                final TreeNode node = queue.poll();
-                if (node.left != null) {
-                    queue.add(node.left);
-                    final int[] ints = cache.get(node.left);
-                    int nodeMax = Math.max(ints[0], ints[1]);
-                    final int parentMax = cache.get(node)[1];
-                    if (parentMax > 0) {
-                        nodeMax += parentMax;
-                    }
-                    maxSum = Math.max(maxSum, nodeMax);
-                }
-                if (node.right != null) {
-                    queue.add(node.right);
-                    final int[] ints = cache.get(node.right);
-                    int nodeMax = Math.max(ints[0], ints[1]);
-                    final int parentMax = cache.get(node)[0];
-                    if (parentMax > 0) {
-                        nodeMax += parentMax;
-                    }
-                    maxSum = Math.max(maxSum, nodeMax);
-                }
-            }
-            return maxSum;
+            AtomicInteger ans = new AtomicInteger(root.val);
+            dfs(root, ans);
+            return ans.get();
         }
 
-        private void dfs(TreeNode root, Map<TreeNode, int[]> cache) {
-            int leftMax = 0, rightMax = 0;
-            if (root.left != null) {
-                dfs(root.left, cache);
-                final int[] ints = cache.get(root.left);
-                leftMax = Math.max(ints[0], ints[1]);
-                leftMax = Math.max(leftMax, 0);
+        /**
+         * @return 返回包含 root 节点的左右子树最大路径和
+         */
+        private int dfs(TreeNode root, AtomicInteger ans) {
+            if (root == null) {
+                return 0;
             }
-            if (root.right != null) {
-                dfs(root.right, cache);
-                final int[] ints = cache.get(root.right);
-                rightMax = Math.max(ints[0], ints[1]);
-                rightMax = Math.max(rightMax, 0);
+            final int left = dfs(root.left, ans);
+            final int right = dfs(root.right, ans);
+            // 顺便处理下结果值
+            int rootMax = root.val;
+            if (left > 0) {
+                rootMax += left;
             }
-            cache.put(root, new int[]{leftMax + root.val, rightMax + root.val});
+            if (right > 0) {
+                rootMax += right;
+            }
+            ans.set(Math.max(ans.get(), rootMax));
+            // 返回包含 root 节点的最大路径和
+            return Math.max(root.val, Math.max(root.val + left, root.val + right));
         }
 
     }

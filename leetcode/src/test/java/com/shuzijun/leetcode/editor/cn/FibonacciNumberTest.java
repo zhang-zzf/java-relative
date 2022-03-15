@@ -57,22 +57,23 @@ public class FibonacciNumberTest {
     @Test
     void givenNormal_when_thenSuccess() {
         final int fib = solution.fib(5);
-        then(fib).isEqualTo(3);
+        then(fib).isEqualTo(5);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
         public int fib(int n) {
-            int fn = n == 1 ? 1 : 0;
-            int fn_2 = 0;
-            int fn_1 = 1;
-            for (int i = 2; i <= n; i++) {
-                fn = fn_1 + fn_2;
-                fn_2 = fn_1;
-                fn_1 = fn;
+            if (n < 2) {
+                return n;
             }
-            return fn;
+            int p = 0, q = 1, r = 1;
+            for (int i = 2; i <= n; i++) {
+                r = p + q;
+                p = q;
+                q = r;
+            }
+            return r;
         }
 
     }

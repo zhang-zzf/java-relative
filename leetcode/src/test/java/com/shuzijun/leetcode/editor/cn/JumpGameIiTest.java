@@ -12,25 +12,24 @@ class JumpGameIiTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-        then(solution.jump(new int[]{2, 3, 1, 1, 4})).isEqualTo(2);
+        then(solution.jump(new int[]{2, 3, 1, 1, 4, 2, 6})).isEqualTo(3);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
         public int jump(int[] nums) {
-            int[] dp = new int[nums.length];
-            for (int i = 1; i < nums.length; i++) {
-                int minStep = 1;
-                for (int j = 0; j < i; j++) {
-                    if (j + nums[j] >= i) {
-                        minStep = dp[j] + 1;
-                        break;
-                    }
+            int maxPosition = 0, end = maxPosition;
+            int step = 0;
+            // 核心点：不必要访问最后一个元素。
+            for (int i = 0; i < nums.length - 1; i++) {
+                maxPosition = Math.max(maxPosition, i + nums[i]);
+                if (i == end) {
+                    end = maxPosition;
+                    step += 1;
                 }
-                dp[i] = minStep;
             }
-            return dp[nums.length - 1];
+            return step;
         }
 
     }

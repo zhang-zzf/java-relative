@@ -20,20 +20,23 @@ class LongestIncreasingSubsequenceTest {
     class Solution {
 
         public int lengthOfLIS(int[] nums) {
-            // dp[n] 表示以 nums[n] 结尾的最长递增子序列的长度
-            int[] dp = new int[nums.length];
-            int ans = 1;
-            dp[0] = 1;
-            for (int i = 1; i < nums.length; i++) {
-                dp[i] = 1;
-                for (int j = 0; j < i; j++) {
-                    if (nums[j] < nums[i]) {
-                        dp[i] = Math.max(dp[i], dp[j] + 1);
+            int[] tails = new int[nums.length];
+            // tails 中的元素个数
+            int res = 0;
+            for (int num : nums) {
+                int i = 0, j = res;
+                while (i < j) {
+                    int m = i + (j - i) / 2;
+                    if (tails[m] < num) {
+                        i = m + 1;
+                    } else {
+                        j = m;
                     }
                 }
-                ans = Math.max(ans, dp[i]);
+                tails[i] = num;
+                res = i == res ? res + 1 : res;
             }
-            return ans;
+            return res;
         }
 
     }

@@ -22,14 +22,13 @@ class BestTimeToBuyAndSellStockTest {
     class Solution {
 
         public int maxProfit(int[] prices) {
-            int minPrice = prices[0], ans = 0;
+            int buy = -prices[0], sell = 0;
             for (int i = 0; i < prices.length; i++) {
-                if (prices[i] < minPrice) {
-                    minPrice = prices[i];
-                }
-                ans = Math.max(ans, prices[i] - minPrice);
+                int newBuy = Math.max(buy, -prices[i]);
+                sell = Math.max(sell, buy + prices[i]);
+                buy = newBuy;
             }
-            return ans;
+            return sell;
         }
 
     }

@@ -23,29 +23,27 @@ class WordBreakIiTest {
 
         public List<String> wordBreak(String s, List<String> wordDict) {
             Set<String> set = new HashSet<>(wordDict);
-            final int lng = s.length();
-            Map<Integer, List<String>> lngToWorkBreak = new HashMap<>(lng);
-            lngToWorkBreak.put(0, Collections.emptyList());
-            for (int i = 0; i < lng; i++) {
-                // 遍历所有的可能性
-                List<String> ans = new ArrayList<>();
-                for (int j = i; j >= Math.max(0, i - 10); j--) {
-                    final List<String> list = lngToWorkBreak.get(j);
-                    final String word;
-                    if (list != null && set.contains(word = s.substring(j, i + 1))) {
-                        for (String w : list) {
-                            ans.add(w + " " + word);
-                        }
-                        if (list.isEmpty()) {
-                            ans.add(word);
-                        }
-                    }
-                }
-                if (!ans.isEmpty()) {
-                    lngToWorkBreak.put(i + 1, ans);
-                }
+            List<String> ans = new LinkedList<>();
+            StringBuilder trace = new StringBuilder();
+            backTrace(s, set, trace, ans, 0);
+            return ans;
+        }
+
+        private void backTrace(String s, Set<String> set, StringBuilder trace, List<String> ans, int startIdx) {
+            if (startIdx == s.length()) {
+                ans.add(trace.substring(1));
             }
-            return lngToWorkBreak.getOrDefault(lng, Collections.emptyList());
+            for (int i = startIdx; i < Math.min(s.length(), startIdx + 10); i++) {
+                String word = s.substring(startIdx, i + 1);
+                if (!set.contains(word)) {
+                    continue;
+                }
+                // 选择
+                trace.append(' ').append(word);
+                backTrace(s, set, trace, ans, i + 1);
+                // 回滚选择
+                trace.delete(trace.length() - word.length() - 1, trace.length());
+            }
         }
 
     }

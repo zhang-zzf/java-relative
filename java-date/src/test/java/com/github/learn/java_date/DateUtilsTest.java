@@ -1,16 +1,14 @@
 package com.github.learn.java_date;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.*;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.DateUtil;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
@@ -23,7 +21,7 @@ class DateUtilsTest {
     @Test
     public void givenNow_whenEndMonth_then() {
         final LocalDateTime endMonthOf = DateUtils.endMonthOf(LocalDateTime.now());
-       then(endMonthOf).isNotNull();
+        then(endMonthOf).isNotNull();
     }
 
     @Test

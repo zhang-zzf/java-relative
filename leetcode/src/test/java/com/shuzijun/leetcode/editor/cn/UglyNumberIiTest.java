@@ -34,8 +34,9 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Comparator;
 import java.util.PriorityQueue;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 
 public class UglyNumberIiTest {
@@ -44,30 +45,47 @@ public class UglyNumberIiTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-
+        then(solution.nthUglyNumber(10)).isEqualTo(12);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
         public int nthUglyNumber(int n) {
-            int[] dp = new int[n];
-            dp[0] = 1;
-            int[] primes = {2, 3, 5};
-            PriorityQueue<int[]> pq = new PriorityQueue<>(primes.length,
-                    Comparator.comparingInt(a -> a[0]));
-            for (int i = 0; i < primes.length; i++) {
-                pq.add(new int[]{primes[i], i, 0});
-            }
+            int[] ugly = new int[n];
+            ugly[0] = 1;
+            PriorityQueue<Item> pq = new PriorityQueue<>(3);
+            pq.add(new Item(0, 2, 2));
+            pq.add(new Item(0, 3, 3));
+            pq.add(new Item(0, 5, 5));
             for (int i = 1; i < n; i++) {
-                final int[] poll = pq.poll();
-                dp[i] = poll[0];
-                pq.add(new int[]{primes[poll[1]] * dp[poll[2] + 1], poll[1], poll[2] + 1});
-                if (dp[i] == dp[i - 1]) {
+                final Item min = pq.poll();
+                ugly[i] = min.ugly;
+                pq.add(new Item(min.uglyIndex + 1, min.prime, ugly[min.uglyIndex + 1] * min.prime));
+                if (min.compareTo(pq.peek()) == 0) {
                     i -= 1;
                 }
             }
-            return dp[n - 1];
+            return ugly[n - 1];
+        }
+
+        class Item implements Comparable<Item> {
+
+            int uglyIndex;
+            int prime;
+            int ugly;
+
+            public Item(int uglyIndex, int prime, int ugly) {
+                this.uglyIndex = uglyIndex;
+                this.prime = prime;
+                this.ugly = ugly;
+            }
+
+            @Override
+            public int compareTo(Item o) {
+                return this.ugly - o.ugly;
+            }
+
         }
 
     }

@@ -4,6 +4,7 @@ package com.shuzijun.leetcode.editor.cn;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -23,26 +24,19 @@ class PascalsTriangleTest {
     class Solution {
 
         public List<List<Integer>> generate(int numRows) {
-            if (numRows == 1) {
-                return new ArrayList<List<Integer>>() {{
-                    add(new ArrayList<Integer>() {{
-                        add(1);
-                    }});
-                }};
+            List<List<Integer>> ans = new ArrayList<>(numRows);
+            ans.add(Arrays.asList(1));
+            for (int i = 2; i <= numRows; i++) {
+                List<Integer> curRow = new ArrayList<>(i);
+                curRow.add(1);
+                List<Integer> prevRow = ans.get(i - 2);
+                for (int j = 1; j < i - 1; j++) {
+                    curRow.add(prevRow.get(j - 1) + prevRow.get(j));
+                }
+                curRow.add(1);
+                ans.add(curRow);
             }
-            final List<List<Integer>> lists = generate(numRows - 1);
-            lists.add(generateCurRow(numRows, lists.get(lists.size() - 1)));
-            return lists;
-        }
-
-        private List<Integer> generateCurRow(int numRows, List<Integer> prevRow) {
-            List<Integer> curRow = new ArrayList<>(numRows);
-            curRow.add(1);
-            for (int i = 1; i < numRows - 1; i++) {
-                curRow.add(prevRow.get(i - 1) + prevRow.get(i));
-            }
-            curRow.add(1);
-            return curRow;
+            return ans;
         }
 
     }

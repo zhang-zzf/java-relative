@@ -35,6 +35,7 @@
         <module>java-encrypt</module>
         <module>java-sftp</module>
         <module>insure-server</module>
+        <module>ip-update-daemon</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

@@ -66,30 +66,24 @@ public class LongestPalindromicSubstringTest {
     class Solution {
 
         public String longestPalindrome(String s) {
-            final int length = s.length();
-            if (length < 2) {
-                return s;
-            }
-            int maxLength = 1;
-            int start = 0;
-            int[][] dp = new int[length][length];
-            for (int right = 1; right < length; right++) {
-                for (int left = 0; left < right; left++) {
-                    if (s.charAt(right) != s.charAt(left)) {
+            final int lng = s.length();
+            // dp[i][j] == 0 表示 S[i..j] 是回文串
+            int[][] dp = new int[lng][lng];
+            String ans = s.substring(0, 1);
+            for (int j = 0; j < lng; j++) {
+                for (int i = j - 1; i >= 0; i--) {
+                    boolean isPalindrome = s.charAt(i) != s.charAt(j) ? false :
+                            (i == j - 1 ? true : dp[i + 1][j - 1] == 0);
+                    if (!isPalindrome) {
+                        dp[i][j] = 1;
                         continue;
                     }
-                    if (right - left <= 2) {
-                        dp[left][right] = 1;
-                    } else {
-                        dp[left][right] = dp[left + 1][right - 1];
-                    }
-                    if (dp[left][right] == 1 && right - left + 1 > maxLength) {
-                        start = left;
-                        maxLength = right - left + 1;
+                    if (j - i + 1 > ans.length()) {
+                        ans = s.substring(i, j + 1);
                     }
                 }
             }
-            return s.substring(start, start + maxLength);
+            return ans;
         }
 
     }

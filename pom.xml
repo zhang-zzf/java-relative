@@ -287,27 +287,6 @@
 
     <build>
         <plugins>
-            <!-- ${user.home}/.m2/toolchains.xml -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-toolchains-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>toolchain</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <toolchains>
-                        <jdk>
-                            <version>1.8</version>
-                            <vendor>sun</vendor>
-                        </jdk>
-                    </toolchains>
-                </configuration>
-            </plugin>
             <!-- 源码打包 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -20,9 +20,9 @@ class MaximumSubarrayTest {
     class Solution {
 
         public int maxSubArray(int[] nums) {
-            int prev = nums[0], max = prev;
-            for (int i = 1; i < nums.length; i++) {
-                prev = Math.max(prev + nums[i], nums[i]);
+            int prev = Integer.MIN_VALUE, max = nums[0];
+            for (int num : nums) {
+                prev = Math.max(prev, 0) + num;
                 max = Math.max(max, prev);
             }
             return max;

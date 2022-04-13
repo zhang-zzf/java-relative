@@ -19,9 +19,9 @@ class HouseRobberTest {
     class Solution {
 
         public int rob(int[] nums) {
-            int p = 0, q = nums[0], ans = q;
-            for (int i = 1; i < nums.length; i++) {
-                ans = Math.max(nums[i] + p, q);
+            int p = 0, q = 0, ans = 0;
+            for (int num : nums) {
+                ans = Math.max(num + p, q);
                 p = q;
                 q = ans;
             }

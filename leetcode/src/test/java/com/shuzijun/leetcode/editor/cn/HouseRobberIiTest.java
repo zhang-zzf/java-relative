@@ -29,7 +29,6 @@ class HouseRobberIiTest {
             // 至少3家
             return Math.max(robRange(nums, 0, nums.length - 1),
                     robRange(nums, 1, nums.length));
-
         }
 
         /**
@@ -37,8 +36,8 @@ class HouseRobberIiTest {
          */
         private int robRange(int[] nums, int start, int end) {
             // 正常偷
-            int p = 0, q = nums[start], ans = q;
-            for (int i = start + 1; i < end; i++) {
+            int p = 0, q = 0, ans = q;
+            for (int i = start; i < end; i++) {
                 ans = Math.max(nums[i] + p, q);
                 p = q;
                 q = ans;

@@ -20,12 +20,12 @@ class MaximumProductSubarrayTest {
     class Solution {
 
         public int maxProduct(int[] nums) {
-            int curMin = nums[0], curMax = nums[0], maxProduct = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                final int m1 = nums[i] * curMin;
-                final int m2 = nums[i] * curMax;
-                curMin = Math.min(nums[i], Math.min(m1, m2));
-                curMax = Math.max(nums[i], Math.max(m1, m2));
+            int curMin = 1, curMax = 1, maxProduct = nums[0];
+            for (int num : nums) {
+                final int m1 = num * curMin;
+                final int m2 = num * curMax;
+                curMin = Math.min(num, Math.min(m1, m2));
+                curMax = Math.max(num, Math.max(m1, m2));
                 maxProduct = Math.max(maxProduct, curMax);
             }
             return maxProduct;

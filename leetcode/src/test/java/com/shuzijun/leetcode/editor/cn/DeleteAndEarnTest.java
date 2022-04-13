@@ -31,9 +31,9 @@ class DeleteAndEarnTest {
         }
 
         private int rob(int[] sum) {
-            int p = 0, q = sum[0], ans = q;
-            for (int i = 1; i < sum.length; i++) {
-                ans = Math.max(q, p + sum[i]);
+            int p = 0, q = 0, ans = q;
+            for (int n : sum) {
+                ans = Math.max(q, p + n);
                 p = q;
                 q = ans;
             }

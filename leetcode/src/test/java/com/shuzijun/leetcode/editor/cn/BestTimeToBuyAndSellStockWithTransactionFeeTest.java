@@ -21,9 +21,10 @@ class BestTimeToBuyAndSellStockWithTransactionFeeTest {
 
         public int maxProfit(int[] prices, int fee) {
             int buy = -prices[0] - fee, sell = 0;
-            for (int i = 1; i < prices.length; i++) {
-                buy = Math.max(buy, sell + (-prices[i]) - fee);
-                sell = Math.max(sell, buy + prices[i]);
+            for (int price : prices) {
+                // 买股票时付手续费
+                buy = Math.max(buy, sell + (-price) - fee);
+                sell = Math.max(sell, buy + price);
             }
             return sell;
         }

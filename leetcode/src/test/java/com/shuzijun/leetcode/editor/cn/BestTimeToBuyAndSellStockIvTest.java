@@ -28,10 +28,10 @@ class BestTimeToBuyAndSellStockIvTest {
             int[] buy = new int[k];
             int[] sell = new int[k];
             Arrays.fill(buy, Integer.MIN_VALUE);
-            for (int i = 0; i < prices.length; i++) {
+            for (int price : prices) {
                 for (int j = 0; j < k; j++) {
-                    buy[j] = Math.max(buy[j], (j == 0 ? 0 : sell[j - 1]) + (-prices[i]));
-                    sell[j] = Math.max(sell[j], buy[j] + prices[i]);
+                    buy[j] = Math.max(buy[j], (j == 0 ? 0 : sell[j - 1]) + (-price));
+                    sell[j] = Math.max(sell[j], buy[j] + price);
                 }
             }
             return sell[k - 1];

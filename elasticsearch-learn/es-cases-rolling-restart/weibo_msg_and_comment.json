@@ -1,0 +1,33 @@
+{
+  "settings": {
+    "number_of_shards": 4,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "who": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "when": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss||basic_date_time"
+      },
+      "what": {
+        "type": "text"
+      },
+      "join_field": {
+        "type": "join",
+        "relations": {
+          "msg": [
+            "comment"
+          ]
+        }
+      }
+    }
+  }
+}

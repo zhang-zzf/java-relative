@@ -23,18 +23,38 @@ class IsSubsequenceTest {
             if (s.length() == 0) {
                 return true;
             }
-            int srcIdx = 0;
-            char c = s.charAt(srcIdx);
-            for (int i = 0; i < t.length(); i++) {
-                if (t.charAt(i) == c) {
-                    if (++srcIdx < s.length()) {
-                        c = s.charAt(srcIdx);
-                    } else {
-                        break;
+            if (t.length() == 0) {
+                return false;
+            }
+            // 分析 t 字符串
+            final int lng = t.length();
+            // 构建分析数据
+            Integer[][] dp = new Integer[lng][26];
+            final char[] chars = t.toCharArray();
+            for (int i = 0; i < lng; i++) {
+                for (int j = i; j < lng; j++) {
+                    final int columnIdx = chars[j] - 'a';
+                    if (dp[i][columnIdx] == null) {
+                        dp[i][columnIdx] = j;
                     }
                 }
             }
-            return srcIdx == s.length();
+            // 是有分析的数据在 O(1) 的时间复杂度内查询字符是否存在
+            Integer targetIdx = 0;
+            int sourceIdx = 0;
+            while (sourceIdx < s.length()) {
+                char c = s.charAt(sourceIdx);
+                targetIdx = dp[targetIdx][c - 'a'];
+                if (targetIdx == null) {
+                    break;
+                }
+                sourceIdx += 1;
+                targetIdx += 1;
+                if (targetIdx == lng) {
+                    break;
+                }
+            }
+            return sourceIdx == s.length();
         }
 
     }

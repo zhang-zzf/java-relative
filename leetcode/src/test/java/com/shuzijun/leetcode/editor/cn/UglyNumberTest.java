@@ -24,9 +24,9 @@ class UglyNumberTest {
             int[] primes = new int[]{2, 3, 5};
             while (n > 1) {
                 int old = n;
-                for (int i = 0; i < primes.length; i++) {
-                    if (n % primes[i] == 0) {
-                        n = n / primes[i];
+                for (int prime : primes) {
+                    if (n % prime == 0) {
+                        n = n / prime;
                     }
                 }
                 if (n == old) {

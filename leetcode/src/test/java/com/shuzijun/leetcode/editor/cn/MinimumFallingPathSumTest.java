@@ -27,7 +27,7 @@ class MinimumFallingPathSumTest {
             final int lng = matrix.length;
             int[] prev = new int[lng];
             int[] cur = new int[lng];
-            for (int i = 0; i < lng; i++) {
+            for (int[] row : matrix) {
                 for (int j = 0; j < lng; j++) {
                     int min = prev[j];
                     if (j - 1 >= 0) {
@@ -36,7 +36,7 @@ class MinimumFallingPathSumTest {
                     if (j + 1 < lng) {
                         min = Math.min(prev[j + 1], min);
                     }
-                    cur[j] = matrix[i][j] + min;
+                    cur[j] = row[j] + min;
                 }
                 // 滚动数组
                 int[] tmp = prev;

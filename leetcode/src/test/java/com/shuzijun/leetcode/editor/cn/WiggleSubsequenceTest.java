@@ -20,13 +20,6 @@ class WiggleSubsequenceTest {
     class Solution {
 
         public int wiggleMaxLength(int[] nums) {
-            if (nums.length == 1) {
-                return 1;
-            }
-            if (nums.length == 2) {
-                return nums[1] - nums[0] == 0 ? 1 : 2;
-            }
-            int ans = 1;
             int positive = 1, negative = 1;
             for (int i = 1; i < nums.length; i++) {
                 int diff = nums[i] - nums[i - 1];
@@ -35,9 +28,8 @@ class WiggleSubsequenceTest {
                 } else if (diff < 0) {
                     negative = positive + 1;
                 }
-                ans = Math.max(ans, Math.max(positive, negative));
             }
-            return ans;
+            return Math.max(positive, negative);
         }
 
     }

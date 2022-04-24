@@ -72,8 +72,7 @@ public class LongestPalindromicSubstringTest {
             String ans = s.substring(0, 1);
             for (int j = 0; j < lng; j++) {
                 for (int i = j - 1; i >= 0; i--) {
-                    boolean isPalindrome = s.charAt(i) != s.charAt(j) ? false :
-                            (i == j - 1 ? true : dp[i + 1][j - 1] == 0);
+                    boolean isPalindrome = s.charAt(i) == s.charAt(j) && (i == j - 1 || dp[i + 1][j - 1] == 0);
                     if (!isPalindrome) {
                         dp[i][j] = 1;
                         continue;

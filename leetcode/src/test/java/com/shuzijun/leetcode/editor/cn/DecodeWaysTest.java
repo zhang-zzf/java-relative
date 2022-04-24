@@ -30,7 +30,7 @@ class DecodeWaysTest {
             if (s.startsWith("0")) {
                 return 0;
             }
-            int fn_2 = 1, fn_1 = s.charAt(0) == '0' ? 0 : 1;
+            int fn_2 = 1, fn_1 = 1;
             for (int i = 1; i < s.length(); i++) {
                 char c, c_1;
                 int fn = (((c = s.charAt(i)) != '0') ? fn_1 : 0)

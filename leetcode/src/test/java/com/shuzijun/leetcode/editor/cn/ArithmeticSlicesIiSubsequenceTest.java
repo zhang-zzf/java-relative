@@ -24,19 +24,15 @@ class ArithmeticSlicesIiSubsequenceTest {
 
         public int numberOfArithmeticSlices(int[] nums) {
             int ans = 0;
-            if (nums.length < 2) {
-                return ans;
-            }
-            Map<Long, Integer>[] dp = new Map[nums.length];
-            for (int i = 0; i < nums.length; i++) {
+            final int n = nums.length;
+            Map<Long, Integer>[] dp = new Map[n];
+            for (int i = 0; i < n; i++) {
                 dp[i] = new HashMap<>();
-            }
-            for (int i = 1; i < nums.length; i++) {
-                for (int j = i - 1; j >= 0; j--) {
-                    long sub = 1L * nums[i] - nums[j];
-                    final Integer cnt = dp[j].getOrDefault(sub, 0);
-                    ans += cnt;
-                    dp[i].put(sub, dp[i].getOrDefault(sub, 0) + cnt + 1);
+                for (int j = 0; j < i; j++) {
+                    long d = (long) nums[i] - nums[j];
+                    final Integer tmp = dp[j].getOrDefault(d, 0);
+                    dp[i].put(d, dp[i].getOrDefault(d, 0) + tmp + 1);
+                    ans += tmp;
                 }
             }
             return ans;

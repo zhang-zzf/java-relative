@@ -23,9 +23,6 @@ class IsSubsequenceTest {
             if (s.length() == 0) {
                 return true;
             }
-            if (t.length() == 0) {
-                return false;
-            }
             int srcIdx = 0;
             char c = s.charAt(srcIdx);
             for (int i = 0; i < t.length(); i++) {

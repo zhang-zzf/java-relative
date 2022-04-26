@@ -23,20 +23,19 @@ class MaxConsecutiveOnesIiiTest {
 
         public int longestOnes(int[] nums, int k) {
             int ans = 0;
-            // k + 1 的状态表示用掉 0 次 / 1 次 / k 次机会后的最长1的个数
-            int[] dp = new int[k + 1];
-            for (int num : nums) {
-                if (num == 0) {
-                    for (int i = k; i > 0; i--) {
-                        dp[i] = dp[i - 1] + 1;
-                    }
-                    dp[0] = 0;
-                } else if (num == 1) {
-                    for (int i = 0; i <= k; i++) {
-                        dp[i] = dp[i] + 1;
-                    }
+            int l = 0, r = 0;
+            while (r < nums.length) {
+                if (nums[r] == 0) {
+                    k -= 1;
                 }
-                ans = Math.max(ans, dp[k]);
+                while (k < 0) {
+                    if (nums[l] == 0) {
+                        k += 1;
+                    }
+                    l++;
+                }
+                ans = Math.max(ans, r - l + 1);
+                r += 1;
             }
             return ans;
         }

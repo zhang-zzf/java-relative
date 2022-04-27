@@ -26,25 +26,18 @@ class MaximumLengthOfPairChainTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        // 具象问题：每个 pair 代表一个工作，pair 表示工作的开始时间和结束时间，选择最多的工作数量
-        // 选择不选择的问题
+        // 贪心
         public int findLongestChain(int[][] pairs) {
-            // 按第一个数字排序
-            Arrays.sort(pairs, Comparator.comparing(arr -> arr[0]));
-            final int lng = pairs.length;
-            int[] dp = new int[lng + 1];
-            dp[0] = 1;
-            for (int i = 0; i < lng; i++) {
-                int maxPair = dp[i];
-                for (int j = i - 1; j >= 0; j--) {
-                    if (pairs[j][1] < pairs[i][0]) {
-                        maxPair = Math.max(maxPair, dp[j + 1] + 1);
-                        break;
-                    }
+            Arrays.sort(pairs, Comparator.comparing(arr -> arr[1]));
+            int curEnd = Integer.MIN_VALUE;
+            int ans = 0;
+            for (int[] pair : pairs) {
+                if (pair[0] > curEnd) {
+                    ans += 1;
+                    curEnd = pair[1];
                 }
-                dp[i + 1] = maxPair;
             }
-            return dp[lng];
+            return ans;
         }
 
     }

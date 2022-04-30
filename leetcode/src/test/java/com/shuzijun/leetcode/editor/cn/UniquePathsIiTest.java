@@ -17,30 +17,24 @@ class UniquePathsIiTest {
     class Solution {
 
         public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-            // m 行数， n 列数
-            int m = obstacleGrid.length, n = obstacleGrid[0].length;
-            int[] prev = new int[n];
-            int[] cur = new int[n];
-            // 初始化
-            for (int i = 0; i < n; i++) {
-                if (obstacleGrid[0][i] == 1) {
-                    break;
-                }
-                prev[i] = 1;
-            }
-            for (int i = 1; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    cur[j] = (j == 0 ? (prev[j] == 0 ? 0 : 1) : cur[j - 1] + prev[j]);
-                    if (obstacleGrid[i][j] == 1) {
-                        cur[j] = 0;
+            final int row = obstacleGrid.length;
+            final int column = obstacleGrid[0].length;
+            int[] prev = new int[column + 1];
+            int[] cur = new int[column + 1];
+            // init
+            prev[1] = 1;
+            for (int[] rowLine : obstacleGrid) {
+                for (int j = 0; j < column; j++) {
+                    cur[j + 1] = cur[j] + prev[j + 1];
+                    if (rowLine[j] == 1) {
+                        cur[j + 1] = 0;
                     }
                 }
-                // 滚动数组
                 int[] tmp = prev;
                 prev = cur;
                 cur = tmp;
             }
-            return prev[n - 1];
+            return prev[column];
         }
 
     }

@@ -24,14 +24,13 @@ class TwoKeysKeyboardTest {
         public int minSteps(int n) {
             int[] dp = new int[n + 1];
             for (int i = 2; i <= n; i++) {
-                int minStep = i;
+                dp[i] = i;
                 for (int j = 2; j * j <= i; j++) {
                     if (i % j == 0) {
-                        minStep = Math.min(minStep, dp[j] + i / j);
-                        minStep = Math.min(minStep, dp[i / j] + j);
+                        dp[i] = Math.min(dp[i], dp[j] + i / j);
+                        dp[i] = Math.min(dp[i], dp[i / j] + j);
                     }
                 }
-                dp[i] = minStep;
             }
             return dp[n];
         }

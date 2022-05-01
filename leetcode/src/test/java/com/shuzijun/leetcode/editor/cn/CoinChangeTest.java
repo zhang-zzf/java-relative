@@ -23,8 +23,8 @@ class CoinChangeTest {
             int[] dp = new int[amount + 1];
             for (int i = 1; i <= amount; i++) {
                 int min = Integer.MAX_VALUE;
-                for (int j = 0; j < coins.length; j++) {
-                    int idx = i - coins[j];
+                for (int coin : coins) {
+                    int idx = i - coin;
                     if (idx < 0 || dp[idx] == -1) {
                         continue;
                     }

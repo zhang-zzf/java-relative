@@ -1,0 +1,68 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "email-analyzer": {
+          "type": "custom",
+          "tokenizer": "uax_url_email"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "account_number": {
+        "type": "keyword",
+        "fields": {
+          "long": {
+            "type": "long"
+          }
+        }
+      },
+      "balance": {
+        "type": "long"
+      },
+      "firstname": {
+        "type": "text"
+      },
+      "lastname": {
+        "type": "text"
+      },
+      "age": {
+        "type": "integer"
+      },
+      "gender": {
+        "type": "text"
+      },
+      "address": {
+        "type": "text"
+      },
+      "employer": {
+        "type": "text"
+      },
+      "email": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          },
+          "email": {
+            "type": "text",
+            "analyzer": "email-analyzer"
+          }
+        }
+      },
+      "city": {
+        "type": "text"
+      },
+      "state": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

@@ -24,6 +24,8 @@ class TargetSumTest {
             for (int num : nums) {
                 sum += num;
             }
+            // 数组下标表示和，值域[-sum .. 0 .. sum]
+            // 使用数组表达，整体迁移 sum
             final int sumLng = sum * 2 + 1;
             final int idx = target + sum;
             if (idx >= sumLng || idx < 0) {
@@ -33,9 +35,9 @@ class TargetSumTest {
             prev[sum] = 1;
             int[] cur = new int[sumLng];
             for (int num : nums) {
-                for (int j = 0; j < sumLng; j++) {
-                    cur[j] = ((j + num < sumLng) ? (prev[j + num]) : 0)
-                            + ((j - num >= 0) ? (prev[j - num]) : 0);
+                for (int subSum = 0; subSum < sumLng; subSum++) {
+                    cur[subSum] = ((subSum + num < sumLng) ? (prev[subSum + num]) : 0)
+                            + ((subSum - num >= 0) ? (prev[subSum - num]) : 0);
                 }
                 int[] tmp = prev;
                 prev = cur;

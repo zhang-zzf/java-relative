@@ -37,6 +37,7 @@
         <module>insure-server</module>
         <module>ip-update-daemon</module>
         <module>hello-world</module>
+        <module>thread-RAM-location</module>
     </modules>
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->

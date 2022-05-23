@@ -33,10 +33,10 @@ class WordBreakTest {
             final Set<String> set = new HashSet<>(wordDict);
             boolean[] dp = new boolean[s.length() + 1];
             dp[0] = true;
-            for (int i = 0; i < s.length(); i++) {
-                for (int j = i; j >= Math.max(0, i - 20); j--) {
-                    if (dp[j] && set.contains(s.substring(j, i + 1))) {
-                        dp[i + 1] = true;
+            for (int w = 0; w < s.length(); w++) {
+                for (int i = w; i >= Math.max(0, w - 20); i--) {
+                    if (dp[i] && set.contains(s.substring(i, w + 1))) {
+                        dp[w + 1] = true;
                         break;
                     }
                 }

@@ -24,26 +24,19 @@ class TargetSumTest {
             for (int num : nums) {
                 sum += num;
             }
-            // 数组下标表示和，值域[-sum .. 0 .. sum]
-            // 使用数组表达，整体迁移 sum
-            final int sumLng = sum * 2 + 1;
-            final int idx = target + sum;
-            if (idx >= sumLng || idx < 0) {
+            if (Math.abs(target) > sum || (sum + target) % 2 == 1) { // 注意边界值
                 return 0;
             }
-            int[] prev = new int[sumLng];
-            prev[sum] = 1;
-            int[] cur = new int[sumLng];
+            // W 表示背包容量
+            int W = (sum + target) / 2;
+            int[] dp = new int[W + 1];
+            dp[0] = 1;
             for (int num : nums) {
-                for (int subSum = 0; subSum < sumLng; subSum++) {
-                    cur[subSum] = ((subSum + num < sumLng) ? (prev[subSum + num]) : 0)
-                            + ((subSum - num >= 0) ? (prev[subSum - num]) : 0);
+                for (int w = W; w >= num; w--) {
+                    dp[w] = dp[w] + dp[w - num];
                 }
-                int[] tmp = prev;
-                prev = cur;
-                cur = tmp;
             }
-            return prev[idx];
+            return dp[W];
         }
 
     }

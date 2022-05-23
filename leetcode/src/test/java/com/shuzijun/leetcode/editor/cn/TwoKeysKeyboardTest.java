@@ -23,12 +23,12 @@ class TwoKeysKeyboardTest {
 
         public int minSteps(int n) {
             int[] dp = new int[n + 1];
-            for (int i = 2; i <= n; i++) {
-                dp[i] = i;
-                for (int j = 2; j * j <= i; j++) {
-                    if (i % j == 0) {
-                        dp[i] = Math.min(dp[i], dp[j] + i / j);
-                        dp[i] = Math.min(dp[i], dp[i / j] + j);
+            for (int w = 2; w <= n; w++) {
+                dp[w] = w;
+                for (int i = 2; i * i <= w; i++) {
+                    if (w % i == 0) {
+                        dp[w] = Math.min(dp[w], dp[i] + w / i);
+                        dp[w] = Math.min(dp[w], dp[w / i] + i);
                     }
                 }
             }

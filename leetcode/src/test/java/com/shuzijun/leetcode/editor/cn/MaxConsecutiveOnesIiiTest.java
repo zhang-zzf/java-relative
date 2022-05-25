@@ -23,8 +23,7 @@ class MaxConsecutiveOnesIiiTest {
 
         public int longestOnes(int[] nums, int k) {
             int ans = 0;
-            int l = 0, r = 0;
-            while (r < nums.length) {
+            for (int r = 0, l = 0; r < nums.length; r++) {
                 if (nums[r] == 0) {
                     k -= 1;
                 }
@@ -32,10 +31,9 @@ class MaxConsecutiveOnesIiiTest {
                     if (nums[l] == 0) {
                         k += 1;
                     }
-                    l++;
+                    l += 1;
                 }
                 ans = Math.max(ans, r - l + 1);
-                r += 1;
             }
             return ans;
         }

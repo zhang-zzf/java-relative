@@ -23,44 +23,28 @@ class PaintHouseIiTest {
     class Solution {
 
         public int minCostII(int[][] costs) {
-            int colorNum = costs[0].length;
-            int[] prev = new int[colorNum];
-            int[] dp = new int[colorNum];
-            int min1Color = 0, min2Color = 0;
+            int min = 0;
+            int secMin = 0;
+            int minIdx = 0;
             for (int[] cost : costs) {
-                for (int i = 0; i < colorNum; i++) {
-                    if (i != min1Color) {
-                        dp[i] = cost[i] + prev[min1Color];
-                    } else {
-                        dp[i] = cost[i] + prev[min2Color];
+                int nowMin = Integer.MAX_VALUE;
+                int nowSecMin = Integer.MAX_VALUE;
+                int nowMinIdx = 0;
+                for (int i = 0; i < cost.length; i++) {
+                    int val = (minIdx == i ? secMin : min) + cost[i];
+                    if (val < nowMin) {
+                        nowSecMin = nowMin;
+                        nowMin = val;
+                        nowMinIdx = i;
+                    } else if (val < nowSecMin) {
+                        nowSecMin = val;
                     }
                 }
-                // 重新计算第一小的数
-                int m1 = dp[0];
-                min1Color = 0;
-                for (int i = 0; i < colorNum; i++) {
-                    if (dp[i] < m1) {
-                        m1 = dp[i];
-                        min1Color = i;
-                    }
-                }
-                // 求第二小的数
-                int m2 = Integer.MAX_VALUE;
-                for (int i = 0; i < colorNum; i++) {
-                    if (i == min1Color) {
-                        continue;
-                    }
-                    if (dp[i] <= m2) {
-                        m2 = dp[i];
-                        min2Color = i;
-                    }
-                }
-                // 滚动数组
-                int[] tmp = prev;
-                prev = dp;
-                dp = tmp;
+                min = nowMin;
+                minIdx = nowMinIdx;
+                secMin = nowSecMin;
             }
-            return prev[min1Color];
+            return min;
         }
 
     }

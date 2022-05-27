@@ -21,20 +21,15 @@ class TossStrangeCoinsTest {
     class Solution {
 
         public double probabilityOfHeads(double[] prob, int target) {
-            double[] prev = new double[target + 1];
             double[] dp = new double[target + 1];
-            prev[0] = 1d;
+            dp[0] = 1d;
             for (double d : prob) {
-                dp[0] = prev[0] * (1 - d);
-                for (int i = 1; i <= target; i++) {
-                    dp[i] = prev[i] * (1 - d) + prev[i - 1] * d;
+                for (int w = target; w > 0; w--) {
+                    dp[w] = dp[w] * (1 - d) + dp[w - 1] * d;
                 }
-                // 滚动数组
-                double[] tmp = prev;
-                prev = dp;
-                dp = tmp;
+                dp[0] *= (1 - d);
             }
-            return prev[target];
+            return dp[target];
         }
 
     }

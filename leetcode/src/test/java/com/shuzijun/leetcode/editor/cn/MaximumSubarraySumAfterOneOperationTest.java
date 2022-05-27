@@ -28,7 +28,7 @@ class MaximumSubarraySumAfterOneOperationTest {
             for (int num : nums) {
                 final int prevMax = Math.max(0, fn);
                 fn = prevMax + num;
-                fp = Math.max(fp + num, prevMax + num * num);
+                fp = Math.max(Math.max(0, fp) + num, prevMax + num * num);
                 ans = Math.max(ans, fp);
             }
             return ans;

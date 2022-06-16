@@ -20,17 +20,18 @@ class ProductOfArrayExceptSelfTest {
     class Solution {
 
         public int[] productExceptSelf(int[] nums) {
-            final int lng = nums.length;
-            int[] ans = new int[lng];
-            for (int i = 0; i < lng; i++) {
-                ans[i] = i == 0 ? 1 : ans[i - 1] * nums[i - 1];
+            int[] dp = new int[nums.length];
+            // 前缀积
+            dp[0] = 1;
+            for (int i = 1; i < nums.length; i++) {
+                dp[i] = dp[i - 1] * nums[i - 1];
             }
-            int right = 1;
-            for (int i = lng - 1; i >= 0; i--) {
-                right *= (i + 1) == lng ? 1 : nums[i + 1];
-                ans[i] *= right;
+            int suffix = 1;
+            for (int i = nums.length - 2; i >= 0; i--) {
+                suffix *= nums[i + 1];
+                dp[i] = dp[i] * suffix;
             }
-            return ans;
+            return dp;
         }
 
     }

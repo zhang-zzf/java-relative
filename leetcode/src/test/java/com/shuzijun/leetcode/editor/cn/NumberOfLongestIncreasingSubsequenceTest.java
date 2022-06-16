@@ -23,37 +23,32 @@ class NumberOfLongestIncreasingSubsequenceTest {
     class Solution {
 
         public int findNumberOfLIS(int[] nums) {
-            final int lng = nums.length;
-            int[] dp = new int[lng];
-            int finalMaxLng = 1;
-            int[] cnt = new int[lng];
-            // 已 nums[i] 结尾的数据统计
-            // 统计 maxLng / maxCnt
-            for (int i = 0; i < lng; i++) {
-                int maxLng = 1;
+            int[] lngDp = new int[nums.length];
+            int[] cntDp = new int[nums.length];
+            int maxLng = 0;
+            for (int i = 0; i < nums.length; i++) {
+                lngDp[i] = 1;
                 for (int j = 0; j < i; j++) {
                     if (nums[j] < nums[i]) {
-                        maxLng = Math.max(maxLng, dp[j] + 1);
+                        lngDp[i] = Math.max(lngDp[i], lngDp[j] + 1);
                     }
                 }
-                dp[i] = maxLng;
-                finalMaxLng = Math.max(finalMaxLng, dp[i]);
-                // 统计 cnt
-                int maxCnt = 0;
+                maxLng = Math.max(maxLng, lngDp[i]);
+                // 统计以 nums[i] 结尾， 长度为 lngDp[i] 的子序列的数量
                 for (int j = 0; j < i; j++) {
-                    if (dp[j] == maxLng - 1 && nums[j] < nums[i]) {
-                        maxCnt += cnt[j];
+                    if (nums[j] < nums[i] && lngDp[j] == lngDp[i] - 1) {
+                        cntDp[i] += cntDp[j];
                     }
                 }
-                cnt[i] = maxCnt == 0 ? 1 : maxCnt;
+                cntDp[i] = Math.max(cntDp[i], 1);
             }
-            int finalCnt = 0;
-            for (int i = 0; i < lng; i++) {
-                if (dp[i] == finalMaxLng) {
-                    finalCnt += cnt[i];
+            int ans = 0;
+            for (int i = 0; i < lngDp.length; i++) {
+                if (lngDp[i] == maxLng) {
+                    ans += cntDp[i];
                 }
             }
-            return finalCnt;
+            return ans;
         }
 
     }

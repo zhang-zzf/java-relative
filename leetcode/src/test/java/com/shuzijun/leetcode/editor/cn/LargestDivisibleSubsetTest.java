@@ -29,14 +29,12 @@ class LargestDivisibleSubsetTest {
             int[] dp = new int[lng];
             int maxIdx = 0;
             for (int i = 0; i < lng; i++) {
-                int max = 1;
                 for (int j = 0; j < i; j++) {
                     if (nums[i] % nums[j] == 0) {
-                        max = Math.max(max, dp[j] + 1);
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
                     }
                 }
-                dp[i] = max;
-                if (max > dp[maxIdx]) {
+                if (dp[i] > dp[maxIdx]) {
                     maxIdx = i;
                 }
             }

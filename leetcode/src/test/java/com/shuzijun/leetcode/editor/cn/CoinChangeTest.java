@@ -21,17 +21,26 @@ class CoinChangeTest {
 
         public int coinChange(int[] coins, int amount) {
             int[] dp = new int[amount + 1];
-            for (int w = 1; w <= amount; w++) {
-                int min = Integer.MAX_VALUE;
-                for (int coin : coins) {
-                    if (w - coin < 0 || dp[w - coin] == -1) {
+            for (int coin : coins) {
+                for (int i = coin; i <= amount; i++) {
+                    if (i == coin) {
+                        dp[i] = 1;
                         continue;
                     }
-                    min = Math.min(min, dp[w - coin] + 1);
+                    if (dp[i] == 0) {
+                        if (dp[i - coin] != 0) {
+                            dp[i] = dp[i - coin] + 1;
+                        }
+                    } else {
+                        if (dp[i - coin] == 0) {
+                            dp[i] = dp[i] + 1;
+                        } else {
+                            dp[i] = Math.min(dp[i], dp[i - coin]) + 1;
+                        }
+                    }
                 }
-                dp[w] = (min == Integer.MAX_VALUE ? -1 : min);
             }
-            return dp[amount];
+            return dp[amount] == 0 ? -1 : dp[amount];
         }
 
     }

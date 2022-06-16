@@ -26,16 +26,19 @@ class MaximumLengthOfPairChainTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        // 贪心
         public int findLongestChain(int[][] pairs) {
-            Arrays.sort(pairs, Comparator.comparing(arr -> arr[1]));
-            int curEnd = Integer.MIN_VALUE;
             int ans = 0;
-            for (int[] pair : pairs) {
-                if (pair[0] > curEnd) {
-                    ans += 1;
-                    curEnd = pair[1];
+            // 以第一个数组排序
+            Arrays.sort(pairs, Comparator.comparing(arr -> arr[0]));
+            int[] dp = new int[pairs.length];
+            for (int i = 0; i < pairs.length; i++) {
+                dp[i] = 1;
+                for (int j = 0; j < i; j++) {
+                    if (pairs[j][1] < pairs[i][0]) {
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
+                    }
                 }
+                ans = Math.max(ans, dp[i]);
             }
             return ans;
         }

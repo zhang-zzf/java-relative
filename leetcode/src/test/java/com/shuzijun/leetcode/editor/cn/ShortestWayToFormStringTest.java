@@ -20,32 +20,19 @@ class ShortestWayToFormStringTest {
     class Solution {
 
         public int shortestWay(String source, String target) {
-            int ans = 0;
-            Integer[][] dp = new Integer[source.length()][26];
-            for (int i = 0; i < source.length(); i++) {
-                for (int j = i; j < source.length(); j++) {
-                    final int sourceIdx = source.charAt(j) - 'a';
-                    if (dp[i][sourceIdx] == null) {
-                        dp[i][sourceIdx] = j;
-                    }
-                }
-            }
-            for (int i = 0; i < target.length(); ) {
-                Integer idx = -1;
-                int maxLng = 0;
-                while (idx + 1 < source.length() && (i + maxLng) < target.length()) {
-                    char c = target.charAt(i + maxLng);
-                    if ((idx = dp[idx + 1][c - 'a']) == null) {
+            int ans = 1;
+            int srcIdx = 0;
+            for (int i = 0; i < target.length(); i++) {
+                int t = source.indexOf(target.charAt(i), srcIdx);
+                if (t == -1) {
+                    t = source.indexOf(target.charAt(i));
+                    if (t == -1) {
+                        ans = -1;
                         break;
                     }
-                    maxLng += 1;
+                    ans += 1;
                 }
-                if (maxLng == 0) {
-                    ans = -1;
-                    break;
-                }
-                i += maxLng;
-                ans += 1;
+                srcIdx = t + 1;
             }
             return ans;
         }

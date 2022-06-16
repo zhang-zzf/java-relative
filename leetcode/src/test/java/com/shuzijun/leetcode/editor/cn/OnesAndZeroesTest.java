@@ -22,8 +22,7 @@ class OnesAndZeroesTest {
     class Solution {
 
         public int findMaxForm(String[] strs, int m, int n) {
-            int[][] prev = new int[m + 1][n + 1];
-            int[][] cur = new int[m + 1][n + 1];
+            int[][] dp = new int[m + 1][n + 1];
             for (String str : strs) {
                 int _1Cnt = 0;
                 int _0Cnt = 0;
@@ -34,19 +33,13 @@ class OnesAndZeroesTest {
                         _1Cnt += 1;
                     }
                 }
-                for (int i = 0; i <= m; i++) {
-                    for (int j = 0; j <= n; j++) {
-                        cur[i][j] = (i - _0Cnt >= 0 && j - _1Cnt >= 0) ?
-                                prev[i - _0Cnt][j - _1Cnt] + 1 : 0;
-                        cur[i][j] = Math.max(prev[i][j], cur[i][j]);
+                for (int i = m; i >= _0Cnt; i--) {
+                    for (int j = n; j >= _1Cnt; j--) {
+                        dp[i][j] = Math.max(dp[i][j], dp[i - _0Cnt][j - _1Cnt] + 1);
                     }
                 }
-                // 滚动数组
-                int[][] tmp = prev;
-                prev = cur;
-                cur = tmp;
             }
-            return prev[m][n];
+            return dp[m][n];
         }
 
     }

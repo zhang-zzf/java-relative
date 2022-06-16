@@ -20,20 +20,13 @@ class UniquePathsTest {
     class Solution {
 
         public int uniquePaths(int m, int n) {
-            // 多一个长度，不用 care 边界问题
-            int[] prev = new int[n + 1];
-            int[] cur = new int[n + 1];
-            // init
-            prev[1] = 1;
+            int[] dp = new int[n];
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
-                    cur[j + 1] = cur[j] + prev[j + 1];
+                    dp[j] = (i == 0) ? 1 : ((j == 0) ? 1 : dp[j - 1] + dp[j]);
                 }
-                int[] tmp = prev;
-                prev = cur;
-                cur = tmp;
             }
-            return prev[n];
+            return dp[n - 1];
         }
 
     }

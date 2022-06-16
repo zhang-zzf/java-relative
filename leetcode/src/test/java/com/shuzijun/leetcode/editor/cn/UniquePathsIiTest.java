@@ -17,24 +17,20 @@ class UniquePathsIiTest {
     class Solution {
 
         public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-            final int row = obstacleGrid.length;
-            final int column = obstacleGrid[0].length;
-            int[] prev = new int[column + 1];
-            int[] cur = new int[column + 1];
-            // init
-            prev[1] = 1;
-            for (int[] rowLine : obstacleGrid) {
-                for (int j = 0; j < column; j++) {
-                    cur[j + 1] = cur[j] + prev[j + 1];
-                    if (rowLine[j] == 1) {
-                        cur[j + 1] = 0;
+            int n = obstacleGrid[0].length;
+            int[] dp = new int[n];
+            dp[0] = 1;
+            for (int i = 0; i < obstacleGrid.length; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (obstacleGrid[i][j] == 1) {
+                        dp[j] = 0;
+                        continue;
                     }
+                    dp[j] = (i == 0) ? ((j == 0) ? 1 : dp[j - 1])
+                            : ((j == 0) ? dp[j] : dp[j - 1] + dp[j]);
                 }
-                int[] tmp = prev;
-                prev = cur;
-                cur = tmp;
             }
-            return prev[column];
+            return dp[n - 1];
         }
 
     }

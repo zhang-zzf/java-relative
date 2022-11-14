@@ -61,19 +61,17 @@ public class KthSmallestElementInASortedMatrixTest {
     class Solution {
 
         public int kthSmallest(int[][] matrix, int k) {
-            PriorityQueue<int[]> pq = new PriorityQueue<>(k,
-                    Comparator.comparing(ints -> matrix[ints[0]][ints[1]]));
-            for (int i = 0; i < Math.min(matrix.length, k); i++) {
-                pq.offer(new int[]{i, 0});
-            }
-            int[] result = new int[]{0, 0};
-            while (k-- > 0 && !pq.isEmpty()) {
-                result = pq.poll();
-                if (result[1] + 1 < matrix.length) {
-                    pq.offer(new int[]{result[0], result[1] + 1});
+            int lng = matrix.length;
+            int l = matrix[0][0], r = matrix[lng - 1][lng - 1];
+            while (l < r) {
+                int mid = l + (r - l) / 2;
+                if (countSmall(mid, matrix) < k) {
+                    l = mid + 1;
+                } else {
+                    r = mid;
                 }
             }
-            return matrix[result[0]][result[1]];
+            return l;
         }
 
         private int countSmall(int pivot, int[][] matrix) {

@@ -73,11 +73,30 @@ public class PermutationSequenceTest {
     class Solution {
 
         public String getPermutation(int n, int k) {
-            List<Integer> track = new ArrayList<>(1);
-            List<Integer> ret = new ArrayList<>(n);
-            backTrack(n, k, new AtomicInteger(0), track, ret);
-            final String retStr = String.join("", ret.stream().map(String::valueOf).collect(Collectors.toList()));
-            return retStr;
+            // 已选择的下标
+            List<Integer> track = new ArrayList<>();
+            int depth = 1;
+            int curNo = 0;
+            while (track.size() < n) {
+                int items = factorial(n - depth);
+                for (int i = 1; i <= n; i++) {
+                    if (track.contains(i)) {
+                        continue;
+                    }
+                    if (curNo + items < k) {
+                        curNo += items;
+                        continue;
+                    }
+                    track.add(i);
+                    break;
+                }
+                depth += 1;
+            }
+            StringBuilder buf = new StringBuilder(n);
+            for (Integer integer : track) {
+                buf.append(integer);
+            }
+            return buf.toString();
         }
 
         private int factorial(int n) {

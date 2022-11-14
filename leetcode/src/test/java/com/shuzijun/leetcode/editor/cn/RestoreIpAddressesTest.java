@@ -85,29 +85,31 @@ public class RestoreIpAddressesTest {
          */
         public List<String> restoreIpAddresses(String s) {
             List<String> ret = new ArrayList<>();
-            List<String> track = new ArrayList<>(4);
-            backTrack(s, 0, track, ret);
+            backTrack(s, 0, new ArrayList<>(4), ret);
             return ret;
         }
 
-        private void backTrack(String str, int strIdx, List<String> track, List<String> ret) {
-            final int curSubIpIdx = track.size();
-            if (curSubIpIdx == 4 && strIdx == str.length()) {
-                // 添加到结果集
-                ret.add(String.join(".", track.stream().map(String::valueOf).collect(Collectors.toList())));
+        private void backTrack(String str, int idx, List<String> track, List<String> ret) {
+            if (track.size() == 4) {
+                if (idx == str.length()) {
+                    // 转结果
+                    ret.add(String.join(".", track));
+                }
                 return;
             }
-            int leftStrLength = str.length() - strIdx;
-            int min = Math.max(leftStrLength - (4 - curSubIpIdx - 1) * 3, 1);
-            int max = Math.min(leftStrLength - (4 - curSubIpIdx - 1) * 1, 3);
-            for (int i = min; i <= max; i++) {
-                String subStr = str.substring(strIdx, strIdx + i);
+            if (str.length() - idx > (4 - track.size()) * 3) {
+                // 后续字符串无法解析成合理的subIp
+                return;
+            }
+            for (int end = idx + 1; end <= Math.min(idx + 4, str.length()); end++) {
+                // 选择
+                String subStr = str.substring(idx, end);
                 if (!isSubIp(subStr)) {
                     continue;
                 }
-                // 选择
                 track.add(subStr);
-                backTrack(str, strIdx + i, track, ret);
+                backTrack(str, end, track, ret);
+                // 回溯
                 track.remove(track.size() - 1);
             }
         }

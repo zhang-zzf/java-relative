@@ -62,34 +62,36 @@ public class PermutationsIiTest {
             final List<List<Integer>> ret = new ArrayList<>();
             // 代表当前链路上已选择的数字的下标
             final List<Integer> list = new ArrayList<>();
-            backTrack(nums, ret, list);
+            backTrack(nums, list, ret);
             return ret;
         }
 
-        private void backTrack(int[] nums, List<List<Integer>> ret, List<Integer> list) {
-            if (list.size() == nums.length) {
+        private void backTrack(int[] nums, List<Integer> track, List<List<Integer>> ret) {
+            if (track.size() == nums.length) {
                 // 保存一次全排列
                 List aResult = new ArrayList<Integer>(nums.length);
                 for (int i = 0; i < nums.length; i++) {
-                    aResult.add(nums[list.get(i)]);
+                    aResult.add(nums[track.get(i)]);
                 }
                 ret.add(aResult);
             }
-            Set<Integer> curSelectedNum = new HashSet<>(nums.length);
+            Set<Integer> set = new HashSet<>(nums.length);
             for (int i = 0; i < nums.length; i++) {
-                if (list.contains(i)) {
+                // 核心点：保存的是元素的下标
+                if (track.contains(i)) {
                     continue;
                 }
                 // 剪枝
-                if (curSelectedNum.contains(nums[i])) {
+                // nums 中的元素是未排序的，使用 set 去重复
+                // 弱 nums 中的元素经过排序，可以使用与 nums[i-1] 比较去重复
+                if (!set.add(nums[i])) {
                     continue;
                 }
-                curSelectedNum.add(nums[i]);
                 // 选择
-                list.add(i);
-                backTrack(nums, ret, list);
+                track.add(i);
+                backTrack(nums, track, ret);
                 // 撤销选择
-                list.remove(list.size() - 1);
+                track.remove(track.size() - 1);
             }
         }
 

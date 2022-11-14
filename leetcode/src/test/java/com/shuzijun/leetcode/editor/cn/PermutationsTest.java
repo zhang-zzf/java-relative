@@ -64,29 +64,28 @@ public class PermutationsTest {
         public List<List<Integer>> permute(int[] nums) {
             List<List<Integer>> ret = new ArrayList<>();
             // 保存已经选择的数字的下标
-            List<Integer> list = new ArrayList<>(nums.length);
-            backTrack(nums, ret, list);
+            backTrack(nums, new ArrayList<>(nums.length), ret);
             return ret;
         }
 
-        private void backTrack(int[] nums, List<List<Integer>> ret, List<Integer> list) {
-            if (list.size() == nums.length) {
+        private void backTrack(int[] nums, List<Integer> track, List<List<Integer>> ret) {
+            if (track.size() == nums.length) {
                 // 保存一次全排列
                 List aResult = new ArrayList<Integer>(nums.length);
                 for (int i = 0; i < nums.length; i++) {
-                    aResult.add(nums[list.get(i)]);
+                    aResult.add(nums[track.get(i)]);
                 }
                 ret.add(aResult);
             }
             for (int i = 0; i < nums.length; i++) {
-                if (list.contains(i)) {
+                if (track.contains(i)) {
                     continue;
                 }
                 // 选择
-                list.add(i);
-                backTrack(nums, ret, list);
+                track.add(i);
+                backTrack(nums, track, ret);
                 // 撤销选择
-                list.remove(list.size() - 1);
+                track.remove(track.size() - 1);
             }
         }
 

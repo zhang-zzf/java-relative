@@ -65,9 +65,9 @@ public class FloodFillTest {
                 ret[i] = Arrays.copyOf(image[i], image[i].length);
             }
             Queue<Pair> queue = new LinkedList<>();
-            queue.add(new Pair(sr, sc));
+            queue.offer(new Pair(sr, sc));
             while (!queue.isEmpty()) {
-                final Pair loc = queue.remove();
+                final Pair loc = queue.poll();
                 if (ret[loc.r][loc.c] != oldColor) {
                     continue;
                 }

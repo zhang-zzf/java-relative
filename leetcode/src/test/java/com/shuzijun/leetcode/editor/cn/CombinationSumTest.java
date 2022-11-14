@@ -85,13 +85,13 @@ public class CombinationSumTest {
          */
         public List<List<Integer>> combinationSum(int[] candidates, int target) {
             List<List<Integer>> ret = new ArrayList<>();
-            List<Integer> track = new ArrayList<>();
-            backTrack(candidates, target, 0, track, ret);
+            backTrack(candidates, target, 0, new ArrayList<>(), ret);
             return ret;
         }
 
         private void backTrack(int[] candidates, int target, int idx, List<Integer> track, List<List<Integer>> ret) {
             if (target == 0) {
+                // 转结果
                 ret.add(new ArrayList<>(track));
                 return;
             }

@@ -60,9 +60,8 @@ public class SubsetsIiTest {
             final int[] copy = Arrays.copyOf(nums, nums.length);
             Arrays.sort(copy);
             List<List<Integer>> ret = new ArrayList<>();
-            List<Integer> track = new ArrayList<>();
             for (int i = 0; i <= nums.length; i++) {
-                backTrack(copy, i, 0, track, ret);
+                backTrack(copy, i, 0, new ArrayList<>(), ret);
             }
             return ret;
         }
@@ -72,13 +71,12 @@ public class SubsetsIiTest {
                 ret.add(new ArrayList<>(track));
                 return;
             }
-            Set<Integer> selected = new HashSet<>();
             for (int i = idx; i < nums.length; i++) {
-                if (selected.contains(nums[i])) {
+                // nums 经过排序，使用 nums[i]=nums[i-1] 快速判断去重复
+                if (i > idx && nums[i] == nums[i - 1]) {
                     // 剪枝
                     continue;
                 }
-                selected.add(nums[i]);
                 // 选择
                 track.add(nums[i]);
                 backTrack(nums, k, i + 1, track, ret);

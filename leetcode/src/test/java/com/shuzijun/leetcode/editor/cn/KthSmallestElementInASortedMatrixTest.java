@@ -37,6 +37,9 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -58,18 +61,19 @@ public class KthSmallestElementInASortedMatrixTest {
     class Solution {
 
         public int kthSmallest(int[][] matrix, int k) {
-            int l = matrix[0][0], r = matrix[matrix.length - 1][matrix.length - 1];
-            while (l < r) {
-                int mid = l + ((r - l) >> 1);
-                int cnt = countSmall(mid, matrix);
-                if (cnt < k) {
-                    // 在右侧
-                    l = mid + 1;
-                } else {
-                    r = mid;
+            PriorityQueue<int[]> pq = new PriorityQueue<>(k,
+                    Comparator.comparing(ints -> matrix[ints[0]][ints[1]]));
+            for (int i = 0; i < Math.min(matrix.length, k); i++) {
+                pq.offer(new int[]{i, 0});
+            }
+            int[] result = new int[]{0, 0};
+            while (k-- > 0 && !pq.isEmpty()) {
+                result = pq.poll();
+                if (result[1] + 1 < matrix.length) {
+                    pq.offer(new int[]{result[0], result[1] + 1});
                 }
             }
-            return l;
+            return matrix[result[0]][result[1]];
         }
 
         private int countSmall(int pivot, int[][] matrix) {

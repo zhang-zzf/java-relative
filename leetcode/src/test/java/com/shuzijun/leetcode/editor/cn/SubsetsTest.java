@@ -55,19 +55,18 @@ public class SubsetsTest {
 
         public List<List<Integer>> subsets(int[] nums) {
             List<List<Integer>> ret = new ArrayList<>();
-            List<Integer> track = new ArrayList<>();
             for (int i = 0; i <= nums.length; i++) {
-                backTrack(nums, i, 0, track, ret);
+                backTrack(nums, i, 0, new ArrayList<>(), ret);
             }
             return ret;
         }
 
-        private void backTrack(int[] nums, int k, int start, List<Integer> track, List<List<Integer>> ret) {
+        private void backTrack(int[] nums, int k, int idx, List<Integer> track, List<List<Integer>> ret) {
             if (track.size() == k) {
                 ret.add(new ArrayList<>(track));
                 return;
             }
-            for (int i = start; i < nums.length; i++) {
+            for (int i = idx; i < nums.length; i++) {
                 // 选择
                 track.add(nums[i]);
                 backTrack(nums, k, i + 1, track, ret);

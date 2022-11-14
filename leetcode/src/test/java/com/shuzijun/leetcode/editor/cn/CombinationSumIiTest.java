@@ -82,11 +82,11 @@ public class CombinationSumIiTest {
             Set<Integer> selected = new HashSet<>(candidates.length);
             for (int i = idx; i < candidates.length; i++) {
                 final int candidate = candidates[i];
-                if (selected.contains(candidate)) {
+                // 剪枝
+                if (!selected.add(candidate)) {
                     continue;
                 }
                 // 选择
-                selected.add(candidate);
                 track.add(candidate);
                 // idx = i + 1 向后迁移一位
                 backTrack(candidates, target - candidate, i + 1, track, ret);

@@ -70,14 +70,16 @@ public class ReverseLinkedListTest {
     class Solution {
 
         public ListNode reverseList(ListNode head) {
-            ListNode pre = null, cur = head;
-            while (cur != null) {
-                ListNode next = cur.next;
-                cur.next = pre;
-                pre = cur;
-                cur = next;
+            if (head == null) {
+                return null;
             }
-            return pre;
+            if (head.next == null) {
+                return head;
+            }
+            ListNode newHead = reverseList(head.next);
+            head.next.next = head;
+            head.next = null;
+            return newHead;
         }
 
     }

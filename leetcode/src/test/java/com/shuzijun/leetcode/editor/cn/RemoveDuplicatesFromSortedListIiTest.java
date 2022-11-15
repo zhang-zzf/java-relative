@@ -39,9 +39,35 @@ public class RemoveDuplicatesFromSortedListIiTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-
+        ListNode listNode = new ListNode(1,
+                new ListNode(2,
+                        new ListNode(3,
+                                new ListNode(3,
+                                        new ListNode(4,
+                                                new ListNode(4,
+                                                        new ListNode(5)))))));
+        ListNode node = solution.deleteDuplicates(listNode);
     }
 
+
+    public class ListNode {
+
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+
+    }
     //leetcode submit region begin(Prohibit modification and deletion)
 
     /**
@@ -57,20 +83,20 @@ public class RemoveDuplicatesFromSortedListIiTest {
     class Solution {
 
         public ListNode deleteDuplicates(ListNode head) {
-            final ListNode dummy = new ListNode(-1, head);
-            ListNode slow = dummy, fast = head;
-            while (fast != null && fast.next != null) {
-                if (fast.next.val != fast.val) {
-                    slow = fast;
-                    fast = fast.next;
-                } else {
-                    while (fast != null && fast.next != null
-                            && (fast.next.val == fast.val)) {
-                        fast = fast.next;
+            ListNode dummy = new ListNode(-1, head);
+            ListNode prev = dummy, ptr = head;
+            while (ptr != null) {
+                if (ptr.next != null) {
+                    if (ptr.next.val != ptr.val) {
+                        prev = ptr;
+                    } else {
+                        while (ptr.next != null && ptr.next.val == ptr.val) {
+                            ptr = ptr.next;
+                        }
+                        prev.next = ptr.next;
                     }
-                    fast = fast.next;
-                    slow.next = fast;
                 }
+                ptr = ptr.next;
             }
             return dummy.next;
         }

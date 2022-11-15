@@ -85,11 +85,26 @@ public class LinkedListCycleIiTest {
             val = x;
             next = null;
         }
+        ListNode(int x, ListNode next) {
+            val = x;
+            this.next = next;
+        }
+
 
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
 
+    @Test
+    void givenLinkedList_whenDetectCycle_then() {
+        ListNode last = new ListNode(-4);
+        ListNode start = new ListNode(2, new ListNode(0, last));
+        last.next = start;
+        ListNode head = new ListNode(3, start);
+        ListNode listNode = new Solution().detectCycle(head);
+        then(listNode).isEqualTo(start);
+    }
+
+    //leetcode submit region begin(Prohibit modification and deletion)
     /**
      * Definition for singly-linked list.
      * class ListNode {
@@ -115,12 +130,12 @@ public class LinkedListCycleIiTest {
         }
 
         public ListNode detectCycle(ListNode head) {
-            ListNode slow = head, fast = head;
+            ListNode f = head, s = head;
             boolean cycle = false;
-            while (fast != null && fast.next != null) {
-                slow = slow.next;
-                fast = fast.next.next;
-                if (slow == fast) {
+            while (f != null && f.next != null) {
+                f = f.next.next;
+                s = s.next;
+                if (f == s) {
                     cycle = true;
                     break;
                 }
@@ -128,12 +143,12 @@ public class LinkedListCycleIiTest {
             if (!cycle) {
                 return null;
             }
-            fast = head;
-            while (fast != slow) {
-                fast = fast.next;
-                slow = slow.next;
+            f = head;
+            while (f != s) {
+                f = f.next;
+                s = s.next;
             }
-            return slow;
+            return f;
         }
 
     }

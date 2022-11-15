@@ -32,6 +32,8 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.PriorityQueue;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -49,41 +51,20 @@ public class KthLargestElementInAnArrayTest {
     class Solution {
 
         public int findKthLargest(int[] nums, int k) {
-            final int numsIdx = nums.length - k;
-            quickSort(nums, numsIdx, 0, nums.length - 1);
-            return nums[numsIdx];
-        }
-
-        private void quickSort(int[] nums, int k, int left, int right) {
-            int pivotIdx = partition(nums, left, right);
-            if (pivotIdx == k || left >= right) {
-                return;
-            } else if (pivotIdx < k) {
-                quickSort(nums, k, pivotIdx + 1, right);
-            } else {
-                quickSort(nums, k, left, pivotIdx - 1);
-            }
-        }
-
-        private int partition(int[] nums, int left, int right) {
-            int pivotIdx = right;
-            // nums[left..ptr] 都是小于 pivot 的数
-            int ptr = left - 1;
-            for (int i = left; i < right; i++) {
-                if (nums[i] < nums[pivotIdx]) {
-                    swap(nums, ++ptr, i);
+            PriorityQueue<Integer> pq = new PriorityQueue<>(k + 1);
+            for (int i = 0; i < nums.length; i++) {
+                if (pq.size() < k) {
+                    pq.offer(nums[i]);
+                } else {
+                    Integer kSmall = pq.peek();
+                    if (nums[i] > kSmall) {
+                        pq.poll();
+                        pq.offer(nums[i]);
+                    }
                 }
             }
-            swap(nums, ptr + 1, right);
-            return ptr + 1;
+            return pq.peek();
         }
-
-        private void swap(int[] arr, int i, int i1) {
-            int tmp = arr[i];
-            arr[i] = arr[i1];
-            arr[i1] = tmp;
-        }
-
 
     }
 //leetcode submit region end(Prohibit modification and deletion)

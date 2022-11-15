@@ -62,7 +62,7 @@ public class KThSmallestPrimeFractionTest {
 
         public int[] kthSmallestPrimeFraction(int[] arr, int k) {
             // 保存的是下标
-            PriorityQueue<int[]> pq = new PriorityQueue<int[]>(k,
+            PriorityQueue<int[]> pq = new PriorityQueue<>(k,
                     (o1, o2) -> arr[o1[1]] * arr[arr.length - 1 - o2[0]] - arr[o2[1]] * arr[arr.length - 1 - o1[0]]);
             for (int i = 0; i < Math.min(k, arr.length); i++) {
                 pq.add(new int[]{i, 0});

@@ -51,19 +51,41 @@ public class KthLargestElementInAnArrayTest {
     class Solution {
 
         public int findKthLargest(int[] nums, int k) {
-            PriorityQueue<Integer> pq = new PriorityQueue<>(k + 1);
-            for (int i = 0; i < nums.length; i++) {
-                if (pq.size() < k) {
-                    pq.offer(nums[i]);
+            if (k > nums.length) {
+                throw new IllegalArgumentException();
+            }
+            int left = 0, right = nums.length - 1;
+            int targetIdx = nums.length - k;
+            while (true) {
+                int pivotIdx = partition(nums, left, right);
+                if (pivotIdx == targetIdx) {
+                    return nums[pivotIdx];
+                }
+                if (pivotIdx < targetIdx) {
+                    left = pivotIdx + 1;
                 } else {
-                    Integer kSmall = pq.peek();
-                    if (nums[i] > kSmall) {
-                        pq.poll();
-                        pq.offer(nums[i]);
-                    }
+                    right = pivotIdx - 1;
                 }
             }
-            return pq.peek();
+        }
+
+        private int partition(int[] nums, int left, int right) {
+            int pivot = nums[right];
+            // nums[left..j] < pivot
+            int j = left - 1;
+            for (int i = left; i < right; i++) {
+                if (nums[i] < pivot) {
+                    swap(nums, ++j, i);
+                }
+            }
+            swap(nums, j + 1, right);
+            return j + 1;
+        }
+
+        private void swap(int[] nums, int i, int j) {
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
         }
 
     }

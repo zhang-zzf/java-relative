@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -21,12 +22,23 @@ public class ByteDance3Test {
     }
 
     /**
+     * 一般场景测试
+     */
+    @Test
+    void givenArray2_whenCalcTarget_then() {
+        Solution solution = new Solution();
+        int ans = solution.partition(new int[]{1, 2, 3, 4, 5, 6, 7, 8});
+        then(ans).isEqualTo(3);
+    }
+
+    /**
      * 测试极限场景
      */
     @Test
     void givenSameItemArray_whenCalcTarget_then() {
         Solution solution = new Solution();
         int ans = solution.partition(new int[]{2, 2, 2, 2, 2});
+        new ArrayList<>().stream().distinct().collect(Collectors.toList());
         then(ans).isEqualTo(5);
     }
 

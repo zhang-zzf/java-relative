@@ -66,17 +66,16 @@ public class TwoSumTest {
     class Solution {
 
         public int[] twoSum(int[] nums, int target) {
-            Map<Integer, Integer> numToIdx = new HashMap<>(nums.length);
+            Map<Integer, Integer> cache = new HashMap<>();
+            Integer firstIdx;
             for (int i = 0; i < nums.length; i++) {
-                final Integer existSub = numToIdx.getOrDefault(target - nums[i], null);
-                if (existSub != null) {
-                    return new int[]{existSub.intValue(), i};
-                } else {
-                    numToIdx.put(nums[i], i);
+                int expect = target - nums[i];
+                if ((firstIdx = cache.get(expect)) != null) {
+                    return new int[]{firstIdx, i};
                 }
+                cache.put(nums[i], i);
             }
-            // never go here
-            return new int[0];
+            return new int[]{-1, -1};
         }
 
     }

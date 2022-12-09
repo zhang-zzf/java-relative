@@ -45,22 +45,24 @@ class ValidateBinarySearchTreeTest {
     class Solution {
 
         public boolean isValidBST(TreeNode root) {
-            // 中序遍历
+            boolean ans = true;
+            TreeNode prev = null;
+            // Iterative Inorder Traversal
             Deque<TreeNode> stack = new LinkedList<>();
-            long max = Long.MIN_VALUE;
             while (!stack.isEmpty() || root != null) {
                 while (root != null) {
                     stack.push(root);
                     root = root.left;
                 }
-                root = stack.pop();
-                if (root.val <= max) {
-                    return false;
+                root = stack.poll();
+                if (prev != null && prev.val >= root.val) {
+                    ans = false;
+                    break;
                 }
-                max = root.val;
+                prev = root;
                 root = root.right;
             }
-            return true;
+            return ans;
         }
 
     }

@@ -42,35 +42,17 @@ class ValidateBinarySearchTreeTest {
     class Solution {
 
         public boolean isValidBST(TreeNode root) {
-            boolean ans = true;
-            TreeNode prev = null;
-            while (root != null) {
-                if (root.left != null) {
-                    // travel left tree
-                    // find the predecessor
-                    TreeNode predecessor = root.left;
-                    while (predecessor.right != null && predecessor.right != root) {
-                        predecessor = predecessor.right;
-                    }
-                    if (predecessor.right == null) {
-                        predecessor.right = root;
-                        root = root.left;
-                        continue;
-                    } else {
-                        predecessor.right = null;
-                    }
-                }
-                // left sub tree is null
-                // inorder traversal
-                if (prev != null && prev.val >= root.val) {
-                    ans = false;
-                    break;
-                }
-                prev = root;
-                // travel right tree
-                root = root.right;
+            return valid(root, Long.MIN_VALUE, Long.MAX_VALUE);
+        }
+
+        private boolean valid(TreeNode root, long min, long max) {
+            if (root == null) {
+                return true;
             }
-            return ans;
+            if (root.val <= min || root.val >= max) {
+                return false;
+            }
+            return valid(root.left, min, root.val) && valid(root.right, root.val, max);
         }
 
     }

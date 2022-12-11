@@ -3,9 +3,6 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Deque;
-import java.util.LinkedList;
-
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -47,19 +44,30 @@ class ValidateBinarySearchTreeTest {
         public boolean isValidBST(TreeNode root) {
             boolean ans = true;
             TreeNode prev = null;
-            // Iterative Inorder Traversal
-            Deque<TreeNode> stack = new LinkedList<>();
-            while (!stack.isEmpty() || root != null) {
-                while (root != null) {
-                    stack.push(root);
-                    root = root.left;
+            while (root != null) {
+                if (root.left != null) {
+                    // travel left tree
+                    // find the predecessor
+                    TreeNode predecessor = root.left;
+                    while (predecessor.right != null && predecessor.right != root) {
+                        predecessor = predecessor.right;
+                    }
+                    if (predecessor.right == null) {
+                        predecessor.right = root;
+                        root = root.left;
+                        continue;
+                    } else {
+                        predecessor.right = null;
+                    }
                 }
-                root = stack.poll();
+                // left sub tree is null
+                // inorder traversal
                 if (prev != null && prev.val >= root.val) {
                     ans = false;
                     break;
                 }
                 prev = root;
+                // travel right tree
                 root = root.right;
             }
             return ans;

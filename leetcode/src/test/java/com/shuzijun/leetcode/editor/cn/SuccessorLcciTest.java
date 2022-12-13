@@ -34,27 +34,30 @@ class SuccessorLcciTest {
     class Solution {
 
         public TreeNode inorderPredecessor(TreeNode root, TreeNode p) {
-            if (root == null) {
-                return null;
+            TreeNode ans = null;
+            while (root != null) {
+                if (p.val <= root.val) {
+                    root = root.left;
+                } else {
+                    ans = root;
+                    root = root.right;
+                }
             }
-            if (root.val >= p.val) {
-                return inorderPredecessor(root.left, p);
-            } else {
-                TreeNode treeNode = inorderPredecessor(root.right, p);
-                return treeNode == null ? root : treeNode;
-            }
+            return ans;
         }
 
         public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-            if (root == null) {
-                return null;
+            TreeNode ans = null;
+            while (root != null) {
+                if (p.val >= root.val) {
+                    root = root.right;
+                } else {
+                    ans = root;
+                    root = root.left;
+                }
             }
-            if (root.val <= p.val) {
-                return inorderSuccessor(root.right, p);
-            } else {
-                TreeNode successor = inorderSuccessor(root.left, p);
-                return successor == null ? root : successor;
-            }
+            return ans;
+
         }
 
     }

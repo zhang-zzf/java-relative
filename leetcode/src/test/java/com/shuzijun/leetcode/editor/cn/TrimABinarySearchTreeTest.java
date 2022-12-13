@@ -33,31 +33,18 @@ public class TrimABinarySearchTreeTest {
     class Solution {
 
         public TreeNode trimBST(TreeNode root, int low, int high) {
-            // 找到新的根节点
-            while (root != null && (root.val < low || root.val > high)) {
-                if (root.val < low) {
-                    root = root.right;
-                } else {
-                    root = root.left;
-                }
+            if (root == null) {
+                return null;
             }
-            TreeNode treeRoot = root;
-            // 干掉左子树中 < low
-            while (root != null) {
-                while (root.left != null && root.left.val < low) {
-                    root.left = root.left.right;
-                }
-                root = root.left;
+            if (root.val < low) {
+                return trimBST(root.right, low, high);
             }
-            // 干掉右子树中 > high
-            root = treeRoot;
-            while (root != null) {
-                while (root.right != null && root.right.val > high) {
-                    root.right = root.right.left;
-                }
-                root = root.right;
+            if (root.val > high) {
+                return trimBST(root.left, low, high);
             }
-            return treeRoot;
+            root.left = trimBST(root.left, low, high);
+            root.right = trimBST(root.right, low, high);
+            return root;
         }
 
     }

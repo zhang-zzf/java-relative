@@ -14,10 +14,10 @@ class SuccessorLcciTest {
     void givenNormal_when_thenSuccess() {
         final TreeNode root = SerializeAndDeserializeBinaryTreeTest.deserialize(
                 "[6,4,10,2,5,8,15,1,3,null,null,7,9,11,18]");
-        final TreeNode successor = solution.inorderSuccessor(root, new TreeNode(12));
-        then(successor.val).isEqualTo(15);
-        final TreeNode predecessor = solution.inorderPredecessor(root, new TreeNode(12));
-        then(predecessor.val).isEqualTo(11);
+        then(solution.inorderSuccessor(root, new TreeNode(12)).val)
+                .isEqualTo(15);
+        then(solution.inorderPredecessor(root, new TreeNode(12)).val)
+                .isEqualTo(11);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -34,48 +34,27 @@ class SuccessorLcciTest {
     class Solution {
 
         public TreeNode inorderPredecessor(TreeNode root, TreeNode p) {
-            TreeNode ans = null;
-            while (root != null) {
-                if (root.val >= p.val) {
-                    root = root.left;
-                } else {
-                    ans = root;
-                    root = root.right;
-                }
+            if (root == null) {
+                return null;
             }
-            return ans;
+            if (root.val >= p.val) {
+                return inorderPredecessor(root.left, p);
+            } else {
+                TreeNode treeNode = inorderPredecessor(root.right, p);
+                return treeNode == null ? root : treeNode;
+            }
         }
 
         public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-            TreeNode ans = null, prev = null;
-            while (root != null) {
-                // 遍历左子树
-                if (root.left != null) {
-                    TreeNode predecessor = root.left;
-                    while (predecessor.right != null
-                            && predecessor.right != root) {
-                        predecessor = predecessor.right;
-                    }
-                    if (predecessor.right == null) {
-                        predecessor.right = root;
-                        root = root.left;
-                        continue;
-                    } else {
-                        predecessor.right = null;
-                    }
-                }
-                // 中序遍历处理 root 节点
-                if (prev != null && prev.val == p.val) {
-                    ans = root;
-                    // break the loop
-                    break;
-                }
-                prev = root;
-                // 中序遍历处理 root 节点
-                // 遍历右子树
-                root = root.right;
+            if (root == null) {
+                return null;
             }
-            return ans;
+            if (root.val <= p.val) {
+                return inorderSuccessor(root.right, p);
+            } else {
+                TreeNode successor = inorderSuccessor(root.left, p);
+                return successor == null ? root : successor;
+            }
         }
 
     }

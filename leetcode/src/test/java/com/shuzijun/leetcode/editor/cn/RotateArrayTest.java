@@ -55,6 +55,8 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -65,40 +67,64 @@ public class RotateArrayTest {
     @Test
     void givenNormal_when_thenSuccess() {
         int[] nums = new int[]{1, 2, 3, 4, 5, 6, 7};
-        for (int k = 0; k < nums.length; k++) {
-            int[] target = new int[nums.length];
-            for (int i = 0; i < nums.length; i++) {
-                // 把 nums[i] 直接复制到 target 数组
-                target[(i + k) % nums.length] = nums[i];
-            }
-            solution.rotate(nums, k);
-            then(nums).containsExactly(target);
+        int k = 3;
+        int[] target = rotateForTest(nums, k);
+        solution.rotate(nums, k);
+        then(nums).containsExactly(target);
+    }
+
+    private int[] rotateForTest(int[] nums, int k) {
+        int[] target = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            // 把 nums[i] 直接复制到 target 数组
+            target[(i + k) % nums.length] = nums[i];
         }
+        return target;
+    }
+
+    @Test
+    void givenOddNums_when_thenSuccess() {
+        int[] nums = new int[]{1, 2, 3, 4, 5, 6, 7};
+        for (int k = 0; k < nums.length; k++) {
+            int[] copy = Arrays.copyOf(nums, nums.length);
+            int[] target = rotateForTest(copy, k);
+            solution.rotate(copy, k);
+            then(copy).containsExactly(target);
+        }
+    }
+
+    @Test
+    void givenFailedCase1_when_then() {
+        int[] nums = new int[]{-1, -100, 3, 99};
+        int[] target = rotateForTest(nums, 2);
+        solution.rotate(nums, 2);
+        then(nums).containsExactly(target);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
         public void rotate(int[] nums, int k) {
-            if (nums.length == 0) {
+            int lng = nums.length;
+            if (lng == 0) {
                 return;
             }
-            k = k % nums.length;
+            k = k % lng;
             if (k == 0) {
                 return;
             }
-            reverse(nums, 0, nums.length - 1);
-            reverse(nums, 0, k - 1);
-            reverse(nums, k, nums.length - 1);
-        }
-
-        private void reverse(int[] nums, int left, int right) {
-            while (left < right) {
-                int tmp = nums[left];
-                nums[left] = nums[right];
-                nums[right] = tmp;
-                left += 1;
-                right -= 1;
+            int count = 0;
+            for (int i = 0; i < lng; i++) {
+                count += 1;
+                for (int j = (i + k) % lng; j != i; j = (j + k) % lng) {
+                    int tmp = nums[i];
+                    nums[i] = nums[j];
+                    nums[j] = tmp;
+                    count += 1;
+                }
+                if (count == lng) {
+                    break;
+                }
             }
         }
 

@@ -67,17 +67,14 @@ public class FirstBadVersionTest {
         public int firstBadVersion(int n) {
             int left = 1, right = n;
             while (left < right) {
-                int mid = left + ((right-left) >>1);
+                int mid = left + ((right - left) >> 1);
                 if (isBadVersion(mid)) {
                     right = mid;
                 } else {
                     left = mid + 1;
                 }
             }
-            if (left <= n && isBadVersion(left)) {
-                return left;
-            }
-            return -1;
+            return left;
         }
 
     }

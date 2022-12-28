@@ -70,19 +70,20 @@ public class LongestSubstringWithoutRepeatingCharactersTest {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public int lengthOfLongestSubstring(String s) {
             int[] lastIndex = new int[128];
             for (int i = 0; i < lastIndex.length; i++) {
                 lastIndex[i] = -1;
             }
-            int maxLength = 0;
-            for (int r = 0, l = 0; r < s.length(); r++) {
+            int ans = 0;
+            for (int l = 0, r = 0; r < s.length(); r++) {
                 char c = s.charAt(r);
                 l = Math.max(l, lastIndex[c] + 1);
-                maxLength = Math.max(maxLength, r - l + 1);
+                ans = Math.max(ans, r - l + 1);
                 lastIndex[c] = r;
             }
-            return maxLength;
+            return ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

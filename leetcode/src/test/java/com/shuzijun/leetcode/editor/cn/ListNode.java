@@ -26,6 +26,19 @@ public class ListNode<T> {
         return next;
     }
 
+    public static String toString(ListNode head) {
+        StringBuilder buf = new StringBuilder("[");
+        while (head != null) {
+            buf.append(head.val);
+            if (head.next != null) {
+                buf.append(',');
+            }
+            head = head.next;
+        }
+        buf.append(']');
+        return buf.toString();
+    }
+
 }
 
 

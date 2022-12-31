@@ -58,9 +58,6 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -70,17 +67,7 @@ public class PopulatingNextRightPointersInEachNodeTest {
 
     @Test
     void givenNormal_when_thenSuccess() {
-        final Node root = new Node(1,
-                new Node(2,
-                        new Node(4),
-                        new Node(5),
-                        null),
-                new Node(3,
-                        new Node(6),
-                        new Node(7),
-                        null),
-                null
-        );
+        final Node root = new Node(1, new Node(2, new Node(4), new Node(5), null), new Node(3, new Node(6), new Node(7), null), null);
         final Node node = solution.connect(root);
         then(node.next).isNull();
     }
@@ -148,20 +135,18 @@ class Node {
         public Node connect(Node root) {
             Node cur = root;
             while (cur != null) {
-                Node dummy = new Node(), pre = dummy;
+                Node dummy = new Node(), prev = dummy;
                 while (cur != null) {
-                    // 遍历当前层
                     if (cur.left != null) {
-                        pre.next = cur.left;
-                        pre = pre.next;
+                        prev.next = cur.left;
+                        prev = prev.next;
                     }
                     if (cur.right != null) {
-                        pre.next = cur.right;
-                        pre = pre.next;
+                        prev.next = cur.right;
+                        prev = prev.next;
                     }
                     cur = cur.next;
                 }
-                // 去一下层
                 cur = dummy.next;
             }
             return root;

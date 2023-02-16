@@ -61,45 +61,40 @@ public class FindFirstAndLastPositionOfElementInSortedArrayTest {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        /**
-         * 为什么第一次是向下取整，第二次必须是向上取整
-         * <p>left = right-1 时 int mid = left + ((right - left) >> 1) 的值一定等于 left</p>
-         * <p>若第二次不想上取整，有可能死循环</p>
-         */
         public int[] searchRange(int[] nums, int target) {
-            final int[] ans = {-1, -1};
-            if (nums.length == 0) {
+            int[] ans = {-1, -1};
+            if (nums.length == 0
+                    || target < nums[0]
+                    || target > nums[nums.length - 1]) {
                 return ans;
             }
             int left = 0, right = nums.length - 1;
+            int idx = -1;
             while (left <= right) {
-                // 默认向下取整
                 int mid = left + ((right - left) >> 1);
-                if (nums[mid] >= target) {
-                    right = mid - 1;
-                    if (nums[mid] == target) {
-                        ans[0] = mid;
-                    }
-                } else {
+                if (nums[mid] < target) {
                     left = mid + 1;
+                } else {
+                    right = mid - 1;
+                    idx = mid;
                 }
             }
-            if (ans[0] == -1) {
+            if (nums[idx] != target) {
                 return ans;
             }
+            ans[0] = idx;
             left = 0;
             right = nums.length - 1;
             while (left <= right) {
                 int mid = left + ((right - left) >> 1);
                 if (nums[mid] <= target) {
                     left = mid + 1;
-                    if (nums[mid] == target) {
-                        ans[1] = mid;
-                    }
+                    idx = mid;
                 } else {
                     right = mid - 1;
                 }
             }
+            ans[1] = idx;
             return ans;
         }
 

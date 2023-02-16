@@ -1,4 +1,3 @@
-
 package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,14 @@ public class SearchInRotatedSortedArrayTest {
         then(solution.search(nums, 3)).isEqualTo(-1);
     }
 
+
+    @Test
+    void
+    givenFailedCase1_when_then() {
+        // mid == left 时 mid<->left 是有序的
+        then(solution.search(new int[]{3, 1}, 1)).isEqualTo(1);
+    }
+
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
@@ -30,23 +37,25 @@ public class SearchInRotatedSortedArrayTest {
             int left = 0, right = nums.length - 1;
             while (left <= right) {
                 int mid = left + ((right - left) >> 1);
-                if (nums[mid] == target) {
+                int val = nums[mid];
+                if (val == target) {
                     ans = mid;
                     break;
-                } else {
-                    if (nums[0] <= nums[mid]) {
-                        // 左侧有序
-                        if (target < nums[mid] && target >= nums[0]) {
-                            right = mid - 1;
-                        } else {
-                            left = mid + 1;
-                        }
+                }
+                // when mid==left then nums[left]..nums[mid] is sorted
+                if (nums[left] <= val) {
+                    // left <-> mid is sorted
+                    if (val > target && nums[left] <= target) {
+                        right = mid - 1;
                     } else {
-                        if (target > nums[mid] && target <= nums[nums.length - 1]) {
-                            left = mid + 1;
-                        } else {
-                            right = mid - 1;
-                        }
+                        left = mid + 1;
+                    }
+                } else {
+                    // mid <-> right is sorted
+                    if (val < target && nums[right] >= target) {
+                        left = mid + 1;
+                    } else {
+                        right = mid - 1;
                     }
                 }
             }

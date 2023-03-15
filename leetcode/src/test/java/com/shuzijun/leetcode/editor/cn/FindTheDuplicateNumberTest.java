@@ -63,18 +63,24 @@ public class FindTheDuplicateNumberTest {
     class Solution {
 
         public int findDuplicate(int[] nums) {
-            // 值域 [1,n] n = nums.length - 1
-            int left = 1, right = nums.length - 1;
-            while (left < right) {
-                int mid = left + ((right - left) >> 1);
-                int cnt = getCntLEThanMid(nums, mid);
-                if (cnt > mid) {
-                    right = mid;
-                } else {
-                    left = mid + 1;
+            int fast = 0, slow = 0;
+            int lng = nums.length;
+            while (((fast = nums[fast]) < lng) && ((fast = nums[fast]) < lng)) {
+                slow = nums[slow];
+                if (fast == slow) {
+                    break;
                 }
             }
-            return left;
+            if (slow != fast) {
+                throw new IllegalArgumentException();
+            }
+            slow = 0;
+            while (fast != slow) {
+                slow = nums[slow];
+                fast = nums[fast];
+            }
+            // or fast
+            return slow;
         }
 
         private int getCntLEThanMid(int[] nums, int pivot) {

@@ -301,7 +301,6 @@
     <module>redis-lbs</module>
     <module>spring-data-redis-lua</module>
     <module>sentinel-demo</module>
-    <module>java-easy-rules</module>
     <module>spring-data-es</module>
     <module>java-unit-test</module>
     <module>spring-validation</module>

@@ -37,47 +37,46 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class CombinationsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final List<List<Integer>> lists = solution.combine(4, 2);
-        then(lists).hasSize(6);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final List<List<Integer>> lists = solution.combine(4, 2);
+    then(lists).hasSize(6);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public List<List<Integer>> combine(int n, int k) {
+      List<List<Integer>> ret = new ArrayList<>();
+      List<Integer> track = new ArrayList<>();
+      backTrack(n, k, 1, track, ret);
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public List<List<Integer>> combine(int n, int k) {
-            List<List<Integer>> ret = new ArrayList<>();
-            List<Integer> track = new ArrayList<>();
-            backTrack(n, k, 1, track, ret);
-            return ret;
-        }
-
-        private void backTrack(int n, int k, int idx, List<Integer> track, List<List<Integer>> ret) {
-            if (track.size() == k) {
-                ret.add(new ArrayList<>(track));
-                return;
-            }
-            for (int i = idx; i <= n; i++) {
-                track.add(i);
-                backTrack(n, k, i + 1, track, ret);
-                track.remove(track.size() - 1);
-            }
-        }
-
+    private void backTrack(int n, int k, int idx, List<Integer> track, List<List<Integer>> ret) {
+      if (track.size() == k) {
+        ret.add(new ArrayList<>(track));
+        return;
+      }
+      for (int i = idx; i <= n; i++) {
+        track.add(i);
+        backTrack(n, k, i + 1, track, ret);
+        track.remove(track.size() - 1);
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

@@ -14,17 +14,17 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 public class StereoOnCommand implements Command {
 
-    Stereo stereo;
+  Stereo stereo;
 
-    @Override
-    public void execute() {
-        stereo.on();
-        stereo.setCd();
-        stereo.setVolume(11);
-    }
+  @Override
+  public void execute() {
+    stereo.on();
+    stereo.setCd();
+    stereo.setVolume(11);
+  }
 
-    @Override
-    public void undo() {
-        stereo.off();
-    }
+  @Override
+  public void undo() {
+    stereo.off();
+  }
 }

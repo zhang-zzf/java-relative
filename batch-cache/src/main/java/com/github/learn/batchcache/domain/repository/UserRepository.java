@@ -1,7 +1,6 @@
 package com.github.learn.batchcache.domain.repository;
 
 import com.github.learn.batchcache.domain.model.User;
-
 import java.util.List;
 import java.util.Set;
 
@@ -11,15 +10,15 @@ import java.util.Set;
  */
 public interface UserRepository {
 
-    User insert(User user);
+  User insert(User user);
 
-    List<User> batchInsert(Set<User> users);
+  List<User> batchInsert(Set<User> users);
 
-    void update(User user);
+  void update(User user);
 
-    User getById(Long id);
+  User getById(Long id);
 
-    List<User> getByIds(Set<Long> ids);
+  List<User> getByIds(Set<Long> ids);
 
-    void deleteByIds(Set<Long> ids);
+  void deleteByIds(Set<Long> ids);
 }

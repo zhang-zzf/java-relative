@@ -58,100 +58,97 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 
 public class LinkedListCycleIiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[] same = solution.same(new int[]{1, 2, 5}, new int[]{2, 5, 5, 9});
-        then(same).contains(2, 5);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[] same = solution.same(new int[]{1, 2, 5}, new int[]{2, 5, 5, 9});
+    then(same).contains(2, 5);
+  }
+
+  @Test
+  void givenLinkedList_whenDetectCycle_then() {
+    ListNode last = new ListNode(-4);
+    ListNode start = new ListNode(2, new ListNode(0, last));
+    last.next = start;
+    ListNode head = new ListNode(3, start);
+    ListNode listNode = new Solution().detectCycle(head);
+    then(listNode).isEqualTo(start);
+  }
+
+  class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+      val = x;
+      next = null;
     }
 
-    class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-            next = null;
-        }
-        ListNode(int x, ListNode next) {
-            val = x;
-            this.next = next;
-        }
-
-
+    ListNode(int x, ListNode next) {
+      val = x;
+      this.next = next;
     }
 
 
-    @Test
-    void givenLinkedList_whenDetectCycle_then() {
-        ListNode last = new ListNode(-4);
-        ListNode start = new ListNode(2, new ListNode(0, last));
-        last.next = start;
-        ListNode head = new ListNode(3, start);
-        ListNode listNode = new Solution().detectCycle(head);
-        then(listNode).isEqualTo(start);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. class ListNode { int val; ListNode next; ListNode(int x) {
+   * val = x; next = null; } }
+   */
+  public class Solution {
+
+    public int[] same(int[] nums1, int[] nums2) {
+      final Set<Integer> nums1Set = Arrays.stream(nums1).mapToObj(Integer::new)
+          .collect(Collectors.toSet());
+      List<Integer> ret = new LinkedList<Integer>();
+      for (int num : nums2) {
+        if (nums1Set.contains(num)) {
+          ret.add(num);
+        }
+      }
+      return ret.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    /**
-     * Definition for singly-linked list.
-     * class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode(int x) {
-     * val = x;
-     * next = null;
-     * }
-     * }
-     */
-    public class Solution {
-
-        public int[] same(int[] nums1, int[] nums2) {
-            final Set<Integer> nums1Set = Arrays.stream(nums1).mapToObj(Integer::new).collect(Collectors.toSet());
-            List<Integer> ret = new LinkedList<Integer>();
-            for (int num : nums2) {
-                if (nums1Set.contains(num)) {
-                    ret.add(num);
-                }
-            }
-            return ret.stream().mapToInt(Integer::intValue).toArray();
+    public ListNode detectCycle(ListNode head) {
+      ListNode f = head, s = head;
+      boolean cycle = false;
+      while (f != null && f.next != null) {
+        f = f.next.next;
+        s = s.next;
+        if (f == s) {
+          cycle = true;
+          break;
         }
-
-        public ListNode detectCycle(ListNode head) {
-            ListNode f = head, s = head;
-            boolean cycle = false;
-            while (f != null && f.next != null) {
-                f = f.next.next;
-                s = s.next;
-                if (f == s) {
-                    cycle = true;
-                    break;
-                }
-            }
-            if (!cycle) {
-                return null;
-            }
-            f = head;
-            while (f != s) {
-                f = f.next;
-                s = s.next;
-            }
-            return f;
-        }
-
+      }
+      if (!cycle) {
+        return null;
+      }
+      f = head;
+      while (f != s) {
+        f = f.next;
+        s = s.next;
+      }
+      return f;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

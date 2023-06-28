@@ -40,44 +40,44 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class KThSmallestPrimeFractionTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[] ints = solution.kthSmallestPrimeFraction(new int[]{1, 2, 3, 5}, 3);
-        then(ints).containsExactly(2, 5);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[] ints = solution.kthSmallestPrimeFraction(new int[]{1, 2, 3, 5}, 3);
+    then(ints).containsExactly(2, 5);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] kthSmallestPrimeFraction(int[] arr, int k) {
-            // 保存的是下标
-            PriorityQueue<int[]> pq = new PriorityQueue<>(k,
-                    (o1, o2) -> arr[o1[1]] * arr[arr.length - 1 - o2[0]] - arr[o2[1]] * arr[arr.length - 1 - o1[0]]);
-            for (int i = 0; i < Math.min(k, arr.length); i++) {
-                pq.add(new int[]{i, 0});
-            }
-            while (k-- > 1) {
-                final int[] poll = pq.poll();
-                if (poll[1] + 1 < arr.length - poll[0]) {
-                    pq.add(new int[]{poll[0], poll[1] + 1});
-                }
-            }
-            final int[] kSmall = pq.poll();
-            return new int[]{arr[kSmall[1]], arr[arr.length - 1 - kSmall[0]]};
+    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+      // 保存的是下标
+      PriorityQueue<int[]> pq = new PriorityQueue<>(k,
+          (o1, o2) -> arr[o1[1]] * arr[arr.length - 1 - o2[0]] - arr[o2[1]] * arr[arr.length - 1
+              - o1[0]]);
+      for (int i = 0; i < Math.min(k, arr.length); i++) {
+        pq.add(new int[]{i, 0});
+      }
+      while (k-- > 1) {
+        final int[] poll = pq.poll();
+        if (poll[1] + 1 < arr.length - poll[0]) {
+          pq.add(new int[]{poll[0], poll[1] + 1});
         }
-
+      }
+      final int[] kSmall = pq.poll();
+      return new int[]{arr[kSmall[1]], arr[arr.length - 1 - kSmall[0]]};
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

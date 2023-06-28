@@ -44,48 +44,49 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class LongestPalindromicSubstringTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.longestPalindrome("baba")).isEqualTo("bab");
-        then(solution.longestPalindrome("cbbd")).isEqualTo("bb");
-        then(solution.longestPalindrome("a")).isEqualTo("a");
-        then(solution.longestPalindrome("ac")).isEqualTo("a");
-        then(solution.longestPalindrome("aaaa")).isEqualTo("aaaa");
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.longestPalindrome("baba")).isEqualTo("bab");
+    then(solution.longestPalindrome("cbbd")).isEqualTo("bb");
+    then(solution.longestPalindrome("a")).isEqualTo("a");
+    then(solution.longestPalindrome("ac")).isEqualTo("a");
+    then(solution.longestPalindrome("aaaa")).isEqualTo("aaaa");
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public String longestPalindrome(String s) {
-            final int lng = s.length();
-            // dp[i][j] == 0 表示 S[i..j] 是回文串
-            int[][] dp = new int[lng][lng];
-            String ans = s.substring(0, 1);
-            for (int j = 0; j < lng; j++) {
-                for (int i = j - 1; i >= 0; i--) {
-                    boolean isPalindrome = s.charAt(i) == s.charAt(j) && (i == j - 1 || dp[i + 1][j - 1] == 0);
-                    if (!isPalindrome) {
-                        dp[i][j] = 1;
-                        continue;
-                    }
-                    if (j - i + 1 > ans.length()) {
-                        ans = s.substring(i, j + 1);
-                    }
-                }
-            }
-            return ans;
+    public String longestPalindrome(String s) {
+      final int lng = s.length();
+      // dp[i][j] == 0 表示 S[i..j] 是回文串
+      int[][] dp = new int[lng][lng];
+      String ans = s.substring(0, 1);
+      for (int j = 0; j < lng; j++) {
+        for (int i = j - 1; i >= 0; i--) {
+          boolean isPalindrome =
+              s.charAt(i) == s.charAt(j) && (i == j - 1 || dp[i + 1][j - 1] == 0);
+          if (!isPalindrome) {
+            dp[i][j] = 1;
+            continue;
+          }
+          if (j - i + 1 > ans.length()) {
+            ans = s.substring(i, j + 1);
+          }
         }
-
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

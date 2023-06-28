@@ -20,29 +20,30 @@ import org.mockito.Mock;
  */
 public class UserServiceTest extends AbstractJUnit4Mockito {
 
-    @InjectMocks
-    UserService userService;
+  @InjectMocks
+  UserService userService;
 
-    @Mock
-    UserRepo userRepo;
+  @Mock
+  UserRepo userRepo;
 
-    @Test
-    public void getNameById() {
-        // given
-        final String name = "zhang.zzf";
-        // stub
-        Long id = 1L;
-        given(userRepo.getById(any())).willReturn(Optional.of(buildUser(name, id)));
-        // when
-        final Optional<User> byId = userService.getById(1L);
-        // then
-        // mockito verify
-        BDDMockito.then(userRepo).should(times(1)).getById(1L);
-        // result assert
-        BDDAssertions.then(byId).isPresent().get().returns(id, User::getId).returns(name, User::getName);
-    }
+  @Test
+  public void getNameById() {
+    // given
+    final String name = "zhang.zzf";
+    // stub
+    Long id = 1L;
+    given(userRepo.getById(any())).willReturn(Optional.of(buildUser(name, id)));
+    // when
+    final Optional<User> byId = userService.getById(1L);
+    // then
+    // mockito verify
+    BDDMockito.then(userRepo).should(times(1)).getById(1L);
+    // result assert
+    BDDAssertions.then(byId).isPresent().get().returns(id, User::getId)
+        .returns(name, User::getName);
+  }
 
-    private User buildUser(String name, Long id) {
-        return User.builder().id(id).name(name).build();
-    }
+  private User buildUser(String name, Long id) {
+    return User.builder().id(id).name(name).build();
+  }
 }

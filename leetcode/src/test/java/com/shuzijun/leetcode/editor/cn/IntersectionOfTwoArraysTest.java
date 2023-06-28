@@ -30,36 +30,35 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 
 public class IntersectionOfTwoArraysTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+      final Set<Integer> nums1Set = Arrays.stream(nums1)
+          .boxed()
+          .collect(Collectors.toSet());
+      return Arrays.stream(nums2)
+          .distinct()
+          .filter(nums1Set::contains)
+          .toArray();
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int[] intersection(int[] nums1, int[] nums2) {
-            final Set<Integer> nums1Set = Arrays.stream(nums1)
-                    .boxed()
-                    .collect(Collectors.toSet());
-            return Arrays.stream(nums2)
-                    .distinct()
-                    .filter(nums1Set::contains)
-                    .toArray();
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

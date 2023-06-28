@@ -47,50 +47,50 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class FindKPairsWithSmallestSumsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final List<List<Integer>> lists = solution.kSmallestPairs(new int[]{1, 7, 11}, new int[]{2, 4}, 3);
-        then(lists.get(0)).contains(1, 2);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final List<List<Integer>> lists = solution.kSmallestPairs(new int[]{1, 7, 11}, new int[]{2, 4},
+        3);
+    then(lists.get(0)).contains(1, 2);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-            PriorityQueue<int[]> pq = new PriorityQueue<>(k,
-                    Comparator.comparing(ints -> nums1[ints[0]] + nums2[ints[1]]));
-            for (int i = 0; i < Math.min(k, nums1.length); i++) {
-                pq.add(new int[]{i, 0});
-            }
-            List<List<Integer>> ret = new ArrayList<>(k);
-            while (k-- > 0 && !pq.isEmpty()) {
-                final int[] smallIdx = pq.poll();
-                ret.add(new ArrayList<Integer>(2) {{
-                    add(nums1[smallIdx[0]]);
-                    add(nums2[smallIdx[1]]);
-                }});
-                if (smallIdx[1] + 1 < nums2.length) {
-                    pq.add(new int[]{smallIdx[0], smallIdx[1] + 1});
-                }
-            }
-            return ret;
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+      PriorityQueue<int[]> pq = new PriorityQueue<>(k,
+          Comparator.comparing(ints -> nums1[ints[0]] + nums2[ints[1]]));
+      for (int i = 0; i < Math.min(k, nums1.length); i++) {
+        pq.add(new int[]{i, 0});
+      }
+      List<List<Integer>> ret = new ArrayList<>(k);
+      while (k-- > 0 && !pq.isEmpty()) {
+        final int[] smallIdx = pq.poll();
+        ret.add(new ArrayList<Integer>(2) {{
+          add(nums1[smallIdx[0]]);
+          add(nums2[smallIdx[1]]);
+        }});
+        if (smallIdx[1] + 1 < nums2.length) {
+          pq.add(new int[]{smallIdx[0], smallIdx[1] + 1});
         }
-
+      }
+      return ret;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

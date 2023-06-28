@@ -32,49 +32,49 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class SubsetsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final List<List<Integer>> lists = solution.subsets(new int[]{1, 2, 3});
-        then(lists).hasSize(8);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final List<List<Integer>> lists = solution.subsets(new int[]{1, 2, 3});
+    then(lists).hasSize(8);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public List<List<Integer>> subsets(int[] nums) {
+      List<List<Integer>> ret = new ArrayList<>();
+      for (int i = 0; i <= nums.length; i++) {
+        backTrack(nums, i, 0, new ArrayList<>(), ret);
+      }
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public List<List<Integer>> subsets(int[] nums) {
-            List<List<Integer>> ret = new ArrayList<>();
-            for (int i = 0; i <= nums.length; i++) {
-                backTrack(nums, i, 0, new ArrayList<>(), ret);
-            }
-            return ret;
-        }
-
-        private void backTrack(int[] nums, int k, int idx, List<Integer> track, List<List<Integer>> ret) {
-            if (track.size() == k) {
-                ret.add(new ArrayList<>(track));
-                return;
-            }
-            for (int i = idx; i < nums.length; i++) {
-                // 选择
-                track.add(nums[i]);
-                backTrack(nums, k, i + 1, track, ret);
-                track.remove(track.size() - 1);
-            }
-        }
-
+    private void backTrack(int[] nums, int k, int idx, List<Integer> track,
+        List<List<Integer>> ret) {
+      if (track.size() == k) {
+        ret.add(new ArrayList<>(track));
+        return;
+      }
+      for (int i = idx; i < nums.length; i++) {
+        // 选择
+        track.add(nums[i]);
+        backTrack(nums, k, i + 1, track, ret);
+        track.remove(track.size() - 1);
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

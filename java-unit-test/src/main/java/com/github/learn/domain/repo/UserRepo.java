@@ -10,11 +10,11 @@ import java.util.Optional;
 
 public interface UserRepo {
 
-    /**
-     * getUserByUserId
-     *
-     * @param userId id
-     * @return User
-     */
-    Optional<User> getById(Long userId);
+  /**
+   * getUserByUserId
+   *
+   * @param userId id
+   * @return User
+   */
+  Optional<User> getById(Long userId);
 }

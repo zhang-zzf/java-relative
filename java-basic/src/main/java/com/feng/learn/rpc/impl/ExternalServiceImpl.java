@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 @Service("externalService")
 public class ExternalServiceImpl implements ExternalService {
 
-    @Override
-    public String service(long l) {
-        return String.valueOf(l);
-    }
+  @Override
+  public String service(long l) {
+    return String.valueOf(l);
+  }
 }

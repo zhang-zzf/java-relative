@@ -43,62 +43,62 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FindFirstAndLastPositionOfElementInSortedArrayTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[] range = solution.searchRange(new int[]{5, 7, 7, 8, 8, 8, 10, 10, 11}, 8);
-        then(range).containsExactly(3, 5);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[] range = solution.searchRange(new int[]{5, 7, 7, 8, 8, 8, 10, 10, 11}, 8);
+    then(range).containsExactly(3, 5);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] searchRange(int[] nums, int target) {
-            int[] ans = {-1, -1};
-            if (nums.length == 0
-                    || target < nums[0]
-                    || target > nums[nums.length - 1]) {
-                return ans;
-            }
-            int left = 0, right = nums.length - 1;
-            int idx = -1;
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                if (nums[mid] < target) {
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
-                    idx = mid;
-                }
-            }
-            if (nums[idx] != target) {
-                return ans;
-            }
-            ans[0] = idx;
-            left = 0;
-            right = nums.length - 1;
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                if (nums[mid] <= target) {
-                    left = mid + 1;
-                    idx = mid;
-                } else {
-                    right = mid - 1;
-                }
-            }
-            ans[1] = idx;
-            return ans;
+    public int[] searchRange(int[] nums, int target) {
+      int[] ans = {-1, -1};
+      if (nums.length == 0
+          || target < nums[0]
+          || target > nums[nums.length - 1]) {
+        return ans;
+      }
+      int left = 0, right = nums.length - 1;
+      int idx = -1;
+      while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        if (nums[mid] < target) {
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+          idx = mid;
         }
-
+      }
+      if (nums[idx] != target) {
+        return ans;
+      }
+      ans[0] = idx;
+      left = 0;
+      right = nums.length - 1;
+      while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        if (nums[mid] <= target) {
+          left = mid + 1;
+          idx = mid;
+        } else {
+          right = mid - 1;
+        }
+      }
+      ans[1] = idx;
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

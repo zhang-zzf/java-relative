@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ServiceB {
 
-    private final ServiceA serviceA;
+  private final ServiceA serviceA;
 
-    public void methodA() {
-        log.info("serviceB.methodA");
-        serviceA.methodA();
-    }
+  public void methodA() {
+    log.info("serviceB.methodA");
+    serviceA.methodA();
+  }
 
 
-    public void methodB() {
-        log.info("serviceB.methodB");
-    }
+  public void methodB() {
+    log.info("serviceB.methodB");
+  }
 
 }

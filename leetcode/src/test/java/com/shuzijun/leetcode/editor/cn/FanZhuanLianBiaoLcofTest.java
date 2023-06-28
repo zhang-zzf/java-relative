@@ -21,63 +21,59 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FanZhuanLianBiaoLcofTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final ListNode n3 = new ListNode(3);
-        final ListNode n2 = new ListNode(2);
-        final ListNode n1 = new ListNode(1);
-        n1.next = n2;
-        n2.next = n3;
-        final ListNode listNode = solution.reverseList(n1);
-        then(listNode.val).isEqualTo(3);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final ListNode n3 = new ListNode(3);
+    final ListNode n2 = new ListNode(2);
+    final ListNode n1 = new ListNode(1);
+    n1.next = n2;
+    n2.next = n3;
+    final ListNode listNode = solution.reverseList(n1);
+    then(listNode.val).isEqualTo(3);
+  }
+
+  public class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+      val = x;
     }
 
-    public class ListNode {
+  }
+  //leetcode submit region begin(Prohibit modification and deletion)
 
-        int val;
-        ListNode next;
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode(int
+   * x) { val = x; } }
+   */
+  class Solution {
 
-        ListNode(int x) {
-            val = x;
-        }
-
+    public ListNode reverseList(ListNode head) {
+      if (head == null) {
+        return null;
+      }
+      if (head.next != null) {
+        final ListNode subListHead = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return subListHead;
+      } else {
+        return head;
+      }
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
 
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode(int x) { val = x; }
-     * }
-     */
-    class Solution {
-
-        public ListNode reverseList(ListNode head) {
-            if (head == null) {
-                return null;
-            }
-            if (head.next != null) {
-                final ListNode subListHead = reverseList(head.next);
-                head.next.next = head;
-                head.next = null;
-                return subListHead;
-            } else {
-                return head;
-            }
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

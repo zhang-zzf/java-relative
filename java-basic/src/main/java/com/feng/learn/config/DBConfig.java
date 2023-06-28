@@ -25,43 +25,44 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class DBConfig {
 
-    @Bean
-    @Primary
-    public DataSource dataSource() {
-        MysqlDataSource mysqlDataSource = new MysqlDataSource();
-        mysqlDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
-        mysqlDataSource.setUser("test");
-        mysqlDataSource.setPassword("test@%Mysql0.");
-        return mysqlDataSource;
-    }
+  @Bean
+  @Primary
+  public DataSource dataSource() {
+    MysqlDataSource mysqlDataSource = new MysqlDataSource();
+    mysqlDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
+    mysqlDataSource.setUser("test");
+    mysqlDataSource.setPassword("test@%Mysql0.");
+    return mysqlDataSource;
+  }
 
-    /**
-     * 用于管理mybatis的事务管理器
-     * <p>为事务管理器指定的 DataSource 必须和用来创建 SqlSessionFactoryBean 的是同一个数据源 ，
-     * 否则事务管理器就无法工作了</p>
-     *
-     * @param dataSource 数据源
-     * @return 事务管理器
-     */
-    @Bean
-    public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
+  /**
+   * 用于管理mybatis的事务管理器
+   * <p>为事务管理器指定的 DataSource 必须和用来创建 SqlSessionFactoryBean 的是同一个数据源 ，
+   * 否则事务管理器就无法工作了</p>
+   *
+   * @param dataSource 数据源
+   * @return 事务管理器
+   */
+  @Bean
+  public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
+    return new DataSourceTransactionManager(dataSource);
+  }
 
-    @Bean
-    public SqlSessionFactory sqlSessionFactory(ApplicationContext context, DataSource dataSource) throws Exception {
-        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        factoryBean.setDataSource(dataSource);
+  @Bean
+  public SqlSessionFactory sqlSessionFactory(ApplicationContext context, DataSource dataSource)
+      throws Exception {
+    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    factoryBean.setDataSource(dataSource);
 
-        ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
+    ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
 
-        factoryBean.setMapperLocations(
-            resourceResolver.getResources("classpath:/com/feng/learn/dao/*.xml")
-        );
-        factoryBean.setConfigLocation(context.getResource("classpath:mybatis-global-config.xml"));
+    factoryBean.setMapperLocations(
+        resourceResolver.getResources("classpath:/com/feng/learn/dao/*.xml")
+    );
+    factoryBean.setConfigLocation(context.getResource("classpath:mybatis-global-config.xml"));
 
-        return factoryBean.getObject();
-    }
+    return factoryBean.getObject();
+  }
 
 
 }

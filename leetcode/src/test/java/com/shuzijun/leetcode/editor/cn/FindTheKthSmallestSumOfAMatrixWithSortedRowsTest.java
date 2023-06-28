@@ -48,96 +48,95 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class FindTheKthSmallestSumOfAMatrixWithSortedRowsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int kthSmallest = solution.kthSmallest(new int[][]{
-                new int[]{1, 10, 10},
-                new int[]{1, 4, 5},
-                new int[]{2, 3, 6},
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int kthSmallest = solution.kthSmallest(new int[][]{
+        new int[]{1, 10, 10},
+        new int[]{1, 4, 5},
+        new int[]{2, 3, 6},
 
-        }, 7);
-        then(kthSmallest).isEqualTo(9);
+    }, 7);
+    then(kthSmallest).isEqualTo(9);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int kthSmallest(int[][] mat, int k) {
+      Item[] ret = new Item[k];
+      PriorityQueue<Item> pq = new PriorityQueue<>();
+      // 第一列
+      int[] data = new int[mat.length];
+      int[] idxOfRow = new int[mat.length];
+      for (int i = 0; i < mat.length; i++) {
+        data[i] = mat[i][0];
+        idxOfRow[i] = 0;
+      }
+      pq.add(new Item(data, idxOfRow));
+      while (!pq.isEmpty() && k-- > 0) {
+        Item poll = pq.poll();
+        while (pq.size() > 0 && poll.compareTo(pq.peek()) == 0) {
+          poll = pq.poll();
+        }
+        ret[k] = poll;
+        for (int i = 0; i < mat.length; i++) {
+          final int newColumn = poll.idxOfRow[i] + 1;
+          if (newColumn < mat[i].length) {
+            final int[] newData = Arrays.copyOf(poll.data, poll.data.length);
+            newData[i] = mat[i][newColumn];
+            final int[] newIdx = Arrays.copyOf(poll.idxOfRow, poll.idxOfRow.length);
+            newIdx[i] = newColumn;
+            pq.add(new Item(newData, newIdx));
+          }
+        }
+      }
+      return ret[0] == null ? -1 : ret[0].sum;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  }
 
-        public int kthSmallest(int[][] mat, int k) {
-            Item[] ret = new Item[k];
-            PriorityQueue<Item> pq = new PriorityQueue<>();
-            // 第一列
-            int[] data = new int[mat.length];
-            int[] idxOfRow = new int[mat.length];
-            for (int i = 0; i < mat.length; i++) {
-                data[i] = mat[i][0];
-                idxOfRow[i] = 0;
-            }
-            pq.add(new Item(data, idxOfRow));
-            while (!pq.isEmpty() && k-- > 0) {
-                Item poll = pq.poll();
-                while (pq.size() > 0 && poll.compareTo(pq.peek()) == 0) {
-                    poll = pq.poll();
-                }
-                ret[k] = poll;
-                for (int i = 0; i < mat.length; i++) {
-                    final int newColumn = poll.idxOfRow[i] + 1;
-                    if (newColumn < mat[i].length) {
-                        final int[] newData = Arrays.copyOf(poll.data, poll.data.length);
-                        newData[i] = mat[i][newColumn];
-                        final int[] newIdx = Arrays.copyOf(poll.idxOfRow, poll.idxOfRow.length);
-                        newIdx[i] = newColumn;
-                        pq.add(new Item(newData, newIdx));
-                    }
-                }
-            }
-            return ret[0] == null ? -1 : ret[0].sum;
-        }
+  class Item implements Comparable<Item> {
 
+    int[] data;
+    int sum;
+    int[] idxOfRow;
+
+    public Item(int[] data, int[] idxOfRow) {
+      this.data = data;
+      for (int d : data) {
+        this.sum += d;
+      }
+      this.idxOfRow = idxOfRow;
     }
 
-    class Item implements Comparable<Item> {
-
-        int[] data;
-        int sum;
-        int[] idxOfRow;
-
-        public Item(int[] data, int[] idxOfRow) {
-            this.data = data;
-            for (int d : data) {
-                this.sum += d;
-            }
-            this.idxOfRow = idxOfRow;
+    @Override
+    public int compareTo(Item o) {
+      int c = this.sum - o.sum;
+      if (c != 0) {
+        return c;
+      }
+      // 核心去重逻辑
+      for (int i = 0; i < this.idxOfRow.length; i++) {
+        c = this.idxOfRow[i] - o.idxOfRow[i];
+        if (c != 0) {
+          return c;
         }
-
-        @Override
-        public int compareTo(Item o) {
-            int c = this.sum - o.sum;
-            if (c != 0) {
-                return c;
-            }
-            // 核心去重逻辑
-            for (int i = 0; i < this.idxOfRow.length; i++) {
-                c = this.idxOfRow[i] - o.idxOfRow[i];
-                if (c != 0) {
-                    return c;
-                }
-            }
-            return 0;
-        }
-
+      }
+      return 0;
     }
+
+  }
 
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -14,14 +14,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Person {
 
-    @NonNull
-    private Long id;
-    private String name;
-    private Address address;
+  @NonNull
+  private Long id;
+  private String name;
+  private Address address;
 
-    @Data
-    public static class Address {
-        private String street;
-        private String home;
-    }
+  @Data
+  public static class Address {
+
+    private String street;
+    private String home;
+  }
 }

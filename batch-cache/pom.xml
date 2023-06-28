@@ -1,85 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>batch-cache</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>com.github.learn</groupId>
-    <artifactId>batch-cache</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>batch-cache</name>
-    <description>Demo project for Spring Boot</description>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
+    <dependency>
+      <artifactId>spring-boot-starter-aop</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>junit-vintage-engine</artifactId>
+          <groupId>org.junit.vintage</groupId>
+        </exclusion>
+      </exclusions>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>jedis</artifactId>
+      <groupId>redis.clients</groupId>
+      <scope>compile</scope>
+      <type>jar</type>
+      <version>3.2.0</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+    <dependency>
+      <artifactId>guava</artifactId>
+      <groupId>com.google.guava</groupId>
+      <version>29.0-jre</version>
+    </dependency>
+    <dependency>
+      <artifactId>fastjson</artifactId>
+      <groupId>com.alibaba</groupId>
+      <scope>compile</scope>
+      <version>1.2.55</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>3.2.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+    <dependency>
+      <artifactId>assertj-core</artifactId>
+      <groupId>org.assertj</groupId>
+      <scope>test</scope>
+      <version>3.14.0</version>
+    </dependency>
+  </dependencies>
+  <description>Demo project for Spring Boot</description>
+  <groupId>com.github.learn</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <name>batch-cache</name>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>29.0-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.55</version>
-            <scope>compile</scope>
-        </dependency>
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>2.3.1.RELEASE</version> <!-- lookup parent from repository -->
+  </parent>
 
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-            <version>3.14.0</version>
-        </dependency>
-    </dependencies>
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+  <version>0.0.1-SNAPSHOT</version>
 
 </project>

@@ -1,10 +1,9 @@
 package com.feng.insure.protocol.insureserver.controller.model;
 
+import java.util.Map;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.util.Map;
 
 /**
  * <p>被保人</p>
@@ -17,18 +16,18 @@ import java.util.Map;
 @ToString(callSuper = true)
 public class Insurant extends Person {
 
-    /**
-     * 被保人在业务领域的唯一id
-     * <p>长度不得超过 64 字节</p>
-     * <p>骑手id</p>
-     * <p>代理商id</p>
-     */
-    private String bizId;
+  /**
+   * 被保人在业务领域的唯一id
+   * <p>长度不得超过 64 字节</p>
+   * <p>骑手id</p>
+   * <p>代理商id</p>
+   */
+  private String bizId;
 
 
-    /**
-     * 被保人额外信息
-     */
-    private Map<String, String> extra;
+  /**
+   * 被保人额外信息
+   */
+  private Map<String, String> extra;
 
 }

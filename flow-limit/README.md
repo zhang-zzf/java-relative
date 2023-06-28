@@ -9,13 +9,12 @@
 - lombok
 - junit5 / junit4 / mockito / powermock just for junit4 / assertJ
 - slf4j/logback 日志打印到控制台
-- plugin: maven-source-plugin / maven-surefire-plugin / maven-surefire-report-plugin / jacoco-maven-plugin
-
-
+- plugin: maven-source-plugin / maven-surefire-plugin / maven-surefire-report-plugin /
+  jacoco-maven-plugin
 
 ### 如何创建本地 archtype
 
-1. `mvn archetype:create-from-project` 
+1. `mvn archetype:create-from-project`
 2. `cd target/generated-sources/archetype/` 修改相关文件（别忘记在target下添加 .gitignore）
 3. `cd  target/generated-sources/archetype/ && mvn compile && mvn install`
 4. `mvn archetype:crawl`

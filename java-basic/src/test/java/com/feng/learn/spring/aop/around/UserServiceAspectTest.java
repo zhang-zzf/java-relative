@@ -1,5 +1,7 @@
 package com.feng.learn.spring.aop.around;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.feng.learn.spring.aop.aspects.around.UserServiceAspect;
 import com.feng.learn.spring.aop.service.UserService;
 import com.feng.learn.spring.aop.service.impl.UserServiceImpl;
@@ -8,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author zhanfeng.zhang
@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserServiceAspectTest {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @Test
-    public void givenAroundAspect_whenCallMethod_thenThrowException() {
-        assertThat(userService.save(0L, null)).isTrue();
-    }
+  @Test
+  public void givenAroundAspect_whenCallMethod_thenThrowException() {
+    assertThat(userService.save(0L, null)).isTrue();
+  }
 }

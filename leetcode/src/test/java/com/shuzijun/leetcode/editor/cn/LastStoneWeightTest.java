@@ -35,44 +35,43 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class LastStoneWeightTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int weight = solution.lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1});
-        then(weight).isEqualTo(1);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int weight = solution.lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1});
+    then(weight).isEqualTo(1);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int lastStoneWeight(int[] stones) {
-            PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
-            for (int stone : stones) {
-                pq.add(stone);
-            }
-            while (pq.size() > 1) {
-                final Integer m = pq.poll();
-                final Integer n = pq.poll();
-                if (m > n) {
-                    pq.add(m - n);
-                }
-            }
-            final Integer poll = pq.poll();
-            return poll == null ? 0 : poll.intValue();
+    public int lastStoneWeight(int[] stones) {
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+      for (int stone : stones) {
+        pq.add(stone);
+      }
+      while (pq.size() > 1) {
+        final Integer m = pq.poll();
+        final Integer n = pq.poll();
+        if (m > n) {
+          pq.add(m - n);
         }
-
+      }
+      final Integer poll = pq.poll();
+      return poll == null ? 0 : poll.intValue();
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

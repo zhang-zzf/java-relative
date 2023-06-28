@@ -32,55 +32,55 @@ import org.springframework.transaction.annotation.Transactional;
 })
 public class ServiceAImplTest {
 
-    @Autowired
-    ExternalService externalService;
-    @Autowired
-    ServiceA serviceA;
-    @Autowired
-    UserDao userDao;
+  @Autowired
+  ExternalService externalService;
+  @Autowired
+  ServiceA serviceA;
+  @Autowired
+  UserDao userDao;
 
-    @Ignore
-    @Test(expected = ServiceException.class)
-    public void testUserNotExist() throws ServiceException {
-        when(externalService.service(anyLong())).thenReturn("1");
-        // mock static
-        int r = serviceA.service(1);
-        assertEquals(28 + 1 + 0, r);
+  @Ignore
+  @Test(expected = ServiceException.class)
+  public void testUserNotExist() throws ServiceException {
+    when(externalService.service(anyLong())).thenReturn("1");
+    // mock static
+    int r = serviceA.service(1);
+    assertEquals(28 + 1 + 0, r);
+  }
+
+  // 注意：这里不但要mock System.class, 还要mock 使用System 的ServiceAImpl
+  @Transactional
+  @Test
+  public void serviceSuccessReturn() throws ServiceException {
+
+    User u = User.builder().id(1).age(28).name("Java").build();
+    // 测试保存
+    long userId = serviceA.createUser(u.getName(), u.getAge());
+    // mock 外部调用
+    when(externalService.service(anyLong())).thenReturn("1");
+    // mock static
+    int r = serviceA.service((int) userId);
+    assertEquals(28 + 1 + 0, r);
+  }
+
+  @Repeat(3)
+  @Transactional
+  @Test
+  public void saveUser() {
+    User target = User.builder().name("Java").age(28).build();
+    long id = serviceA.createUser(target.getName(), target.getAge());
+    target.setId(id);
+    User dbData = userDao.getById(id);
+    assertEquals(target, dbData);
+  }
+
+  @Configuration
+  public static class MockContextConfig {
+
+    @Bean
+    public ExternalService externalServiceMock() {
+      return Mockito.mock(ExternalService.class);
     }
-
-    // 注意：这里不但要mock System.class, 还要mock 使用System 的ServiceAImpl
-    @Transactional
-    @Test
-    public void serviceSuccessReturn() throws ServiceException {
-
-        User u = User.builder().id(1).age(28).name("Java").build();
-        // 测试保存
-        long userId = serviceA.createUser(u.getName(), u.getAge());
-        // mock 外部调用
-        when(externalService.service(anyLong())).thenReturn("1");
-        // mock static
-        int r = serviceA.service((int) userId);
-        assertEquals(28 + 1 + 0, r);
-    }
-
-    @Repeat(3)
-    @Transactional
-    @Test
-    public void saveUser() {
-        User target = User.builder().name("Java").age(28).build();
-        long id = serviceA.createUser(target.getName(), target.getAge());
-        target.setId(id);
-        User dbData = userDao.getById(id);
-        assertEquals(target, dbData);
-    }
-
-    @Configuration
-    public static class MockContextConfig {
-
-        @Bean
-        public ExternalService externalServiceMock() {
-            return Mockito.mock(ExternalService.class);
-        }
-    }
+  }
 
 }

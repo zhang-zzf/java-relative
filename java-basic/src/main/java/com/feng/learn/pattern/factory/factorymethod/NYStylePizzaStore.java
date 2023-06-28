@@ -10,14 +10,14 @@ import com.feng.learn.pattern.factory.factorymethod.nystyle.CheesePizza;
  */
 public class NYStylePizzaStore extends PizzaStore {
 
-    @Override
-    public Pizza createPizza(String type) {
-        Pizza p = new NullPizza();
-        if ("cheese".equals(type)) {
-            p = new CheesePizza();
-        } else if ("greek".equals(type)) {
-            p = new GreekPizza();
-        }
-        return p;
+  @Override
+  public Pizza createPizza(String type) {
+    Pizza p = new NullPizza();
+    if ("cheese".equals(type)) {
+      p = new CheesePizza();
+    } else if ("greek".equals(type)) {
+      p = new GreekPizza();
     }
+    return p;
+  }
 }

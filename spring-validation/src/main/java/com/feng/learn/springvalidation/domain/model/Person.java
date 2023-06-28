@@ -17,24 +17,24 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Person {
 
-    @NotNull
-    @Positive
-    private Long id;
-    private String name;
-    @NotNull
-    @Valid
-    private Address address;
+  @NotNull
+  @Positive
+  private Long id;
+  private String name;
+  @NotNull
+  @Valid
+  private Address address;
 
-    @NoArgsConstructor
-    @Data
-    @Accessors(chain = true)
-    public static class Address {
+  @NoArgsConstructor
+  @Data
+  @Accessors(chain = true)
+  public static class Address {
 
-        @NotBlank
-        private String province;
-        private String city;
-        private String area;
+    @NotBlank
+    private String province;
+    private String city;
+    private String area;
 
-    }
+  }
 
 }

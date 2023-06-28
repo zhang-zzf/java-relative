@@ -60,54 +60,47 @@ import org.junit.jupiter.api.Test;
 
 public class LinkedListCycleTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+      val = x;
+      next = null;
     }
 
-    class ListNode {
+  }
+  //leetcode submit region begin(Prohibit modification and deletion)
 
-        int val;
-        ListNode next;
+  /**
+   * Definition for singly-linked list. class ListNode { int val; ListNode next; ListNode(int x) {
+   * val = x; next = null; } }
+   */
+  public class Solution {
 
-        ListNode(int x) {
-            val = x;
-            next = null;
+    public boolean hasCycle(ListNode head) {
+      ListNode slow = head, fast = head;
+      boolean ret = false;
+      while (fast != null && fast.next != null) {
+        fast = fast.next.next;
+        slow = slow.next;
+        if (fast == slow) {
+          ret = true;
+          break;
         }
-
+      }
+      return ret;
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
 
-    /**
-     * Definition for singly-linked list.
-     * class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode(int x) {
-     * val = x;
-     * next = null;
-     * }
-     * }
-     */
-    public class Solution {
-
-        public boolean hasCycle(ListNode head) {
-            ListNode slow = head, fast = head;
-            boolean ret = false;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
-                slow = slow.next;
-                if (fast == slow) {
-                    ret = true;
-                    break;
-                }
-            }
-            return ret;
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

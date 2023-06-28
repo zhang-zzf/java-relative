@@ -117,54 +117,55 @@ import org.junit.jupiter.api.Test;
 
 public class StringToIntegerAtoiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
-    }
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-        public int myAtoi(String s) {
-            long ret = 0;
-            int prefix = 0;
-            int skipSpace = 1;
-            for (char c : s.toCharArray()) {
-                if (' ' == c && skipSpace == 1) {
-                    continue;
-                }
-                skipSpace = 0;
-                if ('+' == c && prefix == 0) {
-                    prefix = 1;
-                    continue;
-                }
-                if ('-' == c && prefix == 0) {
-                    prefix = -1;
-                    continue;
-                }
-                if (0x30 <= c && c <= 0x39) {
-                    if (prefix == 0) {
-                        prefix = 1;
-                    }
-                    long tmp = ret * 10 + prefix * (c - 0x30);
-                    if (prefix == 1 && tmp > Integer.MAX_VALUE) {
-                        ret = Integer.MAX_VALUE;
-                        break;
-                    }
-                    if (prefix == -1 && tmp < Integer.MIN_VALUE) {
-                        ret = Integer.MIN_VALUE;
-                        break;
-                    }
-                    ret = tmp;
-                    continue;
-                }
-                // 遇到非法字符
-                break;
-            }
-            return Long.valueOf(ret).intValue();
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int myAtoi(String s) {
+      long ret = 0;
+      int prefix = 0;
+      int skipSpace = 1;
+      for (char c : s.toCharArray()) {
+        if (' ' == c && skipSpace == 1) {
+          continue;
         }
+        skipSpace = 0;
+        if ('+' == c && prefix == 0) {
+          prefix = 1;
+          continue;
+        }
+        if ('-' == c && prefix == 0) {
+          prefix = -1;
+          continue;
+        }
+        if (0x30 <= c && c <= 0x39) {
+          if (prefix == 0) {
+            prefix = 1;
+          }
+          long tmp = ret * 10 + prefix * (c - 0x30);
+          if (prefix == 1 && tmp > Integer.MAX_VALUE) {
+            ret = Integer.MAX_VALUE;
+            break;
+          }
+          if (prefix == -1 && tmp < Integer.MIN_VALUE) {
+            ret = Integer.MIN_VALUE;
+            break;
+          }
+          ret = tmp;
+          continue;
+        }
+        // 遇到非法字符
+        break;
+      }
+      return Long.valueOf(ret).intValue();
     }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

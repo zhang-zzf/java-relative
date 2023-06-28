@@ -23,41 +23,42 @@ import org.mockito.Mock;
  */
 public class _02RunWithMockitoUnitTest extends AbstractJUnit5Mockito {
 
-    @Before
-    public void junit4Before() {
+  @Mock
+  PhoneBookRepository phoneBookRepository;
+  @InjectMocks
+  PhoneBookService phoneBookService;
+  String momContactName = "Mom";
+  String momPhoneNumber = "01234";
+  String xContactName = "x";
+  String tooLongPhoneNumber = "01111111111111";
 
-    }
+  @Before
+  public void junit4Before() {
 
-    @BeforeEach
-    void junit5BeforeEach() {
+  }
 
-    }
+  @BeforeEach
+  void junit5BeforeEach() {
 
-    @Mock
-    PhoneBookRepository phoneBookRepository;
-    @InjectMocks
-    PhoneBookService phoneBookService;
+  }
 
-    String momContactName = "Mom";
-    String momPhoneNumber = "01234";
-    String xContactName = "x";
-    String tooLongPhoneNumber = "01111111111111";
+  @Test
+  public void givenValidContactName_whenSearchInPhoneBook_thenReturnPhoneNum() {
+    // given
+    given(phoneBookRepository.contains(momContactName)).willReturn(true);
+    given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
+        .will(
+            invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
 
-    @Test
-    public void givenValidContactName_whenSearchInPhoneBook_thenReturnPhoneNum() {
-        // given
-        given(phoneBookRepository.contains(momContactName)).willReturn(true);
-        given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
-            .will(invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
+    // when
+    String number = phoneBookService.search(momContactName);
 
-        // when
-        String number = phoneBookService.search(momContactName);
-
-        // then
-        // verify
-        BDDMockito.then(phoneBookRepository).should(atLeastOnce()).contains(momContactName);
-        BDDMockito.then(phoneBookRepository).should(atMost(1)).getPhoneNumberByContactName(momContactName);
-        Assert.assertThat(number, is(momPhoneNumber));
-    }
+    // then
+    // verify
+    BDDMockito.then(phoneBookRepository).should(atLeastOnce()).contains(momContactName);
+    BDDMockito.then(phoneBookRepository).should(atMost(1))
+        .getPhoneNumberByContactName(momContactName);
+    Assert.assertThat(number, is(momPhoneNumber));
+  }
 
 }

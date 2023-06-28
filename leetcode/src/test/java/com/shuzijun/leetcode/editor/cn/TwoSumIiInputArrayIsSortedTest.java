@@ -47,46 +47,46 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class TwoSumIiInputArrayIsSortedTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[] ints = solution.twoSum(new int[]{2, 3, 4}, 6);
-        then(ints).containsExactly(1, 3);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[] ints = solution.twoSum(new int[]{2, 3, 4}, 6);
+    then(ints).containsExactly(1, 3);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] twoSum(int[] numbers, int target) {
-            int left = 0, right = numbers.length - 1;
-            while (left < right) {
-                int sum = numbers[left] + numbers[right];
-                if (sum == target) {
-                    return new int[]{left + 1, right + 1};
-                }
-                int mid = left + ((right - left) >> 1);
-                if (numbers[left] + numbers[mid] > target) {
-                    right = mid - 1;
-                } else if (numbers[right] + numbers[mid] < target) {
-                    left = mid + 1;
-                } else if (sum < target) {
-                    left += 1;
-                } else {
-                    right -= 1;
-                }
-            }
-            return new int[]{-1, -1};
+    public int[] twoSum(int[] numbers, int target) {
+      int left = 0, right = numbers.length - 1;
+      while (left < right) {
+        int sum = numbers[left] + numbers[right];
+        if (sum == target) {
+          return new int[]{left + 1, right + 1};
         }
-
+        int mid = left + ((right - left) >> 1);
+        if (numbers[left] + numbers[mid] > target) {
+          right = mid - 1;
+        } else if (numbers[right] + numbers[mid] < target) {
+          left = mid + 1;
+        } else if (sum < target) {
+          left += 1;
+        } else {
+          right -= 1;
+        }
+      }
+      return new int[]{-1, -1};
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

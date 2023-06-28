@@ -50,54 +50,54 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FindMinimumInRotatedSortedArrayIiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.findMin(new int[]{2, 2, 2, 0, 1})).isEqualTo(0);
-        then(solution.findMin(new int[]{1, 2, 2, 2, 0})).isEqualTo(0);
-        then(solution.findMin(new int[]{0, 1, 2, 2, 2})).isEqualTo(0);
-        then(solution.findMin(new int[]{2, 2, 2})).isEqualTo(2);
-        // fail case: 3313
-        then(solution.findMin(new int[]{3, 3, 1, 3})).isEqualTo(1);
-        // fail case: 10,1,10,10,10
-        then(solution.findMin(new int[]{10, 1, 10, 10, 10})).isEqualTo(1);
-        // fail case: 1,1,0,1,1,1,1,1,1,1,1,1
-        then(solution.findMin(new int[]{1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1})).isEqualTo(0);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.findMin(new int[]{2, 2, 2, 0, 1})).isEqualTo(0);
+    then(solution.findMin(new int[]{1, 2, 2, 2, 0})).isEqualTo(0);
+    then(solution.findMin(new int[]{0, 1, 2, 2, 2})).isEqualTo(0);
+    then(solution.findMin(new int[]{2, 2, 2})).isEqualTo(2);
+    // fail case: 3313
+    then(solution.findMin(new int[]{3, 3, 1, 3})).isEqualTo(1);
+    // fail case: 10,1,10,10,10
+    then(solution.findMin(new int[]{10, 1, 10, 10, 10})).isEqualTo(1);
+    // fail case: 1,1,0,1,1,1,1,1,1,1,1,1
+    then(solution.findMin(new int[]{1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1})).isEqualTo(0);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int findMin(int[] nums) {
-            int left = 0, right = nums.length - 1;
-            while (left < right) {
-                int mid = left + ((right - left) >> 1);
-                if (nums[mid] < nums[right]) {
-                    right = mid;
-                } else if (nums[mid] > nums[right]) {
-                    left = mid + 1;
-                } else {
-                    // nums[mid] == nums[right]
-                    // 无法判断最小值是在左侧还是右侧。
-                    // 有2种情况可以确定
-                    // 1. 最小值不是 nums[mid]
-                    // 2. 最小值是 nums[mid]
-                    // 以上2种情况下把 right 排除在查找范围外不影响最终最小值
-                    right -= 1;
-                }
-            }
-            return nums[left];
+    public int findMin(int[] nums) {
+      int left = 0, right = nums.length - 1;
+      while (left < right) {
+        int mid = left + ((right - left) >> 1);
+        if (nums[mid] < nums[right]) {
+          right = mid;
+        } else if (nums[mid] > nums[right]) {
+          left = mid + 1;
+        } else {
+          // nums[mid] == nums[right]
+          // 无法判断最小值是在左侧还是右侧。
+          // 有2种情况可以确定
+          // 1. 最小值不是 nums[mid]
+          // 2. 最小值是 nums[mid]
+          // 以上2种情况下把 right 排除在查找范围外不影响最终最小值
+          right -= 1;
         }
-
+      }
+      return nums[left];
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

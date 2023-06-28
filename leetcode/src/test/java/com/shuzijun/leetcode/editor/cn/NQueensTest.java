@@ -37,86 +37,85 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class NQueensTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final List<List<String>> lists = solution.solveNQueens(4);
-        then(lists).hasSize(2);
-        final List<List<String>> lists1 = solution.solveNQueens(1);
-        final List<List<String>> lists2 = solution.solveNQueens(2);
-        final List<List<String>> lists3 = solution.solveNQueens(3);
-        final List<List<String>> lists8 = solution.solveNQueens(8);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final List<List<String>> lists = solution.solveNQueens(4);
+    then(lists).hasSize(2);
+    final List<List<String>> lists1 = solution.solveNQueens(1);
+    final List<List<String>> lists2 = solution.solveNQueens(2);
+    final List<List<String>> lists3 = solution.solveNQueens(3);
+    final List<List<String>> lists8 = solution.solveNQueens(8);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    /**
+     * 解题思路：https://www.yuque.com/u1147067/vzaha9/zdbwvt#shXau
+     */
+    public List<List<String>> solveNQueens(int n) {
+      List<List<String>> ret = new ArrayList<>();
+      List<Integer> selectedColumn = new ArrayList<>(n);
+      backTrack(n, 0, selectedColumn, ret);
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        /**
-         * 解题思路：https://www.yuque.com/u1147067/vzaha9/zdbwvt#shXau
-         */
-        public List<List<String>> solveNQueens(int n) {
-            List<List<String>> ret = new ArrayList<>();
-            List<Integer> selectedColumn = new ArrayList<>(n);
-            backTrack(n, 0, selectedColumn, ret);
-            return ret;
+    private void backTrack(int n, int row, List<Integer> selectedColumn, List<List<String>> ret) {
+      if (selectedColumn.size() == n) {
+        List<String> solution = new ArrayList<>();
+        // 按行遍历棋盘
+        for (int i = 0; i < n; i++) {
+          final Integer column = selectedColumn.get(i);
+          StringBuilder buf = new StringBuilder(n);
+          // 按列构建字符串
+          for (int j = 0; j < n; j++) {
+            buf.append(column == j ? "Q" : ".");
+          }
+          solution.add(buf.toString());
         }
-
-        private void backTrack(int n, int row, List<Integer> selectedColumn, List<List<String>> ret) {
-            if (selectedColumn.size() == n) {
-                List<String> solution = new ArrayList<>();
-                // 按行遍历棋盘
-                for (int i = 0; i < n; i++) {
-                    final Integer column = selectedColumn.get(i);
-                    StringBuilder buf = new StringBuilder(n);
-                    // 按列构建字符串
-                    for (int j = 0; j < n; j++) {
-                        buf.append(column == j ? "Q" : ".");
-                    }
-                    solution.add(buf.toString());
-                }
-                // 添加
-                ret.add(solution);
-                return;
-            }
-            // 选择
-            // 按棋盘当前行遍历列
-            for (int i = 0; i < n; i++) {
-                int curRow = row;
-                int curColumn = i;
-                // 判断能不能攻击已存在的皇后
-                boolean canAttachExistQueue = false;
-                for (int j = 0; j < selectedColumn.size(); j++) {
-                    int eRow = j, eColumn = selectedColumn.get(j);
-                    if (curRow == eRow
-                            || curColumn == eColumn
-                            || Math.abs(eRow - curRow) == Math.abs(eColumn - curColumn)) {
-                        canAttachExistQueue = true;
-                        break;
-                    }
-                }
-                if (canAttachExistQueue) {
-                    continue;
-                }
-                // 选择列
-                selectedColumn.add(curColumn);
-                backTrack(n, row + 1, selectedColumn, ret);
-                // 撤销选择
-                selectedColumn.remove(selectedColumn.size() - 1);
-            }
+        // 添加
+        ret.add(solution);
+        return;
+      }
+      // 选择
+      // 按棋盘当前行遍历列
+      for (int i = 0; i < n; i++) {
+        int curRow = row;
+        int curColumn = i;
+        // 判断能不能攻击已存在的皇后
+        boolean canAttachExistQueue = false;
+        for (int j = 0; j < selectedColumn.size(); j++) {
+          int eRow = j, eColumn = selectedColumn.get(j);
+          if (curRow == eRow
+              || curColumn == eColumn
+              || Math.abs(eRow - curRow) == Math.abs(eColumn - curColumn)) {
+            canAttachExistQueue = true;
+            break;
+          }
         }
-
+        if (canAttachExistQueue) {
+          continue;
+        }
+        // 选择列
+        selectedColumn.add(curColumn);
+        backTrack(n, row + 1, selectedColumn, ret);
+        // 撤销选择
+        selectedColumn.remove(selectedColumn.size() - 1);
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

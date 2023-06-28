@@ -6,28 +6,28 @@ package com.feng.learn.pattern.chain;
  */
 public abstract class AbstractHandler {
 
-    /**
-     * 接任 handler
-     */
-    protected AbstractHandler successor;
+  /**
+   * 接任 handler
+   */
+  protected AbstractHandler successor;
 
-    /**
-     * 处理器
-     *
-     * @param in 待处理数据
-     * @return 结果
-     */
-    public abstract Object handle(Object in);
+  /**
+   * 处理器
+   *
+   * @param in 待处理数据
+   * @return 结果
+   */
+  public abstract Object handle(Object in);
 
-    public void setSuccessor(AbstractHandler successor) {
-        this.successor = successor;
+  public void setSuccessor(AbstractHandler successor) {
+    this.successor = successor;
+  }
+
+  public Object handleBySuccessor(Object in) {
+    if (successor != null) {
+      return successor.handle(in);
     }
-
-    public Object handleBySuccessor(Object in) {
-        if (successor != null) {
-            return successor.handle(in);
-        }
-        return null;
-    }
+    return null;
+  }
 
 }

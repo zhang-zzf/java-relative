@@ -43,73 +43,69 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class SortListTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final ListNode head = new ListNode(-1, new ListNode(5, new ListNode(3, new ListNode(4, new ListNode(0)))));
-        final ListNode sortL = solution.sortList(head);
-        then(sortL.val).isEqualTo(-1);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final ListNode head = new ListNode(-1,
+        new ListNode(5, new ListNode(3, new ListNode(4, new ListNode(0)))));
+    final ListNode sortL = solution.sortList(head);
+    then(sortL.val).isEqualTo(-1);
+  }
+
+
+  public class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {
     }
 
-
-    public class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
+    ListNode(int val) {
+      this.val = val;
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
 
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
-
-        public ListNode sortList(ListNode head) {
-            ListNode dummy = new ListNode(), tail = dummy;
-            PriorityQueue<ListNode> pq = new PriorityQueue<>(Comparator.comparing(listNode -> listNode.val));
-            for (ListNode ptr = head; ptr != null; ptr = ptr.next) {
-                pq.add(ptr);
-            }
-            while (!pq.isEmpty()) {
-                tail.next = pq.poll();
-                tail = tail.next;
-            }
-            tail.next = null;
-            return dummy.next;
-        }
-
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
     }
+
+  }
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode sortList(ListNode head) {
+      ListNode dummy = new ListNode(), tail = dummy;
+      PriorityQueue<ListNode> pq = new PriorityQueue<>(
+          Comparator.comparing(listNode -> listNode.val));
+      for (ListNode ptr = head; ptr != null; ptr = ptr.next) {
+        pq.add(ptr);
+      }
+      while (!pq.isEmpty()) {
+        tail.next = pq.poll();
+        tail = tail.next;
+      }
+      tail.next = null;
+      return dummy.next;
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

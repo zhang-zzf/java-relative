@@ -59,53 +59,53 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class CombinationSumTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final List<List<Integer>> lists = solution.combinationSum(new int[]{2, 3, 6, 7}, 7);
-        then(lists).hasSize(2);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final List<List<Integer>> lists = solution.combinationSum(new int[]{2, 3, 6, 7}, 7);
+    then(lists).hasSize(2);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    /**
+     * 解题思路 https://www.yuque.com/u1147067/vzaha9/wlvhdn#bIUZ9
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+      List<List<Integer>> ret = new ArrayList<>();
+      backTrack(candidates, target, 0, new ArrayList<>(), ret);
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        /**
-         * 解题思路 https://www.yuque.com/u1147067/vzaha9/wlvhdn#bIUZ9
-         */
-        public List<List<Integer>> combinationSum(int[] candidates, int target) {
-            List<List<Integer>> ret = new ArrayList<>();
-            backTrack(candidates, target, 0, new ArrayList<>(), ret);
-            return ret;
-        }
-
-        private void backTrack(int[] candidates, int target, int idx, List<Integer> track, List<List<Integer>> ret) {
-            if (target == 0) {
-                // 转结果
-                ret.add(new ArrayList<>(track));
-                return;
-            }
-            if (target < 0) {
-                return;
-            }
-            for (int i = idx; i < candidates.length; i++) {
-                track.add(candidates[i]);
-                backTrack(candidates, target - candidates[i], i, track, ret);
-                track.remove(track.size() - 1);
-            }
-        }
-
+    private void backTrack(int[] candidates, int target, int idx, List<Integer> track,
+        List<List<Integer>> ret) {
+      if (target == 0) {
+        // 转结果
+        ret.add(new ArrayList<>(track));
+        return;
+      }
+      if (target < 0) {
+        return;
+      }
+      for (int i = idx; i < candidates.length; i++) {
+        track.add(candidates[i]);
+        backTrack(candidates, target - candidates[i], i, track, ret);
+        track.remove(track.size() - 1);
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

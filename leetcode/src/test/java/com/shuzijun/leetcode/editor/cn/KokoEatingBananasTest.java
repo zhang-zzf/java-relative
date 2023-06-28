@@ -44,58 +44,58 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class KokoEatingBananasTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.minEatingSpeed(new int[]{3, 6, 7, 11}, 8))
-                .isEqualTo(4);
-        then(solution.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 5))
-                .isEqualTo(30);
-        then(solution.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 6))
-                .isEqualTo(23);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.minEatingSpeed(new int[]{3, 6, 7, 11}, 8))
+        .isEqualTo(4);
+    then(solution.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 5))
+        .isEqualTo(30);
+    then(solution.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 6))
+        .isEqualTo(23);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int minEatingSpeed(int[] piles, int h) {
+      int max = piles[0];
+      for (int i = 0; i < piles.length; i++) {
+        if (piles[i] > max) {
+          max = piles[i];
+        }
+      }
+      // 值域空间 [1,max]
+      int l = 1, r = max;
+      while (l < r) {
+        int m = l + ((r - l) >> 1);
+        if (eatAllWithSpeed(piles, h, m)) {
+          r = m;
+        } else {
+          l = m + 1;
+        }
+      }
+      // 能吃完香蕉的最小速度
+      return l;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int minEatingSpeed(int[] piles, int h) {
-            int max = piles[0];
-            for (int i = 0; i < piles.length; i++) {
-                if (piles[i] > max) {
-                    max = piles[i];
-                }
-            }
-            // 值域空间 [1,max]
-            int l = 1, r = max;
-            while (l < r) {
-                int m = l + ((r - l) >> 1);
-                if (eatAllWithSpeed(piles, h, m)) {
-                    r = m;
-                } else {
-                    l = m + 1;
-                }
-            }
-            // 能吃完香蕉的最小速度
-            return l;
-        }
-
-        private boolean eatAllWithSpeed(int[] piles, int h, int speed) {
-            int useHour = 0;
-            for (int pile : piles) {
-                useHour += ((pile + speed - 1) / speed);
-            }
-            return useHour <= h;
-        }
-
+    private boolean eatAllWithSpeed(int[] piles, int h, int speed) {
+      int useHour = 0;
+      for (int pile : piles) {
+        useHour += ((pile + speed - 1) / speed);
+      }
+      return useHour <= h;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

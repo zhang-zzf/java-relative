@@ -9,15 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Handler1 extends AbstractBaseHandler {
 
-    @Override
-    public Object handle(Object request) {
-        if (canHandle(request)) {
-            log.info("handle: {}", request);
-        }
-        return super.handle(request);
+  @Override
+  public Object handle(Object request) {
+    if (canHandle(request)) {
+      log.info("handle: {}", request);
     }
+    return super.handle(request);
+  }
 
-    private boolean canHandle(Object request) {
-        return false;
-    }
+  private boolean canHandle(Object request) {
+    return false;
+  }
 }

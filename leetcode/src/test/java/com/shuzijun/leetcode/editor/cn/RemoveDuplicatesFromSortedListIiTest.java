@@ -35,73 +35,68 @@ import org.junit.jupiter.api.Test;
 
 public class RemoveDuplicatesFromSortedListIiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        ListNode listNode = new ListNode(1,
-                new ListNode(2,
-                        new ListNode(3,
-                                new ListNode(3,
-                                        new ListNode(4,
-                                                new ListNode(4,
-                                                        new ListNode(5)))))));
-        ListNode node = solution.deleteDuplicates(listNode);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    ListNode listNode = new ListNode(1,
+        new ListNode(2,
+            new ListNode(3,
+                new ListNode(3,
+                    new ListNode(4,
+                        new ListNode(4,
+                            new ListNode(5)))))));
+    ListNode node = solution.deleteDuplicates(listNode);
+  }
+
+
+  public class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {
     }
 
-
-    public class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
+    ListNode(int val) {
+      this.val = val;
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
 
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
+    }
 
-        public ListNode deleteDuplicates(ListNode head) {
-            ListNode dummy = new ListNode(-1, head);
-            ListNode prev = dummy, ptr = head;
-            while (ptr != null) {
-                if (ptr.next != null) {
-                    if (ptr.next.val != ptr.val) {
-                        prev = ptr;
-                    } else {
-                        while (ptr.next != null && ptr.next.val == ptr.val) {
-                            ptr = ptr.next;
-                        }
-                        prev.next = ptr.next;
-                    }
-                }
-                ptr = ptr.next;
+  }
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode deleteDuplicates(ListNode head) {
+      ListNode dummy = new ListNode(-1, head);
+      ListNode prev = dummy, ptr = head;
+      while (ptr != null) {
+        if (ptr.next != null) {
+          if (ptr.next.val != ptr.val) {
+            prev = ptr;
+          } else {
+            while (ptr.next != null && ptr.next.val == ptr.val) {
+              ptr = ptr.next;
             }
-            return dummy.next;
+            prev.next = ptr.next;
+          }
         }
-
+        ptr = ptr.next;
+      }
+      return dummy.next;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

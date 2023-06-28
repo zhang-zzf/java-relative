@@ -46,72 +46,71 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class TheNumberOfWeakCharactersInTheGameTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.numberOfWeakCharacters(new int[][]{
-                new int[]{2, 2},
-                new int[]{3, 6}
-        })).isEqualTo(1);
-        then(solution.numberOfWeakCharacters(new int[][]{
-                new int[]{5, 5},
-                new int[]{6, 3},
-                new int[]{3, 6}
-        })).isEqualTo(0);
-        then(solution.numberOfWeakCharacters(new int[][]{
-                new int[]{1, 3},
-                new int[]{1, 4},
-                new int[]{10, 4},
-                new int[]{4, 5},
-                new int[]{4, 4}
-        })).isEqualTo(2);
-        then(solution.numberOfWeakCharacters(new int[][]{
-                new int[]{7, 9},
-                new int[]{10, 7},
-                new int[]{6, 9},
-                new int[]{10, 4},
-                new int[]{7, 5},
-                new int[]{7, 10}
-        })).isEqualTo(2);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.numberOfWeakCharacters(new int[][]{
+        new int[]{2, 2},
+        new int[]{3, 6}
+    })).isEqualTo(1);
+    then(solution.numberOfWeakCharacters(new int[][]{
+        new int[]{5, 5},
+        new int[]{6, 3},
+        new int[]{3, 6}
+    })).isEqualTo(0);
+    then(solution.numberOfWeakCharacters(new int[][]{
+        new int[]{1, 3},
+        new int[]{1, 4},
+        new int[]{10, 4},
+        new int[]{4, 5},
+        new int[]{4, 4}
+    })).isEqualTo(2);
+    then(solution.numberOfWeakCharacters(new int[][]{
+        new int[]{7, 9},
+        new int[]{10, 7},
+        new int[]{6, 9},
+        new int[]{10, 4},
+        new int[]{7, 5},
+        new int[]{7, 10}
+    })).isEqualTo(2);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int numberOfWeakCharacters(int[][] properties) {
-            Arrays.sort(properties, (p1, p2) -> {
-                // 攻击力大到小排列
-                // 攻击力相同防御力小到大排列
-                if (p1[0] == p2[0]) {
-                    return p1[1] - p2[1];
-                } else {
-                    return p2[0] - p1[0];
-                }
-            });
-            int[] defenceMax = new int[2];
-            int ret = 0;
-            for (int i = 0; i < properties.length; i++) {
-                if (properties[i][1] > defenceMax[1]) {
-                    // 绝不是弱角色
-                    defenceMax = properties[i];
-                } else if (properties[i][0] < defenceMax[0] && properties[i][1] < defenceMax[1]) {
-                    ret += 1;
-                }
-            }
-            return ret;
+    public int numberOfWeakCharacters(int[][] properties) {
+      Arrays.sort(properties, (p1, p2) -> {
+        // 攻击力大到小排列
+        // 攻击力相同防御力小到大排列
+        if (p1[0] == p2[0]) {
+          return p1[1] - p2[1];
+        } else {
+          return p2[0] - p1[0];
         }
-
+      });
+      int[] defenceMax = new int[2];
+      int ret = 0;
+      for (int i = 0; i < properties.length; i++) {
+        if (properties[i][1] > defenceMax[1]) {
+          // 绝不是弱角色
+          defenceMax = properties[i];
+        } else if (properties[i][0] < defenceMax[0] && properties[i][1] < defenceMax[1]) {
+          ret += 1;
+        }
+      }
+      return ret;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

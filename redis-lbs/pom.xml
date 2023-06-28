@@ -1,79 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>redis-lbs</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+            </exclude>
+          </excludes>
+        </configuration>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>com.feng.learn.redis.lbs</groupId>
-    <artifactId>redis-lbs</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>redis-lbs</name>
-    <description>Demo project for Spring Boot</description>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
+    <dependency>
+      <artifactId>jedis</artifactId>
+      <groupId>redis.clients</groupId>
+    </dependency>
 
-    <dependencies>
+    <dependency>
+      <artifactId>fastjson</artifactId>
+      <groupId>com.alibaba</groupId>
+      <version>1.2.69</version>
+    </dependency>
 
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
+    <dependency>
+      <artifactId>geohash</artifactId>
+      <groupId>ch.hsr</groupId>
+      <version>1.4.0</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.69</version>
-        </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
 
-        <dependency>
-            <groupId>ch.hsr</groupId>
-            <artifactId>geohash</artifactId>
-            <version>1.4.0</version>
-        </dependency>
+    <dependency>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <description>Demo project for Spring Boot</description>
+  <groupId>com.feng.learn.redis.lbs</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <name>redis-lbs</name>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>2.4.1</version> <!-- lookup parent from repository -->
+  </parent>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <version>0.0.1-SNAPSHOT</version>
 
 </project>

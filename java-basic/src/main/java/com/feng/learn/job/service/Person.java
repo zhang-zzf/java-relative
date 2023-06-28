@@ -11,5 +11,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Person {
 
-    private JobPosition currentJobPosition;
+  private JobPosition currentJobPosition;
 }

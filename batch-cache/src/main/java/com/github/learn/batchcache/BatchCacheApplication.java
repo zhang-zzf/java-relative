@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BatchCacheApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BatchCacheApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(BatchCacheApplication.class, args);
+  }
 
 }

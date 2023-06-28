@@ -58,106 +58,96 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class DeleteNodeInABstTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final TreeNode root = new TreeNode(5,
-                new TreeNode(3,
-                        new TreeNode(2),
-                        new TreeNode(4)),
-                new TreeNode(6,
-                        null,
-                        new TreeNode(7))
-        );
-        final TreeNode node = solution.deleteNode(root, 3);
-        final SerializeAndDeserializeBinaryTreeTest.Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
-        final String serialize = codec.serialize(node);
-        then(serialize).isEqualTo("[5,4,6,2,null,null,7]");
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final TreeNode root = new TreeNode(5,
+        new TreeNode(3,
+            new TreeNode(2),
+            new TreeNode(4)),
+        new TreeNode(6,
+            null,
+            new TreeNode(7))
+    );
+    final TreeNode node = solution.deleteNode(root, 3);
+    final SerializeAndDeserializeBinaryTreeTest.Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
+    final String serialize = codec.serialize(node);
+    then(serialize).isEqualTo("[5,4,6,2,null,null,7]");
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for a binary tree node. public class TreeNode { int val; TreeNode left; TreeNode
+   * right; TreeNode() {} TreeNode(int val) { this.val = val; } TreeNode(int val, TreeNode left,
+   * TreeNode right) { this.val = val; this.left = left; this.right = right; } }
+   */
+  class Solution {
+
+    public TreeNode deleteNode(TreeNode root, int key) {
+      TreeNode treeRoot = root;
+      TreeNode ptr = root, parent = null;
+      while (ptr != null) {
+        if (ptr.val == key) {
+          TreeNode newRoot = convertTree(ptr);
+          if (parent == null) {
+            treeRoot = newRoot;
+          } else if (ptr == parent.left) {
+            parent.left = newRoot;
+          } else {
+            parent.right = newRoot;
+          }
+          break;
+        } else if (ptr.val < key) {
+          parent = ptr;
+          ptr = ptr.right;
+        } else {
+          parent = ptr;
+          ptr = ptr.left;
+        }
+      }
+      return treeRoot;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for a binary tree node.
-     * public class TreeNode {
-     * int val;
-     * TreeNode left;
-     * TreeNode right;
-     * TreeNode() {}
-     * TreeNode(int val) { this.val = val; }
-     * TreeNode(int val, TreeNode left, TreeNode right) {
-     * this.val = val;
-     * this.left = left;
-     * this.right = right;
-     * }
-     * }
-     */
-    class Solution {
-
-        public TreeNode deleteNode(TreeNode root, int key) {
-            TreeNode treeRoot = root;
-            TreeNode ptr = root, parent = null;
-            while (ptr != null) {
-                if (ptr.val == key) {
-                    TreeNode newRoot = convertTree(ptr);
-                    if (parent == null) {
-                        treeRoot = newRoot;
-                    } else if (ptr == parent.left) {
-                        parent.left = newRoot;
-                    } else {
-                        parent.right = newRoot;
-                    }
-                    break;
-                } else if (ptr.val < key) {
-                    parent = ptr;
-                    ptr = ptr.right;
-                } else {
-                    parent = ptr;
-                    ptr = ptr.left;
-                }
-            }
-            return treeRoot;
-        }
-
-        private TreeNode convertTree(TreeNode root) {
-            if (root.left == null) {
-                return root.right;
-            }
-            if (root.right == null) {
-                return root.left;
-            }
-            // 左子树挂在右子树中最小的元素
-            TreeNode ptr = root.right;
-            while (ptr.left != null) {
-                ptr = ptr.left;
-            }
-            ptr.left = root.left;
-            return root.right;
-        }
-
-        private TreeNode recursion(TreeNode root, int key) {
-            if (root == null) {
-                return null;
-            }
-            if (root.val == key) {
-                return convertTree(root);
-            } else if (root.val < key) {
-                root.right = recursion(root.right, key);
-            } else {
-                root.left = recursion(root.left, key);
-            }
-            return root;
-        }
-
+    private TreeNode convertTree(TreeNode root) {
+      if (root.left == null) {
+        return root.right;
+      }
+      if (root.right == null) {
+        return root.left;
+      }
+      // 左子树挂在右子树中最小的元素
+      TreeNode ptr = root.right;
+      while (ptr.left != null) {
+        ptr = ptr.left;
+      }
+      ptr.left = root.left;
+      return root.right;
     }
+
+    private TreeNode recursion(TreeNode root, int key) {
+      if (root == null) {
+        return null;
+      }
+      if (root.val == key) {
+        return convertTree(root);
+      } else if (root.val < key) {
+        root.right = recursion(root.right, key);
+      } else {
+        root.left = recursion(root.left, key);
+      }
+      return root;
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

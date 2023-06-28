@@ -13,14 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class LombokInnerClass {
 
-    @Data
-    static class StaticInnerClass {
-        private String name;
+  @Data
+  static class StaticInnerClass {
 
-    }
+    private String name;
 
-    @Data
-    class InnerClass {
-        private String name;
-    }
+  }
+
+  @Data
+  class InnerClass {
+
+    private String name;
+  }
 }

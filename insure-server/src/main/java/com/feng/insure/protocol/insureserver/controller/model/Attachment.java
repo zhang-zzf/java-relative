@@ -1,10 +1,9 @@
 package com.feng.insure.protocol.insureserver.controller.model;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * <p>文件附件</p>
@@ -16,18 +15,18 @@ import java.util.List;
 @Accessors(chain = true)
 public class Attachment {
 
-    private String type;
-    private List<File> fileList;
-    private LocalDateTime createdAt;
+  private String type;
+  private List<File> fileList;
+  private LocalDateTime createdAt;
 
-    @Data
-    @Accessors(chain = true)
-    public static class File {
+  @Data
+  @Accessors(chain = true)
+  public static class File {
 
-        private String name;
-        private String ossFileUrl;
+    private String name;
+    private String ossFileUrl;
 
-    }
+  }
 
 
 }

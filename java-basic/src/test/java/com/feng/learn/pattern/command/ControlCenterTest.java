@@ -10,11 +10,12 @@ import org.junit.Test;
  */
 public class ControlCenterTest {
 
-    @Test
-    public void buttonPressTest() {
-        BadControlCenter center = new BadControlCenter(new Object[]{new Light("living room"), new TV()});
-        center.onButtonPress(0);
-        center.offButtonPress(1);
-    }
+  @Test
+  public void buttonPressTest() {
+    BadControlCenter center = new BadControlCenter(
+        new Object[]{new Light("living room"), new TV()});
+    center.onButtonPress(0);
+    center.offButtonPress(1);
+  }
 
 }

@@ -5,14 +5,14 @@
   Refer to https://manuals.jrebel.com/jrebel/standalone/config.html for more information.
 -->
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" generated-by="intellij"
-			 xmlns="http://www.zeroturnaround.com"
-			 xsi:schemaLocation="http://www.zeroturnaround.com http://update.zeroturnaround.com/jrebel/rebel-2_3.xsd">
+  xmlns="http://www.zeroturnaround.com"
+  xsi:schemaLocation="http://www.zeroturnaround.com http://update.zeroturnaround.com/jrebel/rebel-2_3.xsd">
 
-	<id>leetcode</id>
+  <classpath>
+    <dir name="/Users/feng/Workspace/gitHub/java-relative/leetcode/target/classes">
+    </dir>
+  </classpath>
 
-	<classpath>
-		<dir name="/Users/feng/Workspace/gitHub/java-relative/leetcode/target/classes">
-		</dir>
-	</classpath>
+  <id>leetcode</id>
 
 </application>

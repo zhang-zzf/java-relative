@@ -57,81 +57,76 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class ReverseNodesInKGroupTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final ListNode<Integer> dummy = new ListNode<>();
-        dummy.addToTail(new ListNode<>(1))
-                .addToTail(new ListNode<>(2))
-                .addToTail(new ListNode<>(3))
-                .addToTail(new ListNode<>(4))
-                .addToTail(new ListNode<>(5))
-        ;
-        final ListNode reverseKGroup = solution.reverseKGroup(dummy.next, 2);
-        then(reverseKGroup.val).isEqualTo(2);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final ListNode<Integer> dummy = new ListNode<>();
+    dummy.addToTail(new ListNode<>(1))
+        .addToTail(new ListNode<>(2))
+        .addToTail(new ListNode<>(3))
+        .addToTail(new ListNode<>(4))
+        .addToTail(new ListNode<>(5))
+    ;
+    final ListNode reverseKGroup = solution.reverseKGroup(dummy.next, 2);
+    then(reverseKGroup.val).isEqualTo(2);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+      final ListNode dummy = new ListNode(-1, head);
+      ListNode start = dummy;
+      while (true) {
+        ListNode end = start;
+        for (int i = 0; i < k; i++) {
+          if (end != null) {
+            end = end.next;
+          } else {
+            break;
+          }
+        }
+        // 剩余的 node 数量 < k
+        if (end == null) {
+          break;
+        }
+        ListNode startNext = start.next, endNext = end.next;
+        // 调整指针
+        start.next = end;
+        // reverseList
+        reverseList(startNext, end);
+        startNext.next = endNext;
+        // 开启下一次循环
+        start = startNext;
+      }
+      return dummy.next;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
-
-        public ListNode reverseKGroup(ListNode head, int k) {
-            final ListNode dummy = new ListNode(-1, head);
-            ListNode start = dummy;
-            while (true) {
-                ListNode end = start;
-                for (int i = 0; i < k; i++) {
-                    if (end != null) {
-                        end = end.next;
-                    } else {
-                        break;
-                    }
-                }
-                // 剩余的 node 数量 < k
-                if (end == null) {
-                    break;
-                }
-                ListNode startNext = start.next, endNext = end.next;
-                // 调整指针
-                start.next = end;
-                // reverseList
-                reverseList(startNext, end);
-                startNext.next = endNext;
-                // 开启下一次循环
-                start = startNext;
-            }
-            return dummy.next;
-        }
-
-        private void reverseList(ListNode start, ListNode end) {
-            ListNode pre = start, cur = pre.next;
-            while (pre != end && cur != null) {
-                ListNode next = cur.next;
-                cur.next = pre;
-                pre = cur;
-                cur = next;
-            }
-        }
-
+    private void reverseList(ListNode start, ListNode end) {
+      ListNode pre = start, cur = pre.next;
+      while (pre != end && cur != null) {
+        ListNode next = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = next;
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

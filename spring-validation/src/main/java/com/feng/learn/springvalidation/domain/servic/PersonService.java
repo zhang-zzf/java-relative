@@ -18,14 +18,14 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class PersonService {
 
-    final PersonRepo personRepo;
+  final PersonRepo personRepo;
 
-    public @NotNull Person getById(@NotNull Long id) {
-        return personRepo.getById(id);
-    }
+  public @NotNull Person getById(@NotNull Long id) {
+    return personRepo.getById(id);
+  }
 
-    public @Range(min = 0L) int updatePerson(@NotNull @Valid Person person) {
-        return 0;
-    }
+  public @Range(min = 0L) int updatePerson(@NotNull @Valid Person person) {
+    return 0;
+  }
 
 }

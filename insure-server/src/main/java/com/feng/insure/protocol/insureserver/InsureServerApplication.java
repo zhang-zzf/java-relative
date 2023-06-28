@@ -8,8 +8,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @ServletComponentScan
 public class InsureServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InsureServerApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(InsureServerApplication.class, args);
+  }
 
 }

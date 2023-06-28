@@ -8,9 +8,9 @@ import com.feng.learn.dao.model.User;
  */
 public interface UserService {
 
-    User get(long id);
+  User get(long id);
 
-    boolean save(long id, String name);
+  boolean save(long id, String name);
 
-    void throwException(boolean b);
+  void throwException(boolean b);
 }

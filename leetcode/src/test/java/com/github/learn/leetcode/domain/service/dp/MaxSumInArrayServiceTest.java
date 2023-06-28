@@ -1,10 +1,10 @@
 package com.github.learn.leetcode.domain.service.dp;
 
+import static org.assertj.core.api.BDDAssertions.then;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
@@ -13,13 +13,13 @@ import static org.assertj.core.api.BDDAssertions.then;
 @SpringBootTest
 class MaxSumInArrayServiceTest {
 
-    @Autowired
-    MaxSumInArrayService service;
+  @Autowired
+  MaxSumInArrayService service;
 
-    @Test
-    void given_when_then() {
-        int maxSum = service.maxSum(new int[]{1, 2, 4, 1, 7, 8, 3});
-        then(maxSum).isEqualTo(15);
-    }
+  @Test
+  void given_when_then() {
+    int maxSum = service.maxSum(new int[]{1, 2, 4, 1, 7, 8, 3});
+    then(maxSum).isEqualTo(15);
+  }
 
 }

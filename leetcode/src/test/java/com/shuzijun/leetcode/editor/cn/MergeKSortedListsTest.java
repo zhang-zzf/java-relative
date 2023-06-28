@@ -47,78 +47,71 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import org.junit.jupiter.api.Test;
 
 
 public class MergeKSortedListsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {
     }
 
-    class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
+    ListNode(int val) {
+      this.val = val;
     }
 
-
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-
-    class Solution {
-
-        public ListNode mergeKLists(ListNode[] lists) {
-            PriorityQueue<ListNode> pq = new PriorityQueue<>(
-                    lists.length > 0 ? lists.length : 1,
-                    Comparator.comparing(o -> o.val));
-            for (int i = 0; i < lists.length; i++) {
-                if (lists[i] != null) {
-                    pq.add(lists[i]);
-                }
-            }
-            ListNode dummy = new ListNode(), tail = dummy;
-            while (!pq.isEmpty()) {
-                final ListNode small = pq.poll();
-                tail.next = new ListNode(small.val);
-                tail = tail.next;
-                if (small.next != null) {
-                    pq.add(small.next);
-                }
-            }
-            return dummy.next;
-        }
-
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
     }
+
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+
+  class Solution {
+
+    public ListNode mergeKLists(ListNode[] lists) {
+      PriorityQueue<ListNode> pq = new PriorityQueue<>(
+          lists.length > 0 ? lists.length : 1,
+          Comparator.comparing(o -> o.val));
+      for (int i = 0; i < lists.length; i++) {
+        if (lists[i] != null) {
+          pq.add(lists[i]);
+        }
+      }
+      ListNode dummy = new ListNode(), tail = dummy;
+      while (!pq.isEmpty()) {
+        final ListNode small = pq.poll();
+        tail.next = new ListNode(small.val);
+        tail = tail.next;
+        if (small.next != null) {
+          pq.add(small.next);
+        }
+      }
+      return dummy.next;
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

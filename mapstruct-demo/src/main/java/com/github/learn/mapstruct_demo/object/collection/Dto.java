@@ -1,9 +1,8 @@
 package com.github.learn.mapstruct_demo.object.collection;
 
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.List;
 
 /**
  * @author zhanfeng.zhang
@@ -13,6 +12,6 @@ import java.util.List;
 @Accessors(chain = true)
 public class Dto {
 
-    private List<Person> personList;
+  private List<Person> personList;
 
 }

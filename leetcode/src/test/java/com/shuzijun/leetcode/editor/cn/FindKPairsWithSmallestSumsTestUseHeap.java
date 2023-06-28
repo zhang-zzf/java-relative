@@ -47,168 +47,168 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class FindKPairsWithSmallestSumsTestUseHeap {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final Integer[] integers = {4, 6, 8, 2, 1};
-        final Heap minHeap = new Heap<Integer>(-1, integers.length).initData(integers);
-        then(minHeap.pop()).isEqualTo(1);
-        then(minHeap.pop()).isEqualTo(2);
-        then(minHeap.pop()).isEqualTo(4);
-        then(minHeap.pop()).isEqualTo(6);
-        then(minHeap.pop()).isEqualTo(8);
-        then(new Heap<Integer>(1, integers.length).initData(integers).peek()).isEqualTo(8);
-        //
-        final List<List<Integer>> lists = solution.kSmallestPairs(new int[]{1, 7, 11}, new int[]{2, 4, 6}, 3);
-        then(lists).hasSize(3);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final Integer[] integers = {4, 6, 8, 2, 1};
+    final Heap minHeap = new Heap<Integer>(-1, integers.length).initData(integers);
+    then(minHeap.pop()).isEqualTo(1);
+    then(minHeap.pop()).isEqualTo(2);
+    then(minHeap.pop()).isEqualTo(4);
+    then(minHeap.pop()).isEqualTo(6);
+    then(minHeap.pop()).isEqualTo(8);
+    then(new Heap<Integer>(1, integers.length).initData(integers).peek()).isEqualTo(8);
+    //
+    final List<List<Integer>> lists = solution.kSmallestPairs(new int[]{1, 7, 11},
+        new int[]{2, 4, 6}, 3);
+    then(lists).hasSize(3);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Heap<T extends Comparable<T>> {
+
+    /**
+     * -1 小堆 1 大堆
+     */
+    private final int heapType;
+    private final int capacity;
+    private int size;
+    private T[] data;
+
+    public Heap(int heapType, int capacity) {
+      this.heapType = heapType;
+      this.capacity = capacity;
+      data = (T[]) new Comparable[capacity];
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Heap<T extends Comparable<T>> {
+    public Heap<T> initData(T[] data) {
+      if (data.length > capacity) {
+        throw new IllegalArgumentException();
+      }
+      for (T t : data) {
+        this.data[size++] = t;
+        siftUp(size - 1);
+      }
+      return this;
+    }
 
-        /**
-         * -1 小堆
-         * 1 大堆
-         */
-        private final int heapType;
-        private final int capacity;
-        private int size;
-        private T[] data;
-
-        public Heap(int heapType, int capacity) {
-            this.heapType = heapType;
-            this.capacity = capacity;
-            data = (T[]) new Comparable[capacity];
+    private void siftUp(int idx) {
+      T tmp = data[idx];
+      int parent = (idx - 1) / 2;
+      while (idx > 0) {
+        if (needSift(tmp, data[parent])) {
+          data[idx] = data[parent];
+          idx = parent;
+          parent = (idx - 1) / 2;
+        } else {
+          break;
         }
+      }
+      data[idx] = tmp;
+    }
 
-        public Heap<T> initData(T[] data) {
-            if (data.length > capacity) {
-                throw new IllegalArgumentException();
+    public T peek() {
+      return data[0];
+    }
+
+    public T pop() {
+      if (size <= 0) {
+        return null;
+      }
+      T ret = data[0];
+      data[0] = data[--size];
+      siftDown(0);
+      return ret;
+    }
+
+    private void siftDown(int idx) {
+      while (true) {
+        int leftChild = (idx + 1) * 2 - 1;
+        int rightChild = leftChild + 1;
+        int newIdx = idx;
+        if (leftChild < size) {
+          if (needSift(data[leftChild], data[idx])) {
+            newIdx = leftChild;
+          }
+          if (rightChild < size) {
+            if (needSift(data[rightChild], data[idx]) && needSift(data[rightChild],
+                data[leftChild])) {
+              newIdx = rightChild;
             }
-            for (T t : data) {
-                this.data[size++] = t;
-                siftUp(size - 1);
-            }
-            return this;
+          }
         }
+        if (newIdx != idx) {
+          T tmp = data[idx];
+          data[idx] = data[newIdx];
+          data[newIdx] = tmp;
+          idx = newIdx;
+        } else {
+          break;
+        }
+      }
+    }
 
-        private void siftUp(int idx) {
-            T tmp = data[idx];
-            int parent = (idx - 1) / 2;
-            while (idx > 0) {
-                if (needSift(tmp, data[parent])) {
-                    data[idx] = data[parent];
-                    idx = parent;
-                    parent = (idx - 1) / 2;
-                } else {
-                    break;
-                }
-            }
-            data[idx] = tmp;
-        }
+    private boolean needSift(T child, T parent) {
+      if (heapType == -1 && child.compareTo(parent) < 0
+          || heapType == 1 && child.compareTo(parent) > 0) {
+        return true;
+      }
+      return false;
+    }
 
-        public T peek() {
-            return data[0];
-        }
+  }
 
-        public T pop() {
-            if (size <= 0) {
-                return null;
-            }
-            T ret = data[0];
-            data[0] = data[--size];
-            siftDown(0);
-            return ret;
-        }
+  class Solution {
 
-        private void siftDown(int idx) {
-            while (true) {
-                int leftChild = (idx + 1) * 2 - 1;
-                int rightChild = leftChild + 1;
-                int newIdx = idx;
-                if (leftChild < size) {
-                    if (needSift(data[leftChild], data[idx])) {
-                        newIdx = leftChild;
-                    }
-                    if (rightChild < size) {
-                        if (needSift(data[rightChild], data[idx]) && needSift(data[rightChild], data[leftChild])) {
-                            newIdx = rightChild;
-                        }
-                    }
-                }
-                if (newIdx != idx) {
-                    T tmp = data[idx];
-                    data[idx] = data[newIdx];
-                    data[newIdx] = tmp;
-                    idx = newIdx;
-                } else {
-                    break;
-                }
-            }
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+      Pair[] list = new Pair[nums1.length * nums2.length];
+      int i = 0;
+      for (int i1 : nums1) {
+        for (int i2 : nums2) {
+          final Pair p = new Pair();
+          p.i1 = i1;
+          p.i2 = i2;
+          list[i++] = p;
         }
+      }
+      List<List<Integer>> ret = new ArrayList<>(k);
+      final Heap<Pair> heap = new Heap<Pair>(-1, list.length).initData(list);
+      for (int j = 0; j < k; j++) {
+        final Pair pop = heap.pop();
+        if (pop == null) {
+          break;
+        }
+        ret.add(new ArrayList<Integer>(2) {{
+          add(pop.i1);
+          add(pop.i2);
+        }});
+      }
+      return ret;
+    }
 
-        private boolean needSift(T child, T parent) {
-            if (heapType == -1 && child.compareTo(parent) < 0
-                    || heapType == 1 && child.compareTo(parent) > 0) {
-                return true;
-            }
-            return false;
-        }
+    public class Pair implements Comparable<Pair> {
+
+      int i1;
+      int i2;
+
+      @Override
+      public int compareTo(Pair o) {
+        return this.i1 + this.i2 - (o.i1 + o.i2);
+      }
 
     }
 
-    class Solution {
-
-        public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-            Pair[] list = new Pair[nums1.length * nums2.length];
-            int i = 0;
-            for (int i1 : nums1) {
-                for (int i2 : nums2) {
-                    final Pair p = new Pair();
-                    p.i1 = i1;
-                    p.i2 = i2;
-                    list[i++] = p;
-                }
-            }
-            List<List<Integer>> ret = new ArrayList<>(k);
-            final Heap<Pair> heap = new Heap<Pair>(-1, list.length).initData(list);
-            for (int j = 0; j < k; j++) {
-                final Pair pop = heap.pop();
-                if (pop == null) {
-                    break;
-                }
-                ret.add(new ArrayList<Integer>(2) {{
-                    add(pop.i1);
-                    add(pop.i2);
-                }});
-            }
-            return ret;
-        }
-
-        public class Pair implements Comparable<Pair> {
-
-            int i1;
-            int i2;
-
-            @Override
-            public int compareTo(Pair o) {
-                return this.i1 + this.i2 - (o.i1 + o.i2);
-            }
-
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

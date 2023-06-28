@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepoMysqlImpl implements UserRepo {
 
-    @Override
-    public Optional<User> getById(Long userId) {
-        return Optional.empty();
-    }
+  @Override
+  public Optional<User> getById(Long userId) {
+    return Optional.empty();
+  }
 }

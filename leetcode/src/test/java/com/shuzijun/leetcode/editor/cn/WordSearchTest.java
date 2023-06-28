@@ -48,96 +48,96 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class WordSearchTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final boolean exist = solution.exist(new char[][]{
-                new char[]{'A', 'B', 'C', 'E'},
-                new char[]{'S', 'F', 'C', 'S'},
-                new char[]{'A', 'D', 'E', 'E'},
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final boolean exist = solution.exist(new char[][]{
+        new char[]{'A', 'B', 'C', 'E'},
+        new char[]{'S', 'F', 'C', 'S'},
+        new char[]{'A', 'D', 'E', 'E'},
 
-        }, "SEE");
-        then(exist).isTrue();
+    }, "SEE");
+    then(exist).isTrue();
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    final List<int[]> linked = new ArrayList<int[]>(4) {{
+      add(new int[]{-1, 0});
+      add(new int[]{0, 1});
+      add(new int[]{1, 0});
+      add(new int[]{0, -1});
+    }};
+
+    public boolean exist(char[][] board, String word) {
+      List<List<int[]>> matched = new ArrayList<>();
+      backTrack(board, word, new ArrayList<int[]>(2), matched);
+      return !matched.isEmpty();
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public boolean exist(char[][] board, String word) {
-            List<List<int[]>> matched = new ArrayList<>();
-            backTrack(board, word, new ArrayList<int[]>(2), matched);
-            return !matched.isEmpty();
-        }
-
-        final List<int[]> linked = new ArrayList<int[]>(4) {{
-            add(new int[]{-1, 0});
-            add(new int[]{0, 1});
-            add(new int[]{1, 0});
-            add(new int[]{0, -1});
-        }};
-
-        private void backTrack(char[][] board, String word, List<int[]> track, List<List<int[]>> matched) {
-            if (track.isEmpty()) {
-                // 找第一个匹配元素
-                for (int i = 0; i < board.length; i++) {
-                    for (int j = 0; j < board[i].length; j++) {
-                        if (board[i][j] == word.charAt(0)) {
-                            track.add(new int[]{i, j});
-                            backTrack(board, word, track, matched);
-                            track.remove(track.size() - 1);
-                        }
-                    }
-                }
-            } else {
-                if (track.size() == word.length()) {
-                    matched.add(new ArrayList<>(track));
-                    return;
-                }
-                final int[] curNode = track.get(track.size() - 1);
-                for (int[] ints : linked) {
-                    final int[] node = {curNode[0] + ints[0], curNode[1] + ints[1]};
-                    if (isValid(node, board.length, board[0].length)
-                            && board[node[0]][node[1]] == word.charAt(track.size())
-                            && !trackContainsNode(track, node)) {
-                        track.add(node);
-                        backTrack(board, word, track, matched);
-                        track.remove(track.size() - 1);
-                    }
-                }
+    private void backTrack(char[][] board, String word, List<int[]> track,
+        List<List<int[]>> matched) {
+      if (track.isEmpty()) {
+        // 找第一个匹配元素
+        for (int i = 0; i < board.length; i++) {
+          for (int j = 0; j < board[i].length; j++) {
+            if (board[i][j] == word.charAt(0)) {
+              track.add(new int[]{i, j});
+              backTrack(board, word, track, matched);
+              track.remove(track.size() - 1);
             }
+          }
         }
-
-        private boolean trackContainsNode(List<int[]> track, int[] node) {
-            for (int[] ints : track) {
-                if (ints[0] == node[0] && ints[1] == node[1]) {
-                    return true;
-                }
-            }
-            return false;
+      } else {
+        if (track.size() == word.length()) {
+          matched.add(new ArrayList<>(track));
+          return;
         }
-
-        private boolean isValid(int[] node, int rMax, int cMax) {
-            if (node[0] < 0 || node[1] < 0) {
-                return false;
-            }
-            if (node[0] >= rMax || node[1] >= cMax) {
-                return false;
-            }
-            return true;
+        final int[] curNode = track.get(track.size() - 1);
+        for (int[] ints : linked) {
+          final int[] node = {curNode[0] + ints[0], curNode[1] + ints[1]};
+          if (isValid(node, board.length, board[0].length)
+              && board[node[0]][node[1]] == word.charAt(track.size())
+              && !trackContainsNode(track, node)) {
+            track.add(node);
+            backTrack(board, word, track, matched);
+            track.remove(track.size() - 1);
+          }
         }
-
+      }
     }
+
+    private boolean trackContainsNode(List<int[]> track, int[] node) {
+      for (int[] ints : track) {
+        if (ints[0] == node[0] && ints[1] == node[1]) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    private boolean isValid(int[] node, int rMax, int cMax) {
+      if (node[0] < 0 || node[1] < 0) {
+        return false;
+      }
+      if (node[0] >= rMax || node[1] >= cMax) {
+        return false;
+      }
+      return true;
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

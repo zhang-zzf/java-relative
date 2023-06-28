@@ -65,28 +65,28 @@ import org.junit.jupiter.api.Test;
 
 public class CopyListWithRandomPointerTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  class Node {
+
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+      this.val = val;
+      this.next = null;
+      this.random = null;
     }
 
-    class Node {
+  }
 
-        int val;
-        Node next;
-        Node random;
-
-        public Node(int val) {
-            this.val = val;
-            this.next = null;
-            this.random = null;
-        }
-
-    }
-
-    //leetcode submit region begin(Prohibit modification and deletion)
+  //leetcode submit region begin(Prohibit modification and deletion)
 /*
 // Definition for a Node.
 class Node {
@@ -102,33 +102,33 @@ class Node {
 }
 */
 
-    class Solution {
+  class Solution {
 
-        public Node copyRandomList(Node head) {
-            if (head == null) {
-                return null;
-            }
-            for (Node ptr = head; ptr != null; ) {
-                final Node newNode = new Node(ptr.val);
-                newNode.next = ptr.next;
-                ptr.next = newNode;
-                ptr = ptr.next.next;
-            }
-            for (Node ptr = head; ptr != null; ) {
-                if (ptr.next != null) {
-                    ptr.next.random = ptr.random == null ? null : ptr.random.next;
-                }
-                ptr = ptr.next.next;
-            }
-            Node dummy = new Node(0), tail = dummy;
-            for (Node ptr = head; ptr != null; ptr = ptr.next) {
-                tail.next = ptr.next;
-                tail = tail.next;
-                ptr.next = ptr.next.next;
-            }
-            return dummy.next;
+    public Node copyRandomList(Node head) {
+      if (head == null) {
+        return null;
+      }
+      for (Node ptr = head; ptr != null; ) {
+        final Node newNode = new Node(ptr.val);
+        newNode.next = ptr.next;
+        ptr.next = newNode;
+        ptr = ptr.next.next;
+      }
+      for (Node ptr = head; ptr != null; ) {
+        if (ptr.next != null) {
+          ptr.next.random = ptr.random == null ? null : ptr.random.next;
         }
-
+        ptr = ptr.next.next;
+      }
+      Node dummy = new Node(0), tail = dummy;
+      for (Node ptr = head; ptr != null; ptr = ptr.next) {
+        tail.next = ptr.next;
+        tail = tail.next;
+        ptr.next = ptr.next.next;
+      }
+      return dummy.next;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 }

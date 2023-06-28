@@ -50,79 +50,68 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class LongestZigzagPathInABinaryTreeTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final TreeNode root = new TreeNode(1,
-                null,
-                new TreeNode(2,
-                        new TreeNode(3),
-                        new TreeNode(4,
-                                new TreeNode(5,
-                                        null,
-                                        new TreeNode(7,
-                                                null,
-                                                new TreeNode(8))),
-                                new TreeNode(6))));
-        then(solution.longestZigZag(root)).isEqualTo(3);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final TreeNode root = new TreeNode(1,
+        null,
+        new TreeNode(2,
+            new TreeNode(3),
+            new TreeNode(4,
+                new TreeNode(5,
+                    null,
+                    new TreeNode(7,
+                        null,
+                        new TreeNode(8))),
+                new TreeNode(6))));
+    then(solution.longestZigZag(root)).isEqualTo(3);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for a binary tree node. public class TreeNode { int val; TreeNode left; TreeNode
+   * right; TreeNode() {} TreeNode(int val) { this.val = val; } TreeNode(int val, TreeNode left,
+   * TreeNode right) { this.val = val; this.left = left; this.right = right; } }
+   */
+  class Solution {
+
+    public int longestZigZag(TreeNode root) {
+      AtomicInteger ans = new AtomicInteger(0);
+      if (root == null) {
+        return ans.get();
+      }
+      dfs(root.left, 0, 1, ans);
+      dfs(root.right, 1, 1, ans);
+      return ans.get();
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for a binary tree node.
-     * public class TreeNode {
-     * int val;
-     * TreeNode left;
-     * TreeNode right;
-     * TreeNode() {}
-     * TreeNode(int val) { this.val = val; }
-     * TreeNode(int val, TreeNode left, TreeNode right) {
-     * this.val = val;
-     * this.left = left;
-     * this.right = right;
-     * }
-     * }
-     */
-    class Solution {
-
-        public int longestZigZag(TreeNode root) {
-            AtomicInteger ans = new AtomicInteger(0);
-            if (root == null) {
-                return ans.get();
-            }
-            dfs(root.left, 0, 1, ans);
-            dfs(root.right, 1, 1, ans);
-            return ans.get();
-        }
-
-        private void dfs(TreeNode root, int dir, int cnt, AtomicInteger ans) {
-            if (root == null) {
-                return;
-            }
-            if (cnt > ans.get()) {
-                ans.set(cnt);
-            }
-            if (dir == 0) {
-                dfs(root.left, 0, 1, ans);
-                dfs(root.right, 1, cnt + 1, ans);
-            } else {
-                dfs(root.left, 0, cnt + 1, ans);
-                dfs(root.right, 1, 1, ans);
-            }
-        }
-
+    private void dfs(TreeNode root, int dir, int cnt, AtomicInteger ans) {
+      if (root == null) {
+        return;
+      }
+      if (cnt > ans.get()) {
+        ans.set(cnt);
+      }
+      if (dir == 0) {
+        dfs(root.left, 0, 1, ans);
+        dfs(root.right, 1, cnt + 1, ans);
+      } else {
+        dfs(root.left, 0, cnt + 1, ans);
+        dfs(root.right, 1, 1, ans);
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

@@ -42,67 +42,62 @@ import org.junit.jupiter.api.Test;
 
 public class MergeTwoSortedListsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  public class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {
     }
 
-    public class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
+    ListNode(int val) {
+      this.val = val;
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
 
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
-
-        public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-            ListNode dummy = new ListNode(), tail = dummy;
-            while (list1 != null && list2 != null) {
-                if (list1.val <= list2.val) {
-                    tail.next = list1;
-                    list1 = list1.next;
-                } else {
-                    tail.next = list2;
-                    list2 = list2.next;
-                }
-                tail = tail.next;
-            }
-            if (list1 != null) {
-                tail.next = list1;
-            }
-            if (list2 != null) {
-                tail.next = list2;
-            }
-            return dummy.next;
-        }
-
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
     }
+
+  }
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+      ListNode dummy = new ListNode(), tail = dummy;
+      while (list1 != null && list2 != null) {
+        if (list1.val <= list2.val) {
+          tail.next = list1;
+          list1 = list1.next;
+        } else {
+          tail.next = list2;
+          list2 = list2.next;
+        }
+        tail = tail.next;
+      }
+      if (list1 != null) {
+        tail.next = list1;
+      }
+      if (list2 != null) {
+        tail.next = list2;
+      }
+      return dummy.next;
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

@@ -1,11 +1,10 @@
 package com.github.learn.leetcode.domain.service.dp;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 /**
  * @author zhanfeng.zhang
@@ -15,11 +14,12 @@ import javax.validation.constraints.Min;
 @Validated
 @RequiredArgsConstructor
 public class FibonacciServiceImpl implements FibonacciService {
-    @Override
-    public long fib(@Min(1) @Max(100) int n) {
-        if (n == 1 || n == 2) {
-            return 1;
-        }
-        return fib(n - 1) + fib(n - 2);
+
+  @Override
+  public long fib(@Min(1) @Max(100) int n) {
+    if (n == 1 || n == 2) {
+      return 1;
     }
+    return fib(n - 1) + fib(n - 2);
+  }
 }

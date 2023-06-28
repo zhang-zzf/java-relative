@@ -40,80 +40,85 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 
 public class SmallestRangeCoveringElementsFromKListsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        List<List<Integer>> list = new ArrayList<List<Integer>>(8) {{
-            add(Arrays.stream(new int[]{4, 10, 15, 24, 26})
-                    .mapToObj(Integer::new).collect(Collectors.toList()));
-            add(Arrays.stream(new int[]{0, 9, 12, 20})
-                    .mapToObj(Integer::new).collect(Collectors.toList()));
-            add(Arrays.stream(new int[]{5, 18, 22, 30})
-                    .mapToObj(Integer::new).collect(Collectors.toList()));
-        }};
-        final int[] result = solution.smallestRange(list);
-        then(result).contains(20, 24);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    List<List<Integer>> list = new ArrayList<List<Integer>>(8) {{
+      add(Arrays.stream(new int[]{4, 10, 15, 24, 26})
+          .mapToObj(Integer::new).collect(Collectors.toList()));
+      add(Arrays.stream(new int[]{0, 9, 12, 20})
+          .mapToObj(Integer::new).collect(Collectors.toList()));
+      add(Arrays.stream(new int[]{5, 18, 22, 30})
+          .mapToObj(Integer::new).collect(Collectors.toList()));
+    }};
+    final int[] result = solution.smallestRange(list);
+    then(result).contains(20, 24);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] smallestRange(List<List<Integer>> nums) {
-            List<int[]> sortedList = new ArrayList<>();
-            PriorityQueue<int[]> pq = new PriorityQueue<>(nums.size(),
-                    Comparator.comparing(arr -> arr[0]));
-            for (int i = 0; i < nums.size(); i++) {
-                final List<Integer> integers = nums.get(i);
-                if (integers.size() > 0) {
-                    pq.add(new int[]{integers.get(0), 0, i});
-                }
-            }
-            while (!pq.isEmpty()) {
-                final int[] poll = pq.poll();
-                sortedList.add(poll);
-                final List<Integer> integers = nums.get(poll[2]);
-                final int nextIdx = poll[1] + 1;
-                if (nextIdx < integers.size()) {
-                    pq.add(new int[]{integers.get(nextIdx), nextIdx, poll[2]});
-                }
-            }
-            int[] period = null;
-            Map<Integer, Boolean> existList = new HashMap<>(nums.size());
-            for (int i = 0; i < sortedList.size(); i++) {
-                for (int j = i; j < sortedList.size(); j++) {
-                    existList.put(sortedList.get(j)[2], Boolean.TRUE);
-                    if (existList.size() == nums.size()) {
-                        // 包含所有的列表
-                        final int[] newPeriod = {sortedList.get(i)[0], sortedList.get(j)[0]};
-                        if (period == null) {
-                            period = newPeriod;
-                        } else {
-                            if (newPeriod[1] - newPeriod[0] < period[1] - period[0]) {
-                                period = newPeriod;
-                            }
-                        }
-                        // 下次循环使用
-                        existList.clear();
-                        // 跳出当前循环
-                        break;
-                    }
-                }
-            }
-            return period;
+    public int[] smallestRange(List<List<Integer>> nums) {
+      List<int[]> sortedList = new ArrayList<>();
+      PriorityQueue<int[]> pq = new PriorityQueue<>(nums.size(),
+          Comparator.comparing(arr -> arr[0]));
+      for (int i = 0; i < nums.size(); i++) {
+        final List<Integer> integers = nums.get(i);
+        if (integers.size() > 0) {
+          pq.add(new int[]{integers.get(0), 0, i});
         }
-
+      }
+      while (!pq.isEmpty()) {
+        final int[] poll = pq.poll();
+        sortedList.add(poll);
+        final List<Integer> integers = nums.get(poll[2]);
+        final int nextIdx = poll[1] + 1;
+        if (nextIdx < integers.size()) {
+          pq.add(new int[]{integers.get(nextIdx), nextIdx, poll[2]});
+        }
+      }
+      int[] period = null;
+      Map<Integer, Boolean> existList = new HashMap<>(nums.size());
+      for (int i = 0; i < sortedList.size(); i++) {
+        for (int j = i; j < sortedList.size(); j++) {
+          existList.put(sortedList.get(j)[2], Boolean.TRUE);
+          if (existList.size() == nums.size()) {
+            // 包含所有的列表
+            final int[] newPeriod = {sortedList.get(i)[0], sortedList.get(j)[0]};
+            if (period == null) {
+              period = newPeriod;
+            } else {
+              if (newPeriod[1] - newPeriod[0] < period[1] - period[0]) {
+                period = newPeriod;
+              }
+            }
+            // 下次循环使用
+            existList.clear();
+            // 跳出当前循环
+            break;
+          }
+        }
+      }
+      return period;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

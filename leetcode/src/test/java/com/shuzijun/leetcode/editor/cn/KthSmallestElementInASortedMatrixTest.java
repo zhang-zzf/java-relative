@@ -35,59 +35,56 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class KthSmallestElementInASortedMatrixTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int kthSmallest = solution.kthSmallest(new int[][]{
-                        new int[]{1, 5, 9},
-                        new int[]{10, 11, 13},
-                        new int[]{12, 13, 15}},
-                8);
-        then(kthSmallest).isEqualTo(13);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int kthSmallest = solution.kthSmallest(new int[][]{
+            new int[]{1, 5, 9},
+            new int[]{10, 11, 13},
+            new int[]{12, 13, 15}},
+        8);
+    then(kthSmallest).isEqualTo(13);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int kthSmallest(int[][] matrix, int k) {
+      int lng = matrix.length;
+      int l = matrix[0][0], r = matrix[lng - 1][lng - 1];
+      while (l < r) {
+        int mid = l + (r - l) / 2;
+        if (countSmall(mid, matrix) < k) {
+          l = mid + 1;
+        } else {
+          r = mid;
+        }
+      }
+      return l;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int kthSmallest(int[][] matrix, int k) {
-            int lng = matrix.length;
-            int l = matrix[0][0], r = matrix[lng - 1][lng - 1];
-            while (l < r) {
-                int mid = l + (r - l) / 2;
-                if (countSmall(mid, matrix) < k) {
-                    l = mid + 1;
-                } else {
-                    r = mid;
-                }
-            }
-            return l;
+    private int countSmall(int pivot, int[][] matrix) {
+      int r = matrix.length - 1, c = 0;
+      int ret = 0;
+      while (r >= 0) {
+        while (c < matrix[0].length && matrix[r][c] <= pivot) {
+          c += 1;
         }
-
-        private int countSmall(int pivot, int[][] matrix) {
-            int r = matrix.length - 1, c = 0;
-            int ret = 0;
-            while (r >= 0) {
-                while (c < matrix[0].length && matrix[r][c] <= pivot) {
-                    c += 1;
-                }
-                ret += c;
-                r -= 1;
-            }
-            return ret;
-        }
-
+        ret += c;
+        r -= 1;
+      }
+      return ret;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

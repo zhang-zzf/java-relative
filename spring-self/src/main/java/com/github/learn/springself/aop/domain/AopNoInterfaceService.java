@@ -12,19 +12,19 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AopNoInterfaceService {
 
-    AopNoInterfaceService self;
+  AopNoInterfaceService self;
 
-    public void methodA() {
-        self.methodB();
-    }
+  public void methodA() {
+    self.methodB();
+  }
 
-    void methodB() {
-        log.info("methodB");
-    }
+  void methodB() {
+    log.info("methodB");
+  }
 
-    @Autowired
-    public void setSelf(AopNoInterfaceService self) {
-        this.self = self;
-    }
+  @Autowired
+  public void setSelf(AopNoInterfaceService self) {
+    this.self = self;
+  }
 
 }

@@ -6,11 +6,11 @@ package com.feng.learn.util;
  */
 public class MathUtil {
 
-    /**
-     * 返回2个入参的和
-     */
-    public static int add(int a, int b) {
-        return a + b;
-    }
+  /**
+   * 返回2个入参的和
+   */
+  public static int add(int a, int b) {
+    return a + b;
+  }
 
 }

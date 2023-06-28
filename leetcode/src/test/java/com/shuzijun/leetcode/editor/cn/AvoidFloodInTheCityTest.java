@@ -82,60 +82,59 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 
 public class AvoidFloodInTheCityTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
-    }
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] avoidFlood(int[] rains) {
-            final int lng = rains.length;
-            int[] ans = new int[lng];
-            Map<Integer, Integer> lakeHasWater = new HashMap<>();
-            for (int i = 0; i < lng; i++) {
-                if (rains[i] == 0) {
-                    continue;
-                }
-                ans[i] = -1;
-                final Integer preRainDay = lakeHasWater.put(rains[i], i);
-                if (preRainDay == null) {
-                    continue;
-                }
-                int firstIdx = -1;
-                for (int j = preRainDay + 1; j < i; j++) {
-                    if (ans[j] == 0) {
-                        firstIdx = j;
-                        break;
-                    }
-                }
-                if (firstIdx != -1) {
-                    ans[firstIdx] = rains[i];
-                } else {
-                    // 有洪水发生
-                    return new int[0];
-                }
-            }
-            for (int i = 0; i < lng; i++) {
-                if (ans[i] == 0) {
-                    ans[i] = 1;
-                }
-            }
-            return ans;
+    public int[] avoidFlood(int[] rains) {
+      final int lng = rains.length;
+      int[] ans = new int[lng];
+      Map<Integer, Integer> lakeHasWater = new HashMap<>();
+      for (int i = 0; i < lng; i++) {
+        if (rains[i] == 0) {
+          continue;
         }
-
+        ans[i] = -1;
+        final Integer preRainDay = lakeHasWater.put(rains[i], i);
+        if (preRainDay == null) {
+          continue;
+        }
+        int firstIdx = -1;
+        for (int j = preRainDay + 1; j < i; j++) {
+          if (ans[j] == 0) {
+            firstIdx = j;
+            break;
+          }
+        }
+        if (firstIdx != -1) {
+          ans[firstIdx] = rains[i];
+        } else {
+          // 有洪水发生
+          return new int[0];
+        }
+      }
+      for (int i = 0; i < lng; i++) {
+        if (ans[i] == 0) {
+          ans[i] = 1;
+        }
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

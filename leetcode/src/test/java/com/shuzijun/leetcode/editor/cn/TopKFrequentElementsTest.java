@@ -33,54 +33,53 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class TopKFrequentElementsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[] topKFrequent = solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
-        then(topKFrequent).contains(1, 2);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[] topKFrequent = solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
+    then(topKFrequent).contains(1, 2);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] topKFrequent(int[] nums, int k) {
-            Map<Integer, Integer> numToRate = new HashMap<>(nums.length);
-            for (int i = 0; i < nums.length; i++) {
-                final int num = nums[i];
-                numToRate.put(num, numToRate.getOrDefault(num, 0) + 1);
-            }
-            PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
-                    Comparator.comparingInt(arr -> arr[0]));
-            for (Map.Entry<Integer, Integer> e : numToRate.entrySet()) {
-                final Integer value = e.getValue();
-                if (pq.size() < k) {
-                    pq.add(new int[]{value, e.getKey()});
-                } else if (value > pq.peek()[0]) {
-                    pq.add(new int[]{value, e.getKey()});
-                    pq.poll();
-                }
-            }
-            final int[] ret = new int[k];
-            while (!pq.isEmpty()) {
-                ret[--k] = pq.poll()[1];
-            }
-            return ret;
+    public int[] topKFrequent(int[] nums, int k) {
+      Map<Integer, Integer> numToRate = new HashMap<>(nums.length);
+      for (int i = 0; i < nums.length; i++) {
+        final int num = nums[i];
+        numToRate.put(num, numToRate.getOrDefault(num, 0) + 1);
+      }
+      PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
+          Comparator.comparingInt(arr -> arr[0]));
+      for (Map.Entry<Integer, Integer> e : numToRate.entrySet()) {
+        final Integer value = e.getValue();
+        if (pq.size() < k) {
+          pq.add(new int[]{value, e.getKey()});
+        } else if (value > pq.peek()[0]) {
+          pq.add(new int[]{value, e.getKey()});
+          pq.poll();
         }
-
+      }
+      final int[] ret = new int[k];
+      while (!pq.isEmpty()) {
+        ret[--k] = pq.poll()[1];
+      }
+      return ret;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

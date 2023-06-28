@@ -44,53 +44,48 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class RemoveNthNodeFromEndOfListTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        ListNode<Integer> head = new ListNode<>(1, new ListNode(2, new ListNode(3, new ListNode(4))));
-        ListNode removed = solution.removeNthFromEnd(head, 2);
-        then(ListNode.toString(removed)).isEqualTo("[1,2,4]");
+  @Test
+  void givenNormal_when_thenSuccess() {
+    ListNode<Integer> head = new ListNode<>(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+    ListNode removed = solution.removeNthFromEnd(head, 2);
+    then(ListNode.toString(removed)).isEqualTo("[1,2,4]");
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+      ListNode dummy = new ListNode(0, head);
+      ListNode f = dummy, s = dummy;
+      // move the fast pointer
+      while (n-- > 0) {
+        f = f.next;
+      }
+      while (f.next != null) {
+        f = f.next;
+        s = s.next;
+      }
+      // remove the Nth iterm
+      s.next = s.next.next;
+      return dummy.next;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
-
-        public ListNode removeNthFromEnd(ListNode head, int n) {
-            ListNode dummy = new ListNode(0, head);
-            ListNode f = dummy, s = dummy;
-            // move the fast pointer
-            while (n-- > 0) {
-                f = f.next;
-            }
-            while (f.next != null) {
-                f = f.next;
-                s = s.next;
-            }
-            // remove the Nth iterm
-            s.next = s.next.next;
-            return dummy.next;
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

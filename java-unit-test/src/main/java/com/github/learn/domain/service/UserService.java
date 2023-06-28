@@ -14,19 +14,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepo userRepo;
+  private final UserRepo userRepo;
 
-    /**
-     * getUserNameByUserId
-     *
-     * @param userId id
-     * @return User
-     */
-    public Optional<User> getById(Long userId) {
-        Optional<User> u = userRepo.getById(userId);
-        // some algorithm
-        return u;
-    }
+  /**
+   * getUserNameByUserId
+   *
+   * @param userId id
+   * @return User
+   */
+  public Optional<User> getById(Long userId) {
+    Optional<User> u = userRepo.getById(userId);
+    // some algorithm
+    return u;
+  }
 
 
 }

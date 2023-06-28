@@ -1,7 +1,6 @@
 package com.github.learn.id.generator.domain.repo;
 
 import com.github.learn.id.generator.domain.model.SequenceConfig;
-
 import java.util.Map;
 
 /**
@@ -9,28 +8,29 @@ import java.util.Map;
  * @date 2021/8/17
  */
 public interface SequenceRepo {
-    /**
-     * get next available id stored by id
-     *
-     * @param key key
-     * @return data
-     */
-    long getNextAvailableId(String key);
 
-    /**
-     * update next available id
-     * <p>cas Optimistic lock</p>
-     *
-     * @param expected 期望值
-     * @param update   更新值
-     * @return true 更新更新；false 更新失败
-     */
-    boolean updateNextAvailableId(long expected, long update);
+  /**
+   * get next available id stored by id
+   *
+   * @param key key
+   * @return data
+   */
+  long getNextAvailableId(String key);
 
-    /**
-     * 获取所有的 sequence 配置
-     *
-     * @return data
-     */
-    Map<String, SequenceConfig> getAllSequenceConfig();
+  /**
+   * update next available id
+   * <p>cas Optimistic lock</p>
+   *
+   * @param expected 期望值
+   * @param update   更新值
+   * @return true 更新更新；false 更新失败
+   */
+  boolean updateNextAvailableId(long expected, long update);
+
+  /**
+   * 获取所有的 sequence 配置
+   *
+   * @return data
+   */
+  Map<String, SequenceConfig> getAllSequenceConfig();
 }

@@ -13,15 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SelfTest {
 
-    @Autowired
-    InterfaceService interfaceService;
-    @Autowired
-    NoInterfaceService noInterfaceService;
+  @Autowired
+  InterfaceService interfaceService;
+  @Autowired
+  NoInterfaceService noInterfaceService;
 
-    @Test
-    void test() {
-        interfaceService.methodA();
-        noInterfaceService.methodA();
-    }
+  @Test
+  void test() {
+    interfaceService.methodA();
+    noInterfaceService.methodA();
+  }
 
 }

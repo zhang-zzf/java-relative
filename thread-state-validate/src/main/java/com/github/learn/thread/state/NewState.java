@@ -9,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NewState {
 
-    public void validate() {
-        //noinspection AlibabaAvoidManuallyCreateThread
-        Thread t = new Thread(() -> log.info("thread-state-new"), "thread-state-NEW");
-        log.info("Thread: {} -> state: {}", t, t.getState());
-    }
+  public void validate() {
+    //noinspection AlibabaAvoidManuallyCreateThread
+    Thread t = new Thread(() -> log.info("thread-state-new"), "thread-state-NEW");
+    log.info("Thread: {} -> state: {}", t, t.getState());
+  }
 
 }

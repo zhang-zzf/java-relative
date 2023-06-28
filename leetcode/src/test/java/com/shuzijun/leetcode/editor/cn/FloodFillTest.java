@@ -33,74 +33,74 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class FloodFillTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[][] ints = solution.floodFill(new int[][]{new int[]{0, 0, 0}, new int[]{0, 1, 1}}, 1, 1, 1);
-        then(ints).isNotEmpty();
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[][] ints = solution.floodFill(new int[][]{new int[]{0, 0, 0}, new int[]{0, 1, 1}}, 1,
+        1, 1);
+    then(ints).isNotEmpty();
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+      int oldColor = image[sr][sc];
+      if (newColor == oldColor) {
+        return image;
+      }
+      int[][] ret = new int[image.length][];
+      for (int i = 0; i < image.length; i++) {
+        ret[i] = Arrays.copyOf(image[i], image[i].length);
+      }
+      Queue<Pair> queue = new LinkedList<>();
+      queue.offer(new Pair(sr, sc));
+      while (!queue.isEmpty()) {
+        final Pair loc = queue.poll();
+        if (ret[loc.r][loc.c] != oldColor) {
+          continue;
+        }
+        ret[loc.r][loc.c] = newColor;
+        if (loc.r - 1 >= 0) {
+          queue.add(new Pair(loc.r - 1, loc.c));
+        }
+        if (loc.c + 1 < ret[0].length) {
+          queue.add(new Pair(loc.r, loc.c + 1));
+        }
+        if (loc.r + 1 < ret.length) {
+          queue.add(new Pair(loc.r + 1, loc.c));
+        }
+        if (loc.c - 1 >= 0) {
+          queue.add(new Pair(loc.r, loc.c - 1));
+        }
+      }
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+    class Pair {
 
-        public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
-            int oldColor = image[sr][sc];
-            if (newColor == oldColor) {
-                return image;
-            }
-            int[][] ret = new int[image.length][];
-            for (int i = 0; i < image.length; i++) {
-                ret[i] = Arrays.copyOf(image[i], image[i].length);
-            }
-            Queue<Pair> queue = new LinkedList<>();
-            queue.offer(new Pair(sr, sc));
-            while (!queue.isEmpty()) {
-                final Pair loc = queue.poll();
-                if (ret[loc.r][loc.c] != oldColor) {
-                    continue;
-                }
-                ret[loc.r][loc.c] = newColor;
-                if (loc.r - 1 >= 0) {
-                    queue.add(new Pair(loc.r - 1, loc.c));
-                }
-                if (loc.c + 1 < ret[0].length) {
-                    queue.add(new Pair(loc.r, loc.c + 1));
-                }
-                if (loc.r + 1 < ret.length) {
-                    queue.add(new Pair(loc.r + 1, loc.c));
-                }
-                if (loc.c - 1 >= 0) {
-                    queue.add(new Pair(loc.r, loc.c - 1));
-                }
-            }
-            return ret;
-        }
+      final int r;
+      final int c;
 
-        class Pair {
-
-            final int r;
-            final int c;
-
-            Pair(int r, int c) {
-                this.r = r;
-                this.c = c;
-            }
-
-        }
+      Pair(int r, int c) {
+        this.r = r;
+        this.c = c;
+      }
 
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

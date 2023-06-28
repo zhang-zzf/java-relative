@@ -1,6 +1,11 @@
 package com.feng.learn.spring.cache;
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+
 import com.feng.learn.spring.config.cache.SpringCacheConfigWithSwitchControl;
+import java.util.function.Function;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Disabled;
@@ -13,12 +18,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.function.Function;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 
 /**
  * @author zhanfeng.zhang
@@ -34,49 +33,49 @@ import static org.mockito.Mockito.times;
 @Disabled
 public class PersonServiceWithSwitchAbilityCacheResolverTest {
 
-    @Autowired
-    PersonServiceWithSwitchAbilityCacheResolver personService;
+  @Autowired
+  PersonServiceWithSwitchAbilityCacheResolver personService;
 
-    @Autowired
-    @Qualifier("justForTest")
-    Function justFotTest;
+  @Autowired
+  @Qualifier("justForTest")
+  Function justFotTest;
 
-    @Autowired
-    @Qualifier(SpringCacheConfigWithSwitchControl.CACHE_RESOLVER)
-    SpringCacheConfigWithSwitchControl.SwitchAbilityCacheResolver cacheResolver;
+  @Autowired
+  @Qualifier(SpringCacheConfigWithSwitchControl.CACHE_RESOLVER)
+  SpringCacheConfigWithSwitchControl.SwitchAbilityCacheResolver cacheResolver;
 
-    @Test
-    public void givenCacheSwitchOff_then() {
-        // given
-        // turn cache off
-        cacheResolver.switchCacheOff();
-        // when
-        PersonServiceWithSwitchAbilityCacheResolver.Person noCache = personService.getById(1L);
-        PersonServiceWithSwitchAbilityCacheResolver.Person cache = personService.getById(1L);
-        // then
-        BDDMockito.then(justFotTest).should(times(2)).apply(any());
-        then(cache).isEqualTo(noCache);
+  @Test
+  public void givenCacheSwitchOff_then() {
+    // given
+    // turn cache off
+    cacheResolver.switchCacheOff();
+    // when
+    PersonServiceWithSwitchAbilityCacheResolver.Person noCache = personService.getById(1L);
+    PersonServiceWithSwitchAbilityCacheResolver.Person cache = personService.getById(1L);
+    // then
+    BDDMockito.then(justFotTest).should(times(2)).apply(any());
+    then(cache).isEqualTo(noCache);
+  }
+
+  @Test
+  public void givenCacheSwitchOn_then() {
+    // when
+    // first time no cache
+    PersonServiceWithSwitchAbilityCacheResolver.Person noCache = personService.getById(1L);
+    // second time use cache. so there is still one invoke to the mock
+    PersonServiceWithSwitchAbilityCacheResolver.Person cache = personService.getById(1L);
+    // then
+    BDDMockito.then(justFotTest).should(times(1)).apply(any());
+    then(cache).isEqualTo(noCache);
+  }
+
+  @Configuration
+  static class ContextMock {
+
+    @Bean
+    public Function justForTest() {
+      return Mockito.mock(Function.class);
     }
-
-    @Test
-    public void givenCacheSwitchOn_then() {
-        // when
-        // first time no cache
-        PersonServiceWithSwitchAbilityCacheResolver.Person noCache = personService.getById(1L);
-        // second time use cache. so there is still one invoke to the mock
-        PersonServiceWithSwitchAbilityCacheResolver.Person cache = personService.getById(1L);
-        // then
-        BDDMockito.then(justFotTest).should(times(1)).apply(any());
-        then(cache).isEqualTo(noCache);
-    }
-
-    @Configuration
-    static class ContextMock {
-
-        @Bean
-        public Function justForTest() {
-            return Mockito.mock(Function.class);
-        }
-    }
+  }
 
 }

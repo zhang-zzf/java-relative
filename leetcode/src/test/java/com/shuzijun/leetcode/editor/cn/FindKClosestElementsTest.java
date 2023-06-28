@@ -38,66 +38,65 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class FindKClosestElementsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[] arr = {1, 2, 3, 4, 5};
-        then(solution.findClosestElements(arr, 4, 3)).containsExactly(1, 2, 3, 4);
-        then(solution.findClosestElements(arr, 4, -1)).containsExactly(1, 2, 3, 4);
-        then(solution.findClosestElements(new int[]{1, 1, 1, 10, 10, 10}, 1, 9)).containsExactly(10);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[] arr = {1, 2, 3, 4, 5};
+    then(solution.findClosestElements(arr, 4, 3)).containsExactly(1, 2, 3, 4);
+    then(solution.findClosestElements(arr, 4, -1)).containsExactly(1, 2, 3, 4);
+    then(solution.findClosestElements(new int[]{1, 1, 1, 10, 10, 10}, 1, 9)).containsExactly(10);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public List<Integer> findClosestElements(int[] arr, int k, int x) {
-            final LinkedList<Integer> ret = new LinkedList<Integer>();
-            // 找到第一个 <x 的下标
-            int idx = -1;
-            int left = 0, right = arr.length - 1;
-            while (left < right) {
-                int mid = left + ((right - left) >> 1) + 1;
-                if (arr[mid] >= x) {
-                    right = mid - 1;
-                } else {
-                    left = mid;
-                }
-            }
-            if (arr[left] <= x) {
-                idx = left;
-            }
-            // 左侧第一个元素
-            left = idx;
-            // 右侧第一个元素
-            right = idx + 1;
-            while (k-- > 0) {
-                if (right >= arr.length) {
-                    ret.addFirst(arr[left--]);
-                } else if (left < 0) {
-                    ret.addLast(arr[right++]);
-                } else {
-                    if (x - arr[left] <= arr[right] - x) {
-                        ret.addFirst(arr[left--]);
-                    } else {
-                        ret.addLast(arr[right++]);
-                    }
-                }
-            }
-            return ret;
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+      final LinkedList<Integer> ret = new LinkedList<Integer>();
+      // 找到第一个 <x 的下标
+      int idx = -1;
+      int left = 0, right = arr.length - 1;
+      while (left < right) {
+        int mid = left + ((right - left) >> 1) + 1;
+        if (arr[mid] >= x) {
+          right = mid - 1;
+        } else {
+          left = mid;
         }
-
+      }
+      if (arr[left] <= x) {
+        idx = left;
+      }
+      // 左侧第一个元素
+      left = idx;
+      // 右侧第一个元素
+      right = idx + 1;
+      while (k-- > 0) {
+        if (right >= arr.length) {
+          ret.addFirst(arr[left--]);
+        } else if (left < 0) {
+          ret.addLast(arr[right++]);
+        } else {
+          if (x - arr[left] <= arr[right] - x) {
+            ret.addFirst(arr[left--]);
+          } else {
+            ret.addLast(arr[right++]);
+          }
+        }
+      }
+      return ret;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

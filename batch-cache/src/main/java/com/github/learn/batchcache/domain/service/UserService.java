@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
 
-    public void create(User user) {
-        userRepository.insert(user);
-    }
+  private final UserRepository userRepository;
+
+  public void create(User user) {
+    userRepository.insert(user);
+  }
 }

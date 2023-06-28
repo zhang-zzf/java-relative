@@ -43,41 +43,41 @@ import org.junit.jupiter.api.Test;
 
 public class FirstBadVersionTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  class VersionControl {
+
+    boolean isBadVersion(int version) {
+      return true;
     }
 
-    class VersionControl {
+  }
 
-        boolean isBadVersion(int version) {
-            return true;
-        }
-
-    }
-
-    //leetcode submit region begin(Prohibit modification and deletion)
+  //leetcode submit region begin(Prohibit modification and deletion)
 /* The isBadVersion API is defined in the parent class VersionControl.
       boolean isBadVersion(int version); */
 
-    public class Solution extends VersionControl {
+  public class Solution extends VersionControl {
 
-        public int firstBadVersion(int n) {
-            int left = 1, right = n;
-            while (left < right) {
-                int mid = left + ((right - left) >> 1);
-                if (isBadVersion(mid)) {
-                    right = mid;
-                } else {
-                    left = mid + 1;
-                }
-            }
-            return left;
+    public int firstBadVersion(int n) {
+      int left = 1, right = n;
+      while (left < right) {
+        int mid = left + ((right - left) >> 1);
+        if (isBadVersion(mid)) {
+          right = mid;
+        } else {
+          left = mid + 1;
         }
-
+      }
+      return left;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

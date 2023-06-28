@@ -6,11 +6,11 @@ package com.feng.learn.pattern.command.provider;
  */
 public class SecurityControl {
 
-    void arm() {
+  void arm() {
 
-    }
+  }
 
-    void disarm() {
+  void disarm() {
 
-    }
+  }
 }

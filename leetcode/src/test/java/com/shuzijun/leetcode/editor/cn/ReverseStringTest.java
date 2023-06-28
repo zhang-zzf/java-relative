@@ -37,28 +37,28 @@ import org.junit.jupiter.api.Test;
 
 public class ReverseStringTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public void reverseString(char[] s) {
+      int left = 0, right = s.length - 1;
+      while (left < right) {
+        char t = s[left];
+        s[left] = s[right];
+        s[right] = t;
+        left += 1;
+        right -= 1;
+      }
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public void reverseString(char[] s) {
-            int left = 0, right = s.length - 1;
-            while (left < right) {
-                char t = s[left];
-                s[left] = s[right];
-                s[right] = t;
-                left += 1;
-                right -= 1;
-            }
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

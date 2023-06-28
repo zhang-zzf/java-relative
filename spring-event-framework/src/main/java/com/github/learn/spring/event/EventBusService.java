@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventBusService implements ApplicationEventPublisherAware {
 
-    ApplicationEventPublisher publisher;
+  ApplicationEventPublisher publisher;
 
-    public void publish(Object event) {
-        publisher.publishEvent(event);
-    }
+  public void publish(Object event) {
+    publisher.publishEvent(event);
+  }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
-    }
+  @Override
+  public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+    this.publisher = applicationEventPublisher;
+  }
 }

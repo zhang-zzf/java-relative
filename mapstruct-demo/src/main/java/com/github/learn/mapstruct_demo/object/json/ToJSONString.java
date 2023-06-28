@@ -10,10 +10,10 @@ import org.mapstruct.Named;
 public class ToJSONString {
 
 
-    @Named("toJSONStr")
-    public String toJSONString(Object o) {
-        return JSON.toJSONString(o);
-    }
+  @Named("toJSONStr")
+  public String toJSONString(Object o) {
+    return JSON.toJSONString(o);
+  }
 
 
 }

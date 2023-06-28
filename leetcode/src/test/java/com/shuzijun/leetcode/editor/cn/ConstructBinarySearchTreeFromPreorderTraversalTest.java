@@ -41,66 +41,56 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class ConstructBinarySearchTreeFromPreorderTraversalTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final TreeNode root = solution.bstFromPreorder(new int[]{8, 5, 1, 7, 10, 12});
-        final SerializeAndDeserializeBinaryTreeTest.Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
-        final String serialize = codec.serialize(root);
-        then(serialize).isEqualTo("[8,5,10,1,7,null,12]");
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final TreeNode root = solution.bstFromPreorder(new int[]{8, 5, 1, 7, 10, 12});
+    final SerializeAndDeserializeBinaryTreeTest.Codec codec = new SerializeAndDeserializeBinaryTreeTest().new Codec();
+    final String serialize = codec.serialize(root);
+    then(serialize).isEqualTo("[8,5,10,1,7,null,12]");
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for a binary tree node. public class TreeNode { int val; TreeNode left; TreeNode
+   * right; TreeNode() {} TreeNode(int val) { this.val = val; } TreeNode(int val, TreeNode left,
+   * TreeNode right) { this.val = val; this.left = left; this.right = right; } }
+   */
+  class Solution {
+
+    public TreeNode bstFromPreorder(int[] preorder) {
+      return recursion(preorder, 0, preorder.length - 1);
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for a binary tree node.
-     * public class TreeNode {
-     * int val;
-     * TreeNode left;
-     * TreeNode right;
-     * TreeNode() {}
-     * TreeNode(int val) { this.val = val; }
-     * TreeNode(int val, TreeNode left, TreeNode right) {
-     * this.val = val;
-     * this.left = left;
-     * this.right = right;
-     * }
-     * }
-     */
-    class Solution {
-
-        public TreeNode bstFromPreorder(int[] preorder) {
-            return recursion(preorder, 0, preorder.length - 1);
+    private TreeNode recursion(int[] preorder, int left, int right) {
+      if (left > right) {
+        return null;
+      }
+      int pivot = preorder[left];
+      int mid = left;
+      for (int i = left + 1; i <= right; i++) {
+        if (preorder[i] < pivot) {
+          mid = i;
+        } else {
+          break;
         }
-
-        private TreeNode recursion(int[] preorder, int left, int right) {
-            if (left > right) {
-                return null;
-            }
-            int pivot = preorder[left];
-            int mid = left;
-            for (int i = left + 1; i <= right; i++) {
-                if (preorder[i] < pivot) {
-                    mid = i;
-                } else {
-                    break;
-                }
-            }
-            return new TreeNode(pivot,
-                    recursion(preorder, left + 1, mid),
-                    recursion(preorder, mid + 1, right)
-            );
-        }
-
+      }
+      return new TreeNode(pivot,
+          recursion(preorder, left + 1, mid),
+          recursion(preorder, mid + 1, right)
+      );
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

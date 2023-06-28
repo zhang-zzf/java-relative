@@ -45,103 +45,122 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.LinkedList;
 import java.util.Queue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class NumberOfIslandsTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int nums = solution.numIslands(new char[][]{
-                new char[]{'1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '0', '1', '1'},
-                new char[]{'0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '0'},
-                new char[]{'1', '0', '1', '1', '1', '0', '0', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '0', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '1', '1', '1', '0', '1', '1', '1'},
-                new char[]{'0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'0', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '0', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '0'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '0', '0'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-                new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-        });
-        then(nums).isEqualTo(1);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int nums = solution.numIslands(new char[][]{
+        new char[]{'1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0',
+            '1', '0', '1', '1'},
+        new char[]{'0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1',
+            '1', '1', '1', '0'},
+        new char[]{'1', '0', '1', '1', '1', '0', '0', '1', '1', '0', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '0', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '1', '1', '1',
+            '0', '1', '1', '1'},
+        new char[]{'0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '0',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1',
+            '1', '0', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'0', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '0', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '1', '1', '1', '1',
+            '0', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1',
+            '1', '1', '1', '0'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1',
+            '1', '1', '0', '0'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+        new char[]{'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',
+            '1', '1', '1', '1'},
+    });
+    then(nums).isEqualTo(1);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int numIslands(char[][] grid) {
+      int ret = 0;
+      for (int i = 0; i < grid.length; i++) {
+        for (int j = 0; j < grid[i].length; j++) {
+          if (grid[i][j] == '1') {
+            ret += 1;
+            // 抹除整个相连的岛屿
+            dfs(grid, i, j);
+          }
+        }
+      }
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int numIslands(char[][] grid) {
-            int ret = 0;
-            for (int i = 0; i < grid.length; i++) {
-                for (int j = 0; j < grid[i].length; j++) {
-                    if (grid[i][j] == '1') {
-                        ret += 1;
-                        // 抹除整个相连的岛屿
-                        dfs(grid, i, j);
-                    }
-                }
-            }
-            return ret;
-        }
-
-        private void dfs(char[][] grid, int i, int j) {
-            if (i < 0 || i >= grid.length
-                    || j < 0 || j >= grid[i].length
-                    || grid[i][j] == '0') {
-                return;
-            }
-            grid[i][j] = '0';
-            dfs(grid, i - 1, j);
-            dfs(grid, i, j + 1);
-            dfs(grid, i + 1, j);
-            dfs(grid, i, j - 1);
-        }
-
-        private void bfsEraseEntireIsland(char[][] grid, int i, int j) {
-            Queue<int[]> queue = new LinkedList<>();
-            grid[i][j] = '0';
-            queue.add(new int[]{i, j});
-            while (!queue.isEmpty()) {
-                final int[] poll = queue.poll();
-                i = poll[0];
-                j = poll[1];
-                if (i > 0 && grid[i - 1][j] == '1') {
-                    grid[i - 1][j] = '0';
-                    queue.add(new int[]{i - 1, j});
-                }
-                if (j + 1 < grid[i].length && grid[i][j + 1] == '1') {
-                    grid[i][j + 1] = '0';
-                    queue.add(new int[]{i, j + 1});
-                }
-                if (i + 1 < grid.length && grid[i + 1][j] == '1') {
-                    grid[i + 1][j] = '0';
-                    queue.add(new int[]{i + 1, j});
-                }
-                if (j > 0 && grid[i][j - 1] == '1') {
-                    grid[i][j - 1] = '0';
-                    queue.add(new int[]{i, j - 1});
-                }
-            }
-        }
-
+    private void dfs(char[][] grid, int i, int j) {
+      if (i < 0 || i >= grid.length
+          || j < 0 || j >= grid[i].length
+          || grid[i][j] == '0') {
+        return;
+      }
+      grid[i][j] = '0';
+      dfs(grid, i - 1, j);
+      dfs(grid, i, j + 1);
+      dfs(grid, i + 1, j);
+      dfs(grid, i, j - 1);
     }
+
+    private void bfsEraseEntireIsland(char[][] grid, int i, int j) {
+      Queue<int[]> queue = new LinkedList<>();
+      grid[i][j] = '0';
+      queue.add(new int[]{i, j});
+      while (!queue.isEmpty()) {
+        final int[] poll = queue.poll();
+        i = poll[0];
+        j = poll[1];
+        if (i > 0 && grid[i - 1][j] == '1') {
+          grid[i - 1][j] = '0';
+          queue.add(new int[]{i - 1, j});
+        }
+        if (j + 1 < grid[i].length && grid[i][j + 1] == '1') {
+          grid[i][j + 1] = '0';
+          queue.add(new int[]{i, j + 1});
+        }
+        if (i + 1 < grid.length && grid[i + 1][j] == '1') {
+          grid[i + 1][j] = '0';
+          queue.add(new int[]{i + 1, j});
+        }
+        if (j > 0 && grid[i][j - 1] == '1') {
+          grid[i][j - 1] = '0';
+          queue.add(new int[]{i, j - 1});
+        }
+      }
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

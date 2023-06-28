@@ -6,23 +6,23 @@ package com.feng.learn.pattern.command.provider;
  */
 public class CeilingFan {
 
-    void high() {
+  void high() {
 
-    }
+  }
 
-    void medium() {
+  void medium() {
 
-    }
+  }
 
-    void low() {
+  void low() {
 
-    }
+  }
 
-    void off() {
+  void off() {
 
-    }
+  }
 
-    int getSpeed() {
-        return 0;
-    }
+  int getSpeed() {
+    return 0;
+  }
 }

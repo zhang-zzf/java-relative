@@ -32,63 +32,62 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class UglyNumberIiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.nthUglyNumber(10)).isEqualTo(12);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.nthUglyNumber(10)).isEqualTo(12);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int nthUglyNumber(int n) {
+      int[] ugly = new int[n];
+      ugly[0] = 1;
+      PriorityQueue<Item> pq = new PriorityQueue<>(3);
+      pq.add(new Item(0, 2, 2));
+      pq.add(new Item(0, 3, 3));
+      pq.add(new Item(0, 5, 5));
+      for (int i = 1; i < n; i++) {
+        final Item min = pq.poll();
+        ugly[i] = min.ugly;
+        pq.add(new Item(min.uglyIndex + 1, min.prime, ugly[min.uglyIndex + 1] * min.prime));
+        if (min.compareTo(pq.peek()) == 0) {
+          i -= 1;
+        }
+      }
+      return ugly[n - 1];
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+    class Item implements Comparable<Item> {
 
-        public int nthUglyNumber(int n) {
-            int[] ugly = new int[n];
-            ugly[0] = 1;
-            PriorityQueue<Item> pq = new PriorityQueue<>(3);
-            pq.add(new Item(0, 2, 2));
-            pq.add(new Item(0, 3, 3));
-            pq.add(new Item(0, 5, 5));
-            for (int i = 1; i < n; i++) {
-                final Item min = pq.poll();
-                ugly[i] = min.ugly;
-                pq.add(new Item(min.uglyIndex + 1, min.prime, ugly[min.uglyIndex + 1] * min.prime));
-                if (min.compareTo(pq.peek()) == 0) {
-                    i -= 1;
-                }
-            }
-            return ugly[n - 1];
-        }
+      int uglyIndex;
+      int prime;
+      int ugly;
 
-        class Item implements Comparable<Item> {
+      public Item(int uglyIndex, int prime, int ugly) {
+        this.uglyIndex = uglyIndex;
+        this.prime = prime;
+        this.ugly = ugly;
+      }
 
-            int uglyIndex;
-            int prime;
-            int ugly;
-
-            public Item(int uglyIndex, int prime, int ugly) {
-                this.uglyIndex = uglyIndex;
-                this.prime = prime;
-                this.ugly = ugly;
-            }
-
-            @Override
-            public int compareTo(Item o) {
-                return this.ugly - o.ugly;
-            }
-
-        }
+      @Override
+      public int compareTo(Item o) {
+        return this.ugly - o.ugly;
+      }
 
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

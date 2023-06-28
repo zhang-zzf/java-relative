@@ -45,40 +45,39 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class TwoSumTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.twoSum(new int[]{3, 2, 4}, 6)).contains(1, 2);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.twoSum(new int[]{3, 2, 4}, 6)).contains(1, 2);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] twoSum(int[] nums, int target) {
-            Map<Integer, Integer> cache = new HashMap<>();
-            Integer firstIdx;
-            for (int i = 0; i < nums.length; i++) {
-                int expect = target - nums[i];
-                if ((firstIdx = cache.get(expect)) != null) {
-                    return new int[]{firstIdx, i};
-                }
-                cache.put(nums[i], i);
-            }
-            return new int[]{-1, -1};
+    public int[] twoSum(int[] nums, int target) {
+      Map<Integer, Integer> cache = new HashMap<>();
+      Integer firstIdx;
+      for (int i = 0; i < nums.length; i++) {
+        int expect = target - nums[i];
+        if ((firstIdx = cache.get(expect)) != null) {
+          return new int[]{firstIdx, i};
         }
-
+        cache.put(nums[i], i);
+      }
+      return new int[]{-1, -1};
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

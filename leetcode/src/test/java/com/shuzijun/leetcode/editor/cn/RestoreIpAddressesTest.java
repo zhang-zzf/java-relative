@@ -58,77 +58,75 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class RestoreIpAddressesTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final List<String> list = solution.restoreIpAddresses("1111");
-        then(list).hasSize(1);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final List<String> list = solution.restoreIpAddresses("1111");
+    then(list).hasSize(1);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    /**
+     * 解题思路：https://www.yuque.com/u1147067/vzaha9/ybo76y#EWutL
+     */
+    public List<String> restoreIpAddresses(String s) {
+      List<String> ret = new ArrayList<>();
+      backTrack(s, 0, new ArrayList<>(4), ret);
+      return ret;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        /**
-         * 解题思路：https://www.yuque.com/u1147067/vzaha9/ybo76y#EWutL
-         */
-        public List<String> restoreIpAddresses(String s) {
-            List<String> ret = new ArrayList<>();
-            backTrack(s, 0, new ArrayList<>(4), ret);
-            return ret;
+    private void backTrack(String str, int idx, List<String> track, List<String> ret) {
+      if (track.size() == 4) {
+        if (idx == str.length()) {
+          // 转结果
+          ret.add(String.join(".", track));
         }
-
-        private void backTrack(String str, int idx, List<String> track, List<String> ret) {
-            if (track.size() == 4) {
-                if (idx == str.length()) {
-                    // 转结果
-                    ret.add(String.join(".", track));
-                }
-                return;
-            }
-            if (str.length() - idx > (4 - track.size()) * 3) {
-                // 后续字符串无法解析成合理的subIp
-                return;
-            }
-            for (int end = idx + 1; end <= Math.min(idx + 4, str.length()); end++) {
-                // 选择
-                String subStr = str.substring(idx, end);
-                if (!isSubIp(subStr)) {
-                    continue;
-                }
-                track.add(subStr);
-                backTrack(str, end, track, ret);
-                // 回溯
-                track.remove(track.size() - 1);
-            }
+        return;
+      }
+      if (str.length() - idx > (4 - track.size()) * 3) {
+        // 后续字符串无法解析成合理的subIp
+        return;
+      }
+      for (int end = idx + 1; end <= Math.min(idx + 4, str.length()); end++) {
+        // 选择
+        String subStr = str.substring(idx, end);
+        if (!isSubIp(subStr)) {
+          continue;
         }
-
-        private boolean isSubIp(String subStr) {
-            if ("0".equals(subStr)) {
-                return true;
-            }
-            if (subStr.startsWith("0")) {
-                return false;
-            }
-            final Integer ip = Integer.valueOf(subStr);
-            if (ip > 0 && ip <= 255) {
-                return true;
-            }
-            return false;
-        }
-
+        track.add(subStr);
+        backTrack(str, end, track, ret);
+        // 回溯
+        track.remove(track.size() - 1);
+      }
     }
+
+    private boolean isSubIp(String subStr) {
+      if ("0".equals(subStr)) {
+        return true;
+      }
+      if (subStr.startsWith("0")) {
+        return false;
+      }
+      final Integer ip = Integer.valueOf(subStr);
+      if (ip > 0 && ip <= 255) {
+        return true;
+      }
+      return false;
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

@@ -72,41 +72,42 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class IntegerToRomanTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.intToRoman(1234)).isEqualTo("MCCXXXIV");
-        then(solution.intToRoman(949)).isEqualTo("CMXLIX");
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.intToRoman(1234)).isEqualTo("MCCXXXIV");
+    then(solution.intToRoman(949)).isEqualTo("CMXLIX");
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-        public String intToRoman(int num) {
-            if (num < 0 || num > 3999) {
-                throw new IllegalArgumentException();
-            }
-            int[] number = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-            String[] str = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-            StringBuilder ret = new StringBuilder();
-            for (int i = 0; i < number.length; ) {
-                if (num >= number[i]) {
-                    num -= number[i];
-                    ret.append(str[i]);
-                    continue;
-                }
-                i += 1;
-            }
-            return ret.toString();
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public String intToRoman(int num) {
+      if (num < 0 || num > 3999) {
+        throw new IllegalArgumentException();
+      }
+      int[] number = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+      String[] str = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+      StringBuilder ret = new StringBuilder();
+      for (int i = 0; i < number.length; ) {
+        if (num >= number[i]) {
+          num -= number[i];
+          ret.append(str[i]);
+          continue;
         }
+        i += 1;
+      }
+      return ret.toString();
     }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

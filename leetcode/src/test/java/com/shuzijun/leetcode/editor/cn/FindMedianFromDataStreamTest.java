@@ -32,66 +32,65 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.assertj.core.data.Offset;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.data.Offset;
+import org.junit.jupiter.api.Test;
 
 
 public class FindMedianFromDataStreamTest {
 
-    final MedianFinder solution = new MedianFinder();
+  final MedianFinder solution = new MedianFinder();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        int[] data = {-1, -2, -3, - 4, -5};
-        double[] result = {-1.0, -1.5D, -2.0, -2.5, -3.0};
-        final double median = solution.findMedian();
-        then(median).isCloseTo(0, Offset.offset(0.1));
-        for (int i = 0; i < data.length; i++) {
-            solution.addNum(data[i]);
-            then(solution.findMedian()).isCloseTo(result[i], Offset.offset(0.1));
-        }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    int[] data = {-1, -2, -3, -4, -5};
+    double[] result = {-1.0, -1.5D, -2.0, -2.5, -3.0};
+    final double median = solution.findMedian();
+    then(median).isCloseTo(0, Offset.offset(0.1));
+    for (int i = 0; i < data.length; i++) {
+      solution.addNum(data[i]);
+      then(solution.findMedian()).isCloseTo(result[i], Offset.offset(0.1));
+    }
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class MedianFinder {
+
+    // <= k
+    final PriorityQueue<Integer> pqMax = new PriorityQueue<>(Comparator.reverseOrder());
+    // > k
+    final PriorityQueue<Integer> pqMin = new PriorityQueue<>();
+    private int size;
+
+    public MedianFinder() {
+
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class MedianFinder {
-
-        // <= k
-        final PriorityQueue<Integer> pqMax = new PriorityQueue<>(Comparator.reverseOrder());
-        // > k
-        final PriorityQueue<Integer> pqMin = new PriorityQueue<>();
-        private int size;
-
-        public MedianFinder() {
-
-        }
-
-        public void addNum(int num) {
-            pqMax.add(num);
-            if (pqMin.peek() != null && pqMax.peek() > pqMin.peek()) {
-                pqMax.add(pqMin.poll());
-            }
-            while (pqMax.size() - pqMin.size() > 1) {
-                pqMin.add(pqMax.poll());
-            }
-            size += 1;
-        }
-
-        public double findMedian() {
-            if (size == 0) {
-                return 0D;
-            }
-            if (size % 2 == 0) {
-                return (pqMax.peek() + pqMin.peek()) / 2d;
-            }
-            return pqMax.peek();
-        }
-
+    public void addNum(int num) {
+      pqMax.add(num);
+      if (pqMin.peek() != null && pqMax.peek() > pqMin.peek()) {
+        pqMax.add(pqMin.poll());
+      }
+      while (pqMax.size() - pqMin.size() > 1) {
+        pqMin.add(pqMax.poll());
+      }
+      size += 1;
     }
+
+    public double findMedian() {
+      if (size == 0) {
+        return 0D;
+      }
+      if (size % 2 == 0) {
+        return (pqMax.peek() + pqMin.peek()) / 2d;
+      }
+      return pqMax.peek();
+    }
+
+  }
 
 /**
  * Your MedianFinder object will be instantiated and called as such:

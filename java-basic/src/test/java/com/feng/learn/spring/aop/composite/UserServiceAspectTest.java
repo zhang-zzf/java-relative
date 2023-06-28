@@ -1,5 +1,7 @@
 package com.feng.learn.spring.aop.composite;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.feng.learn.spring.aop.service.UserService;
 import com.feng.learn.spring.aop.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author zhanfeng.zhang
@@ -25,17 +25,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class UserServiceAspectTest {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @Test
-    public void givenAroundAspect_whenCallMethod_thenThrowException() {
-        assertThat(userService.save(0L, null)).isTrue();
-    }
+  @Test
+  public void givenAroundAspect_whenCallMethod_thenThrowException() {
+    assertThat(userService.save(0L, null)).isTrue();
+  }
 
-    @Configuration
-    @ComponentScan("com.feng.learn.spring.aop.aspects.composite")
-    static class AspectsContext {
-    }
+  @Configuration
+  @ComponentScan("com.feng.learn.spring.aop.aspects.composite")
+  static class AspectsContext {
+
+  }
 
 }

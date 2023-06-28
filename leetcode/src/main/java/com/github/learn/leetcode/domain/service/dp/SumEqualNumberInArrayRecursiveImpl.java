@@ -13,23 +13,23 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 public class SumEqualNumberInArrayRecursiveImpl implements SumEqualNumberInArray {
 
-    @Override
-    public boolean equal(int[] array, int sum) {
-        return subSum(array, array.length, sum);
-    }
+  @Override
+  public boolean equal(int[] array, int sum) {
+    return subSum(array, array.length, sum);
+  }
 
-    private boolean subSum(int[] array, int length, int sum) {
-        if (length == 1) {
-            return array[0] == sum;
-        }
-        if (sum == 0) {
-            return true;
-        }
-        if (sum < 0) {
-            return false;
-        }
-        return subSum(array, length - 1, sum - array[length - 1])
-            || subSum(array, length - 1, sum);
+  private boolean subSum(int[] array, int length, int sum) {
+    if (length == 1) {
+      return array[0] == sum;
     }
+    if (sum == 0) {
+      return true;
+    }
+    if (sum < 0) {
+      return false;
+    }
+    return subSum(array, length - 1, sum - array[length - 1])
+        || subSum(array, length - 1, sum);
+  }
 
 }

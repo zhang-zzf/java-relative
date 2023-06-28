@@ -56,57 +56,58 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class PopulatingNextRightPointersInEachNodeTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final Node root = new Node(1, new Node(2, new Node(4), new Node(5), null), new Node(3, new Node(6), new Node(7), null), null);
-        final Node node = solution.connect(root);
-        then(node.next).isNull();
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final Node root = new Node(1, new Node(2, new Node(4), new Node(5), null),
+        new Node(3, new Node(6), new Node(7), null), null);
+    final Node node = solution.connect(root);
+    then(node.next).isNull();
+  }
+
+  /**
+   * [0]
+   */
+  @Test
+  void giveFailedCaseOne_when_thenSuccess() {
+    final Node root = new Node(0, null, null, null);
+    final Node node = solution.connect(root);
+    then(node.next).isNull();
+  }
+
+  class Node {
+
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {
     }
 
-    /**
-     * [0]
-     */
-    @Test
-    void giveFailedCaseOne_when_thenSuccess() {
-        final Node root = new Node(0, null, null, null);
-        final Node node = solution.connect(root);
-        then(node.next).isNull();
+    public Node(int _val) {
+      val = _val;
     }
 
-    class Node {
-
-        public int val;
-        public Node left;
-        public Node right;
-        public Node next;
-
-        public Node() {
-        }
-
-        public Node(int _val) {
-            val = _val;
-        }
-
-        public Node(int _val, Node _left, Node _right, Node _next) {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
-        }
-
+    public Node(int _val, Node _left, Node _right, Node _next) {
+      val = _val;
+      left = _left;
+      right = _right;
+      next = _next;
     }
 
-    ;
-    //leetcode submit region begin(Prohibit modification and deletion)
+  }
+
+  ;
+  //leetcode submit region begin(Prohibit modification and deletion)
 /*
 // Definition for a Node.
 class Node {
@@ -130,29 +131,29 @@ class Node {
 };
 */
 
-    class Solution {
+  class Solution {
 
-        public Node connect(Node root) {
-            Node cur = root;
-            while (cur != null) {
-                Node dummy = new Node(), prev = dummy;
-                while (cur != null) {
-                    if (cur.left != null) {
-                        prev.next = cur.left;
-                        prev = prev.next;
-                    }
-                    if (cur.right != null) {
-                        prev.next = cur.right;
-                        prev = prev.next;
-                    }
-                    cur = cur.next;
-                }
-                cur = dummy.next;
-            }
-            return root;
+    public Node connect(Node root) {
+      Node cur = root;
+      while (cur != null) {
+        Node dummy = new Node(), prev = dummy;
+        while (cur != null) {
+          if (cur.left != null) {
+            prev.next = cur.left;
+            prev = prev.next;
+          }
+          if (cur.right != null) {
+            prev.next = cur.right;
+            prev = prev.next;
+          }
+          cur = cur.next;
         }
-
+        cur = dummy.next;
+      }
+      return root;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

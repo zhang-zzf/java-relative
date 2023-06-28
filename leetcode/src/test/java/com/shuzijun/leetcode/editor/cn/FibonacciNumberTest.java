@@ -45,38 +45,38 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FibonacciNumberTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int fib = solution.fib(5);
-        then(fib).isEqualTo(5);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int fib = solution.fib(5);
+    then(fib).isEqualTo(5);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int fib(int n) {
+      if (n < 2) {
+        return n;
+      }
+      int p = 0, q = 1, r = 1;
+      for (int i = 2; i <= n; i++) {
+        r = p + q;
+        p = q;
+        q = r;
+      }
+      return r;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int fib(int n) {
-            if (n < 2) {
-                return n;
-            }
-            int p = 0, q = 1, r = 1;
-            for (int i = 2; i <= n; i++) {
-                r = p + q;
-                p = q;
-                q = r;
-            }
-            return r;
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

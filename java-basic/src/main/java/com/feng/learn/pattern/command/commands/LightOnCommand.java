@@ -14,15 +14,15 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 public class LightOnCommand implements Command {
 
-    Light light;
+  Light light;
 
-    @Override
-    public void execute() {
-        light.on();
-    }
+  @Override
+  public void execute() {
+    light.on();
+  }
 
-    @Override
-    public void undo() {
-        light.off();
-    }
+  @Override
+  public void undo() {
+    light.off();
+  }
 }

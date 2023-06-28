@@ -13,15 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Slf4j
 class TimeBasedSnowFlakeTest {
 
-    @Autowired
-    TimeBasedSnowFlake timeBasedSnowFlake;
+  @Autowired
+  TimeBasedSnowFlake timeBasedSnowFlake;
 
-    @Test
-    void test() {
-        for (int i = 0; i < 10; i++) {
-            final long id = timeBasedSnowFlake.generate();
-            log.info("id: {}", id);
-        }
+  @Test
+  void test() {
+    for (int i = 0; i < 10; i++) {
+      final long id = timeBasedSnowFlake.generate();
+      log.info("id: {}", id);
     }
+  }
 
 }

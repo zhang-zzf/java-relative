@@ -20,16 +20,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SpringDataElasticSearchRestClientConfigIT {
 
 
-    @Autowired
-    RestHighLevelClient highLevelClient;
+  @Autowired
+  RestHighLevelClient highLevelClient;
 
-    @Test
-    public void test() throws IOException {
-        IndexRequest request = new IndexRequest("spring-data")
-            .id("1")
-            .source(singletonMap("feature", "high-level-rest-client"))
-            .setRefreshPolicy(IMMEDIATE);
-        IndexResponse response = highLevelClient.index(request, RequestOptions.DEFAULT);
-    }
+  @Test
+  public void test() throws IOException {
+    IndexRequest request = new IndexRequest("spring-data")
+        .id("1")
+        .source(singletonMap("feature", "high-level-rest-client"))
+        .setRefreshPolicy(IMMEDIATE);
+    IndexResponse response = highLevelClient.index(request, RequestOptions.DEFAULT);
+  }
 
 }

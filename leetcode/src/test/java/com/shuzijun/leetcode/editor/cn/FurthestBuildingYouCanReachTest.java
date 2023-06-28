@@ -54,61 +54,60 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class FurthestBuildingYouCanReachTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int furthestBuilding = solution.furthestBuilding(new int[]{4, 12, 2, 7, 3, 18, 21, 3, 19}, 10, 2);
-        then(furthestBuilding).isEqualTo(7);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int furthestBuilding = solution.furthestBuilding(new int[]{4, 12, 2, 7, 3, 18, 21, 3, 19},
+        10, 2);
+    then(furthestBuilding).isEqualTo(7);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int furthestBuilding(int[] heights, int bricks, int ladders) {
-            final int lng = heights.length;
-            int[] needBricks = new int[lng];
-            for (int i = 0; i < lng - 1; i++) {
-                needBricks[i] = heights[i + 1] - heights[i];
-            }
-            // 大堆
-            PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
-            int i;
-            for (i = 0; i < lng; i++) {
-                if (needBricks[i] <= 0) {
-                    continue;
-                }
-                if (needBricks[i] <= bricks) {
-                    pq.add(needBricks[i]);
-                    bricks -= needBricks[i];
-                } else if (ladders > 0) {
-                    if (!pq.isEmpty() && pq.peek() > needBricks[i]) {
-                        // 梯子换最多的砖
-                        ladders -= 1;
-                        bricks += pq.poll();
-                        i -= 1;
-                    } else {
-                        ladders -= 1;
-                    }
-                } else {
-                    break;
-                }
-            }
-            return i >= lng ? i - 1 : i;
+    public int furthestBuilding(int[] heights, int bricks, int ladders) {
+      final int lng = heights.length;
+      int[] needBricks = new int[lng];
+      for (int i = 0; i < lng - 1; i++) {
+        needBricks[i] = heights[i + 1] - heights[i];
+      }
+      // 大堆
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+      int i;
+      for (i = 0; i < lng; i++) {
+        if (needBricks[i] <= 0) {
+          continue;
         }
-
+        if (needBricks[i] <= bricks) {
+          pq.add(needBricks[i]);
+          bricks -= needBricks[i];
+        } else if (ladders > 0) {
+          if (!pq.isEmpty() && pq.peek() > needBricks[i]) {
+            // 梯子换最多的砖
+            ladders -= 1;
+            bricks += pq.poll();
+            i -= 1;
+          } else {
+            ladders -= 1;
+          }
+        } else {
+          break;
+        }
+      }
+      return i >= lng ? i - 1 : i;
     }
 
+  }
 
 //leetcode submit region end(Prohibit modification and deletion)
 

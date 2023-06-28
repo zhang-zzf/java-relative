@@ -20,29 +20,29 @@ import org.mockito.junit.MockitoRule;
  */
 public class JobServiceTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+  @Rule
+  public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Mock
-    JobService jobService;
+  @Mock
+  JobService jobService;
 
-    @Test
-    public void givenDefaultMethod_whenCallRealMethod_thenNoExceptionIsRaised() {
-        Person p = new Person();
-        p.setCurrentJobPosition(new JobPosition());
+  @Test
+  public void givenDefaultMethod_whenCallRealMethod_thenNoExceptionIsRaised() {
+    Person p = new Person();
+    p.setCurrentJobPosition(new JobPosition());
 
-        when(jobService.findCurrentJobPosition(p))
-            .thenReturn(Optional.of(p.getCurrentJobPosition()));
+    when(jobService.findCurrentJobPosition(p))
+        .thenReturn(Optional.of(p.getCurrentJobPosition()));
 
-        doCallRealMethod().when(jobService)
-            .assignJobPosition(
-                ArgumentMatchers.argThat(person -> true),
-                Mockito.any(JobPosition.class)
-            );
-        boolean b = jobService.assignJobPosition(p, p.getCurrentJobPosition());
+    doCallRealMethod().when(jobService)
+        .assignJobPosition(
+            ArgumentMatchers.argThat(person -> true),
+            Mockito.any(JobPosition.class)
+        );
+    boolean b = jobService.assignJobPosition(p, p.getCurrentJobPosition());
 
-        assertThat(b, is(false));
-    }
+    assertThat(b, is(false));
+  }
 
 
 }

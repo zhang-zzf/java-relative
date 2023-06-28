@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class Main {
 
-    @SneakyThrows
-    public static void main(String[] args) {
-        new AnnotationConfigApplicationContext(Main.class);
-        log.info("App start success.");
-        Thread.currentThread().join();
-    }
+  @SneakyThrows
+  public static void main(String[] args) {
+    new AnnotationConfigApplicationContext(Main.class);
+    log.info("App start success.");
+    Thread.currentThread().join();
+  }
 
 }

@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 public class ObservableOne extends Observable {
 
-    private int value;
+  private int value;
 
-    public void setValue(int newValue) {
-        this.value = newValue;
-        setChanged();
-        notifyObservers(newValue);
-    }
+  public void setValue(int newValue) {
+    this.value = newValue;
+    setChanged();
+    notifyObservers(newValue);
+  }
 
 }

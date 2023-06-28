@@ -1,9 +1,8 @@
 package com.github.learn.mapstruct_demo.object.json;
 
+import java.util.Map;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.Map;
 
 /**
  * @author zhanfeng.zhang
@@ -13,8 +12,8 @@ import java.util.Map;
 @Accessors(chain = true)
 public class Domain {
 
-    private String str;
-    private Person person;
-    private Map<String, Object> mapData;
+  private String str;
+  private Person person;
+  private Map<String, Object> mapData;
 
 }

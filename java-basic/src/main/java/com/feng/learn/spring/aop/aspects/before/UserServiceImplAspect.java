@@ -16,9 +16,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Slf4j
 public class UserServiceImplAspect {
 
-    @Before("execution(* com..UserServiceImpl.save(..))")
-    public void beforeSaveOfUserServiceImplAspect() {
-        throw new IllegalArgumentException("beforeSaveOfUserServiceImplAspect");
-    }
+  @Before("execution(* com..UserServiceImpl.save(..))")
+  public void beforeSaveOfUserServiceImplAspect() {
+    throw new IllegalArgumentException("beforeSaveOfUserServiceImplAspect");
+  }
 
 }

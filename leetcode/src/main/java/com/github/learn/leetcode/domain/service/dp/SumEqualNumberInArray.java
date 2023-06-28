@@ -11,6 +11,6 @@ import javax.validation.constraints.NotNull;
  */
 public interface SumEqualNumberInArray {
 
-    boolean equal(@NotNull int[] array, int sum);
+  boolean equal(@NotNull int[] array, int sum);
 
 }

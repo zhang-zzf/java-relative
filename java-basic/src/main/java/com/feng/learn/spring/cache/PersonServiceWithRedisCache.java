@@ -22,48 +22,48 @@ import org.springframework.stereotype.Service;
 @CacheConfig(cacheManager = REDIS_CACHE_MANAGER)
 public class PersonServiceWithRedisCache {
 
-    final Function justForTest;
+  final Function justForTest;
 
-    public PersonServiceWithRedisCache(Function justForTest) {
-        this.justForTest = justForTest;
-    }
+  public PersonServiceWithRedisCache(Function justForTest) {
+    this.justForTest = justForTest;
+  }
 
-    @Cacheable(key = "'/p/' + #root.args[0]",
-        cacheNames = {REDIS_CACHE_NAME_1, REDIS_CACHE_NAME_2})
-    public Person getById(Long id) {
+  @Cacheable(key = "'/p/' + #root.args[0]",
+      cacheNames = {REDIS_CACHE_NAME_1, REDIS_CACHE_NAME_2})
+  public Person getById(Long id) {
 
-        justForTest.apply(null);
-        return new Person().setId(id).setName("zhanfeng.zhang")
-            .setHome(new Person.Address().setCity("Shanghai"))
-            .setWork(new Person.Address().setStreet("Zhenbei road"));
-    }
+    justForTest.apply(null);
+    return new Person().setId(id).setName("zhanfeng.zhang")
+        .setHome(new Person.Address().setCity("Shanghai"))
+        .setWork(new Person.Address().setStreet("Zhenbei road"));
+  }
 
-    @CacheEvict(key = "'/p/' + #root.args[0]",
-        cacheNames = {REDIS_CACHE_NAME_1, REDIS_CACHE_NAME_2})
-    public void deleteById(Long id) {
+  @CacheEvict(key = "'/p/' + #root.args[0]",
+      cacheNames = {REDIS_CACHE_NAME_1, REDIS_CACHE_NAME_2})
+  public void deleteById(Long id) {
 
-    }
+  }
+
+  @Data
+  @FieldDefaults(level = AccessLevel.PRIVATE)
+  @Accessors(chain = true)
+  public static class Person {
+
+    Long id;
+    String name;
+
+    Address home;
+    Address work;
 
     @Data
-    @FieldDefaults(level = AccessLevel.PRIVATE)
     @Accessors(chain = true)
-    public static class Person {
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class Address {
 
-        Long id;
-        String name;
-
-        Address home;
-        Address work;
-
-        @Data
-        @Accessors(chain = true)
-        @FieldDefaults(level = AccessLevel.PRIVATE)
-        public static class Address {
-
-            String province;
-            String city;
-            String street;
-        }
+      String province;
+      String city;
+      String street;
     }
+  }
 
 }

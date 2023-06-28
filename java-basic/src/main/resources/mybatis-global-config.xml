@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <settings>
-        <!-- 数据库下划线转Java驼峰 -->
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
+  <settings>
+    <!-- 数据库下划线转Java驼峰 -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
 
-        <!-- 用于sql日志 -->
-        <setting name="logPrefix" value="mybatis."/>
+    <!-- 用于sql日志 -->
+    <setting name="logPrefix" value="mybatis."/>
 
-    </settings>
+  </settings>
 
-    <typeAliases>
-        <!-- 可以用 user 来代替 com.feng.learn.model.User -->
-        <package name="com.feng.learn.model"/>
-    </typeAliases>
+  <typeAliases>
+    <!-- 可以用 user 来代替 com.feng.learn.model.User -->
+    <package name="com.feng.learn.model"/>
+  </typeAliases>
 
 </configuration>

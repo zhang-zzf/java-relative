@@ -8,12 +8,12 @@ import java.util.Set;
  */
 public interface EventNotifyService {
 
-    /**
-     * 发送消息
-     *
-     * @param hostName 主机
-     * @param curIpSet Ip
-     */
-    void sendIpChangeEvent(String hostName, Set<String> curIpSet);
+  /**
+   * 发送消息
+   *
+   * @param hostName 主机
+   * @param curIpSet Ip
+   */
+  void sendIpChangeEvent(String hostName, Set<String> curIpSet);
 
 }

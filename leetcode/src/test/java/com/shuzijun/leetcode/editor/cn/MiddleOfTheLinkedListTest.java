@@ -40,37 +40,32 @@ import org.junit.jupiter.api.Test;
 
 public class MiddleOfTheLinkedListTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode middleNode(ListNode head) {
+      ListNode slow = head, fast = head;
+      while (fast != null && fast.next != null) {
+        fast = fast.next.next;
+        slow = slow.next;
+      }
+      return slow;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
-
-        public ListNode middleNode(ListNode head) {
-            ListNode slow = head, fast = head;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
-                slow = slow.next;
-            }
-            return slow;
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

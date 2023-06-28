@@ -43,73 +43,73 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.assertj.core.data.Offset;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.data.Offset;
+import org.junit.jupiter.api.Test;
 
 
 public class MinimumCostToHireKWorkersTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final double mincost = solution.mincostToHireWorkers(new int[]{10, 20, 5}, new int[]{70, 50, 30}, 2);
-        then(mincost).isCloseTo(105, Offset.offset(0.1));
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final double mincost = solution.mincostToHireWorkers(new int[]{10, 20, 5},
+        new int[]{70, 50, 30}, 2);
+    then(mincost).isCloseTo(105, Offset.offset(0.1));
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
+      Worker[] workers = new Worker[quality.length];
+      for (int i = 0; i < quality.length; i++) {
+        workers[i] = new Worker(quality[i], wage[i]);
+      }
+      // sort by wage/quality
+      Arrays.sort(workers);
+      PriorityQueue<Integer> pq = new PriorityQueue<>(k + 1);
+      int sumq = 0;
+      double ans = Double.MAX_VALUE;
+      for (Worker worker : workers) {
+        pq.add(-worker.q);
+        sumq += worker.q;
+        if (pq.size() > k) {
+          sumq += pq.poll();
+        }
+        if (pq.size() == k) {
+          ans = Math.min(ans, worker.radio() * sumq);
+        }
+      }
+      return ans;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+    class Worker implements Comparable<Worker> {
 
-        public double mincostToHireWorkers(int[] quality, int[] wage, int k) {
-            Worker[] workers = new Worker[quality.length];
-            for (int i = 0; i < quality.length; i++) {
-                workers[i] = new Worker(quality[i], wage[i]);
-            }
-            // sort by wage/quality
-            Arrays.sort(workers);
-            PriorityQueue<Integer> pq = new PriorityQueue<>(k + 1);
-            int sumq = 0;
-            double ans = Double.MAX_VALUE;
-            for (Worker worker : workers) {
-                pq.add(-worker.q);
-                sumq += worker.q;
-                if (pq.size() > k) {
-                    sumq += pq.poll();
-                }
-                if (pq.size() == k) {
-                    ans = Math.min(ans, worker.radio() * sumq);
-                }
-            }
-            return ans;
-        }
+      int q;
+      int w;
 
-        class Worker implements Comparable<Worker> {
+      public Worker(int quality, int wage) {
+        q = quality;
+        w = wage;
+      }
 
-            int q;
-            int w;
+      double radio() {
+        return (double) w / q;
+      }
 
-            public Worker(int quality, int wage) {
-                q = quality;
-                w = wage;
-            }
-
-            double radio() {
-                return (double) w / q;
-            }
-
-            @Override
-            public int compareTo(Worker o) {
-                return Double.compare(radio(), o.radio());
-            }
-
-        }
+      @Override
+      public int compareTo(Worker o) {
+        return Double.compare(radio(), o.radio());
+      }
 
     }
+
+  }
 
 //leetcode submit region end(Prohibit modification and deletion)
 

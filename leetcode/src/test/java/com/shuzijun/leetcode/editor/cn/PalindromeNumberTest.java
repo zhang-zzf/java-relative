@@ -50,51 +50,52 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class PalindromeNumberTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.isPalindrome(1)).isTrue();
-        then(solution.isPalindrome(9)).isTrue();
-        then(solution.isPalindrome(10)).isFalse();
-        then(solution.isPalindrome(11)).isTrue();
-        then(solution.isPalindrome(121)).isTrue();
-        then(solution.isPalindrome(-121)).isFalse();
-        then(solution.isPalindrome(120)).isFalse();
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.isPalindrome(1)).isTrue();
+    then(solution.isPalindrome(9)).isTrue();
+    then(solution.isPalindrome(10)).isFalse();
+    then(solution.isPalindrome(11)).isTrue();
+    then(solution.isPalindrome(121)).isTrue();
+    then(solution.isPalindrome(-121)).isFalse();
+    then(solution.isPalindrome(120)).isFalse();
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-        public boolean isPalindrome(int x) {
-            if (x < 0) {
-                return false;
-            } else if (x < 10) {
-                return true;
-            } else if (x % 10 == 0) {
-                return false;
-            }
-            int reverse = 0;
-            while (true) {
-                reverse = reverse * 10 + x % 10;
-                x /= 10;
-                if (reverse == x) {
-                    break;
-                } else if (reverse > x) {
-                    reverse = reverse / 10;
-                    break;
-                }
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-            }
-            return reverse == x;
+    public boolean isPalindrome(int x) {
+      if (x < 0) {
+        return false;
+      } else if (x < 10) {
+        return true;
+      } else if (x % 10 == 0) {
+        return false;
+      }
+      int reverse = 0;
+      while (true) {
+        reverse = reverse * 10 + x % 10;
+        x /= 10;
+        if (reverse == x) {
+          break;
+        } else if (reverse > x) {
+          reverse = reverse / 10;
+          break;
         }
+
+      }
+      return reverse == x;
     }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

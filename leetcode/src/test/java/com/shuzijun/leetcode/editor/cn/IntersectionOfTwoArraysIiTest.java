@@ -39,54 +39,53 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class IntersectionOfTwoArraysIiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.intersect(new int[]{1, 1, 2, 2, 2, 2}, new int[]{2, 2})).containsExactly(2, 2);
-        then(solution.intersect(new int[]{4, 9, 5}, new int[]{9, 4, 9, 8, 4})).contains(4, 9);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.intersect(new int[]{1, 1, 2, 2, 2, 2}, new int[]{2, 2})).containsExactly(2, 2);
+    then(solution.intersect(new int[]{4, 9, 5}, new int[]{9, 4, 9, 8, 4})).contains(4, 9);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] intersect(int[] nums1, int[] nums2) {
-            List<Integer> ret = new LinkedList<>();
-            final Map<Integer, Long> numToCount = Arrays.stream(nums1)
-                    .boxed()
-                    .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
-            Arrays.sort(nums2);
-            for (int i = 0; i < nums2.length; i++) {
-                final int num = nums2[i];
-                Long cnt = numToCount.get(num);
-                if (cnt == null) {
-                    continue;
-                }
-                ret.add(num);
-                while ((i + 1) < nums2.length && nums2[i + 1] == num) {
-                    if (--cnt > 0) {
-                        ret.add(num);
-                    }
-                    i += 1;
-                }
-            }
-            return ret.stream().mapToInt(Integer::intValue).toArray();
+    public int[] intersect(int[] nums1, int[] nums2) {
+      List<Integer> ret = new LinkedList<>();
+      final Map<Integer, Long> numToCount = Arrays.stream(nums1)
+          .boxed()
+          .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+      Arrays.sort(nums2);
+      for (int i = 0; i < nums2.length; i++) {
+        final int num = nums2[i];
+        Long cnt = numToCount.get(num);
+        if (cnt == null) {
+          continue;
         }
-
+        ret.add(num);
+        while ((i + 1) < nums2.length && nums2[i + 1] == num) {
+          if (--cnt > 0) {
+            ret.add(num);
+          }
+          i += 1;
+        }
+      }
+      return ret.stream().mapToInt(Integer::intValue).toArray();
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

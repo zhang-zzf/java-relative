@@ -44,54 +44,54 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FindTheDuplicateNumberTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.findDuplicate(new int[]{1, 3, 4, 2, 2})).isEqualTo(2);
-        then(solution.findDuplicate(new int[]{1, 4, 4, 2, 4})).isEqualTo(4);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.findDuplicate(new int[]{1, 3, 4, 2, 2})).isEqualTo(2);
+    then(solution.findDuplicate(new int[]{1, 4, 4, 2, 4})).isEqualTo(4);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int findDuplicate(int[] nums) {
+      int fast = 0, slow = 0;
+      int lng = nums.length;
+      while (((fast = nums[fast]) < lng) && ((fast = nums[fast]) < lng)) {
+        slow = nums[slow];
+        if (fast == slow) {
+          break;
+        }
+      }
+      if (slow != fast) {
+        throw new IllegalArgumentException();
+      }
+      slow = 0;
+      while (fast != slow) {
+        slow = nums[slow];
+        fast = nums[fast];
+      }
+      // or fast
+      return slow;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int findDuplicate(int[] nums) {
-            int fast = 0, slow = 0;
-            int lng = nums.length;
-            while (((fast = nums[fast]) < lng) && ((fast = nums[fast]) < lng)) {
-                slow = nums[slow];
-                if (fast == slow) {
-                    break;
-                }
-            }
-            if (slow != fast) {
-                throw new IllegalArgumentException();
-            }
-            slow = 0;
-            while (fast != slow) {
-                slow = nums[slow];
-                fast = nums[fast];
-            }
-            // or fast
-            return slow;
-        }
-
-        private int getCntLEThanMid(int[] nums, int pivot) {
-            int ans = 0;
-            for (int num : nums) {
-                ans += ((num <= pivot) ? 1 : 0);
-            }
-            return ans;
-        }
-
+    private int getCntLEThanMid(int[] nums, int pivot) {
+      int ans = 0;
+      for (int num : nums) {
+        ans += ((num <= pivot) ? 1 : 0);
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

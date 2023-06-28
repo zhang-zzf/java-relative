@@ -52,39 +52,39 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FindMinimumInRotatedSortedArrayTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.findMin(new int[]{1, 2, 3, 4, 0})).isEqualTo(0);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.findMin(new int[]{1, 2, 3, 4, 0})).isEqualTo(0);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int findMin(int[] nums) {
-            int left = 0, right = nums.length - 1;
-            int ans = nums[0];
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                ans = Math.min(ans, nums[mid]);
-                if (nums[mid] < nums[right]) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-            }
-            return ans;
+    public int findMin(int[] nums) {
+      int left = 0, right = nums.length - 1;
+      int ans = nums[0];
+      while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        ans = Math.min(ans, nums[mid]);
+        if (nums[mid] < nums[right]) {
+          right = mid - 1;
+        } else {
+          left = mid + 1;
         }
-
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

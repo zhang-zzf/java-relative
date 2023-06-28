@@ -18,31 +18,31 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 public class AConfiguration {
 
-    public static final String ID = "localhost";
-    public static final String CONTAIN_FACTORY = ID + "ContainerFactory";
-    public static final String RABBIT_TEMPLATE = ID + "RabbitTemplate";
+  public static final String ID = "localhost";
+  public static final String CONTAIN_FACTORY = ID + "ContainerFactory";
+  public static final String RABBIT_TEMPLATE = ID + "RabbitTemplate";
 
-    @Bean(ID)
-    public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("localhost");
-    }
+  @Bean(ID)
+  public ConnectionFactory connectionFactory() {
+    return new CachingConnectionFactory("localhost");
+  }
 
-    @Bean(CONTAIN_FACTORY)
-    public SimpleRabbitListenerContainerFactory containerFactory() {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
-        factory.setPrefetchCount(1);
-        return factory;
-    }
+  @Bean(CONTAIN_FACTORY)
+  public SimpleRabbitListenerContainerFactory containerFactory() {
+    SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+    factory.setConnectionFactory(connectionFactory());
+    factory.setPrefetchCount(1);
+    return factory;
+  }
 
-    @Bean(RABBIT_TEMPLATE)
-    public RabbitTemplate rabbitTemplate() {
-        return new RabbitTemplate(connectionFactory());
-    }
+  @Bean(RABBIT_TEMPLATE)
+  public RabbitTemplate rabbitTemplate() {
+    return new RabbitTemplate(connectionFactory());
+  }
 
-    @Bean(ID + "AmqpAdmin")
-    public AmqpAdmin amqpAdmin() {
-        return new RabbitAdmin(connectionFactory());
-    }
+  @Bean(ID + "AmqpAdmin")
+  public AmqpAdmin amqpAdmin() {
+    return new RabbitAdmin(connectionFactory());
+  }
 
 }

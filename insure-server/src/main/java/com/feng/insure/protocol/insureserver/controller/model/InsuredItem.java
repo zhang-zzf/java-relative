@@ -1,9 +1,8 @@
 package com.feng.insure.protocol.insureserver.controller.model;
 
+import java.util.Map;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.Map;
 
 /**
  * 被保 Item
@@ -16,6 +15,6 @@ import java.util.Map;
 @Accessors(chain = true)
 public class InsuredItem {
 
-    private Map<String, String> data;
+  private Map<String, String> data;
 
 }

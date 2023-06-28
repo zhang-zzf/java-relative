@@ -45,33 +45,33 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class SingleNumberTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        int ans = solution.singleNumber(new int[]{4, 1, 2, 1, 2});
-        then(ans).isEqualTo(4);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    int ans = solution.singleNumber(new int[]{4, 1, 2, 1, 2});
+    then(ans).isEqualTo(4);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int singleNumber(int[] nums) {
+      int ans = 0;
+      for (int num : nums) {
+        ans ^= num;
+      }
+      return ans;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int singleNumber(int[] nums) {
-            int ans = 0;
-            for (int num : nums) {
-                ans ^= num;
-            }
-            return ans;
-        }
-
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

@@ -21,28 +21,29 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class KnightRepoImpl {
 
-    final ElasticsearchOperations elasticsearchOperations;
+  final ElasticsearchOperations elasticsearchOperations;
 
-    public void index(List<Knight> knightList) {
-        final List<IndexQuery> indexQueries = knightList.stream()
-            .map(this::convertToQuery)
-            .collect(toList());
-        elasticsearchOperations.bulkIndex(indexQueries, Knight.class);
-    }
+  public void index(List<Knight> knightList) {
+    final List<IndexQuery> indexQueries = knightList.stream()
+        .map(this::convertToQuery)
+        .collect(toList());
+    elasticsearchOperations.bulkIndex(indexQueries, Knight.class);
+  }
 
-    public List<Knight> batchGetById(List<Long> personIdList) {
-        final NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-            .withIds(personIdList.stream().map(String::valueOf).collect(toList())).build();
-        final List<MultiGetItem<Knight>> knights = elasticsearchOperations.multiGet(searchQuery, Knight.class);
-        return knights.stream().map(MultiGetItem::getItem).collect(toList());
-    }
+  public List<Knight> batchGetById(List<Long> personIdList) {
+    final NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+        .withIds(personIdList.stream().map(String::valueOf).collect(toList())).build();
+    final List<MultiGetItem<Knight>> knights = elasticsearchOperations.multiGet(searchQuery,
+        Knight.class);
+    return knights.stream().map(MultiGetItem::getItem).collect(toList());
+  }
 
-    private IndexQuery convertToQuery(Knight knight) {
-        return new IndexQueryBuilder()
-            .withId(knight.getPersonId().toString())
-            .withObject(knight)
-            .build();
-    }
+  private IndexQuery convertToQuery(Knight knight) {
+    return new IndexQueryBuilder()
+        .withId(knight.getPersonId().toString())
+        .withObject(knight)
+        .build();
+  }
 
 
 }

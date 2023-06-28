@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NoSuperInterfaceService {
 
-    public User service() {
-        return null;
-    }
+  public User service() {
+    return null;
+  }
 }

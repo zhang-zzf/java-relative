@@ -33,45 +33,45 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class TrappingRainWaterTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1})).isEqualTo(6);
-        // failed case 1
-        then(solution.trap(new int[]{4, 2, 0, 3, 2, 5})).isEqualTo(9);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1})).isEqualTo(6);
+    // failed case 1
+    then(solution.trap(new int[]{4, 2, 0, 3, 2, 5})).isEqualTo(9);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int trap(int[] height) {
-            int ans = 0;
-            int left = 0, right = height.length - 1;
-            int leftMax = 0, rightMax = 0;
-            while (left < right) {
-                leftMax = Math.max(leftMax, height[left]);
-                rightMax = Math.max(rightMax, height[right]);
-                if (height[left] < height[right]) {
-                    // 表示 left 右边有比它高的柱子且右边已知柱子的最大高度 rightMax > leftMax
-                    ans += leftMax - height[left];
-                    left += 1;
-                } else {
-                    ans += rightMax - height[right];
-                    right -= 1;
-                }
-            }
-            return ans;
+    public int trap(int[] height) {
+      int ans = 0;
+      int left = 0, right = height.length - 1;
+      int leftMax = 0, rightMax = 0;
+      while (left < right) {
+        leftMax = Math.max(leftMax, height[left]);
+        rightMax = Math.max(rightMax, height[right]);
+        if (height[left] < height[right]) {
+          // 表示 left 右边有比它高的柱子且右边已知柱子的最大高度 rightMax > leftMax
+          ans += leftMax - height[left];
+          left += 1;
+        } else {
+          ans += rightMax - height[right];
+          right -= 1;
         }
-
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

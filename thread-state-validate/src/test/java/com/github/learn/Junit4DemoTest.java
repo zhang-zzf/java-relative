@@ -1,9 +1,9 @@
 package com.github.learn;
 
+import static org.junit.Assert.fail;
+
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.fail;
 
 /**
  * @author zhanfeng.zhang
@@ -11,23 +11,23 @@ import static org.junit.Assert.fail;
  */
 public class Junit4DemoTest {
 
-    /**
-     * 运行失败的UT
-     */
-    @Ignore
-    @Test
-    public void testFail() {
-        fail();
-    }
+  /**
+   * 运行失败的UT
+   */
+  @Ignore
+  @Test
+  public void testFail() {
+    fail();
+  }
 
-    /**
-     * 方法用时测试
-     */
-    @Ignore
-    @Test(timeout = 10L)
-    public void testTimeout() throws InterruptedException {
-        Thread.sleep(100);
-    }
+  /**
+   * 方法用时测试
+   */
+  @Ignore
+  @Test(timeout = 10L)
+  public void testTimeout() throws InterruptedException {
+    Thread.sleep(100);
+  }
 
 
 }

@@ -34,54 +34,54 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class PermutationInStringTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.checkInclusion("ab", "eidbaooo")).isTrue();
-        then(solution.checkInclusion("ab", "eidboaoo")).isFalse();
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.checkInclusion("ab", "eidbaooo")).isTrue();
+    then(solution.checkInclusion("ab", "eidboaoo")).isFalse();
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public boolean checkInclusion(String s1, String s2) {
-            int[] chars = new int[128];
-            for (int i = 0; i < chars.length; i++) {
-                chars[i] = -1;
+    public boolean checkInclusion(String s1, String s2) {
+      int[] chars = new int[128];
+      for (int i = 0; i < chars.length; i++) {
+        chars[i] = -1;
+      }
+      for (int i = 0; i < s1.length(); i++) {
+        char c = s1.charAt(i);
+        chars[c] = (chars[c] == -1) ? 1 : chars[c] + 1;
+      }
+      for (int l = 0, r = 0; r < s2.length(); r++) {
+        char c = s2.charAt(r);
+        if (chars[c] > 0) {
+          chars[c] -= 1;
+        } else {
+          while (l <= r) {
+            char lc = s2.charAt(l++);
+            if (lc == c) {
+              break;
             }
-            for (int i = 0; i < s1.length(); i++) {
-                char c = s1.charAt(i);
-                chars[c] = (chars[c] == -1) ? 1 : chars[c] + 1;
-            }
-            for (int l = 0, r = 0; r < s2.length(); r++) {
-                char c = s2.charAt(r);
-                if (chars[c] > 0) {
-                    chars[c] -= 1;
-                } else {
-                    while (l <= r) {
-                        char lc = s2.charAt(l++);
-                        if (lc == c) {
-                            break;
-                        }
-                        chars[lc] += 1;
-                    }
-                }
-                if (r - l + 1 == s1.length()) {
-                    return true;
-                }
-            }
-            return false;
+            chars[lc] += 1;
+          }
         }
-
+        if (r - l + 1 == s1.length()) {
+          return true;
+        }
+      }
+      return false;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

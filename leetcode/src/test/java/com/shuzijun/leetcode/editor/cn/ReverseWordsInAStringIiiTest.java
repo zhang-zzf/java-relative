@@ -44,47 +44,47 @@ import org.junit.jupiter.api.Test;
 
 public class ReverseWordsInAStringIiiTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public String reverseWords(String s) {
+      StringBuilder ans = new StringBuilder();
+      int start = -1, end = -1;
+      for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (c != ' ') {
+          if (start == -1) {
+            start = i;
+          }
+          end = i;
+        } else {
+          if (start != -1) {
+            reverseAppend(s, start, end, ans);
+            start = end = -1;
+          }
+          ans.append(c);
+        }
+      }
+      if (start != -1) {
+        reverseAppend(s, start, end, ans);
+      }
+      return ans.toString();
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public String reverseWords(String s) {
-            StringBuilder ans = new StringBuilder();
-            int start = -1, end = -1;
-            for (int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                if (c != ' ') {
-                    if (start == -1) {
-                        start = i;
-                    }
-                    end = i;
-                } else {
-                    if (start != -1) {
-                        reverseAppend(s, start, end, ans);
-                        start = end = -1;
-                    }
-                    ans.append(c);
-                }
-            }
-            if (start != -1) {
-                reverseAppend(s, start, end, ans);
-            }
-            return ans.toString();
-        }
-
-        private void reverseAppend(String s, int start, int end, StringBuilder ans) {
-            for (int j = end; j >= start; j--) {
-                ans.append(s.charAt(j));
-            }
-        }
-
+    private void reverseAppend(String s, int start, int end, StringBuilder ans) {
+      for (int j = end; j >= start; j--) {
+        ans.append(s.charAt(j));
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

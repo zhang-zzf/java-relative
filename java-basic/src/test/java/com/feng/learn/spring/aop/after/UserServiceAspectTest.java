@@ -1,5 +1,8 @@
 package com.feng.learn.spring.aop.after;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+
 import com.feng.learn.spring.aop.aspects.after.UserServiceAspect;
 import com.feng.learn.spring.aop.service.UserService;
 import com.feng.learn.spring.aop.service.impl.UserServiceImpl;
@@ -8,9 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 /**
  * @author zhanfeng.zhang
@@ -24,16 +24,16 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 })
 public class UserServiceAspectTest {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @Test
-    public void givenAfterAspect_whenCallMethod_thenThrowException() {
-        // when
-        Throwable throwable = catchThrowable(() -> userService.save(0L, null));
-        // then
-        assertThat(throwable)
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("afterSaveMethodOfUserService");
-    }
+  @Test
+  public void givenAfterAspect_whenCallMethod_thenThrowException() {
+    // when
+    Throwable throwable = catchThrowable(() -> userService.save(0L, null));
+    // then
+    assertThat(throwable)
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("afterSaveMethodOfUserService");
+  }
 }

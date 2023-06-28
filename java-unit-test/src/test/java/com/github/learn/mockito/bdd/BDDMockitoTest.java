@@ -2,7 +2,13 @@ package com.github.learn.mockito.bdd;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.anyString;
+import static org.mockito.BDDMockito.atLeastOnce;
+import static org.mockito.BDDMockito.atMost;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.never;
+import static org.mockito.BDDMockito.only;
+import static org.mockito.BDDMockito.then;
 
 import com.github.learn.AbstractJUnit4Mockito;
 import org.junit.Assert;
@@ -16,52 +22,53 @@ import org.mockito.Mock;
  */
 public class BDDMockitoTest extends AbstractJUnit4Mockito {
 
-    @Mock
-    PhoneBookRepository phoneBookRepository;
+  @Mock
+  PhoneBookRepository phoneBookRepository;
 
-    @InjectMocks
-    PhoneBookService phoneBookService;
+  @InjectMocks
+  PhoneBookService phoneBookService;
 
-    String momContactName = "Mom";
-    String momPhoneNumber = "01234";
-    String xContactName = "x";
-    String tooLongPhoneNumber = "01111111111111";
+  String momContactName = "Mom";
+  String momPhoneNumber = "01234";
+  String xContactName = "x";
+  String tooLongPhoneNumber = "01111111111111";
 
-    @Test
-    public void givenValidContactName_whenSearchInPhoneBook_thenReturnPhoneNum() {
-        // given
-        // stub
-        given(phoneBookRepository.contains(momContactName)).willReturn(true);
+  @Test
+  public void givenValidContactName_whenSearchInPhoneBook_thenReturnPhoneNum() {
+    // given
+    // stub
+    given(phoneBookRepository.contains(momContactName)).willReturn(true);
     /*
     given(phoneBookRepository.getPhoneNumberByContactName(momContactName))
       .willReturn(momPhoneNumber);
       */
-        given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
-            .will(invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
-        // when
-        String number = phoneBookService.search(momContactName);
-        // then
-        // verify
-        then(phoneBookRepository).should(atLeastOnce()).contains(momContactName);
-        then(phoneBookRepository).should(atMost(1)).getPhoneNumberByContactName(momContactName);
-        Assert.assertThat(number, is(momPhoneNumber));
-    }
+    given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
+        .will(
+            invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
+    // when
+    String number = phoneBookService.search(momContactName);
+    // then
+    // verify
+    then(phoneBookRepository).should(atLeastOnce()).contains(momContactName);
+    then(phoneBookRepository).should(atMost(1)).getPhoneNumberByContactName(momContactName);
+    Assert.assertThat(number, is(momPhoneNumber));
+  }
 
-    /**
-     * 2个verify相当于2个断言
-     */
-    @Test
-    public void givenInvalidContactName_whenSearch_thenReturnNull() {
-        // stub
-        given(phoneBookRepository.contains(xContactName)).willReturn(false);
-        // when
-        String number = phoneBookService.search(xContactName);
-        // then
-        // verify == assert
-        then(phoneBookRepository).should(only()).contains(xContactName);
-        then(phoneBookRepository).should(never()).getPhoneNumberByContactName(xContactName);
-        Assert.assertThat(number, is(nullValue()));
-    }
+  /**
+   * 2个verify相当于2个断言
+   */
+  @Test
+  public void givenInvalidContactName_whenSearch_thenReturnNull() {
+    // stub
+    given(phoneBookRepository.contains(xContactName)).willReturn(false);
+    // when
+    String number = phoneBookService.search(xContactName);
+    // then
+    // verify == assert
+    then(phoneBookRepository).should(only()).contains(xContactName);
+    then(phoneBookRepository).should(never()).getPhoneNumberByContactName(xContactName);
+    Assert.assertThat(number, is(nullValue()));
+  }
 
 
 }

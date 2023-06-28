@@ -47,69 +47,64 @@ import org.junit.jupiter.api.Test;
 
 public class ReorderListTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final ListNode<Integer> dummy = new ListNode<>();
-        dummy.addToTail(new ListNode<>(1))
-                .addToTail(new ListNode<>(2))
-                .addToTail(new ListNode<>(3))
-                .addToTail(new ListNode<>(4))
-                .addToTail(new ListNode<>(5))
-                .addToTail(new ListNode<>(6))
-        ;
-        solution.reorderList(dummy.next);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final ListNode<Integer> dummy = new ListNode<>();
+    dummy.addToTail(new ListNode<>(1))
+        .addToTail(new ListNode<>(2))
+        .addToTail(new ListNode<>(3))
+        .addToTail(new ListNode<>(4))
+        .addToTail(new ListNode<>(5))
+        .addToTail(new ListNode<>(6))
+    ;
+    solution.reorderList(dummy.next);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public void reorderList(ListNode head) {
+      ListNode fast = head, slow = head;
+      while (fast != null && fast.next != null) {
+        fast = fast.next.next;
+        slow = slow.next;
+      }
+      // slow is the middle node of the list
+      ListNode rightHalf = slow.next;
+      // slow must be the new end of the list
+      slow.next = null;
+      // reverse
+      rightHalf = reverseList(rightHalf);
+      ListNode originPtr = head;
+      for (ListNode ptr = rightHalf; ptr != null; ) {
+        ListNode ptrN = ptr.next;
+        ptr.next = originPtr.next;
+        originPtr.next = ptr;
+        originPtr = ptr.next;
+        ptr = ptrN;
+      }
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
-
-        public void reorderList(ListNode head) {
-            ListNode fast = head, slow = head;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
-                slow = slow.next;
-            }
-            // slow is the middle node of the list
-            ListNode rightHalf = slow.next;
-            // slow must be the new end of the list
-            slow.next = null;
-            // reverse
-            rightHalf = reverseList(rightHalf);
-            ListNode originPtr = head;
-            for (ListNode ptr = rightHalf; ptr != null; ) {
-                ListNode ptrN = ptr.next;
-                ptr.next = originPtr.next;
-                originPtr.next = ptr;
-                originPtr = ptr.next;
-                ptr = ptrN;
-            }
-        }
-
-        private ListNode reverseList(ListNode head) {
-            ListNode cur = head, pre = null;
-            while (cur != null) {
-                ListNode next = cur.next;
-                cur.next = pre;
-                pre = cur;
-                cur = next;
-            }
-            return pre;
-        }
-
+    private ListNode reverseList(ListNode head) {
+      ListNode cur = head, pre = null;
+      while (cur != null) {
+        ListNode next = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = next;
+      }
+      return pre;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

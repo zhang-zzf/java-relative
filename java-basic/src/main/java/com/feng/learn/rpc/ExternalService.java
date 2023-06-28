@@ -2,5 +2,5 @@ package com.feng.learn.rpc;
 
 public interface ExternalService {
 
-    String service(long l);
+  String service(long l);
 }

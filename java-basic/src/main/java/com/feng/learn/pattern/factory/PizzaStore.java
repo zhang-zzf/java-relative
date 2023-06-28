@@ -6,33 +6,33 @@ import com.feng.learn.pattern.factory.simplefactory.PepperoniPizza;
 
 public class PizzaStore {
 
-    public Pizza orderPizza() {
-        Pizza pizza = new NullPizza();
+  public Pizza orderPizza() {
+    Pizza pizza = new NullPizza();
 
-        pizza.prepare();
-        pizza.bake();
-        pizza.cut();
-        pizza.box();
+    pizza.prepare();
+    pizza.bake();
+    pizza.cut();
+    pizza.box();
 
-        return pizza;
+    return pizza;
+  }
+
+
+  public Pizza orderPizza(String type) {
+    Pizza p = new NullPizza();
+    if ("cheese".equals(type)) {
+      p = new CheesePizza();
+    } else if ("greek".equals(type)) {
+      p = new GreekPizza();
+    } else if ("pepperoni".equals(type)) {
+      p = new PepperoniPizza();
     }
+    // 你可以想象，每次变化（添加一种pizza），都要修改这里的代码
 
-
-    public Pizza orderPizza(String type) {
-        Pizza p = new NullPizza();
-        if ("cheese".equals(type)) {
-            p = new CheesePizza();
-        } else if ("greek".equals(type)) {
-            p = new GreekPizza();
-        } else if ("pepperoni".equals(type)) {
-            p = new PepperoniPizza();
-        }
-        // 你可以想象，每次变化（添加一种pizza），都要修改这里的代码
-
-        p.prepare();
-        p.bake();
-        p.cut();
-        p.box();
-        return p;
-    }
+    p.prepare();
+    p.bake();
+    p.cut();
+    p.box();
+    return p;
+  }
 }

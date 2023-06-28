@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class StringBodyPostController {
 
-    @PostMapping("/api_1")
-    public Object api_1(@RequestHeader("Access-Token") String token, @RequestBody String body) {
-        log.info("post request:{}, {}", token, body);
-        return body;
-    }
+  @PostMapping("/api_1")
+  public Object api_1(@RequestHeader("Access-Token") String token, @RequestBody String body) {
+    log.info("post request:{}, {}", token, body);
+    return body;
+  }
 
 }

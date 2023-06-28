@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 @SpringBootApplication(exclude = RabbitAutoConfiguration.class)
 public class SpringRabbitmqApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringRabbitmqApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(SpringRabbitmqApplication.class, args);
+  }
 
 }

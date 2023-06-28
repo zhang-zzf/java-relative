@@ -42,55 +42,54 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.assertj.core.data.Index;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.assertj.core.data.Index;
+import org.junit.jupiter.api.Test;
 
 
 public class KClosestPointsToOriginTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        final int[][] kClosest = solution.kClosest(new int[][]{
-                new int[]{-5, 4},
-                new int[]{-6, -5},
-                new int[]{4, 6},
-        }, 2);
-        then(kClosest).contains(new int[]{-5, 4}, Index.atIndex(0));
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    final int[][] kClosest = solution.kClosest(new int[][]{
+        new int[]{-5, 4},
+        new int[]{-6, -5},
+        new int[]{4, 6},
+    }, 2);
+    then(kClosest).contains(new int[]{-5, 4}, Index.atIndex(0));
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[][] kClosest(int[][] points, int k) {
-            PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
-                    Comparator.<int[]>comparingInt(arr -> arr[0] * arr[0] + arr[1] * arr[1]).reversed());
-            for (int[] point : points) {
-                if (pq.size() < k) {
-                    pq.add(point);
-                } else {
-                    final int[] peek = pq.peek();
-                    if ((point[0] * point[0] + point[1] * point[1])
-                            < (peek[0] * peek[0] + peek[1] * peek[1])) {
-                        pq.poll();
-                        pq.add(point);
-                    }
-                }
-            }
-            final int[][] ret = new int[k][];
-            while (!pq.isEmpty()) {
-                ret[--k] = pq.poll();
-            }
-            return ret;
+    public int[][] kClosest(int[][] points, int k) {
+      PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
+          Comparator.<int[]>comparingInt(arr -> arr[0] * arr[0] + arr[1] * arr[1]).reversed());
+      for (int[] point : points) {
+        if (pq.size() < k) {
+          pq.add(point);
+        } else {
+          final int[] peek = pq.peek();
+          if ((point[0] * point[0] + point[1] * point[1])
+              < (peek[0] * peek[0] + peek[1] * peek[1])) {
+            pq.poll();
+            pq.add(point);
+          }
         }
-
+      }
+      final int[][] ret = new int[k][];
+      while (!pq.isEmpty()) {
+        ret[--k] = pq.poll();
+      }
+      return ret;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

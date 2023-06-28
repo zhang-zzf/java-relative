@@ -47,45 +47,45 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class LongestSubstringWithoutRepeatingCharactersTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.lengthOfLongestSubstring("")).isEqualTo(0);
-        then(solution.lengthOfLongestSubstring("pwwkew")).isEqualTo(3);
-        then(solution.lengthOfLongestSubstring("abcabcbb")).isEqualTo(3);
-        then(solution.lengthOfLongestSubstring("bbbb")).isEqualTo(1);
-        then(solution.lengthOfLongestSubstring(" ")).isEqualTo(1);
-        then(solution.lengthOfLongestSubstring("au")).isEqualTo(2);
-        then(solution.lengthOfLongestSubstring("dvdf")).isEqualTo(3);
-        then(solution.lengthOfLongestSubstring("abba")).isEqualTo(2);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.lengthOfLongestSubstring("")).isEqualTo(0);
+    then(solution.lengthOfLongestSubstring("pwwkew")).isEqualTo(3);
+    then(solution.lengthOfLongestSubstring("abcabcbb")).isEqualTo(3);
+    then(solution.lengthOfLongestSubstring("bbbb")).isEqualTo(1);
+    then(solution.lengthOfLongestSubstring(" ")).isEqualTo(1);
+    then(solution.lengthOfLongestSubstring("au")).isEqualTo(2);
+    then(solution.lengthOfLongestSubstring("dvdf")).isEqualTo(3);
+    then(solution.lengthOfLongestSubstring("abba")).isEqualTo(2);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int lengthOfLongestSubstring(String s) {
+      int[] lastIndex = new int[128];
+      for (int i = 0; i < lastIndex.length; i++) {
+        lastIndex[i] = -1;
+      }
+      int ans = 0;
+      for (int l = 0, r = 0; r < s.length(); r++) {
+        char c = s.charAt(r);
+        l = Math.max(l, lastIndex[c] + 1);
+        ans = Math.max(ans, r - l + 1);
+        lastIndex[c] = r;
+      }
+      return ans;
     }
-
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int lengthOfLongestSubstring(String s) {
-            int[] lastIndex = new int[128];
-            for (int i = 0; i < lastIndex.length; i++) {
-                lastIndex[i] = -1;
-            }
-            int ans = 0;
-            for (int l = 0, r = 0; r < s.length(); r++) {
-                char c = s.charAt(r);
-                l = Math.max(l, lastIndex[c] + 1);
-                ans = Math.max(ans, r - l + 1);
-                lastIndex[c] = r;
-            }
-            return ans;
-        }
-    }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

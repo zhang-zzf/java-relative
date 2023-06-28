@@ -6,7 +6,7 @@ package com.feng.learn.pattern.command;
  */
 public interface Command {
 
-    void execute();
+  void execute();
 
-    void undo();
+  void undo();
 }

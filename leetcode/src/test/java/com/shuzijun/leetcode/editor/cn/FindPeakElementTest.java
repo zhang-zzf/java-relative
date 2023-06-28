@@ -38,38 +38,38 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class FindPeakElementTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.findPeakElement(new int[]{1, 2, 1, 3, 5, 6, 4})).isEqualTo(5);
-        then(solution.findPeakElement(new int[]{1, 2, 3, 1})).isEqualTo(2);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.findPeakElement(new int[]{1, 2, 1, 3, 5, 6, 4})).isEqualTo(5);
+    then(solution.findPeakElement(new int[]{1, 2, 3, 1})).isEqualTo(2);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int findPeakElement(int[] nums) {
-            int left = 0, right = nums.length - 1;
-            while (left < right) {
-                int mid = left + ((right - left) >> 1);
-                if (mid + 1 < nums.length && nums[mid] < nums[mid + 1]) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
-                }
-            }
-            return left;
+    public int findPeakElement(int[] nums) {
+      int left = 0, right = nums.length - 1;
+      while (left < right) {
+        int mid = left + ((right - left) >> 1);
+        if (mid + 1 < nums.length && nums[mid] < nums[mid + 1]) {
+          left = mid + 1;
+        } else {
+          right = mid;
         }
-
+      }
+      return left;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

@@ -5,4 +5,5 @@ package com.github.learn.batchcache.infrastruture.spring.cache;
  * @date 2020/7/25
  */
 public class CacheNotFoundException extends Exception {
+
 }

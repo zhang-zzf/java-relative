@@ -44,72 +44,74 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 
 public class SlidingWindowMaximumTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        then(solution.maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3))
-                .containsExactly(3, 3, 5, 5, 6, 7);
-        then(solution.maxSlidingWindow(new int[]{1}, 1))
-                .containsExactly(1);
+  @Test
+  void givenNormal_when_thenSuccess() {
+    then(solution.maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3))
+        .containsExactly(3, 3, 5, 5, 6, 7);
+    then(solution.maxSlidingWindow(new int[]{1}, 1))
+        .containsExactly(1);
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int[] maxSlidingWindow(int[] nums, int k) {
+      List<Integer> ans = new ArrayList<>();
+      // deque 中的索引值是单调递增的
+      // deque 中的索引对应的 nums[idx] 是单调递减的
+      Deque<Integer> deque = new LinkedList<>();
+      for (int i = 0; i < nums.length; i++) {
+        Integer minNumIdx = deque.peekLast();
+        // 保证 nums[idx] 是单调递减的
+        while (minNumIdx != null && nums[i] > nums[minNumIdx]) {
+          deque.pollLast();
+          minNumIdx = deque.peekLast();
+        }
+        deque.addLast(i);
+        if (i < k - 1) {
+          continue;
+        }
+        Integer maxNumIdx = deque.peekFirst();
+        // 保证 最大值在窗口内
+        while (maxNumIdx != null && maxNumIdx < i - k + 1) {
+          // 超出窗口
+          deque.pollFirst();
+          maxNumIdx = deque.peekFirst();
+        }
+        // 逻辑上不存在 null
+        if (maxNumIdx != null) {
+          ans.add(nums[maxNumIdx]);
+        }
+      }
+      return ans.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int[] maxSlidingWindow(int[] nums, int k) {
-            List<Integer> ans = new ArrayList<>();
-            // deque 中的索引值是单调递增的
-            // deque 中的索引对应的 nums[idx] 是单调递减的
-            Deque<Integer> deque = new LinkedList<>();
-            for (int i = 0; i < nums.length; i++) {
-                Integer minNumIdx = deque.peekLast();
-                // 保证 nums[idx] 是单调递减的
-                while (minNumIdx != null && nums[i] > nums[minNumIdx]) {
-                    deque.pollLast();
-                    minNumIdx = deque.peekLast();
-                }
-                deque.addLast(i);
-                if (i < k - 1) {
-                    continue;
-                }
-                Integer maxNumIdx = deque.peekFirst();
-                // 保证 最大值在窗口内
-                while (maxNumIdx != null && maxNumIdx < i - k + 1) {
-                    // 超出窗口
-                    deque.pollFirst();
-                    maxNumIdx = deque.peekFirst();
-                }
-                // 逻辑上不存在 null
-                if (maxNumIdx != null) {
-                    ans.add(nums[maxNumIdx]);
-                }
-            }
-            return ans.stream().mapToInt(Integer::intValue).toArray();
+    private int[] findMax(int[] nums, int leftIdx, int rightIdx) {
+      int max = nums[leftIdx];
+      int maxIdx = leftIdx;
+      for (int j = leftIdx; j <= rightIdx; j++) {
+        if (nums[j] > max) {
+          max = nums[j];
+          maxIdx = j;
         }
-
-        private int[] findMax(int[] nums, int leftIdx, int rightIdx) {
-            int max = nums[leftIdx];
-            int maxIdx = leftIdx;
-            for (int j = leftIdx; j <= rightIdx; j++) {
-                if (nums[j] > max) {
-                    max = nums[j];
-                    maxIdx = j;
-                }
-            }
-            return new int[]{maxIdx, max};
-        }
-
+      }
+      return new int[]{maxIdx, max};
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

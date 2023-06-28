@@ -54,88 +54,86 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.in;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 
 public class ThreeSumTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        List<List<Integer>> ans = solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4});
-        then(ans).hasSize(2);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    List<List<Integer>> ans = solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4});
+    then(ans).hasSize(2);
+  }
 
-    @Test
-    void givenCase1_when_then() {
-        List<List<Integer>> lists = solution.threeSum(new int[]{0, 0, 0, 0});
-        then(lists).hasSize(1);
-    }
+  @Test
+  void givenCase1_when_then() {
+    List<List<Integer>> lists = solution.threeSum(new int[]{0, 0, 0, 0});
+    then(lists).hasSize(1);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public List<List<Integer>> threeSum(int[] nums) {
-            List<List<Integer>> ans = new ArrayList<>();
-            int target = 0;
-            // 不修改入参
-            nums = Arrays.copyOf(nums, nums.length);
-            // 原址排序
-            Arrays.sort(nums);
-            // 去重复
-            // int idx = 0;
-            // for (int i = 0; i < nums.length; i++) {
-            //     if (nums[i] != nums[idx]) {
-            //         nums[++idx] = nums[i];
-            //     }
-            // }
-            // nums = Arrays.copyOf(nums, idx + 1);
-            for (int i = 0; i < nums.length - 2; i++) {
-                int n1 = nums[i];
-                if (n1 > target) {
-                    break;
-                }
-                // n1 去重复
-                if (i > 0 && nums[i] == nums[i - 1]) {
-                    continue;
-                }
-                int left = i + 1, right = nums.length - 1;
-                while (left < right) {
-                    int n2 = nums[left], n3 = nums[right];
-                    int sum = n1 + n2 + n3;
-                    if (sum == target) {
-                        ans.add(Arrays.asList(n1, n2, n3));
-                        // 向中间靠拢
-                        while (left < right && nums[left] == nums[left + 1]) {
-                            left += 1;
-                        }
-                        while (left < right && nums[right] == nums[right - 1]) {
-                            right -= 1;
-                        }
-                        left += 1;
-                        right -= 1;
-                    } else if (sum < target) {
-                        // 此步不需要去重复
-                        left += 1;
-                    } else {
-                        // sum > target
-                        // 此步不需要去重复
-                        right -= 1;
-                    }
-                }
-            }
-            return ans;
+    public List<List<Integer>> threeSum(int[] nums) {
+      List<List<Integer>> ans = new ArrayList<>();
+      int target = 0;
+      // 不修改入参
+      nums = Arrays.copyOf(nums, nums.length);
+      // 原址排序
+      Arrays.sort(nums);
+      // 去重复
+      // int idx = 0;
+      // for (int i = 0; i < nums.length; i++) {
+      //     if (nums[i] != nums[idx]) {
+      //         nums[++idx] = nums[i];
+      //     }
+      // }
+      // nums = Arrays.copyOf(nums, idx + 1);
+      for (int i = 0; i < nums.length - 2; i++) {
+        int n1 = nums[i];
+        if (n1 > target) {
+          break;
         }
-
+        // n1 去重复
+        if (i > 0 && nums[i] == nums[i - 1]) {
+          continue;
+        }
+        int left = i + 1, right = nums.length - 1;
+        while (left < right) {
+          int n2 = nums[left], n3 = nums[right];
+          int sum = n1 + n2 + n3;
+          if (sum == target) {
+            ans.add(Arrays.asList(n1, n2, n3));
+            // 向中间靠拢
+            while (left < right && nums[left] == nums[left + 1]) {
+              left += 1;
+            }
+            while (left < right && nums[right] == nums[right - 1]) {
+              right -= 1;
+            }
+            left += 1;
+            right -= 1;
+          } else if (sum < target) {
+            // 此步不需要去重复
+            left += 1;
+          } else {
+            // sum > target
+            // 此步不需要去重复
+            right -= 1;
+          }
+        }
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

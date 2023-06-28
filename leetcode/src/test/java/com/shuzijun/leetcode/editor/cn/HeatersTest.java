@@ -44,55 +44,54 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
 
 public class HeatersTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        solution.findRadius(new int[]{1, 2, 3}, new int[]{2});
+  @Test
+  void givenNormal_when_thenSuccess() {
+    solution.findRadius(new int[]{1, 2, 3}, new int[]{2});
+  }
+
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int findRadius(int[] houses, int[] heaters) {
+      // 排序
+      Arrays.sort(heaters);
+      int ans = 0;
+      for (int house : houses) {
+        int leftHeater = binarySearch(heaters, house);
+        int leftRadius = (leftHeater == -1) ?
+            Integer.MAX_VALUE : (house - heaters[leftHeater]);
+        int rightRadius = (leftHeater + 1 >= heaters.length) ?
+            Integer.MAX_VALUE : heaters[leftHeater + 1] - house;
+        ans = Math.max(ans, Math.min(leftRadius, rightRadius));
+      }
+      return ans;
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-
-        public int findRadius(int[] houses, int[] heaters) {
-            // 排序
-            Arrays.sort(heaters);
-            int ans = 0;
-            for (int house : houses) {
-                int leftHeater = binarySearch(heaters, house);
-                int leftRadius = (leftHeater == -1) ?
-                        Integer.MAX_VALUE : (house - heaters[leftHeater]);
-                int rightRadius = (leftHeater + 1 >= heaters.length) ?
-                        Integer.MAX_VALUE : heaters[leftHeater + 1] - house;
-                ans = Math.max(ans, Math.min(leftRadius, rightRadius));
-            }
-            return ans;
+    // 找出 <= house 的最大 heater
+    private int binarySearch(int[] heaters, int house) {
+      int ans = -1;
+      int l = 0, r = heaters.length - 1;
+      while (l <= r) {
+        int m = l + ((r - l) >> 1);
+        if (heaters[m] <= house) {
+          ans = m;
+          l = m + 1;
+        } else {
+          r = m - 1;
         }
-
-        // 找出 <= house 的最大 heater
-        private int binarySearch(int[] heaters, int house) {
-            int ans = -1;
-            int l = 0, r = heaters.length - 1;
-            while (l <= r) {
-                int m = l + ((r - l) >> 1);
-                if (heaters[m] <= house) {
-                    ans = m;
-                    l = m + 1;
-                } else {
-                    r = m - 1;
-                }
-            }
-            return ans;
-        }
-
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

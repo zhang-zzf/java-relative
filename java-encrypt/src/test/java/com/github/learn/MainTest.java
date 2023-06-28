@@ -6,9 +6,9 @@ import org.junit.Test;
 @Slf4j
 public class MainTest {
 
-    @Test
-    public void test() {
-        log.info("Hello, Test");
-    }
+  @Test
+  public void test() {
+    log.info("Hello, Test");
+  }
 
 }

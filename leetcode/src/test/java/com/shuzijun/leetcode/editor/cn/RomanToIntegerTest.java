@@ -76,56 +76,54 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.Test;
 
 
 public class RomanToIntegerTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
-    }
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
-        public int romanToInt(String s) {
-            final Map<String, Integer> map = new HashMap<String, Integer>(16) {{
-                put("M", 1000);
-                put("CM", 900);
-                put("D", 500);
-                put("CD", 400);
-                put("C", 100);
-                put("XC", 90);
-                put("L", 50);
-                put("XL", 40);
-                put("X", 10);
-                put("IX", 9);
-                put("V", 5);
-                put("IV", 4);
-                put("I", 1);
-            }};
-            int ret = 0;
-            for (int i = 0; i < s.length(); i++) {
-                if (i + 1 < s.length()) {
-                    final Integer integer = map.get(s.substring(i, i + 2));
-                    if (integer != null) {
-                        ret += integer;
-                        i += 1;
-                        continue;
-                    }
-                }
-                ret += map.get(s.substring(i, i + 1));
-            }
-            return ret;
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
+
+    public int romanToInt(String s) {
+      final Map<String, Integer> map = new HashMap<String, Integer>(16) {{
+        put("M", 1000);
+        put("CM", 900);
+        put("D", 500);
+        put("CD", 400);
+        put("C", 100);
+        put("XC", 90);
+        put("L", 50);
+        put("XL", 40);
+        put("X", 10);
+        put("IX", 9);
+        put("V", 5);
+        put("IV", 4);
+        put("I", 1);
+      }};
+      int ret = 0;
+      for (int i = 0; i < s.length(); i++) {
+        if (i + 1 < s.length()) {
+          final Integer integer = map.get(s.substring(i, i + 2));
+          if (integer != null) {
+            ret += integer;
+            i += 1;
+            continue;
+          }
         }
+        ret += map.get(s.substring(i, i + 1));
+      }
+      return ret;
     }
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

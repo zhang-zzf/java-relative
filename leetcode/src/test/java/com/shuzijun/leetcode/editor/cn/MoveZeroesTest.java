@@ -37,46 +37,46 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class MoveZeroesTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        int[] nums = {0, 1, 0, 3, 12};
-        solution.moveZeroes(nums);
-        then(nums).containsExactly(1, 3, 12, 0, 0);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    int[] nums = {0, 1, 0, 3, 12};
+    solution.moveZeroes(nums);
+    then(nums).containsExactly(1, 3, 12, 0, 0);
+  }
 
 
-    @Test
-    void givenFailedCase1_when_then() {
-        int[] nums = {1};
-        solution.moveZeroes(nums);
-        then(nums).containsExactly(1);
-    }
+  @Test
+  void givenFailedCase1_when_then() {
+    int[] nums = {1};
+    solution.moveZeroes(nums);
+    then(nums).containsExactly(1);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public void moveZeroes(int[] nums) {
-            // [0,left] is not 0
-            int left = -1, right = 0;
-            while (right < nums.length) {
-                if (nums[right] != 0 && ++left != right) {
-                    nums[left] = nums[right];
-                    nums[right] = 0;
-                }
-                right += 1;
-            }
+    public void moveZeroes(int[] nums) {
+      // [0,left] is not 0
+      int left = -1, right = 0;
+      while (right < nums.length) {
+        if (nums[right] != 0 && ++left != right) {
+          nums[left] = nums[right];
+          nums[right] = 0;
         }
-
+        right += 1;
+      }
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

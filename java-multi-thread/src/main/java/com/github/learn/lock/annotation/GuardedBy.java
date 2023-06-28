@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The field or method to which this annotation is applied can only be accessed
- * when holding a particular lock, which may be a built-in (synchronization)
- * lock, or may be an explicit {@link java.util.concurrent.locks.Lock}.
+ * The field or method to which this annotation is applied can only be accessed when holding a
+ * particular lock, which may be a built-in (synchronization) lock, or may be an explicit
+ * {@link java.util.concurrent.locks.Lock}.
  * <p>
  * The argument determines which lock guards the annotated field or method:
  * <ul>
@@ -28,6 +28,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface GuardedBy {
 
-    String value();
+  String value();
 
 }

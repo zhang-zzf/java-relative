@@ -42,57 +42,57 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class SearchInsertPositionTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        int idx = solution.searchInsert(new int[]{1, 5, 8, 10}, 5);
-        then(idx).isEqualTo(1);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    int idx = solution.searchInsert(new int[]{1, 5, 8, 10}, 5);
+    then(idx).isEqualTo(1);
+  }
 
-    @Test
-    void givenSmallest_when_thenReturnZero() {
-        int idx = solution.searchInsert(new int[]{1, 5, 8, 10}, 0);
-        then(idx).isEqualTo(0);
-    }
+  @Test
+  void givenSmallest_when_thenReturnZero() {
+    int idx = solution.searchInsert(new int[]{1, 5, 8, 10}, 0);
+    then(idx).isEqualTo(0);
+  }
 
-    @Test
-    void givenLargest_when_thenReturnLength() {
-        int idx = solution.searchInsert(new int[]{1, 5, 8, 10}, 11);
-        then(idx).isEqualTo(4);
-    }
+  @Test
+  void givenLargest_when_thenReturnLength() {
+    int idx = solution.searchInsert(new int[]{1, 5, 8, 10}, 11);
+    then(idx).isEqualTo(4);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int searchInsert(int[] nums, int target) {
-            // 值域 [0, nums.length]
-            int ans = nums.length;
-            int left = 0, right = nums.length - 1;
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                if (getV(nums, mid) >= target) {
-                    ans = mid;
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-            }
-            return ans;
+    public int searchInsert(int[] nums, int target) {
+      // 值域 [0, nums.length]
+      int ans = nums.length;
+      int left = 0, right = nums.length - 1;
+      while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        if (getV(nums, mid) >= target) {
+          ans = mid;
+          right = mid - 1;
+        } else {
+          left = mid + 1;
         }
-
-        private int getV(int[] nums, int mid) {
-            return nums[mid];
-        }
-
+      }
+      return ans;
     }
+
+    private int getV(int[] nums, int mid) {
+      return nums[mid];
+    }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

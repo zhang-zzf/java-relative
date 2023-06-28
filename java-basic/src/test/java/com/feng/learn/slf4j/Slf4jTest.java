@@ -10,13 +10,13 @@ import org.junit.Test;
 @Slf4j
 public class Slf4jTest {
 
-    @Test
-    public void test() {
-        try {
-            throw new IllegalArgumentException();
-        } catch (Exception e) {
-            log.error("Exception: ", e);
-        }
+  @Test
+  public void test() {
+    try {
+      throw new IllegalArgumentException();
+    } catch (Exception e) {
+      log.error("Exception: ", e);
     }
+  }
 
 }

@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan({"com.feng.learn"})
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-        log.info("app start success");
-        Thread.currentThread().join();
-    }
+  public static void main(String[] args) throws InterruptedException {
+    ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
+    log.info("app start success");
+    Thread.currentThread().join();
+  }
 
 }

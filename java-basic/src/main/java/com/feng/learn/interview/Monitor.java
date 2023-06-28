@@ -1,11 +1,10 @@
 package com.feng.learn.interview;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 分析以下代码
@@ -15,34 +14,36 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class Monitor {
 
-    @RequiredArgsConstructor
-    public static class MonitorKey {
-        private final String key;
-        private final String desc;
-    }
+  private final Map<MonitorKey, MonitorValue> monitors = new ConcurrentHashMap<>();
 
-    public static class MonitorValue {
-        private final AtomicInteger counter = new AtomicInteger();
-        private final AtomicLong totalTime = new AtomicLong();
-        // volatile 可见性问题
-        private double avgTime;
+  public void visit(String url, String desc, long timeCost) {
+    MonitorKey key = new MonitorKey(url, desc);
+    // MonitorKey does not override hashCode() and equals() will lead to memory explode
+    MonitorValue value = monitors.get(key);
+    if (value == null) {
+      value = new MonitorValue();
+      // concurrency problem
+      monitors.put(key, value);
+      monitors.putIfAbsent(key, value);
     }
+    int afterCount = value.counter.addAndGet(1);
+    long afterTime = value.totalTime.addAndGet(timeCost);
+    value.avgTime = afterTime / afterCount;
+  }
 
-    private final Map<MonitorKey, MonitorValue> monitors = new ConcurrentHashMap<>();
+  @RequiredArgsConstructor
+  public static class MonitorKey {
 
-    public void visit(String url, String desc, long timeCost) {
-        MonitorKey key = new MonitorKey(url, desc);
-        // MonitorKey does not override hashCode() and equals() will lead to memory explode
-        MonitorValue value = monitors.get(key);
-        if (value == null) {
-            value = new MonitorValue();
-            // concurrency problem
-            monitors.put(key, value);
-            monitors.putIfAbsent(key, value);
-        }
-        int afterCount = value.counter.addAndGet(1);
-        long afterTime = value.totalTime.addAndGet(timeCost);
-        value.avgTime = afterTime / afterCount;
-    }
+    private final String key;
+    private final String desc;
+  }
+
+  public static class MonitorValue {
+
+    private final AtomicInteger counter = new AtomicInteger();
+    private final AtomicLong totalTime = new AtomicLong();
+    // volatile 可见性问题
+    private double avgTime;
+  }
 
 }

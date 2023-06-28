@@ -1,8 +1,8 @@
 package com.feng.learn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author zhanfeng.zhang
@@ -10,11 +10,11 @@ import static org.assertj.core.api.BDDAssertions.then;
  */
 public class BasicTest {
 
-    @Test
-    void givenIntegerMinValue_whenMinusOne_then() {
-        int i = Integer.MIN_VALUE;
-        int ret = i - 1;
-        then(ret).isGreaterThan(0);
-    }
+  @Test
+  void givenIntegerMinValue_whenMinusOne_then() {
+    int i = Integer.MIN_VALUE;
+    int ret = i - 1;
+    then(ret).isGreaterThan(0);
+  }
 
 }

@@ -6,27 +6,27 @@ package com.feng.learn.pattern.command.provider;
  */
 public class Stereo {
 
-    public void on() {
+  public void on() {
 
-    }
+  }
 
-    public void off() {
+  public void off() {
 
-    }
+  }
 
-    public void setCd() {
+  public void setCd() {
 
-    }
+  }
 
-    public void setDvd() {
+  public void setDvd() {
 
-    }
+  }
 
-    public void setRadio() {
+  public void setRadio() {
 
-    }
+  }
 
-    public void setVolume(int i) {
+  public void setVolume(int i) {
 
-    }
+  }
 }

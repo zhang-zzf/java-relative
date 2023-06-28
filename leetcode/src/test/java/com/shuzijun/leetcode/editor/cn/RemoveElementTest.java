@@ -64,27 +64,27 @@ import org.junit.jupiter.api.Test;
 
 public class RemoveElementTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
-    }
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int removeElement(int[] nums, int val) {
-            int idx = -1;
-            for (int i = 0; i < nums.length; i++) {
-                if (nums[i] != val) {
-                    nums[++idx] = nums[i];
-                }
-            }
-            return idx + 1;
+    public int removeElement(int[] nums, int val) {
+      int idx = -1;
+      for (int i = 0; i < nums.length; i++) {
+        if (nums[i] != val) {
+          nums[++idx] = nums[i];
         }
-
+      }
+      return idx + 1;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

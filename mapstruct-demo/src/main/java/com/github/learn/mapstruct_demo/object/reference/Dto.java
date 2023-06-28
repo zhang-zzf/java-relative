@@ -11,6 +11,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Dto {
 
-    private Person person;
+  private Person person;
 
 }

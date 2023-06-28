@@ -11,12 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ServiceATest {
 
-    @Autowired
-    ServiceA serviceA;
+  @Autowired
+  ServiceA serviceA;
 
-    @Test
-    void test() {
-        serviceA.methodA();
-    }
+  @Test
+  void test() {
+    serviceA.methodA();
+  }
 
 }

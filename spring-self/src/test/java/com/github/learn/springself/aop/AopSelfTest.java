@@ -13,15 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class AopSelfTest {
 
-    @Autowired
-    AopNoInterfaceService aopNoInterfaceService;
-    @Autowired
-    AopInterfaceService aopInterfaceService;
+  @Autowired
+  AopNoInterfaceService aopNoInterfaceService;
+  @Autowired
+  AopInterfaceService aopInterfaceService;
 
-    @Test
-    void test() {
-        aopNoInterfaceService.methodA();
-        aopInterfaceService.methodA();
-    }
+  @Test
+  void test() {
+    aopNoInterfaceService.methodA();
+    aopInterfaceService.methodA();
+  }
 
 }

@@ -37,80 +37,75 @@ import org.junit.jupiter.api.Test;
 
 public class PartitionListTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
+  @Test
+  void givenNormal_when_thenSuccess() {
 
+  }
+
+  public class ListNode {
+
+    int val;
+    ListNode next;
+
+    ListNode() {
     }
 
-    public class ListNode {
-
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
+    ListNode(int val) {
+      this.val = val;
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
 
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode() {}
-     * ListNode(int val) { this.val = val; }
-     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
-     */
-    class Solution {
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
+    }
 
-        public ListNode partition(ListNode head, int x) {
-            final ListNode dummy = new ListNode(0, head);
-            ListNode slow = dummy, fast = head;
-            while (fast != null) {
-                if (fast.val < x) {
-                    slow = fast;
-                    fast = fast.next;
-                } else {
-                    // fast.val >= x
-                    // find node that node.val < x
-                    ListNode nodeGtX = fast;
-                    while (fast != null) {
-                        if (fast.val < x) {
-                            break;
-                        }
-                        nodeGtX = fast;
-                        fast = fast.next;
-                    }
-                    if (fast == null) {
-                        // reach end, exit all loop
-                        break;
-                    }
-                    // adjust point
-                    ListNode slowNext = slow.next;
-                    slow.next = fast;
-                    nodeGtX.next = fast.next;
-                    fast.next = slowNext;
-                    slow = fast;
-                    fast = nodeGtX;
-                }
+  }
+  //leetcode submit region begin(Prohibit modification and deletion)
+
+  /**
+   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
+   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
+   * this.next = next; } }
+   */
+  class Solution {
+
+    public ListNode partition(ListNode head, int x) {
+      final ListNode dummy = new ListNode(0, head);
+      ListNode slow = dummy, fast = head;
+      while (fast != null) {
+        if (fast.val < x) {
+          slow = fast;
+          fast = fast.next;
+        } else {
+          // fast.val >= x
+          // find node that node.val < x
+          ListNode nodeGtX = fast;
+          while (fast != null) {
+            if (fast.val < x) {
+              break;
             }
-            return dummy.next;
+            nodeGtX = fast;
+            fast = fast.next;
+          }
+          if (fast == null) {
+            // reach end, exit all loop
+            break;
+          }
+          // adjust point
+          ListNode slowNext = slow.next;
+          slow.next = fast;
+          nodeGtX.next = fast.next;
+          fast.next = slowNext;
+          slow = fast;
+          fast = nodeGtX;
         }
-
+      }
+      return dummy.next;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

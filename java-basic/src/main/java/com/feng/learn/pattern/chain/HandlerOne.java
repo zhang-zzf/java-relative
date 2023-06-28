@@ -6,18 +6,18 @@ package com.feng.learn.pattern.chain;
  */
 public class HandlerOne extends AbstractHandler {
 
-    @Override
-    public Object handle(Object in) {
-        if (canHandle(in)) {
-            // handle in
-            return null;
-        }
-        // next handler handle in
-        return handleBySuccessor(in);
+  @Override
+  public Object handle(Object in) {
+    if (canHandle(in)) {
+      // handle in
+      return null;
     }
+    // next handler handle in
+    return handleBySuccessor(in);
+  }
 
-    private boolean canHandle(Object in) {
-        return false;
-    }
+  private boolean canHandle(Object in) {
+    return false;
+  }
 
 }

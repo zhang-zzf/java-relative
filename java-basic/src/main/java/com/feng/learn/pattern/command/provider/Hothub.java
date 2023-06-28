@@ -6,19 +6,19 @@ package com.feng.learn.pattern.command.provider;
  */
 public class Hothub {
 
-    void jetsOn() {
+  void jetsOn() {
 
-    }
+  }
 
-    void jetOff() {
+  void jetOff() {
 
-    }
+  }
 
-    void circulate() {
+  void circulate() {
 
-    }
+  }
 
-    void setTemperature() {
+  void setTemperature() {
 
-    }
+  }
 }

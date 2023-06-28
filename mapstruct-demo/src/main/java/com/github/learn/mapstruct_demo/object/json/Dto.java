@@ -11,16 +11,16 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Dto {
 
-    private String str;
+  private String str;
 
-    /**
-     * json
-     */
-    private String person;
+  /**
+   * json
+   */
+  private String person;
 
-    /**
-     * json
-     */
-    private String mapData;
+  /**
+   * json
+   */
+  private String mapData;
 
 }

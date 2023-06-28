@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LeetCodeSqrtApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(LeetCodeSqrtApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(LeetCodeSqrtApplication.class, args);
+  }
 
 }

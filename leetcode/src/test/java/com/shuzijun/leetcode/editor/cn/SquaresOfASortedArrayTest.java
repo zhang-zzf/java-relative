@@ -44,48 +44,48 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 
 public class SquaresOfASortedArrayTest {
 
-    final Solution solution = new Solution();
+  final Solution solution = new Solution();
 
-    @Test
-    void givenNormal_when_thenSuccess() {
-        int[] squares = solution.sortedSquares(new int[]{-4, -1, 0, 3, 10});
-        then(squares).containsExactly(0, 1, 9, 16, 100);
-    }
+  @Test
+  void givenNormal_when_thenSuccess() {
+    int[] squares = solution.sortedSquares(new int[]{-4, -1, 0, 3, 10});
+    then(squares).containsExactly(0, 1, 9, 16, 100);
+  }
 
-    @Test
-    void givenFailedCase1_when_thenSuccess() {
-        int[] squares = solution.sortedSquares(new int[]{1});
-        then(squares).containsExactly(1);
-    }
+  @Test
+  void givenFailedCase1_when_thenSuccess() {
+    int[] squares = solution.sortedSquares(new int[]{1});
+    then(squares).containsExactly(1);
+  }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    class Solution {
+  //leetcode submit region begin(Prohibit modification and deletion)
+  class Solution {
 
-        public int[] sortedSquares(int[] nums) {
-            int[] ans = new int[nums.length];
-            int left = 0, right = nums.length - 1;
-            for (int i = nums.length - 1; i >= 0; i--) {
-                int i1 = nums[left] * nums[left];
-                int i2 = nums[right] * nums[right];
-                if (i1 > i2) {
-                    ans[i] = i1;
-                    left += 1;
-                } else {
-                    ans[i] = i2;
-                    right -= 1;
-                }
-            }
-            return ans;
+    public int[] sortedSquares(int[] nums) {
+      int[] ans = new int[nums.length];
+      int left = 0, right = nums.length - 1;
+      for (int i = nums.length - 1; i >= 0; i--) {
+        int i1 = nums[left] * nums[left];
+        int i2 = nums[right] * nums[right];
+        if (i1 > i2) {
+          ans[i] = i1;
+          left += 1;
+        } else {
+          ans[i] = i2;
+          right -= 1;
         }
-
+      }
+      return ans;
     }
+
+  }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

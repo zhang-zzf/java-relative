@@ -4,10 +4,10 @@ import com.feng.learn.dao.model.User;
 
 public interface UserDao {
 
-    User getById(long id);
+  User getById(long id);
 
-    int createUser(User user);
+  int createUser(User user);
 
-    int updateUser(User user);
+  int updateUser(User user);
 
 }

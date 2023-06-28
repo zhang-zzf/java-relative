@@ -47,9 +47,10 @@ package com.shuzijun.leetcode.editor.cn;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
-import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.BDDAssertions.then;
 
 
@@ -69,23 +70,30 @@ public class SlidingWindowMaximumTest {
     class Solution {
 
         public int[] maxSlidingWindow(int[] nums, int k) {
-            List<int[]> ans = new ArrayList<>(nums.length);
-            for (int rightIdx = k - 1; rightIdx < nums.length; rightIdx++) {
-                if (ans.isEmpty()) {
-                    ans.add(findMax(nums, rightIdx - k + 1, rightIdx));
-                } else {
-                    int[] prevMax = ans.get(ans.size() - 1);
-                    int num = nums[rightIdx];
-                    if (num > prevMax[1]) {
-                        ans.add(new int[]{rightIdx, num});
-                    } else if (prevMax[0] > rightIdx - k) {
-                        ans.add(prevMax);
-                    } else {
-                        ans.add(findMax(nums, rightIdx - k + 1, rightIdx));
-                    }
+            PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
+                    Comparator.comparing((int[] arr) -> arr[1]).reversed());
+            for (int i = 0; i < k; i++) {
+                pq.add(new int[]{i, nums[i]});
+            }
+            int[] peek = pq.peek();
+            if (peek == null) {
+                return new int[0];
+            }
+            List<Integer> ans = new ArrayList<>();
+            ans.add(peek[1]);
+            for (int i = k; i < nums.length; i++) {
+                pq.add(new int[]{i, nums[i]});
+                int leftIdx = i - k + 1;
+                peek = pq.peek();
+                while (peek != null && peek[0] < leftIdx) {
+                    pq.poll();
+                    peek = pq.peek();
+                }
+                if (peek != null) {
+                    ans.add(peek[1]);
                 }
             }
-            return ans.stream().mapToInt(arr -> arr[1]).toArray();
+            return ans.stream().mapToInt(Integer::intValue).toArray();
         }
 
         private int[] findMax(int[] nums, int leftIdx, int rightIdx) {

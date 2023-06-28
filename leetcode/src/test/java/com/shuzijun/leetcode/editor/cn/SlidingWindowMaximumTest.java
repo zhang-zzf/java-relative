@@ -46,10 +46,7 @@ package com.shuzijun.leetcode.editor.cn;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -71,22 +68,30 @@ public class SlidingWindowMaximumTest {
 
         public int[] maxSlidingWindow(int[] nums, int k) {
             List<Integer> ans = new ArrayList<>();
-            // PQ 的容量可以自动增加
-            PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
-                    Comparator.comparing((int[] arr) -> arr[1]).reversed());
-            for (int i = 0; i < k; i++) {
-                pq.add(new int[]{i, nums[i]});
-            }
-            for (int i = k - 1; i < nums.length; i++) {
-                pq.add(new int[]{i, nums[i]});
-                int leftIdx = i - k + 1;
-                int[] peek = pq.peek();
-                while (peek != null && peek[0] < leftIdx) {
-                    pq.poll();
-                    peek = pq.peek();
+            // deque 中的索引值是单调递增的
+            // deque 中的索引对应的 nums[idx] 是单调递减的
+            Deque<Integer> deque = new LinkedList<>();
+            for (int i = 0; i < nums.length; i++) {
+                Integer minNumIdx = deque.peekLast();
+                // 保证 nums[idx] 是单调递减的
+                while (minNumIdx != null && nums[i] > nums[minNumIdx]) {
+                    deque.pollLast();
+                    minNumIdx = deque.peekLast();
                 }
-                if (peek != null) {
-                    ans.add(peek[1]);
+                deque.addLast(i);
+                if (i < k - 1) {
+                    continue;
+                }
+                Integer maxNumIdx = deque.peekFirst();
+                // 保证 最大值在窗口内
+                while (maxNumIdx != null && maxNumIdx < i - k + 1) {
+                    // 超出窗口
+                    deque.pollFirst();
+                    maxNumIdx = deque.peekFirst();
+                }
+                // 逻辑上不存在 null
+                if (maxNumIdx != null) {
+                    ans.add(nums[maxNumIdx]);
                 }
             }
             return ans.stream().mapToInt(Integer::intValue).toArray();

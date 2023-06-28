@@ -70,21 +70,17 @@ public class SlidingWindowMaximumTest {
     class Solution {
 
         public int[] maxSlidingWindow(int[] nums, int k) {
+            List<Integer> ans = new ArrayList<>();
+            // PQ 的容量可以自动增加
             PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
                     Comparator.comparing((int[] arr) -> arr[1]).reversed());
             for (int i = 0; i < k; i++) {
                 pq.add(new int[]{i, nums[i]});
             }
-            int[] peek = pq.peek();
-            if (peek == null) {
-                return new int[0];
-            }
-            List<Integer> ans = new ArrayList<>();
-            ans.add(peek[1]);
-            for (int i = k; i < nums.length; i++) {
+            for (int i = k - 1; i < nums.length; i++) {
                 pq.add(new int[]{i, nums[i]});
                 int leftIdx = i - k + 1;
-                peek = pq.peek();
+                int[] peek = pq.peek();
                 while (peek != null && peek[0] < leftIdx) {
                     pq.poll();
                     peek = pq.peek();

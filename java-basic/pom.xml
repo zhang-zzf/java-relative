@@ -1,345 +1,322 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>java-basic</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M2</version>
-      </plugin>
-      <plugin>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-            <id>pre-test</id>
-          </execution>
-          <execution>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <id>post-test</id>
-            <phase>test</phase>
-          </execution>
-        </executions>
-        <groupId>org.jacoco</groupId>
-        <version>0.8.5</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-          </execution>
-        </executions>
-        <version>3.1.0</version>
-      </plugin>
-      <!-- ${user.home}/.m2/toolchains.xml -->
-      <plugin>
-        <artifactId>maven-toolchains-plugin</artifactId>
-        <configuration>
-          <toolchains>
-            <jdk>
-              <vendor>sun</vendor>
-              <version>1.8</version>
-            </jdk>
-          </toolchains>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>toolchain</goal>
-            </goals>
-          </execution>
-        </executions>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>1.1</version>
-      </plugin>
-    </plugins>
+    <groupId>com.github.learn</groupId>
+    <artifactId>java-basic</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
-  </build>
-  <dependencies>
+    <properties>
+        <!-- maven-resources-plugin 会自动读取此配置 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <dependency>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <groupId>org.bouncycastle</groupId>
-      <version>1.69</version>
-    </dependency>
+        <!-- maven-compiler-plugin 会自动读取此配置 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-    <!-- elasticsearch transport 5.4.3 -->
-    <dependency>
-      <artifactId>transport</artifactId>
-      <groupId>org.elasticsearch.client</groupId>
-      <version>5.4.3</version>
-    </dependency>
-    <dependency>
-      <artifactId>log4j-core</artifactId>
-      <groupId>org.apache.logging.log4j</groupId>
-      <version>2.16.0</version>
-    </dependency>
-    <dependency>
-      <artifactId>log4j-to-slf4j</artifactId>
-      <groupId>org.apache.logging.log4j</groupId>
-      <version>2.11.1</version>
-    </dependency>
+        <mockito.version>2.28.2</mockito.version>
+        <powermock.version>2.0.4</powermock.version>
+        <junit5.version>5.5.2</junit5.version>
+        <mockito.junit5.version>2.25.1</mockito.junit5.version>
+        <junit4.version>4.12</junit4.version>
+        <assertj-core.version>3.14.0</assertj-core.version>
+        <powermock.version>2.0.4</powermock.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
+        <poi.version>3.17</poi.version>
 
-    <!-- spring-kafka -->
-    <dependency>
-      <artifactId>spring-kafka</artifactId>
-      <groupId>org.springframework.kafka</groupId>
-      <version>2.5.1.RELEASE</version>
-    </dependency>
-    <dependency>
-      <artifactId>jackson-databind</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <version>2.11.0</version>
-    </dependency>
+    </properties>
+    <dependencies>
 
-    <!-- kafka client -->
-    <dependency>
-      <artifactId>kafka-clients</artifactId>
-      <groupId>org.apache.kafka</groupId>
-      <version>2.5.0</version>
-    </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.69</version>
+        </dependency>
 
-    <!-- spring aop with aspectJ support -->
-    <dependency>
-      <artifactId>aspectjweaver</artifactId>
-      <groupId>org.aspectj</groupId>
-      <version>1.9.4</version>
-    </dependency>
-    <dependency>
-      <artifactId>spring-aop</artifactId>
-      <groupId>org.springframework</groupId>
-      <version>${spring.version}</version>
-    </dependency>
+        <!-- elasticsearch transport 5.4.3 -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>5.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.16.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>2.11.1</version>
+        </dependency>
 
-    <dependency>
-      <artifactId>poi</artifactId>
-      <groupId>org.apache.poi</groupId>
-      <version>${poi.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>poi-ooxml</artifactId>
-      <groupId>org.apache.poi</groupId>
-      <version>${poi.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>caffeine</artifactId>
-      <groupId>com.github.ben-manes.caffeine</groupId>
-      <version>2.8.1</version>
-    </dependency>
-    <!-- redis -->
-    <dependency>
-      <artifactId>spring-data-redis</artifactId>
-      <groupId>org.springframework.data</groupId>
-      <version>2.2.0.RELEASE</version>
-    </dependency>
-    <dependency>
-      <artifactId>jedis</artifactId>
-      <groupId>redis.clients</groupId>
-      <scope>compile</scope>
-      <type>jar</type>
-      <version>3.2.0</version>
-    </dependency>
-    <dependency>
-      <artifactId>fastjson</artifactId>
-      <groupId>com.alibaba</groupId>
-      <version>1.2.55</version>
-    </dependency>
-    <!-- embedded-redis for test -->
-    <dependency>
-      <artifactId>embedded-redis</artifactId>
-      <groupId>com.github.kstyrc</groupId>
-      <scope>test</scope>
-      <version>0.6</version>
-    </dependency>
+        <!-- spring-kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>2.5.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.0</version>
+        </dependency>
 
-    <!-- mybatis -->
-    <dependency>
-      <artifactId>mybatis</artifactId>
-      <groupId>org.mybatis</groupId>
-      <version>3.5.2</version>
-    </dependency>
-    <!-- mybatis-spring -->
-    <dependency>
-      <artifactId>mybatis-spring</artifactId>
-      <groupId>org.mybatis</groupId>
-      <version>2.0.2</version>
-    </dependency>
-    <dependency>
-      <artifactId>spring-jdbc</artifactId>
-      <groupId>org.springframework</groupId>
-      <version>${spring.version}</version>
-    </dependency>
-    <!-- datasource -->
-    <dependency>
-      <artifactId>mysql-connector-java</artifactId>
-      <groupId>mysql</groupId>
-      <version>8.0.17</version>
-    </dependency>
+        <!-- kafka client -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 
-    <!-- 检验注解 -->
-    <dependency>
-      <artifactId>hibernate-validator</artifactId>
-      <groupId>org.hibernate.validator</groupId>
-      <version>6.0.17.Final</version>
-    </dependency>
+        <!-- spring aop with aspectJ support -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
-    <dependency>
-      <artifactId>spring-context</artifactId>
-      <groupId>org.springframework</groupId>
-      <version>${spring.version}</version>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>2.8.1</version>
+        </dependency>
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.2.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.55</version>
+        </dependency>
+        <!-- embedded-redis for test -->
+        <dependency>
+            <groupId>com.github.kstyrc</groupId>
+            <artifactId>embedded-redis</artifactId>
+            <scope>test</scope>
+            <version>0.6</version>
+        </dependency>
 
-    <!--<dependency>-->
-    <!--<groupId>junit</groupId>-->
-    <!--<artifactId>junit</artifactId>-->
-    <!--<version>4.12</version>-->
-    <!--<scope>test</scope>-->
-    <!--</dependency>-->
-    <dependency>
-      <artifactId>mockito-core</artifactId>
-      <groupId>org.mockito</groupId>
-      <scope>test</scope>
-      <version>2.28.2</version>
-    </dependency>
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+        <!-- mybatis-spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- datasource -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
+        </dependency>
 
-    <!-- junit 5 -->
-    <!-- Jupiter API and the JUnit Jupiter TestEngine implementation -->
-    <dependency>
-      <artifactId>junit-jupiter</artifactId>
-      <groupId>org.junit.jupiter</groupId>
-      <scope>test</scope>
-      <version>5.5.2</version>
-    </dependency>
-    <!-- Jupiter API and the JUnit Jupiter TestEngine implementation -->
+        <!-- 检验注解 -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.17.Final</version>
+        </dependency>
 
-    <!-- JUnit 4 and the JUnit Vintage TestEngine implementation -->
-    <dependency>
-      <artifactId>junit</artifactId>
-      <groupId>junit</groupId>
-      <scope>test</scope>
-      <version>4.12</version>
-    </dependency>
-    <dependency>
-      <artifactId>junit-vintage-engine</artifactId>
-      <groupId>org.junit.vintage</groupId>
-      <scope>test</scope>
-      <version>5.5.2</version>
-    </dependency>
-    <!-- JUnit 4 and the JUnit Vintage TestEngine implementation -->
-    <dependency>
-      <artifactId>mockito-junit-jupiter</artifactId>
-      <groupId>org.mockito</groupId>
-      <version>2.25.1</version>
-    </dependency>
-    <!-- junit 5 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
-    <dependency>
-      <artifactId>assertj-core</artifactId>
-      <groupId>org.assertj</groupId>
-      <scope>test</scope>
-      <version>3.14.0</version>
-    </dependency>
+        <!--<dependency>-->
+        <!--<groupId>junit</groupId>-->
+        <!--<artifactId>junit</artifactId>-->
+        <!--<version>4.12</version>-->
+        <!--<scope>test</scope>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.28.2</version>
+            <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <artifactId>powermock-module-junit4</artifactId>
-      <groupId>org.powermock</groupId>
-      <scope>test</scope>
-      <version>${powermock.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>powermock-api-mockito2</artifactId>
-      <groupId>org.powermock</groupId>
-      <scope>test</scope>
-      <version>${powermock.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>spring-test</artifactId>
-      <groupId>org.springframework</groupId>
-      <scope>test</scope>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>h2</artifactId>
-      <groupId>com.h2database</groupId>
-      <scope>test</scope>
-      <version>2.1.210</version>
-    </dependency>
-    <dependency>
-      <artifactId>flyway-core</artifactId>
-      <groupId>org.flywaydb</groupId>
-      <scope>test</scope>
-      <version>5.2.0</version>
-    </dependency>
+        <!-- junit 5 -->
+        <!-- Jupiter API and the JUnit Jupiter TestEngine implementation -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Jupiter API and the JUnit Jupiter TestEngine implementation -->
+
+        <!-- JUnit 4 and the JUnit Vintage TestEngine implementation -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- JUnit 4 and the JUnit Vintage TestEngine implementation -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>2.25.1</version>
+        </dependency>
+        <!-- junit 5 -->
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+            <version>3.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.210</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
 
 
-    <dependency>
-      <artifactId>slf4j-api</artifactId>
-      <groupId>org.slf4j</groupId>
-      <version>1.7.26</version>
-    </dependency>
-    <dependency>
-      <artifactId>logback-classic</artifactId>
-      <groupId>ch.qos.logback</groupId>
-      <version>1.2.3</version>
-    </dependency>
-    <dependency>
-      <artifactId>lombok</artifactId>
-      <groupId>org.projectlombok</groupId>
-      <version>1.18.8</version>
-    </dependency>
-    <dependency>
-      <artifactId>guava</artifactId>
-      <groupId>com.google.guava</groupId>
-      <scope>compile</scope>
-      <version>28.1-jre</version>
-    </dependency>
-  </dependencies>
-  <groupId>com.github.learn</groupId>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.1-jre</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
-  <modelVersion>4.0.0</modelVersion>
-  <properties>
-    <!-- maven-resources-plugin 会自动读取此配置 -->
-    <assertj-core.version>3.14.0</assertj-core.version>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0-M2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+                <executions>
+                    <execution>
+                        <id>pre-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 
-    <!-- maven-compiler-plugin 会自动读取此配置 -->
-    <junit4.version>4.12</junit4.version>
-    <junit5.version>5.5.2</junit5.version>
-
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <mockito.junit5.version>2.25.1</mockito.junit5.version>
-    <mockito.version>2.28.2</mockito.version>
-    <poi.version>3.17</poi.version>
-    <powermock.version>2.0.4</powermock.version>
-    <powermock.version>2.0.4</powermock.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>5.2.0.RELEASE</spring.version>
-
-  </properties>
-
-  <version>1.0-SNAPSHOT</version>
+    </build>
 </project>

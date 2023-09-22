@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>java-relative</artifactId>
-        <groupId>com.github.learn</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>java-encrypt</artifactId>
+    <groupId>com.github.learn</groupId>
+    <artifactId>java-easy-rules</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <!-- maven-resources-plugin 会自动读取此配置 -->
@@ -23,21 +20,22 @@
         <junit5.version>5.5.2</junit5.version>
         <mockito.junit5.version>2.25.1</mockito.junit5.version>
         <junit4.version>4.12</junit4.version>
-        <assertj-core.version>3.14.0</assertj-core.version>
-        <springframework.version>5.1.8.RELEASE</springframework.version>
+        <assertj-core.version>3.19.0</assertj-core.version>
 
     </properties>
 
     <dependencies>
+
         <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.69</version>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-core</artifactId>
+            <version>4.1.0</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${springframework.version}</version>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-support</artifactId>
+            <version>4.1.0</version>
         </dependency>
 
         <dependency>
@@ -57,12 +55,6 @@
         </dependency>
 
         <!-- test -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${springframework.version}</version>
-            <scope>test</scope>
-        </dependency>
         <!-- Jupiter API and the JUnit Jupiter TestEngine implementation -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

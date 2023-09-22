@@ -33,45 +33,49 @@
 
 package com.shuzijun.leetcode.editor.cn;
 
-import static org.assertj.core.api.BDDAssertions.then;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 
 public class TrappingRainWaterTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    then(solution.trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1})).isEqualTo(6);
-    // failed case 1
-    then(solution.trap(new int[]{4, 2, 0, 3, 2, 5})).isEqualTo(9);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public int trap(int[] height) {
-      int ans = 0;
-      int left = 0, right = height.length - 1;
-      int leftMax = 0, rightMax = 0;
-      while (left < right) {
-        leftMax = Math.max(leftMax, height[left]);
-        rightMax = Math.max(rightMax, height[right]);
-        if (height[left] < height[right]) {
-          // 表示 left 右边有比它高的柱子且右边已知柱子的最大高度 rightMax > leftMax
-          ans += leftMax - height[left];
-          left += 1;
-        } else {
-          ans += rightMax - height[right];
-          right -= 1;
-        }
-      }
-      return ans;
+    @Test
+    void givenNormal_when_thenSuccess() {
+        then(solution.trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1})).isEqualTo(6);
+        // failed case 1
+        then(solution.trap(new int[]{4, 2, 0, 3, 2, 5})).isEqualTo(9);
     }
 
-  }
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int trap(int[] height) {
+            int ans = 0;
+            int lng = height.length;
+            if (lng == 0) {
+                return ans;
+            }
+            int rightMax = 0;
+            int[] rightMaxDp = new int[lng];
+            for (int i = lng - 1; i >= 0; i--) {
+                rightMaxDp[i] = rightMax;
+                rightMax = Math.max(rightMax, height[i]);
+            }
+            int leftMax = 0;
+            for (int i = 0; i < lng; i++) {
+                int h = Math.min(leftMax, rightMaxDp[i]);
+                if (h > height[i]) {
+                    ans += (h - height[i]);
+                }
+                leftMax = Math.max(leftMax, height[i]);
+            }
+            return ans;
+        }
+
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
 

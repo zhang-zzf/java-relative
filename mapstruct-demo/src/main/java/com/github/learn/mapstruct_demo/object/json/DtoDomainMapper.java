@@ -19,6 +19,11 @@ public interface DtoDomainMapper {
   @Mapping(target = "mapData", qualifiedByName = "toJSONStr")
   Dto toDto(Domain domain);
 
+  /**
+   * Dto to Domain 时,
+   * <p>dto.person -> domain.person 会寻找 String->Person 的方法</p>
+   * <p>{@link DtoDomainMapper#stringToPerson(String)}</p>
+   */
   Domain toDomain(Dto dto);
 
   default Person stringToPerson(String json) {

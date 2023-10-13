@@ -23,6 +23,7 @@
         <module>spring-async</module>
         <module>spring-self</module>
         <module>spring-cycle-dependency</module>
+        <module>spring-web</module>
         <module>mapstruct-demo</module>
         <module>spring-retry</module>
         <module>leetcode</module>

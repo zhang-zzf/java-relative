@@ -1,0 +1,28 @@
+{
+  "name": "zhengtao",
+  "age": 18,
+  "isHandsome": true,
+  "email": "hj_zhengt@163.com",
+  "timestamp": 1598963565962,
+  "oneDate": "2009-09-01 14:22:41",
+  "birthday": "1991-10-01",
+  "address": {
+    "country": "China",
+    "province": "AnHui",
+    "city": "MingGuang"
+  },
+  "hobbys": [
+    {
+      "order": "first",
+      "name": "coding"
+    },
+    {
+      "order": "second",
+      "name": "fishing"
+    },
+    {
+      "order": "third",
+      "name": "whatever"
+    }
+  ]
+}

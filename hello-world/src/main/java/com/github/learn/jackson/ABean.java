@@ -8,8 +8,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
+
 @Data
-@JsonInclude(value = JsonInclude.Include.NON_ABSENT, content = JsonInclude.Include.NON_ABSENT)
+@JsonInclude(value = NON_ABSENT, content = NON_ABSENT)
 class ABean {
 
     Integer id;

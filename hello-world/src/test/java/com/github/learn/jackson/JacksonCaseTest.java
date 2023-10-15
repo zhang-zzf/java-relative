@@ -1,8 +1,11 @@
 package com.github.learn.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.learn.jackson.deserialization.AliasBean;
 import com.github.learn.jackson.serialization.*;
@@ -15,10 +18,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +40,146 @@ class JacksonCaseTest {
         mapper.registerModule(new JavaTimeModule());
     }
 
+
+    /**
+     * <pre>
+     *     java.util.Date / java.time.LocalDateTime 序列化及反序列化
+     *     Date -> 默认序列化成 unix timestamp 1697350229079
+     *     LocalDateTime -> 默认序列化成 [2023,10,15,14,10,29,797180000]
+     *
+     *     // 方案1 Java Object 属性上添加 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+     *     // 方案2
+     * </pre>
+     */
+    @SneakyThrows
+    @Test
+    void givenDate_whenSerializationAndDeserialization_then() {
+        Date createdAt = new Date(1697350229079L);
+        LocalDateTime updatedAt = LocalDateTime.parse("2023-10-15T14:10:29.79718000");
+        DateTimeBean b = new DateTimeBean()
+                // 默认序列化成 unix time 数字 1697350229079
+                .setCreatedAt(createdAt)
+                // 默认序列化成 [2023,10,15,14,10,29,797180000]
+                .setUpdatedAt(updatedAt)
+                // 默认序列化成 [2023,10,15]
+                .setLocalDate(updatedAt.toLocalDate())
+                // 默认序列化成 [14,10,29,797180000]
+                .setLocalTime(updatedAt.toLocalTime());
+        String jsonStr = mapper.writeValueAsString(b);
+        then(jsonStr).isEqualTo("{\"createdAt\":1697350229079,\"updatedAt\":[2023,10,15,14,10,29,797180000],\"localDate\":[2023,10,15],\"localTime\":[14,10,29,797180000]}");
+        DateTimeBean dd = mapper.readValue(jsonStr, DateTimeBean.class);
+        then(dd).returns(createdAt, DateTimeBean::getCreatedAt).returns(updatedAt, DateTimeBean::getUpdatedAt);
+        //
+        // 方案1 Java Object 属性上添加 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+        var d2 = new DateTimeBean2().setCreatedAt(createdAt).setUpdatedAt(updatedAt).setLocalDate(updatedAt.toLocalDate()).setLocalTime(updatedAt.toLocalTime());
+        var d2Json = mapper.writeValueAsString(d2);
+        then(d2Json).isEqualTo("{\"createdAt\":\"2023-10-15 06:10:29.079\",\"updatedAt\":\"2023-10-15 14:10:29.797180\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.797180\"}");
+        DateTimeBean2 dd2 = mapper.readValue(d2Json, DateTimeBean2.class);
+        then(dd2).returns(createdAt, DateTimeBean2::getCreatedAt).returns(updatedAt, DateTimeBean2::getUpdatedAt);
+        // 方案2 设置 ObjectMapper
+        ObjectMapper customMapper = new ObjectMapper();
+        customMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        // java8 java.time
+        customMapper.registerModule(new JavaTimeModule());
+        String bJson = customMapper.writeValueAsString(b);
+        then(bJson).isEqualTo("{\"createdAt\":\"2023-10-15 14:10:29\",\"updatedAt\":\"2023-10-15T14:10:29.79718\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.79718\"}");
+        // todo
+    }
+
+    /**
+     * <pre>
+     * 反序列化时忽略多余字段
+     * JSON 的字段比 Java Object 的字段多，抛出 UnrecognizedPropertyException 异常
+     *      * 解决方案1：类上添加 `@JsonIgnoreProperties(ignoreUnknown = true)`
+     *      * 解决方案2：全局 mapper 配置 customMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+     * </prep>
+     */
+    @SneakyThrows
+    @Test
+    void givenJSONHasMorePropertyThanJavaObject_whenDeserialization_thenSuccess() {
+        String jsonStr = "  {\n" +
+                "    \"order\": \"third\",\n" +
+                "    \"name\": \"whatever\",\n" +
+                "    \"unrecognizedProperty\": true" +
+                "  }\n";
+        // 默认抛出 UnrecognizedPropertyException
+        Throwable t = catchThrowable(() -> mapper.readValue(jsonStr, Bean2.class));
+        then(t).isInstanceOf(UnrecognizedPropertyException.class);
+        // 解决方案1
+        // 类上添加注解 @JsonIgnoreProperties(ignoreUnknown = true) // Deserialization 遇到本类中没有的字段不报错
+        var b4 = mapper.readValue(jsonStr, Bean4.class);
+        then(b4).isNotNull();
+        // 解决方案2
+        // 全局配置
+        ObjectMapper customMapper = new ObjectMapper();
+        customMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+        var b2 = customMapper.readValue(jsonStr, Bean2.class);
+        then(b2).isNotNull();
+    }
+
+    /**
+     * <pre>
+     * Serialization ignore null Field
+     * 序列化时忽略 null 字段
+     * </pre>
+     */
+    @SneakyThrows
+    @Test
+    void givenNullField_whenSerialization_then() {
+        var b3 = new Bean3().setId(1L);
+        // 默认情况下, 输出 null 字段
+        String b3Json = mapper.writeValueAsString(b3);
+        then(b3Json).contains("null").isEqualTo("{\"id\":1,\"order\":null,\"name\":null}");
+        // JSON 中去 null 方案1
+        // 类上添加 @JsonInclude(value = NON_NULL, content = NON_NULL)
+        var b4 = new Bean4().setId(1L);
+        String b4Json = mapper.writeValueAsString(b4);
+        then(b4Json).doesNotContain("null");
+        // JSON 中去 null 方案2
+        //ObjectMapper 全局配置
+        ObjectMapper customMapper = new ObjectMapper();
+        customMapper.setSerializationInclusion(NON_NULL);
+        String b3JsonWithoutNull = customMapper.writeValueAsString(b3);
+        then(b3JsonWithoutNull).doesNotContain("null");
+    }
+
+    /**
+     * <pre>
+     * ObjectMapper 配置
+     *      Java Object 有 primitive 字段， JSON 无对应的字段，不报错。
+     *      Java Object 有 primitive 字段， JSON 对应的字段为 null ，报错。
+     * </pre>
+     */
+    @SneakyThrows
+    @Test
+    void givenJavaObjectHasPrimitiveField_whenDeserialization_then() {
+        ObjectMapper mapper = new ObjectMapper();
+        // 默认 false，Java Object 的 primitive fields 被初始化成默认值
+        mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+        String jsonStr = "  {\n" +
+                "    \"order\": \"third\",\n" +
+                "    \"name\": \"whatever\"\n" +
+                // "    \"id\": null" +
+                "  }\n";
+        // 反常识的点：若 JSON 中缺失字段，不报错。只有 JSON 中有字段且为 null 时报错。
+        var b = mapper.readValue(jsonStr, Bean2.class);
+        then(b).isNotNull();
+    }
+
+    /**
+     * JSON to Map
+     */
+    @SneakyThrows
+    @Test
+    void givenJSON_whenToMap_then() {
+        InputStream json = ClassLoader.getSystemResourceAsStream("json-demo.json");
+        var map = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+        then(map).isNotEmpty();
+    }
+
+    /**
+     * JSON to List
+     */
     @SneakyThrows
     @Test
     void givenJSON_whenToList_then() {
@@ -65,24 +213,6 @@ class JacksonCaseTest {
         then(jsonStr).isEqualTo("{\"id\":1,\"firstName\":\"zhang\",\"lastName\":\"zzf\"}");
         UnwrappedUser uu = mapper.readValue(jsonStr, UnwrappedUser.class);
         then(uu).returns("zhang", o -> o.getName().getFirst());
-    }
-
-    /**
-     * <pre>
-     *     JsonFormat 格式化 Date
-     * </pre>
-     */
-    @SneakyThrows
-    @Test
-    void givenJsonFormat_when_then() {
-        Date createdAt = new Date();
-        LocalDateTime updatedAt = LocalDateTime.now();
-        var ab = new ABean().setCreatedAt(createdAt).setUpdatedAt(updatedAt);
-        var jsonStr = mapper.writeValueAsString(ab);
-        ABean aBean = mapper.readValue(jsonStr, ABean.class);
-        then(aBean).returns(createdAt, ABean::getCreatedAt)
-                .returns(updatedAt, ABean::getUpdatedAt)
-        ;
     }
 
     /**

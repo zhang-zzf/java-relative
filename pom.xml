@@ -342,6 +342,49 @@
 
     </build>
 
+    <repositories>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>ds918-ipv6</id>
+            <repositories>
+                <repository>
+                    <id>ds918-ipv6-repo</id>
+                    <url>https://maven-nexus.dj1r1b5hi2x7vwle.zhanfengzhang.top/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>ds918-repo</id>
+                    <url>http://ds918:8081/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>ds918-repo</id>
+                    <url>http://ds918:8081/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ds918</id>

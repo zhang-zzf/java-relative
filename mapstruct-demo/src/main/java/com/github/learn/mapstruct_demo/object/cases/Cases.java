@@ -1,14 +1,68 @@
 package com.github.learn.mapstruct_demo.object.cases;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 public class Cases {
+
+  /**
+   * <pre>
+   *     更新存在的 Bean
+   * </pre>
+   */
+  @Mapper
+  public interface UpdateExistBeanDtoDomainMapper {
+
+    UpdateExistBeanDtoDomainMapper INSTANCE = Mappers.getMapper(
+        UpdateExistBeanDtoDomainMapper.class);
+
+    /**
+     * <pre>
+     *     注意： Dto 中有的字段会全部覆盖到 domain 中。
+     * </pre>
+     */
+    @Mapping(target = ".", source = "dto.dto1")
+    // @Mapping(target = ".", source = "dto.dto2") 忽略 id
+    Domain updateExistBean(Dto dto, @MappingTarget Domain domain);
+
+    @Data
+    @Accessors(chain = true)
+    class Dto {
+      private String userName;
+      private Dto1 dto1;
+      private Dto2 dto2;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    class Domain {
+      private Long id;
+      private String str;
+      private String userName;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class Dto1 {
+      private String str;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class Dto2 {
+      private String id;
+    }
+
+  }
 
   /**
    * <pre>
@@ -57,7 +111,6 @@ public class Cases {
     @Data
     @Accessors(chain = true)
     class Dto {
-
       private String userName;
       private Dto1 dto1;
       private Dto2 dto2;
@@ -77,7 +130,6 @@ public class Cases {
     @AllArgsConstructor
     @NoArgsConstructor
     class Dto1 {
-
       private String str;
     }
 
@@ -85,7 +137,6 @@ public class Cases {
     @AllArgsConstructor
     @NoArgsConstructor
     class Dto2 {
-
       private String id;
     }
 
@@ -106,6 +157,31 @@ public class Cases {
 
     /**
      * <pre>
+     *    map to bean
+     * </pre>
+     */
+    @Mapping(target = "str", source = "aStr")
+    Domain toDomain(Map<String, Object> map);
+
+    default String toString(Object o) {
+      if (o == null) {
+        return null;
+      }
+      return o.toString();
+    }
+
+    default Long toLong(Object o) {
+      if (o instanceof Long) {
+        return (Long) o;
+      }
+      if (o == null) {
+        return null;
+      }
+      return Long.valueOf(o.toString());
+    }
+
+    /**
+     * <pre>
      * {@link Domain#_id} <- {@link Dto#id}
      * {@link Domain#id} <- nothing 取消映射
      * </pre>
@@ -114,15 +190,12 @@ public class Cases {
     @Mapping(target = "id", ignore = true)
     Domain toDomain(Dto dto);
 
-
     @Mapping(target = "id", source = "_id")
     Dto toDto(Domain domain);
-
 
     @Data
     @Accessors(chain = true)
     class Domain {
-
       private Long id;
       private String _id;
       private String str;
@@ -130,18 +203,14 @@ public class Cases {
       public void set_id(String id) {
         this._id = id;
       }
-
     }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     class Dto {
-
       private String str;
-
       private String id;
-
     }
 
   }

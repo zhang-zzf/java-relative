@@ -116,7 +116,7 @@ class HttpBinTest {
     then(t).isNotNull().isInstanceOf(IllegalArgumentException.class);
     HttpMethodsResp resp = httpBin.httpMethodGetWithParam(userId, param);
     then(resp).isNotNull();
-    then(resp.getArgs()).containsValues(name);
+    then(resp.getArgs()).containsValues(name, userId);
   }
 
 }

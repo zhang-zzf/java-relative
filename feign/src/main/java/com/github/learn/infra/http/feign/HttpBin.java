@@ -33,7 +33,7 @@ public interface HttpBin {
   /**
    * @param param 添加 QueryMap 参数，序列化到 url 的请求参数中
    */
-  @RequestLine("GET /get")
+  @RequestLine("GET /get?user_id={userId}")
   @Headers({
       "Content-Type: application/json",// 同名覆盖
       "X-User-Id: {userId}"

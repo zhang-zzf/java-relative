@@ -26,10 +26,9 @@ Content-Type: application/json
 }
 
 
-
+###
 # POST 参数覆盖
 # 不存在参数覆盖， url 中的参数使用 RequestParam 绑定; body 中的参数使用 RequestBody 绑定
-###
 # @RequestParam("id") Long id 不会解析 POST body 中的数据
 POST http://localhost:8080/greeting?id=1&content=你好
 Content-Type: application/json

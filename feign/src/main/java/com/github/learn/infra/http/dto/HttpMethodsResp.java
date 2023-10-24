@@ -1,6 +1,7 @@
 package com.github.learn.infra.http.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class HttpMethodsResp {
 
   @NoArgsConstructor
   @Data
-  public static class Args {
+  public static class Args extends HashMap<String, String> {
   }
 
   @NoArgsConstructor

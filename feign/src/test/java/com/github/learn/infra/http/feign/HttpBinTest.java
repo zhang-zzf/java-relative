@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.learn.infra.http.dto.HttpMethodPostBody;
 import com.github.learn.infra.http.dto.HttpMethodsGetParam;
 import com.github.learn.infra.http.dto.HttpMethodsResp;
 import feign.Feign;
@@ -115,6 +116,23 @@ class HttpBinTest {
     // GET 请求携带 body 时，okhttp 抛出异常
     then(t).isNotNull().isInstanceOf(IllegalArgumentException.class);
     HttpMethodsResp resp = httpBin.httpMethodGetWithParam(userId, param);
+    then(resp).isNotNull();
+    then(resp.getArgs()).containsValues(name, userId);
+  }
+
+  /**
+   * 请求参数，请求 body
+   */
+  @Test
+  void givenQueryParamAndBody_whenPost_then() {
+    jsonOkHttpConfig();
+    String userId = "zhang-zzf";
+    String name = "张占峰";
+    HttpMethodsGetParam param = new HttpMethodsGetParam()
+        .setId(1L).setName(name);
+    HttpMethodPostBody body = new HttpMethodPostBody()
+        .setFirstName("zhang");
+    var resp = httpBin.httpMethodPostWithParamAndBody(userId, param, body);
     then(resp).isNotNull();
     then(resp.getArgs()).containsValues(name, userId);
   }

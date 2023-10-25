@@ -95,6 +95,12 @@ public class ControllerCases {
         .setContent((String) body.get("content"));
   }
 
+  @PostMapping("/greeting/post/query")
+  public Greeting postGreeting(@RequestParam Map<String, String> queries) {
+    // 可以使用 mapstruct 实现
+    return new Greeting().setId(Long.valueOf(queries.get("id")))
+        .setContent(queries.get("content"));
+  }
 
   @Data
   public static class Greeting {

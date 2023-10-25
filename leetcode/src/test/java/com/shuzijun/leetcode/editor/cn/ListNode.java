@@ -6,8 +6,8 @@ package com.shuzijun.leetcode.editor.cn;
  */
 public class ListNode<T> {
 
-  T val;
-  ListNode next;
+  public T val;
+  public ListNode next;
 
   ListNode() {
   }

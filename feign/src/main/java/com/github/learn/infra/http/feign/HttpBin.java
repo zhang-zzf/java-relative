@@ -1,5 +1,6 @@
 package com.github.learn.infra.http.feign;
 
+import com.github.learn.infra.http.dto.HttpMethodPostBody;
 import com.github.learn.infra.http.dto.HttpMethodsGetParam;
 import com.github.learn.infra.http.dto.HttpMethodsResp;
 import feign.Headers;
@@ -39,9 +40,22 @@ public interface HttpBin {
       "X-User-Id: {userId}"
   })
   HttpMethodsResp httpMethodGetWithParam(
-      @Param("userId") String userId,
-      @QueryMap HttpMethodsGetParam param
-  );
+      @Param String userId,
+      @QueryMap HttpMethodsGetParam param);
+
+  /**
+   * @param param 添加 QueryMap 参数，序列化到 url 的请求参数中
+   * @param body  请求 body
+   */
+  @RequestLine("POST /post?user_id={userId}")
+  @Headers({
+      "Content-Type: application/json",// 同名覆盖
+      "X-User-Id: {userId}"
+  })
+  HttpMethodsResp httpMethodPostWithParamAndBody(
+      @Param String userId,
+      @QueryMap HttpMethodsGetParam param,
+      HttpMethodPostBody body);
 
   @RequestLine("GET /post")
   HttpMethodsResp httpMethodGetPost();
@@ -52,5 +66,6 @@ public interface HttpBin {
   @RequestLine("POST /post")
   @Headers({"Content-Type: application/json"})
   HttpMethodsResp httpMethodPost();
+
 }
 

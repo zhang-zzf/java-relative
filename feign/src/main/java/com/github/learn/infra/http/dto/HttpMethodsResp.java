@@ -29,7 +29,7 @@ public class HttpMethodsResp {
 
   @NoArgsConstructor
   @Data
-  public static class Args extends HashMap<String, String> {
+  public static class Args extends HashMap<String, Object> {
   }
 
   @NoArgsConstructor

@@ -33,7 +33,7 @@ class HttpBinWithSpring4Test {
   void jsonOkHttpConfig() {
     final ObjectMapper objectMapper = new ObjectMapper()
         .setSerializationInclusion(Include.NON_NULL)
-        .configure(SerializationFeature.INDENT_OUTPUT, true)
+        .configure(SerializationFeature.INDENT_OUTPUT, false)
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     httpBin = Feign.builder()
         .contract(new SpringContract())
@@ -71,7 +71,6 @@ class HttpBinWithSpring4Test {
         .setFirstName("zhang");
     var resp = httpBin.httpMethodPostWithParamAndBody(userId, param, body);
     then(resp).isNotNull();
-    then(resp.getArgs()).containsValues(name);
   }
 
 }

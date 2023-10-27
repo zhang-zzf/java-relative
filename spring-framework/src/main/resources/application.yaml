@@ -1,3 +1,7 @@
 spring:
   datasource:
     url: jdbc:mysql://10.0.9.18:3306/
+
+mysql:
+  db:
+    url: jdbc:mysql://10.0.9.18:3306/

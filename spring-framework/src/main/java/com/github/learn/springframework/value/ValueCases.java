@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ValueCases {
-  @Value("mysql.db.url")
+  @Value("${mysql.db.url:jdbc:mysql://localhost:3306}")
   final String dbUrl;
+
+  public void logDbUrl() {
+    log.info("{}", dbUrl);
+  }
 }

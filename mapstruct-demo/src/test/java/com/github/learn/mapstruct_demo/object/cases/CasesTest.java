@@ -5,12 +5,25 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.github.learn.mapstruct_demo.object.cases.Cases.DtoDomainMapper;
 import com.github.learn.mapstruct_demo.object.cases.Cases.DtoDomainMapper.Domain;
 import com.github.learn.mapstruct_demo.object.cases.Cases.DtoDomainMapper.Dto;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.var;
 import org.junit.jupiter.api.Test;
 
 class CasesTest {
+
+  /**
+   * Map to Bean
+   */
+  @Test
+  void givenNumFormat_whenConvertToBigDecimal_then() {
+    Cases.NumFormatMapper mapper = Cases.NumFormatMapper.INSTANCE;
+    BigDecimal price = new BigDecimal("50.0000");
+    Cases.NumFormatMapper.Domain domain = mapper.toDomain(new Cases.NumFormatMapper.Dto().setPrice(price));
+    then(domain.getPrice()).isNotEqualTo(new BigDecimal("50.00"));
+  }
 
 
   /**

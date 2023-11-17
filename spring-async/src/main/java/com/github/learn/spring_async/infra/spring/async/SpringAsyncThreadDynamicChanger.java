@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SpringAsyncThreadDynamicChanger {
 
+  /**
+   * 依赖构造器注入
+   */
   private final Map<String, ThreadPoolTaskExecutor> NAME_TO_POOL;
 
   public SpringAsyncThreadDynamicChanger(List<ThreadPoolTaskExecutor> allExecutorInSpringContext) {

@@ -126,6 +126,8 @@ public class DBConfig {
         .dataSource(dataSource)
         .locations("classpath:db.migration." + DB_ID)
         .load();
+    // spring 容器启动时
+    // start migrations
     flyway.migrate();
     return flyway;
   }

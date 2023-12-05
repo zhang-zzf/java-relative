@@ -79,8 +79,6 @@
             
     <module>spring-framework</module>
         
-    <module>spring-framework-resource</module>
-      
   </modules>
       
   <properties>

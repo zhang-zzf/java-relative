@@ -30,26 +30,6 @@
                 <version>3.0.0-M2</version>
             </plugin>
             <plugin>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <id>pre-test</id>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <id>post-test</id>
-                        <phase>test</phase>
-                    </execution>
-                </executions>
-                <groupId>org.jacoco</groupId>
-                <version>0.8.5</version>
-            </plugin>
-            <plugin>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>

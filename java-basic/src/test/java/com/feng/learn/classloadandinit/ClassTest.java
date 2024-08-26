@@ -1,4 +1,4 @@
-package com.github.learn.language;
+package com.feng.learn.classloadandinit;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -46,7 +46,6 @@ class ClassTest {
   /**
    * static field init
    */
-
   @Test
   void given_whenClassStaticInit1_then() {
     final String anotherStr = Class1.anotherStr;
@@ -81,25 +80,7 @@ class ClassTest {
   @Test
   void given_whenTriggerClassInit_then() {
     // 触发类加载和初始化
-        /*
-            初始化顺序和 code 书写顺序保持严格一致
-            static String str1;
-            static String str2;
-            static Class103 class103;
-            static Class104 class104;
-
-            static {
-                str1 = "initialized when declare";
-                class103 = new Class103();
-                System.out.println("Class2 str1: " + str1);
-                System.out.println("Class2 str2: str2 is null before initialize->" + str2);
-                str2 = "init by static block";
-                System.out.println("Class2 str2: str2 after assignment->" + str2);
-                class104 = new Class104();
-            }
-
-         */
-    final Class<?> class2Class = Class.forName("com.github.learn.language.Class2");
+    final Class<?> class2Class = Class.forName("com.feng.learn.classloadandinit.Class2");
     then(class2Class).isOfAnyClassIn(Class.class);
   }
 
@@ -157,14 +138,13 @@ class ClassTest {
 }
 
 class Class1 implements Interface1 {
-
   public static String aStr = "Hello, World";
-  public static String anotherStr = aStr;
 
   static {
     anotherStr = "你好，世界";
   }
 
+  public static String anotherStr = aStr;
 }
 
 

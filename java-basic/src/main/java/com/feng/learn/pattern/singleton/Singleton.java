@@ -1,6 +1,7 @@
 package com.feng.learn.pattern.singleton;
 
 import java.util.concurrent.atomic.AtomicReference;
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * @author zhanfeng.zhang
@@ -25,18 +26,18 @@ public class Singleton {
 
 }
 
+@ThreadSafe
 class Singleton2 {
 
+  @lombok.Getter
   private static final Singleton2 instance = new Singleton2();
 
   private Singleton2() {
   }
 
-  public static Singleton2 getInstance() {
-    return instance;
-  }
 }
 
+@ThreadSafe
 class Singleton3 {
 
   private Singleton3() {
@@ -47,7 +48,6 @@ class Singleton3 {
   }
 
   private static class InstanceHolder {
-
     private static final Singleton3 instance = new Singleton3();
   }
 }

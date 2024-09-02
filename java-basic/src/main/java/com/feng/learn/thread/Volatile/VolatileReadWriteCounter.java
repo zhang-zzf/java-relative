@@ -1,7 +1,7 @@
 package com.feng.learn.thread.Volatile;
 
-import com.feng.learn.annotation.GuardedBy;
-import com.feng.learn.annotation.ThreadSafe;
+import com.feng.learn.thread.annotation.GuardedBy;
+import com.feng.learn.thread.annotation.ThreadSafe;
 
 @ThreadSafe
 public class VolatileReadWriteCounter {

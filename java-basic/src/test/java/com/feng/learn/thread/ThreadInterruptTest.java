@@ -18,10 +18,10 @@ public class ThreadInterruptTest {
     @Test
     public void testThreadInterruptContrast() throws InterruptedException {
         Runnable task = new LoopTask();
-        Thread thread = new Thread(task::run, "a-test-thread");
+        Thread thread = new Thread(task, "a-test-thread");
         thread.start();
-        Thread.sleep(1000); // 等待线程启动
-//        thread.interrupt(); // 中断
+//        Thread.sleep(1000); // 等待线程启动
+        thread.interrupt(); // 中断
         thread.join();
     }
 
@@ -31,7 +31,7 @@ public class ThreadInterruptTest {
     @Test
     public void testThreadInterrupt() throws InterruptedException {
         Runnable task = new LoopTask();
-        Thread thread = new Thread(task::run, "a-test-thread");
+        Thread thread = new Thread(task, "a-test-thread");
         thread.start();
         Thread.sleep(1000); // 等待线程启动完成
         thread.interrupt(); // 中断
@@ -46,10 +46,11 @@ class LoopTask implements Runnable {
     @Override
     public void run() {
         String thread = Thread.currentThread().getName();
-        while (true) {
+//      while (true) {
+        while (!Thread.interrupted()) {
             System.out.println(thread + " is running...");
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 break; // 线程被中断后，跳出循环
             }

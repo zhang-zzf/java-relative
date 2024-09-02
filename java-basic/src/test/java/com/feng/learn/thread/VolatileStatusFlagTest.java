@@ -1,8 +1,8 @@
 package com.feng.learn.thread;
 
-import com.feng.learn.basic.thread.Volatile.VolatileNotStatusFlag;
-import com.feng.learn.basic.thread.Volatile.VolatileNotStatusFlag2;
-import com.feng.learn.basic.thread.Volatile.VolatileStatusFlag;
+import com.feng.learn.thread.Volatile.VolatileNotStatusFlag;
+import com.feng.learn.thread.Volatile.VolatileNotStatusFlag2;
+import com.feng.learn.thread.Volatile.VolatileStatusFlag;
 import org.junit.Test;
 
 public class VolatileStatusFlagTest {

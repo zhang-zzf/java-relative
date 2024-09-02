@@ -1,6 +1,7 @@
 package com.feng.learn.thread.split;
 
-import com.feng.learn.annotation.ThreadSafe;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * 悲观锁
@@ -8,7 +9,7 @@ import com.feng.learn.annotation.ThreadSafe;
  * @author zhangzhanfeng
  * @date Dec 10, 2017
  */
-@ThreadSafe(authors = {"zhanfeng.zhang"})
+@ThreadSafe
 public class LocationV2 {
 
     private XY xy_;

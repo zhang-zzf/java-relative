@@ -7,6 +7,14 @@ import org.junit.Test;
 
 public class ScheduledThreadPoolTest {
 
+    /**
+     * <pre>
+     *   1. mark start time
+     *   1. run task
+     *   1. submit next task (next exec time = period-(now-start))
+     * </pre>
+     *
+     */
     @Test
     public void test() throws InterruptedException {
         ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(1);
@@ -24,6 +32,13 @@ public class ScheduledThreadPoolTest {
         Thread.currentThread().join();
     }
 
+    /**
+     * <pre>
+     *   1. run task
+     *   1. submit next task, exec time = delay
+     * </pre>
+     *
+     */
     @Test
     public void test2() throws InterruptedException {
         ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(1);

@@ -24,10 +24,8 @@ public class ThreadPoolShutdownTest {
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(new LoopTask());
         Thread.sleep(3000);
-
         service.shutdown();
         while (!service.awaitTermination(1, TimeUnit.SECONDS)) {
-
         }
     }
 

@@ -1,6 +1,6 @@
 package com.feng.learn.thread.lock;
 
-import com.feng.learn.annotation.ThreadSafe;
+import com.feng.learn.thread.annotation.ThreadSafe;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

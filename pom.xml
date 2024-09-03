@@ -12,6 +12,7 @@
   <packaging>pom</packaging>
       
   <modules>
+    <module>spring-aop</module>
             
     <module>batch-cache</module>
             

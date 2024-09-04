@@ -21,8 +21,14 @@ class PersonService_IT {
 
   @Test
   void given_whenValidateMethodParam_then() {
-    final Person byId = personService.getById(1L);
+    final Person byId = personService.getById(10L);
     then(byId).isNotNull();
+  }
+
+  @Test
+  void given_whenValidateMethodRet_then() {
+    final Throwable throwable = catchThrowable(() -> personService.getById(null));
+    then(throwable).isNotNull();
   }
 
   @Test

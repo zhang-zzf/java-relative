@@ -23,7 +23,7 @@ class PersonRepoMysqlImpl_IT {
 
   /**
    * <p>接口上标注的 @NotNull 等注解是生效的</p>
-   * <p>接口上标注 @Validated， 方法上标注 @NotNull</p>
+   * <p>接口上标注 @Validated，方法上标注 @NotNull</p>
    * <p>无需在实现类上添加注解</p>
    */
   @Test

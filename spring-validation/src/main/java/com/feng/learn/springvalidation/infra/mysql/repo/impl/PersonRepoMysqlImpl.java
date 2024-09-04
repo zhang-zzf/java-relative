@@ -7,17 +7,19 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * @author zhanfeng.zhang
  * @date 2021/07/10
  */
 @Repository
+@Validated
 public class PersonRepoMysqlImpl implements PersonRepo {
 
   @Override
   public Person getById(Long id) {
-    if (id < 10) {
+    if (id == null || id < 10) {
       return null;
     }
     return new Person().setId(id);

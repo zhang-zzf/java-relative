@@ -5,13 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.springframework.validation.annotation.Validated;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * @author zhanfeng.zhang
  * @date 2021/07/10
  */
-@Validated
 public interface PersonRepo {
 
   /**
@@ -28,7 +27,7 @@ public interface PersonRepo {
    * @param person data
    * @return updated number
    */
-  int updatePerson(@NotNull @Valid Person person);
+  @Range int updatePerson(@NotNull @Valid Person person);
 
   /**
    * batch get by id
@@ -36,7 +35,6 @@ public interface PersonRepo {
    * @param idList id
    * @return data
    */
-  List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList);
-
+  @NotNull List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList);
 
 }

@@ -79,7 +79,8 @@
     <module>feign</module>
             
     <module>spring-framework</module>
-        
+    <module>spring-boot-project</module>
+
   </modules>
       
   <properties>

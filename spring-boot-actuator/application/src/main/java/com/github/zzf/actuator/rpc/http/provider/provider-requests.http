@@ -1,0 +1,375 @@
+### 健康检查
+GET {{host}}/ping
+
+### 用户注册_短信验证码
+POST {{host}}/api/users/sms/15618536513
+Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+
+### 手机 sms 自动登录
+# 18121127912
+# Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSVDhKV1FvR3MxNWxTaXVja0lEc3hnPT0iLCJpYXQiOjE3MDczNjQ5NDksIm5iZiI6MTcwNzM2NDk0OSwiZXhwIjoxNzIyOTE2OTQ5fQ.bfUffOVw7Y23_uattgo2lTGNnwf_DpvjzPefLj3gEB0
+# 15618536513
+# Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJpYXQiOjE3MDc5ODYyNTYsIm5iZiI6MTcwNzk4NjI1NiwiZXhwIjoxNzIzNTM4MjU2fQ.dhM3KOmO5vXh1gT4F-D-Jf3dHRsRgEuGPTLRUleExSY
+GET {{host}}/api/users/auth/mobile-code?mobile=15618536513&sms=7462
+Content-Type: application/json
+
+
+### 手机用户注册
+POST {{host}}/api/users
+Content-Type: application/json
+
+{
+  "type": "mobile",
+  "mobile": "18121127912",
+  "password": "127912",
+  "verificationCode": "6774"
+}
+
+### 用户登录 18121127912
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+  "type": "mobile",
+  "username": "15618536513",
+  "password": "536513"
+}
+
+
+
+### 用户登录 18121127912
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+  "type": "mobile",
+  "username": "18121127912",
+  "password": "127912"
+}
+
+### 获取用户信息
+GET {{host}}/api/users/{{userNo}}
+Content-Type: application/json
+#X-Requested-With: XMLHttpRequest
+Authorization: {{token}}
+
+### 获取用户订单
+GET {{host}}/api/users/mobile/15618536513/orders?status=90
+Content-Type: application/json
+#X-Requested-With: XMLHttpRequest
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJpYXQiOjE3MDc5ODYyNTYsIm5iZiI6MTcwNzk4NjI1NiwiZXhwIjoxNzIzNTM4MjU2fQ.dhM3KOmO5vXh1gT4F-D-Jf3dHRsRgEuGPTLRUleExSY
+
+### 获取用户订购记录
+GET {{host}}/api/users/mobile/15618536513/subscriptions?lifeCode=-1
+Content-Type: application/json
+#X-Requested-With: XMLHttpRequest
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJpYXQiOjE3MDc5ODYyNTYsIm5iZiI6MTcwNzk4NjI1NiwiZXhwIjoxNzIzNTM4MjU2fQ.dhM3KOmO5vXh1gT4F-D-Jf3dHRsRgEuGPTLRUleExSY
+
+### 获取用户金融账户变动记录
+GET {{host}}/api/users/mobile/15618536513/credit/passbook
+Content-Type: application/json
+#X-Requested-With: XMLHttpRequest
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJpYXQiOjE3MDc5ODYyNTYsIm5iZiI6MTcwNzk4NjI1NiwiZXhwIjoxNzIzNTM4MjU2fQ.dhM3KOmO5vXh1gT4F-D-Jf3dHRsRgEuGPTLRUleExSY
+
+### 绑定卡片
+POST {{host}}/api/users/mobile/18121127912/cards
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "cardNo": "500522308",
+  "pinCode": "522308",
+  "cardName": "老婆的流量卡5",
+  "planId": 1024040
+}
+
+### 绑定卡片预请求
+PUT {{host}}/api/users/{{userNo}}/cards/100522311/_bind
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "cardName": "老婆的流量卡5",
+  "defaultCard": true
+}
+
+### 给卡充值
+POST {{host}}/api/users/{{userNo}}/_top-up-card
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "cardNo": "100522311",
+  "planId": 110,
+  "count": 1
+}
+
+### 卡片实名认证后的回调
+POST {{host}}/api/cards/500522308/_verified
+Content-Type: application/json
+
+### 查询绑定卡片
+GET {{host}}/api/users/{{userNo}}/cards
+Content-Type: application/json
+Authorization: {{token}}
+
+### 查询绑定卡片的详细信息
+GET {{host}}/api/users/{{userNo}}/cards/{{cardNo}}
+Content-Type: application/json
+Authorization: {{token}}
+
+### 更新卡片
+PUT {{host}}/api/users/mobile/18121127912/cards/500522308
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "cardNo": "500522308",
+  "saleManMobile": "15618536513",
+  "cardName": "老婆的流量卡16"
+}
+
+### 用户绑定管理员
+PUT {{host}}/api/users/mobile/18121127912/_admin
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "adminSetUserName": "黄嬷嬷",
+  "adminMobile": "15618536513",
+  "adminName": "张仙人"
+}
+
+### 用户换绑管理员
+PUT {{host}}/api/users/mobile/18121127912/_admin
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "adminSetUserName": "黄嬷嬷",
+  "adminMobile": "15618536514",
+  "adminName": "张三丰"
+}
+
+### 用户充值页面查询信息
+GET {{host}}/api/users/mobile/18121127912/_top-up-card?cardNo=100522308&planId=110&count=1
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSVDhKV1FvR3MxNWxTaXVja0lEc3hnPT0iLCJpYXQiOjE3MDczNjQ5NDksIm5iZiI6MTcwNzM2NDk0OSwiZXhwIjoxNzIyOTE2OTQ5fQ.bfUffOVw7Y23_uattgo2lTGNnwf_DpvjzPefLj3gEB0
+
+### 用户绑卡
+PUT {{host}}/api/users/mobile/18121127912/cards/100522301
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSVDhKV1FvR3MxNWxTaXVja0lEc3hnPT0iLCJpYXQiOjE3MDczNjQ5NDksIm5iZiI6MTcwNzM2NDk0OSwiZXhwIjoxNzIyOTE2OTQ5fQ.bfUffOVw7Y23_uattgo2lTGNnwf_DpvjzPefLj3gEB0
+
+{
+  "cardName": "zzf",
+  "planId": 140,
+  "defaultCard": true
+}
+
+### 用户充钱 - 1. 生成支付请求
+POST {{host}}/api/users/mobile/18121127912/credit/_top-up
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "amount": "199.99"
+}
+
+### 用户充钱 - 2. 拉起微信支付
+# 使用第一步返回的数据
+PUT {{host}}//wx/pay
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "bizType": "credit",
+  "bizId": 0,
+  "payer": {
+    "platform": "wx",
+    "id": "wxopenid"
+  },
+  "desc": "商品描述",
+  "amount": 199.99
+}
+
+
+### 充钱回调
+POST {{host}}/api/users/mobile/15618536513/credit/_top-up/wechat/callback
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+{
+  "paymentId": 1,
+  "success": true
+}
+
+### 购买月卡
+POST {{host}}/api/users/mobile/18121127912/_top-up-card
+Content-Type: application/json
+Authorization: Basic MTgxMjExMjc5MTI6MTI3OTEy
+
+{
+  "cardNo": "500522308",
+  "planId": 1024060,
+  "planIdAsDefault": true
+}
+
+### 卡登录（未注册过的卡自动注册）
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+  "type": "card",
+  "username": "500522301",
+  "password": "2301"
+}
+
+### 卡片实名认证后的回调
+POST {{host}}/api/cards/500522301/_verified
+Content-Type: application/json
+
+### 卡用户更新卡片
+PUT {{host}}/api/users/card/500522301/cards/500522301
+Content-Type: application/json
+Authorization: Basic NTAwNTIyMzAxOjIzMDE=
+
+{
+  "saleManMobile": "15618536513",
+  "cardName": "老婆的流量卡12",
+  "planId": 1024040
+}
+
+### 卡用户获取卡列表
+GET {{host}}/api/users/card/500522301/cards
+Content-Type: application/json
+Authorization: Basic NTAwNTIyMzAxOjIzMDE=
+
+### 卡用户获取卡信息
+GET {{host}}/api/users/card/500522301/cards/500522301
+Content-Type: application/json
+Authorization: Basic NTAwNTIyMzAxOjIzMDE=
+
+
+### 卡用户充钱
+POST {{host}}/api/users/card/500522301/credit/_top-up/wechat
+Content-Type: application/json
+Authorization: Basic NTAwNTIyMzAxOjIzMDE=
+
+{
+  "amount": "199.99"
+}
+
+### 充钱回调
+POST {{host}}/api/users/mobile/15618536513/credit/_top-up/wechat/callback
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+{
+  "paymentId": 2,
+  "success": true
+}
+
+### 购买月卡
+POST {{host}}/api/users/card/500522301/_top-up-card
+Content-Type: application/json
+Authorization: Basic NTAwNTIyMzAxOjIzMDE=
+
+{
+  "cardNo": "500522301",
+  "planId": 1024060,
+  "planIdAsDefault": true
+}
+
+### 管理员登录 15618536514
+# MTU2MTg1MzY1MTQ6NTM2NTE0
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+  "type": "mobile",
+  "username": "15618536514",
+  "password": "536514"
+}
+
+### 管理员获取用户列表 15618536514
+# MTU2MTg1MzY1MTQ6NTM2NTE0
+GET {{host}}/api/admin/mobile/15618536514/users?status=70
+Authorization: Basic MTU2MTg1MzY1MTQ6NTM2NTE0
+Content-Type: application/json
+
+### 管理员绑定用户 15618536514
+# MTU2MTg1MzY1MTQ6NTM2NTE0
+PUT {{host}}/api/admin/mobile/15618536514/users/mobile/18121127912
+Authorization: Basic MTU2MTg1MzY1MTQ6NTM2NTE0
+Content-Type: application/json
+
+{
+  "userNo": "mobile/18121127912",
+  "adminSetUserName": "黄嬷2",
+  "adminSetUserMobile": "18121127912",
+  "adminSetAutoRenewal": false,
+  "adminSetPayUsed": false
+}
+
+###
+GET {{host}}/order/1
+
+###
+GET {{host}}/cards/dsfasdf-aa5/orders
+
+###
+GET {{host}}/t/exception
+
+###
+GET {{host}}/t/exception/CODE_A
+
+###
+GET {{host}}/t/exception/CODE_A
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+
+###
+GET {{host}}/t/exception/CODE_B
+
+###
+GET {{host}}/t/exception/rt
+
+###
+GET {{host}}/t/exception/be
+
+###
+GET {{host}}/t/exception/be/2
+
+###
+GET {{host}}/api/users/login
+
+###
+GET {{host}}/api/users/login
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/users/mobile/15618536513
+
+###
+POST {{host}}/api/bf/reserve
+Content-Type: application/json
+
+{
+  "key": "bf_users",
+  "fpr": "0.001",
+  "entries": 320000
+}
+
+###
+POST {{host}}/api/bf/bf_users
+Content-Type: application/json
+
+[
+  100
+]
+
+###
+GET {{host}}/api/bf/bf_users/100
+
+###
+GET {{host}}/api/bf/bf_users/555

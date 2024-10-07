@@ -1,7 +1,7 @@
 package com.github.zzf.rpc.http.provider;
 
 import com.github.zzf.OrderService;
-import com.github.zzf.entity.Order;
+import com.github.zzf.actuator.entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

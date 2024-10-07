@@ -1,7 +1,7 @@
 package com.github.zzf;
 
-import com.github.zzf.entity.Order;
-import com.github.zzf.entity.Sku;
+import com.github.zzf.actuator.entity.Order;
+import com.github.zzf.actuator.entity.Sku;
 import com.github.zzf.rpc.SkuService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

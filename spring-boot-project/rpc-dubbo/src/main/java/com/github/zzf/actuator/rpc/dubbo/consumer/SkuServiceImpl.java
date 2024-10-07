@@ -1,13 +1,13 @@
-package com.github.zzf.rpc.http.consumer;
+package com.github.zzf.actuator.rpc.dubbo.consumer;
 
 import com.github.zzf.actuator.entity.Sku;
-import com.github.zzf.rpc.SkuService;
+import com.github.zzf.actuator.rpc.SkuService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SkuServiceImpl implements SkuService {
   @Override
   public Sku queryById(Long skuId) {
-    return new Sku().setName("rpc-http");
+    return null;
   }
 }

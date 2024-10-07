@@ -1,0 +1,32 @@
+### Hypermedia for Actuator Web Endpoints
+GET {{host}}/actuator
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/actuator/health
+#Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/actuator/prometheus
+#Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/actuator/metrics
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+
+###
+GET {{host}}/actuator/caches
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/actuator/info
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/actuator/env
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/actuator/mappings
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz

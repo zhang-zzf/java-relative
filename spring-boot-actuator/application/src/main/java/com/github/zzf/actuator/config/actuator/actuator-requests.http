@@ -1,6 +1,7 @@
 ### Hypermedia for Actuator Web Endpoints
 GET {{host}}/actuator
-Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+# Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJhdXRoIjpbIlJPTEVfRU5EUE9JTlRfQURNSU4iLCJST0xFX0FETUlOIl0sImlhdCI6MTcyODM4Mzk3MywibmJmIjoxNzI4MzgzOTczLCJleHAiOjE3NDM5MzU5NzN9.nEEunZZAiCKa3593qPu31Dr36BU3_Ox5ZhAKyph3JFw # Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ###
 GET {{host}}/actuator/health

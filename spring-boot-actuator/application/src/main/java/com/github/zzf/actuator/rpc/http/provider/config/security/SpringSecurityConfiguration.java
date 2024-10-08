@@ -32,12 +32,13 @@ public class SpringSecurityConfiguration {
 
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, ConfigService configService) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JWTService jwtService) throws Exception {
         // permitAll 登陆/匿名 都可以 -> anonymous and authenticated
         // anonymous 必须时匿名，登陆的用户会授权失败
         http.securityMatcher("/api/**")
             .authorizeHttpRequests((requests) -> requests
                 // 权限配置按从上到下的顺序依次校验
+                .requestMatchers(HttpMethod.GET, "/api/users/*/*/token").permitAll()// 登陆
                 .requestMatchers(HttpMethod.GET, "/api/users/card/*/status").permitAll()// 登陆
                 .requestMatchers("/api/users/auth/*").permitAll()// 登陆
                 .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()// 登陆
@@ -50,7 +51,7 @@ public class SpringSecurityConfiguration {
             );
         // http.formLogin(withDefaults());
         // 添加 jwt token filter to the filter chain, just before the basic authentication filter
-        http.addFilterBefore(new JWTAuthenticationFilter(configService), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new JWTAuthenticationFilter(jwtService), BasicAuthenticationFilter.class);
         http.httpBasic(withDefaults())
             // if Spring MVC is on classpath and no CorsConfigurationSource is provided,
             // Spring Security will use CORS configuration provided to Spring MVC

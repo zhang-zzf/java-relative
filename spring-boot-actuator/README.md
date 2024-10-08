@@ -18,7 +18,8 @@
 1. 添加依赖，参考 application/pom.xml
 1. Exposing Endpoints，参考 application/application.yml
 1. security 控制，参考 com.github.zzf.actuator.config.ActuatorSecurityConfiguration
-1. 
+   > 要求用户有 `ROLE_ENDPOINT_ADMIN`
+1. 注册自定义 metric，参考 com.github.zzf.actuator.config.actuator.ActuatorMeterConfiguration
 
 ### security/cors
 
@@ -54,6 +55,37 @@ spring 配置 CORS 有2种方式：
 
 ### springweb 添加 日志 filter
 
+参考：
+- com.github.zzf.actuator.rpc.http.provider.config.SpringMvcConfig.addInterceptors
+  > spring interceptor 只能拦截 spring mvc 请求
+- com.github.zzf.actuator.config.log.ServletLogConfiguration
+  > servlet filter 实现，可以拦截所有 http 请求
+
+### JWT
+
+JWT 优点：对登录的用户且密码校验合法用户下发 token。后续请求携带 token，不必再次查询 DB 来校验是否是合法用户。
+> token 中携带有当前的登录主体（username）及拥有的权限
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJhdXRoIjpbIlJPTEVfRU5EUE9JTlRfQURNSU4iLCJST0xFX0FETUlOIl0sImlhdCI6MTcyODM4Mzk3MywibmJmIjoxNzI4MzgzOTczLCJleHAiOjE3NDM5MzU5NzN9.nEEunZZAiCKa3593qPu31Dr36BU3_Ox5ZhAKyph3JFw
+
+```json
+{
+  "sub": "7PXoDTZSEWU5S4W8S+Iq4w==",
+  "auth": [
+    "ROLE_ENDPOINT_ADMIN",
+    "ROLE_ADMIN"
+  ],
+  "iat": 1728383973,
+  "nbf": 1728383973,
+  "exp": 1743935973
+}
+```
+
+参考: 
+- com.github.zzf.actuator.rpc.http.provider.config.security.JWTService
+- com.github.zzf.actuator.rpc.http.provider.config.security.JWTAuthenticationFilter
+- com.github.zzf.actuator.config.actuator.ActuatorSecurityConfiguration.actuatorSecurityFilterChain
+- com.github.zzf.actuator.rpc.http.provider.user.UserController.userToken
 
 ## project structure
 

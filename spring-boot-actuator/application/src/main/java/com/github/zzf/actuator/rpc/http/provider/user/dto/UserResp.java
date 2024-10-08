@@ -8,4 +8,5 @@ public class UserResp {
     private String type;
     private String username;
     private LocalDateTime createdAt;
+    private String token;
 }

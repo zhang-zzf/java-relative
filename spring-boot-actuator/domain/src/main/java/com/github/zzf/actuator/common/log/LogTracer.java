@@ -1,6 +1,7 @@
 package com.github.zzf.actuator.common.log;
 
 
+import com.github.zzf.actuator.common.annotation.Idempotent;
 import com.github.zzf.actuator.common.id.generator.TimeBasedSnowFlake;
 import org.slf4j.MDC;
 
@@ -11,6 +12,7 @@ public final class LogTracer {
     private LogTracer() {
     }
 
+    @Idempotent
     public String addTraceId() {
         String traceId = MDC.get(X_TRACE_ID);
         if (traceId != null) {

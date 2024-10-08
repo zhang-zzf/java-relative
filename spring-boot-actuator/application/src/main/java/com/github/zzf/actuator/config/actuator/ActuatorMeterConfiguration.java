@@ -1,4 +1,4 @@
-package com.github.zzf.actuator.config;
+package com.github.zzf.actuator.config.actuator;
 
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;

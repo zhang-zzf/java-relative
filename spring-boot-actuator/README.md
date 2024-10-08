@@ -8,7 +8,8 @@
     1. health,info,env,caches,scheduledtasks,mappings,metrics,loggers
     1. prometheus
        > 依赖 web  
-       > Requires a dependency on micrometer-registry-prometheus
+       > Requires a dependency on micrometer-registry-prometheus  
+       > 默认暴露url: /actuator/prometheus
 1. 控制应用
     1. loggers,threaddump,shutdown
 
@@ -16,9 +17,43 @@
 
 1. 添加依赖，参考 application/pom.xml
 1. Exposing Endpoints，参考 application/application.yml
-1. security 控制
+1. security 控制，参考 com.github.zzf.actuator.config.ActuatorSecurityConfiguration
+1. 
 
-### security
+### security/cors
+
+spring 配置 CORS 有2种方式：
+
+- springMVC 原生支持
+- CorsFilter
+  > jakarta.servlet.Filter to handle CORS pre-flight requests and intercept CORS simple and actual requests with a CorsProcessor, and to update the response, e.g. with CORS response headers, based on the policy matched through the provided CorsConfigurationSource.
+  This is an alternative to configuring CORS in the Spring MVC Java config and the Spring MVC XML namespace. It is useful for applications depending only on spring-web (not on spring-webmvc) or for security constraints that require CORS checks to be performed at jakarta.servlet.Filter level.
+  This filter could be used in conjunction with DelegatingFilterProxy in order to help with its initialization.
+
+和 spring security 配合时，优先使用 springMVC 方式
+> if Spring MVC is on the classpath a HandlerMappingIntrospector is used.  
+> You can enable CORS using:
+
+```java
+
+  @Configuration
+  @EnableWebSecurity
+  public class CorsSecurityConfig {
+ 
+  	@Bean
+  	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  		http.cors(withDefaults());
+  		return http.build();
+  	}
+  }
+```
+
+参考：
+- <https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html#page-title>
+- <https://docs.spring.io/spring-framework/reference/web/webmvc-cors.html>
+
+### springweb 添加 日志 filter
+
 
 ## project structure
 

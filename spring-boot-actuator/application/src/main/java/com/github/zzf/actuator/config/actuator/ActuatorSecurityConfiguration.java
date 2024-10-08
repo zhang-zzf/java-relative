@@ -1,4 +1,4 @@
-package com.github.zzf.actuator.config;
+package com.github.zzf.actuator.config.actuator;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

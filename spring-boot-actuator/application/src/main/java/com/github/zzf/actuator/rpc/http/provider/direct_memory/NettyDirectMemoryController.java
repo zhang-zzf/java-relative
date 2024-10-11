@@ -64,7 +64,9 @@ public class NettyDirectMemoryController {
     public long createPooledByteBuffer(@NotNull @RequestBody BufferCreateReq req) {
         log.info("createPooledByteBuffer req -> {}", json(req));
         long id = TimeBasedSnowFlake.generate();
-        bufferMap.put(id, PooledByteBufAllocator.DEFAULT.directBuffer(req.getSize()));
+        ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer(req.getSize());
+        buf.writeZero(buf.writableBytes());
+        bufferMap.put(id, buf);
         return req.getSize();
     }
 

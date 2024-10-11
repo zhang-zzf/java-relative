@@ -27,14 +27,14 @@ spring:
         health-check-timeout: 1s
       config:
         enabled: true # default
-        format: key_value
         prefixes: [config] # consul用于存储配置的文件夹根目录名为config
         # sets the folder name used by all applications
         # /config/application/data 中的配置可以配所有服务读取
         default-context: application # default
         profile-separator: '::' # default
-        # format: yaml
-        # data-key: data # default
+        # format: key_value
+        format: yaml
+        data-key: data # default
         watch:
           enabled: true
 

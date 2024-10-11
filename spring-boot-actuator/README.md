@@ -2,7 +2,14 @@
 
 ## Distributed Configuration with Consul
 
-1. 如何注册 key 变更回调
+[consul 做配配置中心]( https://cloud.spring.io/spring-cloud-consul/reference/html/)
+
+1. 配置变更可追溯（git)，可审批(git pr)，权限管控（git 读写权限）
+2. 启动拉取配置 放入 spring Environment
+3. 配置变更， app 会被通知
+    1. 直接更新到 Spring Environment
+    2. 执行变更回调事件
+4. 动态/实时/不停服务更改集群配置
 
 ## actuator
 

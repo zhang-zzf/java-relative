@@ -1,0 +1,9 @@
+###
+GET {{host}}/api/config/config-defined-by-application
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/config/config-defined-by-spring-consul-app
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz

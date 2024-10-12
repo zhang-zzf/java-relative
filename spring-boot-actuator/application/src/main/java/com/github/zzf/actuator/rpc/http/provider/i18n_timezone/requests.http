@@ -1,0 +1,10 @@
+###
+GET {{host}}/api/i18n/date/?tz=EGST
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/i18n/date/calc?tz=America/Chicago,GMT,Asia/Riyadh
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+

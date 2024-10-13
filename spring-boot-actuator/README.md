@@ -10,6 +10,48 @@
     1. 直接更新到 Spring Environment
     2. 执行变更回调事件
 4. 动态/实时/不停服务更改集群配置
+ 
+## netty 内存泄漏检测
+
+### 搞问题
+
+```shell
+java --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED
+-XX:MaxDirectMemorySize=512M
+-Xms256M
+-Xmx256M
+-Dio.netty.leakDetection.level=PARANOID
+```
+
+1. 开启 netty 内存泄漏检测 `-Dio.netty.leakDetection.level=PARANOID`
+1. 使用默认的 Cleaner 方案
+1. 创建大量 ByteBuf（ByteBuffer） 堆外内存 `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.createUnpooledByteBuffer`
+1. 清除 ByteBuf 引用 `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.clearByteBuffer`
+1. 触发 GC `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.gc`
+1. 检测堆外内存是否被回收（看监控哈）
+
+猜测结论：netty 报告堆外内存泄漏，实际上堆外内存会被回收，GC -> ByteBuffer Cleaner.clean() -> 回收堆外内存
+实验结论：堆外内存会被回收
+
+![img.png](README/img.png)
+
+### Cleaner 策略内存回收
+
+```text
+ByteBuf buf = Unpooled.directBuffer(); //1
+try {
+    // ... do something with buf
+    buf.release(); //2
+} finally {
+    System.gc(); // 触发清理基于 ByteBuffer 的堆外内存
+}
+```
+
+堆外内存在使用完毕后，推荐及时使用 `buf.release()` 也就是 ByteBuffer.Cleaner.clean() 主动清理堆外内存。
+
+GC 触发的堆外内存回收仅作为兜底方案。
+
+netty 内存泄漏检测：若 ByteBuf 被 GC 回收时没有被 release()，即认为内存泄漏。
 
 ## actuator
 

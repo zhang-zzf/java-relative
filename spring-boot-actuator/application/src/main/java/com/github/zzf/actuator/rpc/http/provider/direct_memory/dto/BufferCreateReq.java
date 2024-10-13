@@ -6,5 +6,6 @@ import lombok.Data;
 
 @Data
 public class BufferCreateReq {
-    @NotNull @Min(1L) Integer size;
+    @NotNull @Min(1L) Integer count;
+    @NotNull @Min(1L) Integer capacity;
 }

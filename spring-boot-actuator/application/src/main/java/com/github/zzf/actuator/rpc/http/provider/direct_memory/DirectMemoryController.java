@@ -36,8 +36,8 @@ public class DirectMemoryController {
     public long createByteBuffer(@NotNull @RequestBody BufferCreateReq req) {
         log.info("createByteBuffer req -> {}", json(req));
         long id = TimeBasedSnowFlake.generate();
-        bufferMap.put(id, ByteBuffer.allocateDirect(req.getSize()));
-        return req.getSize();
+        bufferMap.put(id, ByteBuffer.allocateDirect(req.getCapacity()));
+        return req.getCapacity();
     }
 
     @GetMapping("/")

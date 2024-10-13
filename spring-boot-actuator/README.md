@@ -30,7 +30,7 @@ java --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED
 1. 触发 GC `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.gc`
 1. 检测堆外内存是否被回收（看监控哈）
 
-猜测结论：netty 报告堆外内存泄漏，实际上堆外内存会被回收，GC -> ByteBuffer Cleaner.clean() -> 回收堆外内存  
+猜测结论：netty 报告堆外内存泄漏，实际上堆外内存会被回收，GC -> ByteBuffer Cleaner.clean() -> 回收堆外内存
 实验结论：堆外内存会被回收
 
 ![img.png](README/img.png)

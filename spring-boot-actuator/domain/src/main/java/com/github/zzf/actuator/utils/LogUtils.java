@@ -18,7 +18,7 @@ import lombok.SneakyThrows;
 
 public class LogUtils {
 
-    private static final ObjectMapper mapper;
+    public static final ObjectMapper mapper;
 
     static {
         mapper = new ObjectMapper();
@@ -40,4 +40,5 @@ public class LogUtils {
     public static String json(Object o) {
         return mapper.writeValueAsString(o);
     }
+
 }

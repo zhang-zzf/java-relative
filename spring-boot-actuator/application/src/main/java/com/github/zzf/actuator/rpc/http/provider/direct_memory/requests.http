@@ -26,13 +26,20 @@ GET {{host}}/api/netty/direct-memory/info
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
-### 100mb
+###
+GET {{host}}/api/netty/direct-memory/
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+
+### netty unpooled 堆外内存
 POST {{host}}/api/netty/direct-memory/unpooled
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 {
-  "size": 104857600
+  "capacity": 1024,
+  "count": 50000
 }
 
 ### 100mb
@@ -41,12 +48,19 @@ Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 {
-  "size": 104857600
+  "capacity": 104857600,
+  "count": 1
 }
 
 ### clear
 POST {{host}}/api/netty/direct-memory/_clear
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### gc
+POST {{host}}/api/netty/direct-memory/_gc
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
 
 

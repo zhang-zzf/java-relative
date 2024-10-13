@@ -54,9 +54,11 @@ public class NettyDirectMemoryController {
     @ResponseStatus(HttpStatus.CREATED)
     public long createUnpooledByteBuffer(@NotNull @RequestBody BufferCreateReq req) {
         log.info("createUnpooledByteBuffer req -> {}", json(req));
-        long id = TimeBasedSnowFlake.generate();
-        bufferMap.put(id, Unpooled.directBuffer(req.getSize()));
-        return req.getSize();
+        for (int i = 0; i < req.getCount(); i++) {
+            long id = TimeBasedSnowFlake.generate();
+            bufferMap.put(id, Unpooled.directBuffer(req.getCapacity()));
+        }
+        return (long) req.getCount() * req.getCapacity();
     }
 
     @PostMapping("/pooled")
@@ -64,12 +66,13 @@ public class NettyDirectMemoryController {
     public long createPooledByteBuffer(@NotNull @RequestBody BufferCreateReq req) {
         log.info("createPooledByteBuffer req -> {}", json(req));
         long id = TimeBasedSnowFlake.generate();
-        ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer(req.getSize());
-        buf.writeZero(buf.writableBytes());
-        bufferMap.put(id, buf);
-        return req.getSize();
+        for (int i = 0; i < req.getCount(); i++) {
+            ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer(req.getCapacity());
+            buf.writeZero(buf.writableBytes());
+            bufferMap.put(id, buf);
+        }
+        return (long) req.getCount() * req.getCapacity();
     }
-
 
     @GetMapping("/")
     public Map<Long, Integer> getByteBufferMap() {
@@ -87,6 +90,10 @@ public class NettyDirectMemoryController {
         else {
             bufferMap.remove(id);
         }
+    }
+
+    @PostMapping("/_gc")
+    public void gc() {
         System.gc();
     }
 

@@ -4,6 +4,8 @@ import static com.github.zzf.actuator.utils.LogUtils.json;
 
 import com.github.zzf.actuator.common.id.generator.TimeBasedSnowFlake;
 import com.github.zzf.actuator.rpc.http.provider.direct_memory.dto.BufferCreateReq;
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.constraints.NotNull;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -41,13 +43,15 @@ public class DirectMemoryController {
     }
 
     @GetMapping("/")
+    @Timed
     public Map<Long, Integer> getByteBufferMap() {
-        log.info("getByteBufferMap req");
+        log.debug("getByteBufferMap req");
         return bufferMap.entrySet().stream()
             .collect(Collectors.toMap(Entry::getKey, e -> e.getValue().capacity()));
     }
 
     @PostMapping("/_clear")
+    @Counted
     public void clearByteBuffer(@RequestParam(required = false) Long id) {
         log.info("clearByteBuffer req -> {}", id);
         if (id == null) {

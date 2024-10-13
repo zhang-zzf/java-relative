@@ -46,6 +46,8 @@ netty 内存泄漏检测：若 ByteBuf 被 GC 回收时没有被 release()，即
 
 ### 用途
 
+参考 actuator-requests.http
+
 1. 监控应用 <https://docs.spring.io/spring-boot/reference/actuator/endpoints.html>
     1. health,info,env,caches,scheduledtasks,mappings,metrics,loggers
     1. prometheus

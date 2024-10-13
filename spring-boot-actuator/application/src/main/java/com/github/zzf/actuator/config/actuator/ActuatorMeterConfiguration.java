@@ -22,7 +22,6 @@ public class ActuatorMeterConfiguration {
         return new ProcessThreadMetrics();
     }
 
-
     /**
      * netty NoCleaner 指标
      */
@@ -30,7 +29,6 @@ public class ActuatorMeterConfiguration {
     public MeterBinder nettyNoCleanerMemoryMetrics() {
         return new NettyNoCleanerMemoryMetrics();
     }
-
 
     /**
      * netty UnpooledByteBufAllocator 指标

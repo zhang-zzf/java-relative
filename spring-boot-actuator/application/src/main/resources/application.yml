@@ -29,12 +29,12 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
-# spring-boot actuator Micrometer Observation Annotations support
-# To enable scanning of metrics and tracing annotations like @Timed, @Counted, @MeterTag and @NewSpan annotations,
-# you will need to set the management.observations.annotations.enabled property to true
-micrometer:
-  observations:
-    annotations:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+    env:
       enabled: true
 # user authorities
 user:

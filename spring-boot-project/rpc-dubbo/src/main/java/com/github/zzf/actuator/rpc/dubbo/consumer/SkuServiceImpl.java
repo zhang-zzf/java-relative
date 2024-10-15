@@ -1,7 +1,7 @@
 package com.github.zzf.actuator.rpc.dubbo.consumer;
 
 import com.github.zzf.actuator.entity.Sku;
-import com.github.zzf.actuator.rpc.SkuService;
+import com.github.zzf.rpc.SkuService;
 import org.springframework.stereotype.Service;
 
 @Service

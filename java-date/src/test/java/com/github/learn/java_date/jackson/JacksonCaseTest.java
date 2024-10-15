@@ -147,5 +147,4 @@ class JacksonCaseTest {
             .isEqualTo(-28800000L);
     }
 
-
 }

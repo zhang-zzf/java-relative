@@ -209,6 +209,7 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
+<<<<<<< HEAD
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理。前后端都默认采取一个默认时区（uct8）来操作时间。
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -240,6 +241,8 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
+=======
+>>>>>>> 1b98ae3 (feat: add Date TimeZone)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -410,6 +413,8 @@ public class DateTest {
         // 截断成 `1970-01-01 00:00:00`
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(utcTime).getTime()).isEqualTo(-28800000L);
         then(catchThrowable(() -> {
+            new SimpleDateFormat("yyyy-MM-dd").parse(utcTime);
+            new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(utcTime);
             // 参考 SimpleDateFormat
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX").parse(utcTime);
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX").parse(utcTime);

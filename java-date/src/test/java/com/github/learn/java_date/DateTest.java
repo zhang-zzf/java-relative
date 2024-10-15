@@ -73,6 +73,41 @@ public class DateTest {
     }
 
 
+    @SneakyThrows
+    @Test
+    void givenDataTimePattern_when_then() {
+        //
+        Date utcZero = new Date(0);
+        // General time zone
+        String gtzp = "yyyy-MM-dd'T'HH:mm:ss.SSSz";
+        // Date -> General time zone String
+        SimpleDateFormat gtzdf = new SimpleDateFormat(gtzp);
+        gtzdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        String gtz = "1970-01-01T08:00:00.000CST";
+        then(gtzdf.format(utcZero)).isEqualTo(gtz);
+        // String -> Date
+        SimpleDateFormat gtzdp = new SimpleDateFormat(gtzp);
+        // dfz 优先使用 cstStr 字符串中的时区，忽略下面一行设置的的时区
+        gtzdp.setTimeZone(TimeZone.getTimeZone("UTC"));
+        then(gtzdp.parse(gtz).getTime()).isEqualTo(0L);
+        //
+        // 使用 RFC 822 time zone 可以解析 General time zone 的字符串
+        String rfc822p = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+        then(new SimpleDateFormat(rfc822p).parse(gtz).getTime()).isEqualTo(0L);
+        //
+        // RFC 822 time zone
+        SimpleDateFormat rfc822df = new SimpleDateFormat(rfc822p);
+        rfc822df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        // Date -> rfc822 String
+        String rfc822 = rfc822df.format(utcZero);
+        then(rfc822).isEqualTo("1970-01-01T08:00:00.000+0800");
+        //
+        then(new SimpleDateFormat(rfc822p).parse(rfc822).getTime()).isEqualTo(0L);
+        // 使用 General time zone 可以解析 RFC 822 time zone 的字符串
+        then(new SimpleDateFormat(gtzp).parse(rfc822).getTime()).isEqualTo(0L);
+    }
+
+
     @Test
     void givenDate_whenToZoneString_then() {
         Date utcZero = new Date(0);
@@ -386,8 +421,7 @@ public class DateTest {
         // XX 解析 +0800
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX").parse("1970-01-01T08:00:00+0800").getTime()).isEqualTo(0L);
         // XXX 解析 +08:00
-        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(
-            0L);
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(0L);
     }
 
     /**

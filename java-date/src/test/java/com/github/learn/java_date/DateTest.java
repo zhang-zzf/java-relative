@@ -6,6 +6,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.learn.java_date.jackson.DateTimeBean;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -157,10 +158,10 @@ public class DateTest {
         then(new SimpleDateFormat(gtzp).parse(rfc822).getTime()).isEqualTo(0L);
     }
 
-
     @Test
     void givenDate_whenToZoneString_then() {
         Date utcZero = new Date(0);
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SimpleDateFormat defaultZoneDf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         then(defaultZoneDf.format(utcZero)).isEqualTo("1970-01-01T08:00:00.000+08:00");
         SimpleDateFormat nyDf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -210,6 +211,9 @@ public class DateTest {
      * <pre>
      *     结论：针对 C/S 模式的服务
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 394e19a (feat: add more Date test)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理。前后端都默认采取一个默认时区（uct8）来操作时间。
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -241,8 +245,11 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
+<<<<<<< HEAD
 =======
 >>>>>>> 1b98ae3 (feat: add Date TimeZone)
+=======
+>>>>>>> 394e19a (feat: add more Date test)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -490,7 +497,8 @@ public class DateTest {
         // XX 解析 +0800
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX").parse("1970-01-01T08:00:00+0800").getTime()).isEqualTo(0L);
         // XXX 解析 +08:00
-        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(0L);
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(
+            0L);
     }
 
     /**
@@ -527,21 +535,6 @@ public class DateTest {
         then(dfShort.parse("2024-10-16T00:00:00").getTime()).isEqualTo(1729008000000L);
         then(dfShort.parse("2024-10-16").getTime()).isEqualTo(1729008000000L);
     }
-
-
-    /**
-     * String -> Date 时间截断
-     */
-    @SneakyThrows
-    @Test
-    void givenDateString_whenToDate2_then() {
-        // 1729036800000L 在 CST 时区表示 2024-10-16T08:00:00
-        // 1729008000000L 在 CST 时区表示 2024-10-16T00:00:00
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        then(df.parse("2024-10-16").getTime()).isEqualTo(1729036800000L);
-    }
-
 
     @Test
     void givenCalendar_when_then() {

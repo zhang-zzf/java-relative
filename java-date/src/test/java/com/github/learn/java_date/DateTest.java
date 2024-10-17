@@ -79,6 +79,8 @@ public class DateTest {
         // 注意 GMT+08:00 不能使用 UTC+08:00 代替
         // 东8区
         then(TimeZone.getTimeZone("GMT+08:00").getOffset(0)).isEqualTo(28800000L);
+        then(TimeZone.getTimeZone("GMT+0800").getOffset(0)).isEqualTo(28800000L);
+        then(TimeZone.getTimeZone("GMT+08").getOffset(0)).isEqualTo(28800000L);
         // TimeZone 不识别 UTC+08:00 这种写法。返回默认时区 `GMT`
         then(TimeZone.getTimeZone("UTC+08:00").getID()).isEqualTo("GMT");
         then(TimeZone.getTimeZone("UTC+08:00").getOffset(0)).isEqualTo(0L);

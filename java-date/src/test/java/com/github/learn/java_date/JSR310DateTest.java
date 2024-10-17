@@ -1,14 +1,9 @@
 package com.github.learn.java_date;
 
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.YEAR;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -21,9 +16,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import lombok.extern.slf4j.Slf4j;
@@ -77,32 +69,34 @@ class JSR310DateTest {
         }
     }
 
-    /**
-     * Calendar 主要用于获取或更改 年月日时分秒 中的一个字段
-     */
     @Test
-    void givenCalendar_when_thenDemo() throws ParseException {
-        Calendar instance = Calendar.getInstance();
-        // Calendar <=> Date 相互转换
-        Date now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2020-01-03 22:10:09");
-        instance.setTime(now);
-        Date time = instance.getTime();
-        then(time).isEqualTo(now);
-        //
-        int year = instance.get(YEAR);
-        then(year).isEqualTo(2020);
-        // very important: the first month of the year is 0
-        int month = instance.get(MONTH) + 1;
-        then(month).isEqualTo(01);
-        int dayOfMonth = instance.get(DAY_OF_MONTH);
-        then(dayOfMonth).isEqualTo(03);
-        //
-        // -1年
-        instance.add(YEAR, -1);
-        // +2小时
-        instance.add(Calendar.HOUR, +2);
-        //
-        Calendar.getInstance(TimeZone.getTimeZone("China/Shanghai"), Locale.CHINA);
+    void givenMonthDay_when_then() {
+        LocalDate myBirthDay = LocalDate.of(1988, 03, 29);
+        log.info("LocalDate: {}", myBirthDay);
+        MonthDay monthDay = MonthDay.from(myBirthDay);
+        log.info("MonthDay: {}", monthDay);
+        LocalDate localDate = LocalDate.of(2019, 03, 29);
+        boolean b = monthDay.equals(MonthDay.from(localDate));
+        then(b).isTrue();
+    }
+
+
+    @Test
+    void givenPeriod_when_then() {
+        Period of = Period.of(1, 1, 1);
+        LocalDate now = LocalDate.now();
+        LocalDate future = now.plusYears(1).plusMonths(11).plusDays(66);
+        log.info("now=>{}, future=>{}", now, future);
+        Period period = Period.between(now, future);
+        log.info("period=>{}, year=>{}, month=>{}, day=>{}", period, period.getYears(), period.getMonths(),
+            period.getDays());
+    }
+
+    @Test
+    void givenDuration_when_then() {
+        Duration oneDay = Duration.of(1, ChronoUnit.DAYS);
+        log.info("Duration: {}", oneDay);
+        then(oneDay.get(ChronoUnit.SECONDS)).isEqualTo(24 * 60 * 60);
     }
 
     /**
@@ -134,95 +128,6 @@ class JSR310DateTest {
     }
 
     /**
-     * LocalDate / LocalDateTime / LocalTime 是和当前时区绑定的当地时间
-     */
-    @Test
-    void givenLocalDate_when_then() {
-        // 当前时间
-        LocalDate now = LocalDate.now();
-        log.info("LocalDate: {}", now);
-        log.info("LocalDate => {}-{}-{}", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
-        //
-        LocalDate of = LocalDate.of(2020, 2, 1);
-        then(of.toString()).isEqualTo("2020-02-01");
-        //
-        LocalDate ofYearDay = LocalDate.ofYearDay(2020, 1);
-        then(ofYearDay.toString()).isEqualTo("2020-01-01");
-        //
-        LocalDate parse = LocalDate.parse("2020-01-04");
-        then(parse.toString()).isEqualTo("2020-01-04");
-        log.info("LocalDate.now() + 1 week: {}", parse.plusWeeks(1));
-        //
-        //
-        LocalDate epoch = LocalDate.of(1970, 1, 1);
-        // LocalDateTime localDateTime = epoch.atStartOfDay();
-        // todo
-        // then(localDateTime.toInstant(ZoneOffset.of("Asia/Shanghai")).toEpochMilli()).isEqualTo(-28800000L);
-
-    }
-
-    @Test
-    void givenMonthDay_when_then() {
-        LocalDate myBirthDay = LocalDate.of(1988, 03, 29);
-        log.info("LocalDate: {}", myBirthDay);
-        MonthDay monthDay = MonthDay.from(myBirthDay);
-        log.info("MonthDay: {}", monthDay);
-        LocalDate localDate = LocalDate.of(2019, 03, 29);
-        boolean b = monthDay.equals(MonthDay.from(localDate));
-        then(b).isTrue();
-    }
-
-    @Test
-    void givenLocalTime_when_then() {
-        LocalTime now = LocalTime.now();
-        log.info("LocalTime: {}", now);
-        then(now.plusHours(-1)).isEqualTo(now.minusHours(1));
-        then(now.plus(-1, ChronoUnit.HOURS)).isEqualTo(now.minus(Duration.ofHours(1)));
-    }
-
-    @Test
-    void givenLocalDateTime_when_then() {
-        LocalDateTime now = LocalDateTime.now();
-        log.info("LocalDateTime: {}", now);
-        ZoneId zoneIdOfNY = ZoneId.of("America/New_York");
-        LocalDateTime newYork = LocalDateTime.now(zoneIdOfNY);
-        log.info("newYork: {}", newYork);
-
-        Instant instant = Instant.now();
-        log.info("Instant: {}", instant);
-        ZoneId zoneId = ZoneId.of("Asia/Shanghai");
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
-
-        log.info("Asia/Shanghai LocalDateTime: {}", localDateTime);
-        log.info("instant=>{}, zoneOfShanghai=>{}", instant, localDateTime.toInstant(ZoneOffset.UTC));
-        log.info("instant=>{}, zoneOfShanghai=>{}", instant.toEpochMilli(),
-            localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
-
-        ZonedDateTime zonedDateTime = now.atZone(zoneIdOfNY);
-        log.info("ZoneDateTime: {}", zonedDateTime);
-        log.info("ZoneDateTime.toLocalDateTime(): {}", zonedDateTime.toLocalDateTime());
-    }
-
-    @Test
-    void givenPeriod_when_then() {
-        Period of = Period.of(1, 1, 1);
-        LocalDate now = LocalDate.now();
-        LocalDate future = now.plusYears(1).plusMonths(11).plusDays(66);
-        log.info("now=>{}, future=>{}", now, future);
-        Period period = Period.between(now, future);
-        log.info("period=>{}, year=>{}, month=>{}, day=>{}", period, period.getYears(), period.getMonths(),
-            period.getDays());
-    }
-
-    @Test
-    void givenDuration_when_then() {
-        Duration oneDay = Duration.of(1, ChronoUnit.DAYS);
-        log.info("Duration: {}", oneDay);
-        then(oneDay.get(ChronoUnit.SECONDS)).isEqualTo(24 * 60 * 60);
-    }
-
-
-    /**
      * 时区有关
      *
      * <pre>
@@ -238,10 +143,11 @@ class JSR310DateTest {
      *     For example, Paris is one hour ahead of Greenwich/UTC in winter and two hours ahead in summer. The ZoneId instance for Paris will reference two ZoneOffset instances - a +01:00 instance for winter, and a +02:00 instance for summe
      * </pre>
      * <pre>
-     *      ZoneId 的构建与 TimeZone 一致，时区名字可以使用以下3中方式
-     *      1. Asia/Shanghai , UTC
-     *      1. GMT+08:00 固定偏移量 / UTC+08:00 固定偏移量
-     *      1. +08:00
+     *      ZoneId 的构建与 TimeZone 一致，时区名字可以使用以下2种方式
+     *          1. Asia/Shanghai , UTC
+     *          1. GMT+08:00 固定偏移量
+     *      ZoneId 可以额外使用以下1种方式
+     *          1. +08:00 / UTC+08:00 固定偏移量
      *
      * </pre>
      */
@@ -281,6 +187,7 @@ class JSR310DateTest {
         then(ZoneOffset.of("Z").getTotalSeconds()).isEqualTo(0L);
         then(ZoneOffset.of("+0").getId()).isEqualTo("Z");
         then(ZoneOffset.of("+00").getId()).isEqualTo("Z");
+        then(ZoneOffset.of("+0000").getId()).isEqualTo("Z");
         then(ZoneOffset.of("+00:00").getId()).isEqualTo("Z");
         then(ZoneOffset.of("+00:00:00").getId()).isEqualTo("Z");
         then(ZoneOffset.of("+08:00").getTotalSeconds()).isEqualTo(28800L);
@@ -293,10 +200,93 @@ class JSR310DateTest {
         log.info("availableZoneIds: {}", availableZoneIds);
     }
 
-
+    /**
+     * For example, Clock can be used instead of System.currentTimeMillis() and TimeZone.getDefault().
+     */
     @Test
     void givenClock_when_then() {
-        Clock systemUTC = Clock.systemUTC();
-        log.info("Clock.systemUTC(): {}", systemUTC);
+        Clock clock = Clock.systemUTC();
+        log.info("Clock.systemUTC(): {}", clock);
+        then(clock.getZone().getId()).isEqualTo("Z");
+        then(clock.instant()).isNotNull();
+        Clock china = clock.withZone(ZoneId.of("Asia/Shanghai"));
+        then(china.toString()).isEqualTo("SystemClock[Asia/Shanghai]");
     }
+
+    /**
+     * LocalDate / LocalDateTime / LocalTime 是和当前时区绑定的当地时间
+     * <pre>
+     *     Instant -> LocalDateTime
+     *          1. LocalDateTime.ofInstant(Instant.EPOCH, ZoneId.of("Asia/Shanghai"));
+     *          1. Instant.EPOCH.atZone(ZoneId.of("Asia/Shanghai")).toLocalDateTime(); // Instant->ZonedDateTime->LocalDateTime
+     *     Instant <- LocalDateTime
+     *          1. ldt.atZone(ZoneId.of("Asia/Shanghai")).toInstant(); // LocalDateTime->ZonedDateTime->Instant
+     *          1. ldt.toInstant(ZoneOffset.UTC); // 必须有明确的 utc 偏移量
+     *     Instant -> ZonedDateTime
+     *          1. Instant.EPOCH.atZone(ZoneId.of("Asia/Shanghai"));
+     *     Instant <- ZonedDateTime
+     *          1. ldt.atZone(ZoneId.of("Asia/Shanghai")).toInstant();
+     * </pre>
+     */
+
+    @Test
+    void givenLocalDateTime_when_then() {
+        then(Clock.systemDefaultZone().getZone().getId()).isEqualTo("Asia/Shanghai");
+        // 2024-10-17T21:56:16.962295
+        log.info("LocalDateTime: {}", LocalDateTime.now());
+        // 2024-10-17T09:56:16.964662
+        LocalDateTime newYork = LocalDateTime.now(ZoneId.of("America/New_York"));
+        log.info("newYork: {}", newYork);
+        //
+        // 2024-10-17T13:56:16.965325Z
+        Instant instant = Instant.now();
+        log.info("Instant: {}", instant);
+        // Instant to LocalDateTime
+        //
+        // 1970-01-01T08:00
+        LocalDateTime ldt = LocalDateTime.ofInstant(Instant.EPOCH, ZoneId.of("Asia/Shanghai"));
+        then(ldt.toString()).isEqualTo("1970-01-01T08:00");
+        LocalDateTime ldt2 = Instant.EPOCH.atZone(ZoneId.of("Asia/Shanghai")).toLocalDateTime();
+        then(ldt2.toString()).isEqualTo("1970-01-01T08:00");
+        // LocalDateTime to Instant
+        then(ldt.atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(Instant.EPOCH);
+        then(ldt.toInstant(ZoneOffset.UTC)).isNotEqualTo(Instant.EPOCH).isEqualTo(Instant.ofEpochMilli(28800000L));
+        //
+        LocalDateTime now = LocalDateTime.now();
+        // 2024-10-17T22:16:41.066252-04:00[America/New_York]
+        ZonedDateTime nyzdt = now.atZone(ZoneId.of("America/New_York")); // UTC-04:00
+        ZonedDateTime cstzdt = now.atZone(ZoneId.of("Asia/Shanghai")); // UTC+08:00
+        then(nyzdt.toInstant().toEpochMilli() - cstzdt.toInstant().toEpochMilli()).isEqualTo(12 * 60 * 60 * 1000);
+    }
+
+    @Test
+    void givenLocalDate_when_then() {
+        // 当前时间
+        LocalDate now = LocalDate.now();
+        log.info("LocalDate: {}", now);
+        log.info("LocalDate => {}-{}-{}", now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        //
+        LocalDate of = LocalDate.of(2020, 2, 1);
+        then(of.toString()).isEqualTo("2020-02-01");
+        //
+        LocalDate ofYearDay = LocalDate.ofYearDay(2020, 1);
+        then(ofYearDay.toString()).isEqualTo("2020-01-01");
+        //
+        LocalDate parse = LocalDate.parse("2020-01-04");
+        then(parse.toString()).isEqualTo("2020-01-04");
+        log.info("LocalDate.now() + 1 week: {}", parse.plusWeeks(1));
+        //
+        LocalDate epoch = LocalDate.of(1970, 1, 1);
+        LocalDateTime localDateTime = epoch.atStartOfDay();
+        then(localDateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().toEpochMilli()).isEqualTo(-28800000L);
+    }
+
+    @Test
+    void givenLocalTime_when_then() {
+        LocalTime now = LocalTime.now();
+        log.info("LocalTime: {}", now);
+        then(now.plusHours(-1)).isEqualTo(now.minusHours(1));
+        then(now.plus(-1, ChronoUnit.HOURS)).isEqualTo(now.minus(Duration.ofHours(1)));
+    }
+
 }

@@ -6,9 +6,9 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.learn.java_date.jackson.DateTimeBean;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import lombok.SneakyThrows;
@@ -518,6 +518,65 @@ public class DateTest {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         then(df.parse("2024-10-16").getTime()).isEqualTo(1729036800000L);
+    }
+
+
+    @Test
+    void givenCalendar_when_then() {
+        // 默认区 +8
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(0L);
+        then(c.getTimeInMillis()).isEqualTo(0L);
+        // utc
+        Calendar cutc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cutc.setTimeInMillis(0L);
+        then(cutc.getTimeInMillis()).isEqualTo(0L);
+        //
+        // 1729123200000 /  utc 2024-10-17 00:00 / utc3 2024-10-17 03:00
+        // 设置 utc 为默认时区
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        Date utc = new Date(1729123200000L);
+        then(utc.getTime()).isEqualTo(1729123200000L);
+        // utc
+        SimpleDateFormat dfUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dfUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+        // utc+3
+        SimpleDateFormat dfUtc3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dfUtc3.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+        for (int i = -3; i < 21; i++) {
+            Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
+            Date floorDate = floor(date, "GMT+3");
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc3.format(date), dfUtc3.format(floorDate), dfUtc.format(floorDate));
+            then(dfUtc3.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000+03:00");
+        }
+        // utc+8
+        SimpleDateFormat dfUtc8 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dfUtc8.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        for (int i = -8; i < 16; i++) {
+            Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
+            Date floorDate = floor(date, "Asia/Shanghai");
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc8.format(date), dfUtc8.format(floorDate), dfUtc.format(floorDate));
+            then(dfUtc8.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000+08:00");
+        }
+        // utc-4
+        SimpleDateFormat dfUtc_4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dfUtc_4.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+        for (int i = 4; i < 28; i++) {
+            Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
+            Date floorDate = floor(date, "America/New_York");
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc_4.format(date), dfUtc_4.format(floorDate), dfUtc.format(floorDate));
+            then(dfUtc_4.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000-04:00");
+        }
+    }
+
+    private static Date floor(Date utc, String tz) {
+        Calendar c3 = Calendar.getInstance(TimeZone.getTimeZone(tz));
+        c3.setTime(utc);
+        c3.set(Calendar.HOUR_OF_DAY, 0);
+        c3.set(Calendar.MINUTE, 0);
+        c3.set(Calendar.SECOND, 0);
+        c3.set(Calendar.MILLISECOND, 0);
+        return c3.getTime();
     }
 
 }

@@ -6,7 +6,9 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.learn.java_date.jackson.DateTimeBean;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 import lombok.SneakyThrows;
@@ -48,7 +50,14 @@ public class DateTest {
         then(dateString).isNotNull();
     }
 
-
+    /**
+     * <pre>
+     *     以下2个时区都代表东8区（CST）中国标准时间
+     *
+     *      - `Asia/Shanghai` 兼容夏令时
+     *      - `GMT+08:00` 固定偏移量。设定时区偏移量时，是不能使用 UTC 的，只能使用 GMT！另外，使用非法的时区 ID 时，会将时区设定为零时区。
+     * </pre>
+     */
     @Test
     void givenTimeZone_when_then() {
         // 默认时区
@@ -61,17 +70,56 @@ public class DateTest {
         // 洲/城市 -> Asia/Shanghai, America/New_York
         // 没有 Asia/Beijing id
         log.info("tz -> {}", (Object) TimeZone.getAvailableIDs());
+        // 根据偏移量获取可用时区
+        String[] availableIDsForGMT8 = TimeZone.getAvailableIDs(8 * 60 * 60 * 1000);
+        Arrays.stream(availableIDsForGMT8).forEach(System.out::println);
+        then(availableIDsForGMT8).contains("Asia/Shanghai");
         //
-        // GMT+08:00 通用时区表示法
+        // GMT+08:00 通用时区表示法，固定偏移量
         // 注意 GMT+08:00 不能使用 UTC+08:00 代替
         // 东8区
         then(TimeZone.getTimeZone("GMT+08:00").getOffset(0)).isEqualTo(28800000L);
+        // TimeZone 不识别 UTC+08:00 这种写法。返回默认时区 `GMT`
+        then(TimeZone.getTimeZone("UTC+08:00").getID()).isEqualTo("GMT");
+        then(TimeZone.getTimeZone("UTC+08:00").getOffset(0)).isEqualTo(0L);
         then(TimeZone.getTimeZone("Asia/Shanghai").getOffset(0)).isEqualTo(28800000L);
         // 西5区
         then(TimeZone.getTimeZone("GMT-05:00").getOffset(0)).isEqualTo(-18000000L);
         then(TimeZone.getTimeZone("America/New_York").getOffset(0)).isEqualTo(-18000000L);
     }
 
+    /**
+     * Asia/Shanghai 与 GMT+08 是有区别的
+     * <pre>
+     *     Asia/Shanghai 会兼容夏令时，在夏令时期间使用 GMT+09:00 时区
+     *     GMT+08 是UTC固定偏移量
+     * </pre>
+     */
+
+    @SneakyThrows
+    @Test
+    void givenTimeZone_whenDST_then() {
+        // 在 Asia/Shanghai CST 时区，代表 1988-08-13 13:13:13
+        Date date = new Date(587448793000L);
+        // UTC 时区
+        SimpleDateFormat dfOfUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dfOfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        then(dfOfUTC.format(date)).isEqualTo("1988-08-13 04:13:13");
+        // CST 时区，在夏令时期间使用 GMT+09 时区
+        SimpleDateFormat dfOfCST = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dfOfCST.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        then(dfOfCST.format(date)).isEqualTo("1988-08-13 13:13:13");
+        // GMT+08 时区
+        SimpleDateFormat dfOfGMT8 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dfOfGMT8.setTimeZone(TimeZone.getTimeZone("GMT+08"));
+        then(dfOfGMT8.format(date)).isEqualTo("1988-08-13 12:13:13");
+        //
+        String dateStr = "1988-08-13 13:13:13";
+        // 在 CST 时区转成时间戳为    587448793000L
+        // 在 GMT+08 时区转成时间戳为 587452393000L 比 CST 多 3600000 （1h）
+        then(dfOfCST.parse(dateStr).getTime()).isEqualTo(587448793000L);
+        then(dfOfGMT8.parse(dateStr).getTime()).isEqualTo(587452393000L);
+    }
 
     @SneakyThrows
     @Test
@@ -436,6 +484,40 @@ public class DateTest {
      */
     @Test
     void givenDate_whenWithTimeZone_then() {
+    }
+
+    /**
+     * String -> Date 时间截断
+     */
+    @SneakyThrows
+    @Test
+    void givenDateString_whenToDate_then() {
+        // 1729036800000L 在 CST 时区表示 2024-10-16T08:00:00
+        // 1729008000000L 在 CST 时区表示 2024-10-16T00:00:00
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        then(df.parse("2024-10-16T08:00:00").getTime()).isEqualTo(1729036800000L);
+        //
+        // 丢弃时间格式
+        SimpleDateFormat dfShort = new SimpleDateFormat("yyyy-MM-dd");
+        dfShort.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        then(dfShort.parse("2024-10-16T08:00:00").getTime()).isEqualTo(1729008000000L);
+        then(dfShort.parse("2024-10-16T07:00:00").getTime()).isEqualTo(1729008000000L);
+        then(dfShort.parse("2024-10-16T00:00:00").getTime()).isEqualTo(1729008000000L);
+    }
+
+
+    /**
+     * String -> Date 时间截断
+     */
+    @SneakyThrows
+    @Test
+    void givenDateString_whenToDate2_then() {
+        // 1729036800000L 在 CST 时区表示 2024-10-16T08:00:00
+        // 1729008000000L 在 CST 时区表示 2024-10-16T00:00:00
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        then(df.parse("2024-10-16").getTime()).isEqualTo(1729036800000L);
     }
 
 }

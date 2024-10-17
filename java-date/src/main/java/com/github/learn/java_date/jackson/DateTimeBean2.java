@@ -11,6 +11,8 @@ import lombok.Data;
 public class DateTimeBean2 {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     Date createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Shanghai")
+    Date createdAt2;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     LocalDateTime updatedAt;
     @JsonFormat(pattern = "yyyy-MM-dd")

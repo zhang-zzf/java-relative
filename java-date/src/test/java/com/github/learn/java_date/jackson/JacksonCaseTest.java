@@ -1,8 +1,8 @@
 package com.github.learn.java_date.jackson;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.text.SimpleDateFormat;
@@ -131,8 +131,20 @@ class JacksonCaseTest {
         then(mapper.readValue("{\"createdAt2\": \"1970-01-01 08:00:00.000\"}", DateTimeBean2.class).getCreatedAt2().getTime())
             .isEqualTo(0L)
             .isNotNull();
+        //
+        // @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
+        // 时间戳会完全忽略 JsonFormat
+        // 28800000 = 1970-01-01T08:00:00
+        then(mapper.readValue("{\"createdAt3\": 28800000}", DateTimeBean2.class).getCreatedAt3().getTime())
+            .isEqualTo(28800000L)
+            .isNotNull();
+        //
         // 无法转换，必须和格式保持一致
-        // then(mapper.readValue("{\"createdAt\": \"1970-01-01\"}", DateTimeBean2.class).getCreatedAt().getTime()).isNotNull();
+        // 1970-01-01 -> 无法赋值到 yyyy-MM-dd HH:mm:ss.SSS
+        then(catchThrowable(() -> mapper.readValue("{\"createdAt\": \"1970-01-01\"}", DateTimeBean2.class))).isNotNull();
+        // 1970-01-01 08:00:00 可以赋值到 @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
+        then(mapper.readValue("{\"createdAt3\": \"1970-01-01 08:00:00\"}", DateTimeBean2.class).getCreatedAt3().getTime())
+            .isEqualTo(-28800000L);
     }
 
 

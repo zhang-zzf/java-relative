@@ -13,6 +13,8 @@ public class DateTimeBean2 {
     Date createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Shanghai")
     Date createdAt2;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
+    Date createdAt3;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     LocalDateTime updatedAt;
     @JsonFormat(pattern = "yyyy-MM-dd")

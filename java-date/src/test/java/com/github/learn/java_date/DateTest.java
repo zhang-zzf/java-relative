@@ -506,6 +506,7 @@ public class DateTest {
         then(dfShort.parse("2024-10-16T08:00:00").getTime()).isEqualTo(1729008000000L);
         then(dfShort.parse("2024-10-16T07:00:00").getTime()).isEqualTo(1729008000000L);
         then(dfShort.parse("2024-10-16T00:00:00").getTime()).isEqualTo(1729008000000L);
+        then(dfShort.parse("2024-10-16").getTime()).isEqualTo(1729008000000L);
     }
 
 

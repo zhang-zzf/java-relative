@@ -343,7 +343,7 @@ public class DateTest {
         // 结果：按字符串中的时区解析字符串
         then(parseByStrZone.getTime()).isEqualTo(0L); // utc 时间为 0 点
         //
-        //
+        // pattern 中没有时区，会忽略 DateStr 中的时区
         then(TimeZone.getDefault().getID()).isEqualTo("Asia/Riyadh");
         SimpleDateFormat dfutc0 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         then(dfutc0.getTimeZone().getID()).isEqualTo("Asia/Riyadh");
@@ -397,15 +397,19 @@ public class DateTest {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         //
         String utcTime = "1970-01-01T00:00:00Z";
+        // 忽略了 utcTimeStr 中的时区
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));// 设置时区UTC
+        df.setTimeZone(TimeZone.getTimeZone("GMT+3"));// 设置时区
+        // 以 utc3 解析时间，忽略了 时间字符串中的时区信息
         Date date = df.parse(utcTime);
-        then(date.getTime()).isEqualTo(0L);
-        // 在东8区是 8 点
-        then(date.toString()).isEqualTo("Thu Jan 01 08:00:00 CST 1970");
+        then(date.getTime()).isEqualTo(-10800000L);
+        // 在东8区是 5 点
+        then(date.toString()).isEqualTo("Thu Jan 01 05:00:00 CST 1970");
+        // 截断成 `1970-01-01 00:00:00`
+        then(new SimpleDateFormat("yyyy-MM-dd").parse(utcTime).getTime()).isEqualTo(-28800000L);
+        // 截断成 `1970-01-01 00:00:00`
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(utcTime).getTime()).isEqualTo(-28800000L);
         then(catchThrowable(() -> {
-            new SimpleDateFormat("yyyy-MM-dd").parse(utcTime);
-            new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(utcTime);
             // 参考 SimpleDateFormat
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX").parse(utcTime);
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX").parse(utcTime);
@@ -413,10 +417,20 @@ public class DateTest {
         })).isNull();
         // 无法解析
         then(catchThrowable(() -> new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(utcTime))).isNotNull();
-        // 带时区解析
+        // 使用 DateStr 中的 `Z` 时区解析
         then(TimeZone.getDefault().getID()).isEqualTo("Asia/Shanghai");
         Date dateWithZone = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(utcTime);
         then(dateWithZone.getTime()).isEqualTo(0L);
+        //
+        //
+        then(TimeZone.getDefault().getID()).isEqualTo("Asia/Shanghai");
+        then(new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01T08Z").getTime())
+            .isNotEqualTo(0L)
+            .isEqualTo(-28800000L);
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HH").parse("1970-01-01T08Z").getTime())
+            .isEqualTo(0L);
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HHXXX").parse("1970-01-01T08Z").getTime())
+            .isEqualTo(28800000L);
     }
 
     /**

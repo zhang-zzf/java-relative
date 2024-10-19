@@ -10,7 +10,61 @@
     1. 直接更新到 Spring Environment
     2. 执行变更回调事件
 4. 动态/实时/不停服务更改集群配置
- 
+
+### How
+
+1. application.yaml 添加以下配置
+
+    ```yaml
+    spring:
+      application:
+        name: spring-consul-app
+      config:
+        # To change the connection properties of Consul Config either set spring.cloud.consul.host and spring.cloud.consul.port or add the host/port pair to the spring.config.import statement such as, spring.config.import=optional:consul:myhost:8500. The location in the import property has precedence over the host and port propertie.
+        # import: 'optional:consul:'
+        # Removing the optional: prefix will cause Consul Config to fail if it is unable to connect to Consul
+        import: 'optional:consul:'
+      cloud:
+        consul:
+          host: 127.0.0.1
+          port: 8500
+          config:
+            enabled: true # default
+            prefixes: [config] # consul用于存储配置的文件夹根目录名为config
+            # sets the folder name used by all applications
+            # /config/application/data 中的配置可以配所有服务读取
+            default-context: application # default
+            profile-separator: '::' # default
+            # format: key_value
+            format: yaml
+            data-key: data # default
+            watch:
+              enabled: true
+    ```
+
+1. consul 配置 KV `/config/application/data` 配置 yaml 格式的
+
+    ```yaml
+    threads:
+      app: www
+      obj: 
+        a: true
+        b: 1
+    spring-@Async-demo: '{"core":8, "max":16, "keepAliveSeconds":60}'
+    ```
+
+1. 配置生效规则
+
+    ```text
+    # 假设 consul 有以下配置。数字越小，配置优先级越高：
+    # 1. config/spring-consul-app::dev/data
+    # 2. config/spring-consul-app/data
+    # 3. config/application::dev/data
+    # 4. config/application/data
+    # 指定 `-Dspring.profiles.active=dev` 加载 1,2,3,4 配置
+    # 启动没有指定 profile，加载 2,4 配置
+    ```
+             
 ## netty 内存泄漏检测
 
 ### 搞问题

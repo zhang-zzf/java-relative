@@ -12,11 +12,12 @@ spring:
     import: 'optional:consul:'
   cloud:
     consul:
+      enabled: false
       host: 127.0.0.1
       port: 8500
       discovery:
+        enabled: true # default
         instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
-        enabled: true
         tags: ['spring-boot-actuator']
         metadata:
           author: zhang.zzf

@@ -64,7 +64,14 @@
     # 指定 `-Dspring.profiles.active=dev` 加载 1,2,3,4 配置
     # 启动没有指定 profile，加载 2,4 配置
     ```
-             
+
+### consul 动态设置线程池大小
+
+参考 SpringAsyncThreadDynamicChanger
+
+1. 启动时从 Env 获取配置，配置线程池
+2. consul 配置变更后，监听 Env 变动消息，配置线程池
+
 ## netty 内存泄漏检测
 
 ### 搞问题

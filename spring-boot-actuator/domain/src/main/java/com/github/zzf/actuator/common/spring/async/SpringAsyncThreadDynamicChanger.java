@@ -3,7 +3,6 @@ package com.github.zzf.actuator.common.spring.async;
 
 import static com.github.zzf.actuator.utils.LogUtils.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.zzf.actuator.common.spring.async.SpringAsyncConfig.NamedThreadFactory;
 import com.github.zzf.actuator.utils.LogUtils;
 import java.util.HashMap;

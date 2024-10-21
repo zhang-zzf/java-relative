@@ -3,10 +3,13 @@ package com.github.learn.java_date.jackson;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.TimeZone;
 import lombok.SneakyThrows;
@@ -25,6 +28,7 @@ class JacksonCaseTest {
     public static void beforeClass() {
         mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
+        mapper.setDefaultPropertyInclusion(Include.NON_NULL);
     }
 
     /**
@@ -45,11 +49,12 @@ class JacksonCaseTest {
         DateTimeBean b = new DateTimeBean()
             .setCreatedAt(createdAt)// 默认序列化成 unix time 数字 1697350229079
             .setUpdatedAt(updatedAt)// 默认序列化成 [2023,10,15,14,10,29,797180000]
+            .setZonedDateTime(updatedAt.atZone(ZoneId.of("Asia/Shanghai")))
             .setLocalDate(updatedAt.toLocalDate())// 默认序列化成 [2023,10,15]
             .setLocalTime(updatedAt.toLocalTime());// 默认序列化成 [14,10,29,797180000]
         String jsonStr = mapper.writeValueAsString(b);
         then(jsonStr).isEqualTo(
-            "{\"createdAt\":1697350229079,\"updatedAt\":[2023,10,15,14,10,29,797180000],\"localDate\":[2023,10,15],\"localTime\":[14,10,29,797180000]}");
+            "{\"createdAt\":1697350229079,\"updatedAt\":[2023,10,15,14,10,29,797180000],\"localDate\":[2023,10,15],\"localTime\":[14,10,29,797180000],\"zonedDateTime\":1697350229.797180000}");
         DateTimeBean dd = mapper.readValue(jsonStr, DateTimeBean.class);
         then(dd).returns(createdAt, DateTimeBean::getCreatedAt).returns(updatedAt, DateTimeBean::getUpdatedAt);
         //
@@ -62,12 +67,15 @@ class JacksonCaseTest {
         then(dd2).returns(createdAt, DateTimeBean2::getCreatedAt).returns(updatedAt, DateTimeBean2::getUpdatedAt);
         // 方案2 设置 ObjectMapper
         ObjectMapper customMapper = new ObjectMapper();
-        customMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        customMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
         // java8 java.time
         customMapper.registerModule(new JavaTimeModule());
         String bJson = customMapper.writeValueAsString(b);
-        then(bJson).isEqualTo("{\"createdAt\":\"2023-10-15 14:10:29\",\"updatedAt\":\"2023-10-15T14:10:29.79718\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.79718\"}");
-        // todo
+        then(bJson).isEqualTo("{\"createdAt\":\"2023-10-15T14:10:29.079+08:00\","
+            + "\"updatedAt\":\"2023-10-15T14:10:29.79718\","
+            + "\"localDate\":\"2023-10-15\","
+            + "\"localTime\":\"14:10:29.79718\","
+            + "\"zonedDateTime\":\"2023-10-15T14:10:29.79718+08:00\"}");
     }
 
 

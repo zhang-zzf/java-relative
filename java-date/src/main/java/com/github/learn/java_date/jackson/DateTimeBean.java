@@ -3,6 +3,7 @@ package com.github.learn.java_date.jackson;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -12,4 +13,5 @@ public class DateTimeBean {
     LocalDateTime updatedAt;
     LocalDate localDate;
     LocalTime localTime;
+    ZonedDateTime zonedDateTime;
 }

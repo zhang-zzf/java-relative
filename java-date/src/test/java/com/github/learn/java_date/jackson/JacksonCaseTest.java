@@ -112,10 +112,14 @@ class JacksonCaseTest {
             .isEqualTo(28800000L) // iso 字符串中没有时区，按 Z 时区解析
         ;
         then(mapper.readValue("{\"createdAt\":\"1970-01-01\"}", DateTimeBean.class).getCreatedAt().getTime())
-            .isEqualTo(0L) // iso 字符串中没有时区，按 Z 时区解析
-        ;
+            .isEqualTo(0L) /* iso 字符串中没有时区，按 Z 时区解析 */;
         // 无法解析
-        // then(mapper.readValue("{\"createdAt\":\"2023-10-15T06\"}", DateTimeBean.class)).isNotNull();
+        then(catchThrowable(() -> mapper.readValue("{\"createdAt\":\"1970-01-01+03:00\"}", DateTimeBean.class)))
+            .isNotNull();
+        // 无法解析
+        then(catchThrowable(() -> mapper.readValue("{\"createdAt\":\"2023-10-15T06\"}", DateTimeBean.class)))
+            .isNotNull();
+        //
         then(mapper.readValue("{\"createdAt\":\"1970-01-01T08:00:00.000+08\"}", DateTimeBean.class).getCreatedAt().getTime())
             .isEqualTo(0L) // 按字符串中的时区解析
         ;
@@ -123,6 +127,12 @@ class JacksonCaseTest {
             .isEqualTo(0L) // 按字符串中的时区解析
         ;
         then(mapper.readValue("{\"createdAt\":\"1970-01-01T03:00:00.000+03:00\"}", DateTimeBean.class).getCreatedAt().getTime())
+            .isEqualTo(0L) // 按字符串中的时区解析
+        ;
+        then(mapper.readValue("{\"createdAt\":\"1970-01-01T03:00:00+03:00\"}", DateTimeBean.class).getCreatedAt().getTime())
+            .isEqualTo(0L) // 按字符串中的时区解析
+        ;
+        then(mapper.readValue("{\"createdAt\":\"1970-01-01T03:00+03:00\"}", DateTimeBean.class).getCreatedAt().getTime())
             .isEqualTo(0L) // 按字符串中的时区解析
         ;
         // long -> Date

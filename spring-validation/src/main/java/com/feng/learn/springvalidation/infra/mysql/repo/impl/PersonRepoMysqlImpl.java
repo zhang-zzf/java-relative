@@ -19,9 +19,6 @@ public class PersonRepoMysqlImpl implements PersonRepo {
 
   @Override
   public Person getById(Long id) {
-    if (id == null || id < 10) {
-      return null;
-    }
     return new Person().setId(id);
   }
 

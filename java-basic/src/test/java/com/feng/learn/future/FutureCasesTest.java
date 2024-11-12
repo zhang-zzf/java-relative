@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 class FutureCasesTest {
 
   private Object apply(Object o) {
-    log.info("code was run in -> thread: {}", Thread.currentThread().getName());
+    log.info("code was run in thread: {} -> {}", Thread.currentThread().getName(), o);
     return o;
   }
 
@@ -68,6 +68,32 @@ class FutureCasesTest {
       f.complete("Hello, CompletableFuture");
     }, "zhang.zzf").start();
     then(f.get()).isEqualTo("Hello, CompletableFuture");
+  }
+
+  /**
+   * <pre>
+   *     测试 f.exceptionally
+   *     1. f.exceptionally 返回一个新的 CompletionStage
+   *     1 f.exceptionally().whenComplete() 中的 result 是 exceptionally 中返回的 null
+   * </pre>
+   */
+  @SneakyThrows
+  @Test
+  void givenCompletableFuture_whenCompleteFailed_then() {
+    CompletableFuture<String> f = new CompletableFuture();
+    f.thenApply(o -> apply(o))
+        .thenAcceptAsync(o -> apply(o), pool1)
+        .thenRunAsync(() -> apply(null), pool2)
+        .exceptionally(t -> {
+          apply(t);
+          return null;
+        })
+        .whenComplete((result, throwable) -> {
+          apply(throwable);
+        })
+    ;
+    f.completeExceptionally(new IllegalStateException());
+    then(f.isCompletedExceptionally()).isEqualTo(true);
   }
 
 }

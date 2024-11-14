@@ -21,8 +21,8 @@ class FutureCasesTest {
     return o;
   }
 
-  Executor pool1 = Executors.newCachedThreadPool(r -> new Thread(r, "pool1"));
-  Executor pool2 = Executors.newCachedThreadPool(r -> new Thread(r, "pool2"));
+  final Executor pool1 = Executors.newCachedThreadPool(r -> new Thread(r, "pool1"));
+  final Executor pool2 = Executors.newCachedThreadPool(r -> new Thread(r, "pool2"));
 
 
   /**
@@ -35,14 +35,14 @@ class FutureCasesTest {
   @SneakyThrows
   @Test
   void givenCompletableFuture_whenComplete_then() {
-    CompletableFuture<String> f = new CompletableFuture();
+    CompletableFuture<String> f = new CompletableFuture<>();
     // f.thenAccept / f.thenRun / f.thenApply 和 f.complete 使用同一个线程
     // f.then*Async 使用指定的线程执行
-    f.thenApply(o -> apply(o))
-        .thenAccept(o -> apply(o))
+    f.thenApply(this::apply)
+        .thenAccept(this::apply)
         .thenRun(() -> apply(null))
-        .thenApplyAsync(o -> apply(o), pool1)
-        .thenAcceptAsync(o -> apply(o), pool1)
+        .thenApplyAsync(this::apply, pool1)
+        .thenAcceptAsync(this::apply, pool1)
         .thenRunAsync(() -> apply(null), pool2)
     ;
     f.complete("Hello, CompletableFuture");
@@ -59,15 +59,17 @@ class FutureCasesTest {
   @SneakyThrows
   @Test
   void givenCompletableFuture_whenCompleteUsingAThread_then() {
-    CompletableFuture<String> f = new CompletableFuture();
-    f.thenApply(o -> apply(o))
-        .thenAcceptAsync(o -> apply(o), pool1)
+    CompletableFuture<String> f = new CompletableFuture<>();
+    f.thenApply(this::apply)
+        .thenAcceptAsync(this::apply, pool1)
         .thenRunAsync(() -> apply(null), pool2)
     ;
-    new Thread(() -> {
-      f.complete("Hello, CompletableFuture");
-    }, "zhang.zzf").start();
+    new Thread(() -> f.complete("Hello, CompletableFuture"), "zhang.zzf").start();
     then(f.get()).isEqualTo("Hello, CompletableFuture");
+    // 关注点:
+    // complete 后再添加 callback
+    // callback 一定是在当前线程执行
+    f.thenApply(this::apply);
   }
 
   /**
@@ -80,18 +82,48 @@ class FutureCasesTest {
   @SneakyThrows
   @Test
   void givenCompletableFuture_whenCompleteFailed_then() {
-    CompletableFuture<String> f = new CompletableFuture();
-    f.thenApply(o -> apply(o))
-        .thenAcceptAsync(o -> apply(o), pool1)
+    CompletableFuture<String> f = new CompletableFuture<>();
+    f.thenApply(this::apply)
+        .thenAcceptAsync(this::apply, pool1)
         .thenRunAsync(() -> apply(null), pool2)
         .exceptionally(t -> {
           apply(t);
           return null;
         })
-        .whenComplete((result, throwable) -> {
-          apply(throwable);
-        })
+        .whenComplete((result, throwable) -> apply(throwable))
     ;
+    f.completeExceptionally(new IllegalStateException());
+    then(f.isCompletedExceptionally()).isEqualTo(true);
+  }
+
+  /**
+   * <pre>
+   *     测试 f.handle
+   *     1. f.exceptionally 返回一个新的 CompletionStage
+   *     1 f.exceptionally().whenComplete() 中的 result 是 exceptionally 中返回的 null
+   * </pre>
+   */
+  @SneakyThrows
+  @Test
+  void givenCompletableFuture_whenHandle_then() {
+    CompletableFuture<String> f = new CompletableFuture<>();
+    f.thenApply(this::apply)
+        .thenAcceptAsync(this::apply, pool1)
+        .thenRunAsync(() -> apply(null), pool2)
+        .exceptionally(t -> {
+          apply(t);
+          return null;
+        })
+        .whenComplete((result, throwable) -> apply(throwable))
+    ;
+    f.whenComplete((o, throwable) -> {
+      if (throwable != null) {
+        log.info(throwable.getMessage());
+      }
+      if (o != null) {
+        log.info(o);
+      }
+    });
     f.completeExceptionally(new IllegalStateException());
     then(f.isCompletedExceptionally()).isEqualTo(true);
   }

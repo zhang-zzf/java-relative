@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -11,6 +12,40 @@ import org.junit.jupiter.api.Test;
  * @date 2021/08/22
  */
 public class BasicTest {
+
+  /**
+   * 测试 BigDecimal 值大小比较
+   */
+  boolean compareBigDecimal(BigDecimal v1, BigDecimal v2) {
+    return (v1 == v2) || (v1 != null && v2 != null && v1.compareTo(v2) == 0);
+  }
+
+  /**
+   * 测试 BigDecimal 相等
+   */
+  boolean equalsBigDecimal(BigDecimal v1, BigDecimal v2) {
+    return Objects.equals(v1, v2);
+  }
+
+
+  @Test
+  void givenBigDecimal_whenCompare_then() {
+    then(null == null).isTrue();
+    then(compareBigDecimal(null, null)).isTrue();
+    then(compareBigDecimal(BigDecimal.ZERO, null)).isFalse();
+    then(compareBigDecimal(null, BigDecimal.ZERO)).isFalse();
+    then(compareBigDecimal(new BigDecimal(0.0), BigDecimal.ZERO)).isTrue();
+    then(compareBigDecimal(new BigDecimal("0.0"), BigDecimal.ZERO)).isTrue();
+    BigDecimal v1 = new BigDecimal("0.1");
+    then(compareBigDecimal(v1, BigDecimal.ZERO)).isFalse();
+    then(compareBigDecimal(v1, new BigDecimal("0.100"))).isTrue();
+    // watch out for this case
+    then(compareBigDecimal(v1, new BigDecimal(0.1))).isFalse();
+    //
+    //
+    then(equalsBigDecimal(v1, new BigDecimal("0.1"))).isTrue();
+    then(equalsBigDecimal(v1, new BigDecimal("0.10"))).isFalse();
+  }
 
 
   /**

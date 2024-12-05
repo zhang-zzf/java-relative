@@ -1,10 +1,18 @@
 package com.feng.learn.future;
 
+import static java.util.concurrent.CompletableFuture.completedFuture;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.empty;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -126,6 +134,48 @@ class FutureCasesTest {
     });
     f.completeExceptionally(new IllegalStateException());
     then(f.isCompletedExceptionally()).isEqualTo(true);
+  }
+
+  @Test
+  void givenStream_whenWithCompletableFuture_then() {
+    Function<Integer, Integer> sleep = (Integer id) -> {
+      try {
+        Thread.sleep(id * 1000);
+      } catch (InterruptedException e) {
+        // ignore
+      }
+      return id;
+    };
+    long start = System.currentTimeMillis();
+    Integer sum = Stream.of(1, 2, 3)
+        .map(id -> supplyAsync(() -> sleep.apply(id), pool1))
+        .map(CompletableFuture::join)
+        .reduce(0, (a, b) -> a + b);
+    then(sum).isEqualTo(6);
+    // 核心点，若 stream 异步并行执行，最大相应时间为3s
+    // 测试失败，以上算法为串行化执行
+    then(System.currentTimeMillis() - start).isGreaterThanOrEqualTo(6000);
+  }
+
+  @Test
+  void givenStream_whenWithCompletableFuture2_then() {
+    Function<Integer, Stream<Integer>> sleep = (Integer id) -> {
+      try {
+        Thread.sleep(id * 1000);
+      } catch (InterruptedException e) {
+        // ignore
+      }
+      return Stream.of(id);
+    };
+    long start = System.currentTimeMillis();
+    List<Integer> ids = Stream.of(1, 2, 3)
+        .map(id -> supplyAsync(() -> sleep.apply(id), pool1))
+        .reduce(completedFuture(empty()), (cf1, cf2) -> cf1.thenCombine(cf2, Stream::concat))
+        .join()
+        .collect(toList());
+    then(ids).contains(1, 2, 3);
+    // 核心点，若 stream 异步并行执行，最大相应时间为3s
+    then(System.currentTimeMillis() - start).isLessThan(4000);
   }
 
 }

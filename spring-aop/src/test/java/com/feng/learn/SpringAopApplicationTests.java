@@ -11,16 +11,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class SpringAopApplicationTests {
 
-  @Autowired
-  UserService userService;
+    @Autowired
+    UserService userService;
 
-  @Test
-  public void contextLoads() {
-    userService.throwException(false);
-  }
+    @Test
+    public void contextLoads() {
+        userService.throwException(false);
+    }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void contextLoads2() {
-    userService.throwException(true);
-  }
+    @Test(expected = IllegalArgumentException.class)
+    public void contextLoads2() {
+        userService.throwException(true);
+    }
 }

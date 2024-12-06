@@ -13,26 +13,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DigitsPlusOneTest {
 
-  @Autowired
-  DigitsPlusOne digitsPlusOne;
+    @Autowired
+    DigitsPlusOne digitsPlusOne;
 
-  @Test
-  void givenZero_when_then() {
-    int[] digits = {0};
-    then(digitsPlusOne.plusOne(digits)).containsExactly(1);
-  }
+    @Test
+    void givenZero_when_then() {
+        int[] digits = {0};
+        then(digitsPlusOne.plusOne(digits)).containsExactly(1);
+    }
 
-  @Test
-  void givenCommon_when_then() {
-    int[] digits = {1, 2, 3, 9};
-    then(digitsPlusOne.plusOne(digits)).containsExactly(1, 2, 4, 0);
-  }
+    @Test
+    void givenCommon_when_then() {
+        int[] digits = {1, 2, 3, 9};
+        then(digitsPlusOne.plusOne(digits)).containsExactly(1, 2, 4, 0);
+    }
 
-  @Test
-  void given99_when_then() {
-    int[] digits = {9, 9};
-    then(digitsPlusOne.plusOne(digits)).containsExactly(1, 0, 0);
-  }
+    @Test
+    void given99_when_then() {
+        int[] digits = {9, 9};
+        then(digitsPlusOne.plusOne(digits)).containsExactly(1, 0, 0);
+    }
 
 
 }

@@ -9,16 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SpringCycleDependencyApplicationTests {
 
-  @Autowired
-  ServiceA serviceA;
+    @Autowired
+    ServiceA serviceA;
 
-  @Autowired
-  ServiceB serviceB;
+    @Autowired
+    ServiceB serviceB;
 
-  @Test
-  void contextLoads() {
-    serviceA.methodB();
-    serviceB.methodA();
-  }
+    @Test
+    void contextLoads() {
+        serviceA.methodB();
+        serviceB.methodA();
+    }
 
 }

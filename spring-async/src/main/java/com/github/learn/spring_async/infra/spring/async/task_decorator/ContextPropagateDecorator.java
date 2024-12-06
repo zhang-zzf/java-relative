@@ -13,20 +13,20 @@ import org.springframework.core.task.TaskDecorator;
 @Slf4j
 public class ContextPropagateDecorator extends TaskDecoratorWrapper {
 
-  public ContextPropagateDecorator(TaskDecorator taskDecorator) {
-    super(taskDecorator);
-  }
+    public ContextPropagateDecorator(TaskDecorator taskDecorator) {
+        super(taskDecorator);
+    }
 
-  @Override
-  public Runnable decorate(Runnable runnable) {
-    final Runnable decorate = taskDecorator.decorate(runnable);
-    final Long userId = Context.USER_ID.get();
-    log.info("ContextPropagateDecorator => {}, {}", Thread.currentThread().getName(), userId);
-    Runnable task = () -> {
-      Context.USER_ID.set(userId);
-      decorate.run();
-      Context.USER_ID.remove();
-    };
-    return task;
-  }
+    @Override
+    public Runnable decorate(Runnable runnable) {
+        final Runnable decorate = taskDecorator.decorate(runnable);
+        final Long userId = Context.USER_ID.get();
+        log.info("ContextPropagateDecorator => {}, {}", Thread.currentThread().getName(), userId);
+        Runnable task = () -> {
+            Context.USER_ID.set(userId);
+            decorate.run();
+            Context.USER_ID.remove();
+        };
+        return task;
+    }
 }

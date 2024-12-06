@@ -37,7 +37,7 @@ public class BDDMockitoDemoTest {
         // given or stub
         given(phoneBookRepository.contains(momContactName)).willReturn(true);
         given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
-                .will(invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
+            .will(invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
         // when
         String number = phoneBookService.search(momContactName);
         // verify

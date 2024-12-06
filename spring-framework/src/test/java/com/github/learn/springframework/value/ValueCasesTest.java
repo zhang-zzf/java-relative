@@ -7,15 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ValueCasesTest {
-  @Autowired
-  DataSource mysqlDataSource;
-  @Autowired
-  ValueCases valueCases;
+    @Autowired
+    DataSource mysqlDataSource;
+    @Autowired
+    ValueCases valueCases;
 
 
-  @Test
-  void given_when_then() {
-    valueCases.logDbUrl();
-  }
+    @Test
+    void given_when_then() {
+        valueCases.logDbUrl();
+    }
 
 }

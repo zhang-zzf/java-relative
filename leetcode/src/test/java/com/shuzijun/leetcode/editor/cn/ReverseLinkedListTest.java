@@ -1,4 +1,4 @@
-//给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+// 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
 // 
 // 
 // 
@@ -6,22 +6,22 @@
 // 示例 1： 
 //
 // 
-//输入：head = [1,2,3,4,5]
-//输出：[5,4,3,2,1]
+// 输入：head = [1,2,3,4,5]
+// 输出：[5,4,3,2,1]
 // 
 //
 // 示例 2： 
 //
 // 
-//输入：head = [1,2]
-//输出：[2,1]
+// 输入：head = [1,2]
+// 输出：[2,1]
 // 
 //
 // 示例 3： 
 //
 // 
-//输入：head = []
-//输出：[]
+// 输入：head = []
+// 输出：[]
 // 
 //
 // 
@@ -48,37 +48,36 @@ import org.junit.jupiter.api.Test;
 
 public class ReverseLinkedListTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
+    @Test
+    void givenNormal_when_thenSuccess() {
 
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-
-  /**
-   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
-   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
-   * this.next = next; } }
-   */
-  class Solution {
-
-    public ListNode reverseList(ListNode head) {
-      if (head == null) {
-        return null;
-      }
-      if (head.next == null) {
-        return head;
-      }
-      ListNode newHead = reverseList(head.next);
-      head.next.next = head;
-      head.next = null;
-      return newHead;
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+
+    /**
+     * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode() {} ListNode(int
+     * val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val; this.next = next; } }
+     */
+    class Solution {
+
+        public ListNode reverseList(ListNode head) {
+            if (head == null) {
+                return null;
+            }
+            if (head.next == null) {
+                return head;
+            }
+            ListNode newHead = reverseList(head.next);
+            head.next.next = head;
+            head.next = null;
+            return newHead;
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

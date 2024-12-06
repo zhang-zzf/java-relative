@@ -1,11 +1,10 @@
 package com.github.learn.jackson;
 
-import lombok.Data;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class DateTimeBean {

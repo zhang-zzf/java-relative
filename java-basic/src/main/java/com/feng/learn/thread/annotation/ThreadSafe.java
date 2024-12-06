@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface ThreadSafe {
 
-    //String[] authors() default "";
+    // String[] authors() default "";
     String[] authors() default "";
 
 

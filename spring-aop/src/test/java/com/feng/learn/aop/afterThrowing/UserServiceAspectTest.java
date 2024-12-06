@@ -23,21 +23,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 })
 public class UserServiceAspectTest {
 
-  @Autowired
-  UserService userService;
+    @Autowired
+    UserService userService;
 
-  @Test
-  public void given_when_then() {
-    // when
-    Throwable throwable = catchThrowable(() -> userService.throwException(true));
-    // then
-    assertThat(throwable)
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("userServiceImpl");
-  }
+    @Test
+    public void given_when_then() {
+        // when
+        Throwable throwable = catchThrowable(() -> userService.throwException(true));
+        // then
+        assertThat(throwable)
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("userServiceImpl");
+    }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void givenAfterAspect_whenCallMethod_thenThrowException2() {
-    userService.throwException(true);
-  }
+    @Test(expected = IllegalArgumentException.class)
+    public void givenAfterAspect_whenCallMethod_thenThrowException2() {
+        userService.throwException(true);
+    }
 }

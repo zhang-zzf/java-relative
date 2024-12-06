@@ -9,15 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CeilingLight {
 
-  public void on() {
-    log.info("ceilingLight on");
-  }
+    public void on() {
+        log.info("ceilingLight on");
+    }
 
-  public void off() {
-    log.info("ceilingLight off");
-  }
+    public void off() {
+        log.info("ceilingLight off");
+    }
 
-  public void dim() {
+    public void dim() {
 
-  }
+    }
 }

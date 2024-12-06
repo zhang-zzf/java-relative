@@ -6,17 +6,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AServiceAABeans {
 
-  interface AServiceAA {
-    String name();
-  }
+    interface AServiceAA {
+        String name();
+    }
 
-  @Bean
-  public AServiceAA aServiceAA1() {
-    return () -> "aServiceAA1";
-  }
+    @Bean
+    public AServiceAA aServiceAA1() {
+        return () -> "aServiceAA1";
+    }
 
-  @Bean
-  public AServiceAA aServiceAA2() {
-    return () -> "aServiceAA2";
-  }
+    @Bean
+    public AServiceAA aServiceAA2() {
+        return () -> "aServiceAA2";
+    }
 }

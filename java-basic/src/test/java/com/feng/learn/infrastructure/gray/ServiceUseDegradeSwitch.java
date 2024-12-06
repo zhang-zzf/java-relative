@@ -15,26 +15,26 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ServiceUseDegradeSwitch {
 
-  @DegradeSwitch(degradeTo = "methodADegrade")
-  void methodA(int i, String str, Object[] array) {
-    log.info("methodA");
-  }
+    @DegradeSwitch(degradeTo = "methodADegrade")
+    void methodA(int i, String str, Object[] array) {
+        log.info("methodA");
+    }
 
 
-  private void methodADegrade(int i, String str, Object[] array) {
-    log.info("methodADegrade");
-  }
+    private void methodADegrade(int i, String str, Object[] array) {
+        log.info("methodADegrade");
+    }
 
-  @DegradeSwitch(degradeTo = "methodBDegrade")
-  protected Map<String, List<Integer>> methodB() {
-    log.info("methodB");
-    return Collections.emptyMap();
-  }
+    @DegradeSwitch(degradeTo = "methodBDegrade")
+    protected Map<String, List<Integer>> methodB() {
+        log.info("methodB");
+        return Collections.emptyMap();
+    }
 
-  private Map<String, List<Integer>> methodBDegrade() {
-    log.info("methodBDegrade");
-    return Collections.emptyMap();
-  }
+    private Map<String, List<Integer>> methodBDegrade() {
+        log.info("methodBDegrade");
+        return Collections.emptyMap();
+    }
 
 
 }

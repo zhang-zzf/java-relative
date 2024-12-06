@@ -34,54 +34,55 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext
 public class StandaloneRedisTest {
 
-  final Person p = new Person().setId(1L).setName("zhanfeng.zhang").setAge(31);
-  @Autowired
-  StringRedisTemplate stringRedisTemplate;
-  @Autowired
-  RedisTemplate<String, String> stringStringRedisTemplate;
-  @Autowired
-  RedisTemplate<String, Object> redisTemplate;
-  @Resource(name = REDIS_TEMPLATE)
-  ValueOperations<String, Object> valueOperations;
+    final Person p = new Person().setId(1L).setName("zhanfeng.zhang").setAge(31);
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    RedisTemplate<String, String> stringStringRedisTemplate;
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+    @Resource(name = REDIS_TEMPLATE)
+    ValueOperations<String, Object> valueOperations;
 
-  @Test
-  public void testFastJsonSerialize() {
-    String key = "/p/" + p.getId();
-    valueOperations.set(key, p);
-    assertThat((Person) valueOperations.get(key)).isEqualTo(p);
-  }
-
-  @Test
-  public void testJson() {
-    String str = "zhanfeng.zhang";
-    String strJson = JSON.toJSONString(str);
-    String aString = JSON.parseObject(strJson, String.class);
-    assertThat(aString).isEqualTo(str);
-
-    boolean b = false;
-    String bJson = JSON.toJSONString(b);
-    Boolean aBoolean = JSON.parseObject(bJson, Boolean.class);
-    assertThat(aBoolean).isEqualTo(b);
-
-    Object o = null;
-    String oJson = JSON.toJSONString(o);
-    Object aObject = JSON.parseObject(oJson, Object.class);
-    assertThat(aObject).isEqualTo(o);
-  }
-
-  @Data
-  @FieldDefaults(level = AccessLevel.PRIVATE)
-  @Accessors(chain = true)
-  @NoArgsConstructor
-  public static class Person {
-
-    Long id;
-    String name;
-    int age;
-    public Person(Long id) {
-      this.id = id;
+    @Test
+    public void testFastJsonSerialize() {
+        String key = "/p/" + p.getId();
+        valueOperations.set(key, p);
+        assertThat((Person) valueOperations.get(key)).isEqualTo(p);
     }
-  }
+
+    @Test
+    public void testJson() {
+        String str = "zhanfeng.zhang";
+        String strJson = JSON.toJSONString(str);
+        String aString = JSON.parseObject(strJson, String.class);
+        assertThat(aString).isEqualTo(str);
+
+        boolean b = false;
+        String bJson = JSON.toJSONString(b);
+        Boolean aBoolean = JSON.parseObject(bJson, Boolean.class);
+        assertThat(aBoolean).isEqualTo(b);
+
+        Object o = null;
+        String oJson = JSON.toJSONString(o);
+        Object aObject = JSON.parseObject(oJson, Object.class);
+        assertThat(aObject).isEqualTo(o);
+    }
+
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    @Accessors(chain = true)
+    @NoArgsConstructor
+    public static class Person {
+
+        Long id;
+        String name;
+        int age;
+
+        public Person(Long id) {
+            this.id = id;
+        }
+    }
 
 
 }

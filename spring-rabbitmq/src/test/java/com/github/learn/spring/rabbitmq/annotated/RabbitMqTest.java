@@ -14,13 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = SpringRabbitmqApplication.class)
 public class RabbitMqTest {
 
-  @Autowired
-  @Qualifier(AConfiguration.RABBIT_TEMPLATE)
-  RabbitTemplate rabbitTemplate;
+    @Autowired
+    @Qualifier(AConfiguration.RABBIT_TEMPLATE)
+    RabbitTemplate rabbitTemplate;
 
-  @Test
-  public void testSendMessage() {
-    rabbitTemplate.convertAndSend("springboot.test.exchange", "aKey", "Hello, World");
-  }
+    @Test
+    public void testSendMessage() {
+        rabbitTemplate.convertAndSend("springboot.test.exchange", "aKey", "Hello, World");
+    }
 
 }

@@ -1,22 +1,29 @@
 package com.github.learn;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.*;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * @author zhanfeng.zhang
@@ -47,8 +54,8 @@ public class Junit5DemoTest {
     @DisplayName("@ParameterizedTest with CsvSource")
     @ParameterizedTest(name = "concat({0}, {1}) is {2}")
     @CsvSource({
-            "4,5,45",
-            "1,2,12",
+        "4,5,45",
+        "1,2,12",
     })
     void givenParameterizedTest_whenWithCsvSource_thenSuccess(int i, long l, String str) {
         String r = "" + i + l;
@@ -62,8 +69,8 @@ public class Junit5DemoTest {
     @DisplayName("@ParameterizedTest with CsvFileSource")
     @ParameterizedTest(name = "concat({0}, {1}) is {2}")
     @CsvSource({
-            "4,5,45",
-            "1,2,12",
+        "4,5,45",
+        "1,2,12",
     })
     @CsvFileSource(resources = {"/csv_file.txt"})
     void givenParameterizedTest_whenWithCsvFileSource_thenSuccess(int i, long l, String str) {
@@ -89,8 +96,8 @@ public class Junit5DemoTest {
 
     static Stream<Arguments> stringIntAndListProvider() {
         return Stream.of(
-                arguments("apple", 1, Arrays.asList("a", "b")),
-                arguments("lemon", 2, Arrays.asList("x", "y"))
+            arguments("apple", 1, Arrays.asList("a", "b")),
+            arguments("lemon", 2, Arrays.asList("x", "y"))
         );
     }
 

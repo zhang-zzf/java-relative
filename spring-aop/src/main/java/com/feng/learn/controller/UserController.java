@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-  @Autowired
-  private UserService userService;
+    @Autowired
+    private UserService userService;
 
-  @Autowired
-  private NoSuperInterfaceService noSuperInterfaceService;
+    @Autowired
+    private NoSuperInterfaceService noSuperInterfaceService;
 
-  @RequestMapping("/user/get")
-  public User get(long id) {
-    noSuperInterfaceService.service();
-    User user = userService.get(id);
-    return user;
-  }
+    @RequestMapping("/user/get")
+    public User get(long id) {
+        noSuperInterfaceService.service();
+        User user = userService.get(id);
+        return user;
+    }
 
-  @RequestMapping("/user/save")
-  public boolean save(long id, String name) {
-    return userService.save(id, name);
-  }
+    @RequestMapping("/user/save")
+    public boolean save(long id, String name) {
+        return userService.save(id, name);
+    }
 }

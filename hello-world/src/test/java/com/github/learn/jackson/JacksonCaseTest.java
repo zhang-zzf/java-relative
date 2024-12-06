@@ -1,14 +1,28 @@
 package com.github.learn.jackson;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.learn.jackson.deserialization.AliasBean;
-import com.github.learn.jackson.serialization.*;
+import com.github.learn.jackson.serialization.ExtendableBean;
+import com.github.learn.jackson.serialization.SexEnum;
+import com.github.learn.jackson.serialization.SexEnumObj;
+import com.github.learn.jackson.serialization.SexEnumWithJsonValue;
+import com.github.learn.jackson.serialization.UnExtendableBean;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import lombok.SneakyThrows;
 import lombok.var;
 import org.intellij.lang.annotations.Language;
@@ -16,18 +30,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
 
 @ExtendWith(MockitoExtension.class)
 class JacksonCaseTest {
@@ -57,23 +59,26 @@ class JacksonCaseTest {
         Date createdAt = new Date(1697350229079L);
         LocalDateTime updatedAt = LocalDateTime.parse("2023-10-15T14:10:29.79718000");
         DateTimeBean b = new DateTimeBean()
-                // 默认序列化成 unix time 数字 1697350229079
-                .setCreatedAt(createdAt)
-                // 默认序列化成 [2023,10,15,14,10,29,797180000]
-                .setUpdatedAt(updatedAt)
-                // 默认序列化成 [2023,10,15]
-                .setLocalDate(updatedAt.toLocalDate())
-                // 默认序列化成 [14,10,29,797180000]
-                .setLocalTime(updatedAt.toLocalTime());
+            // 默认序列化成 unix time 数字 1697350229079
+            .setCreatedAt(createdAt)
+            // 默认序列化成 [2023,10,15,14,10,29,797180000]
+            .setUpdatedAt(updatedAt)
+            // 默认序列化成 [2023,10,15]
+            .setLocalDate(updatedAt.toLocalDate())
+            // 默认序列化成 [14,10,29,797180000]
+            .setLocalTime(updatedAt.toLocalTime());
         String jsonStr = mapper.writeValueAsString(b);
-        then(jsonStr).isEqualTo("{\"createdAt\":1697350229079,\"updatedAt\":[2023,10,15,14,10,29,797180000],\"localDate\":[2023,10,15],\"localTime\":[14,10,29,797180000]}");
+        then(jsonStr).isEqualTo(
+            "{\"createdAt\":1697350229079,\"updatedAt\":[2023,10,15,14,10,29,797180000],\"localDate\":[2023,10,15],\"localTime\":[14,10,29,797180000]}");
         DateTimeBean dd = mapper.readValue(jsonStr, DateTimeBean.class);
         then(dd).returns(createdAt, DateTimeBean::getCreatedAt).returns(updatedAt, DateTimeBean::getUpdatedAt);
         //
         // 方案1 Java Object 属性上添加 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-        var d2 = new DateTimeBean2().setCreatedAt(createdAt).setUpdatedAt(updatedAt).setLocalDate(updatedAt.toLocalDate()).setLocalTime(updatedAt.toLocalTime());
+        var d2 = new DateTimeBean2().setCreatedAt(createdAt).setUpdatedAt(updatedAt)
+            .setLocalDate(updatedAt.toLocalDate()).setLocalTime(updatedAt.toLocalTime());
         var d2Json = mapper.writeValueAsString(d2);
-        then(d2Json).isEqualTo("{\"createdAt\":\"2023-10-15 06:10:29.079\",\"updatedAt\":\"2023-10-15 14:10:29.797180\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.797180\"}");
+        then(d2Json).isEqualTo(
+            "{\"createdAt\":\"2023-10-15 06:10:29.079\",\"updatedAt\":\"2023-10-15 14:10:29.797180\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.797180\"}");
         DateTimeBean2 dd2 = mapper.readValue(d2Json, DateTimeBean2.class);
         then(dd2).returns(createdAt, DateTimeBean2::getCreatedAt).returns(updatedAt, DateTimeBean2::getUpdatedAt);
         // 方案2 设置 ObjectMapper
@@ -82,7 +87,8 @@ class JacksonCaseTest {
         // java8 java.time
         customMapper.registerModule(new JavaTimeModule());
         String bJson = customMapper.writeValueAsString(b);
-        then(bJson).isEqualTo("{\"createdAt\":\"2023-10-15 14:10:29\",\"updatedAt\":\"2023-10-15T14:10:29.79718\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.79718\"}");
+        then(bJson).isEqualTo(
+            "{\"createdAt\":\"2023-10-15 14:10:29\",\"updatedAt\":\"2023-10-15T14:10:29.79718\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.79718\"}");
         // todo
     }
 
@@ -98,10 +104,10 @@ class JacksonCaseTest {
     @Test
     void givenJSONHasMorePropertyThanJavaObject_whenDeserialization_thenSuccess() {
         String jsonStr = "  {\n" +
-                "    \"order\": \"third\",\n" +
-                "    \"name\": \"whatever\",\n" +
-                "    \"unrecognizedProperty\": true" +
-                "  }\n";
+            "    \"order\": \"third\",\n" +
+            "    \"name\": \"whatever\",\n" +
+            "    \"unrecognizedProperty\": true" +
+            "  }\n";
         // 默认抛出 UnrecognizedPropertyException
         Throwable t = catchThrowable(() -> mapper.readValue(jsonStr, Bean2.class));
         then(t).isInstanceOf(UnrecognizedPropertyException.class);
@@ -136,7 +142,7 @@ class JacksonCaseTest {
         String b4Json = mapper.writeValueAsString(b4);
         then(b4Json).doesNotContain("null");
         // JSON 中去 null 方案2
-        //ObjectMapper 全局配置
+        // ObjectMapper 全局配置
         ObjectMapper customMapper = new ObjectMapper();
         customMapper.setSerializationInclusion(NON_NULL);
         String b3JsonWithoutNull = customMapper.writeValueAsString(b3);
@@ -157,10 +163,10 @@ class JacksonCaseTest {
         // 默认 false，Java Object 的 primitive fields 被初始化成默认值
         mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
         String jsonStr = "  {\n" +
-                "    \"order\": \"third\",\n" +
-                "    \"name\": \"whatever\"\n" +
-                // "    \"id\": null" +
-                "  }\n";
+            "    \"order\": \"third\",\n" +
+            "    \"name\": \"whatever\"\n" +
+            // "    \"id\": null" +
+            "  }\n";
         // 反常识的点：若 JSON 中缺失字段，不报错。只有 JSON 中有字段且为 null 时报错。
         var b = mapper.readValue(jsonStr, Bean2.class);
         then(b).isNotNull();
@@ -173,7 +179,8 @@ class JacksonCaseTest {
     @Test
     void givenJSON_whenToMap_then() {
         InputStream json = ClassLoader.getSystemResourceAsStream("json-demo.json");
-        var map = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+        var map = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
+        });
         then(map).isNotEmpty();
     }
 
@@ -186,7 +193,8 @@ class JacksonCaseTest {
         InputStream json = ClassLoader.getSystemResourceAsStream("json-list.json");
         // Java Object 需要使用 TypeReference, 基础类型 String / Integer 不需要
         // List<String> list = mapper.readValue(json, List.class);
-        List<Bean2> list = mapper.readValue(json, new TypeReference<List<Bean2>>() {});
+        List<Bean2> list = mapper.readValue(json, new TypeReference<List<Bean2>>() {
+        });
         then(list).isNotEmpty();
     }
 
@@ -229,7 +237,7 @@ class JacksonCaseTest {
         then(jsonStr).isEqualTo("{\"id\":1,\"userName\":\"zhang.zzf\"}");
         ABean d = mapper.readValue(jsonStr, ABean.class);
         then(d).returns(1, ABean::getId)
-                .returns("zhang.zzf", ABean::getName);
+            .returns("zhang.zzf", ABean::getName);
     }
 
     /**
@@ -250,14 +258,14 @@ class JacksonCaseTest {
     @SneakyThrows
     void givenJsonValue_when_then() {
         var obj = new SexEnumObj()
-                .setSexEnum(SexEnum.MALE)
-                .setSexEnumWithJsonValue(SexEnumWithJsonValue.FEMALE);
+            .setSexEnum(SexEnum.MALE)
+            .setSexEnumWithJsonValue(SexEnumWithJsonValue.FEMALE);
         String json = mapper.writeValueAsString(obj);
         then(json).isEqualTo("{\"sexEnum\":\"MALE\",\"sexEnumWithJsonValue\":\"女\"}");
         // deserialization
         var sexEnumObj = mapper.readValue(json, SexEnumObj.class);
         then(sexEnumObj).returns(SexEnum.MALE, SexEnumObj::getSexEnum)
-                .returns(SexEnumWithJsonValue.FEMALE, SexEnumObj::getSexEnumWithJsonValue);
+            .returns(SexEnumWithJsonValue.FEMALE, SexEnumObj::getSexEnumWithJsonValue);
     }
 
     /**
@@ -276,7 +284,7 @@ class JacksonCaseTest {
         then(jsonString).isEqualTo("{\"name\":\"myBean\",\"attr1\":\"val1\"}");
         var eB = mapper.readValue(jsonString, ExtendableBean.class);
         then(eB).returns("myBean", ExtendableBean::getName)
-                .returns("val1", d -> d.getProperties().get("attr1"));
+            .returns("val1", d -> d.getProperties().get("attr1"));
     }
 
     /**

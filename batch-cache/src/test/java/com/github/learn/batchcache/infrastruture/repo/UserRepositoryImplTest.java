@@ -18,45 +18,45 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class UserRepositoryImplTest {
 
-  @Autowired
-  UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
-  @Test
-  void insert() {
-    userRepository.insert(new User().setName("zhanfeng.zhang"));
-  }
+    @Test
+    void insert() {
+        userRepository.insert(new User().setName("zhanfeng.zhang"));
+    }
 
-  @Test
-  @Disabled
-  void batchInsert() throws InterruptedException {
-    userRepository.batchInsert(Sets.newHashSet(new User(), new User().setName("")));
-  }
+    @Test
+    @Disabled
+    void batchInsert() throws InterruptedException {
+        userRepository.batchInsert(Sets.newHashSet(new User(), new User().setName("")));
+    }
 
-  @Test
-  void update() {
-  }
+    @Test
+    void update() {
+    }
 
-  @Test
-  void getById() {
-    User user = userRepository.getById(1L);
-    then(user).isNotNull()
-        .returns(1L, from(User::getId))
-        .returns("1", from(User::getName));
-    // 再次请求看是否命中缓存
-    user = userRepository.getById(1L);
-    then(user).isNotNull()
-        .returns(1L, from(User::getId))
-        .returns("1", from(User::getName));
-  }
+    @Test
+    void getById() {
+        User user = userRepository.getById(1L);
+        then(user).isNotNull()
+            .returns(1L, from(User::getId))
+            .returns("1", from(User::getName));
+        // 再次请求看是否命中缓存
+        user = userRepository.getById(1L);
+        then(user).isNotNull()
+            .returns(1L, from(User::getId))
+            .returns("1", from(User::getName));
+    }
 
-  @Test
-  void getByIds() {
-    userRepository.getByIds(Sets.newHashSet(1L, 2L, 3L, 4L));
-    userRepository.getByIds(Sets.newHashSet(1L, 2L, 3L, 4L));
-    userRepository.getByIds(Sets.newHashSet(1L, 2L));
-  }
+    @Test
+    void getByIds() {
+        userRepository.getByIds(Sets.newHashSet(1L, 2L, 3L, 4L));
+        userRepository.getByIds(Sets.newHashSet(1L, 2L, 3L, 4L));
+        userRepository.getByIds(Sets.newHashSet(1L, 2L));
+    }
 
-  @Test
-  void deleteByIds() {
-  }
+    @Test
+    void deleteByIds() {
+    }
 }

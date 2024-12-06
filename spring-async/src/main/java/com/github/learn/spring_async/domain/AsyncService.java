@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AsyncService {
 
-  @Async
-  public void methodA() {
-    log.info("methodA => {}, {}", Thread.currentThread().getName(), Context.USER_ID.get());
-  }
+    @Async
+    public void methodA() {
+        log.info("methodA => {}, {}", Thread.currentThread().getName(), Context.USER_ID.get());
+    }
 
 }

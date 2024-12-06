@@ -20,44 +20,44 @@ import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomCo
 @Configuration
 public class SpringDataElasticSearchRestClientConfig extends AbstractElasticsearchConfiguration {
 
-  @Override
-  @Bean
-  public RestHighLevelClient elasticsearchClient() {
-    ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-        .connectedTo("localhost:9200", "localhost:9201")
-        .build();
-    return RestClients.create(clientConfiguration).rest();
-  }
-
-
-  @Bean
-  @Override
-  public ElasticsearchCustomConversions elasticsearchCustomConversions() {
-    return new ElasticsearchCustomConversions(Arrays.asList(
-        LocalDateTimeToString.INSTANCE, StringToLocalDateTime.INSTANCE
-    ));
-  }
-
-  @ReadingConverter
-  enum StringToLocalDateTime implements Converter<String, LocalDateTime> {
-
-    INSTANCE;
-
     @Override
-    public LocalDateTime convert(String source) {
-      return LocalDateTime.parse(source);
+    @Bean
+    public RestHighLevelClient elasticsearchClient() {
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+            .connectedTo("localhost:9200", "localhost:9201")
+            .build();
+        return RestClients.create(clientConfiguration).rest();
     }
-  }
 
-  @WritingConverter
-  enum LocalDateTimeToString implements Converter<LocalDateTime, String> {
 
-    INSTANCE;
-
+    @Bean
     @Override
-    public String convert(LocalDateTime source) {
-      return source.toString();
+    public ElasticsearchCustomConversions elasticsearchCustomConversions() {
+        return new ElasticsearchCustomConversions(Arrays.asList(
+            LocalDateTimeToString.INSTANCE, StringToLocalDateTime.INSTANCE
+        ));
     }
-  }
+
+    @ReadingConverter
+    enum StringToLocalDateTime implements Converter<String, LocalDateTime> {
+
+        INSTANCE;
+
+        @Override
+        public LocalDateTime convert(String source) {
+            return LocalDateTime.parse(source);
+        }
+    }
+
+    @WritingConverter
+    enum LocalDateTimeToString implements Converter<LocalDateTime, String> {
+
+        INSTANCE;
+
+        @Override
+        public String convert(LocalDateTime source) {
+            return source.toString();
+        }
+    }
 }
 

@@ -5,7 +5,7 @@ package com.feng.learn.pattern.singleton;
  * @date 2021/08/05
  */
 
-//public class SubPrivateConstructor extends PrivateConstructor{
+// public class SubPrivateConstructor extends PrivateConstructor{
 public class SubPrivateConstructor {
 
 }

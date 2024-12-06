@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 public class LongMaxTest {
 
 
-  @Test
-  void test() {
-    log.info("{}", Long.MAX_VALUE);
-  }
+    @Test
+    void test() {
+        log.info("{}", Long.MAX_VALUE);
+    }
 
 }

@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ResourceInject {
-  final Resource yamlFile;
-  final Resource[] yamlFileList;
+    final Resource yamlFile;
+    final Resource[] yamlFileList;
 
-  public ResourceInject(
-      @Value("classpath:application.yaml") Resource yamlFile,
-      @Value("classpath*:application.yaml") Resource[] yamlFileList) {
-    this.yamlFile = yamlFile;
-    this.yamlFileList = yamlFileList;
-  }
+    public ResourceInject(
+        @Value("classpath:application.yaml") Resource yamlFile,
+        @Value("classpath*:application.yaml") Resource[] yamlFileList) {
+        this.yamlFile = yamlFile;
+        this.yamlFileList = yamlFileList;
+    }
 
-  @SneakyThrows
-  public void loadApplicationYaml() {
-    String content = yamlFile.getContentAsString(Charset.defaultCharset());
-    log.info("application.yaml -> {}", content);
-  }
+    @SneakyThrows
+    public void loadApplicationYaml() {
+        String content = yamlFile.getContentAsString(Charset.defaultCharset());
+        log.info("application.yaml -> {}", content);
+    }
 }

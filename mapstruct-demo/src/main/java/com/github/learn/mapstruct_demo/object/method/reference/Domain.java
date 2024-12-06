@@ -11,10 +11,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Domain {
 
-  private Person person;
+    private Person person;
 
-  public String queryId() {
-    return person.getName() + person.getAge();
-  }
+    public String queryId() {
+        return person.getName() + person.getAge();
+    }
 
 }

@@ -12,6 +12,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Domain {
 
-  private List<Person> personList;
+    private List<Person> personList;
 
 }

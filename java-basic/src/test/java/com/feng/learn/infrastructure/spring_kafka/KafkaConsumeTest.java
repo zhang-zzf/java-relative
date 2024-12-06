@@ -36,52 +36,52 @@ import org.springframework.test.context.junit4.SpringRunner;
 })
 public class KafkaConsumeTest {
 
-  /**
-   * @version 2.5.1
-   * <p>测试单线程单消息消费</p>
-   * <p>container thread => consumer.poll -> invoke SomeTopicConsumer.onMessage() for each msg
-   * in List<msg></p>
-   */
-  @Ignore // 依赖环境，无法做自动化测试
-  @Test
-  public void testSingleMsg() throws InterruptedException {
-    Thread.currentThread().join();
-  }
-
-  @Configuration
-  public static class SomeTopicConsumer {
-
-    @KafkaListener(id = "group_id", topics = "test",
-        containerFactory = KafkaConsumerConfig.CONTAINER_FACTORY)
-    public void onMessage(String msg) {
-      log.info("msg=> {}", msg);
-    }
-  }
-
-  @Configuration
-  @EnableKafka
-  public static class KafkaConsumerConfig {
-
-    public static final String CONTAINER_FACTORY = "concurrentKafkaListenerContainerFactory";
-
-    @Bean(value = CONTAINER_FACTORY)
-    ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory(
-        ConsumerFactory consumerFactory) {
-      ConcurrentKafkaListenerContainerFactory<String, String> factory =
-          new ConcurrentKafkaListenerContainerFactory<>();
-      factory.setConsumerFactory(consumerFactory);
-      ContainerProperties containerProperties = factory.getContainerProperties();
-      return factory;
+    /**
+     * @version 2.5.1
+     * <p>测试单线程单消息消费</p>
+     * <p>container thread => consumer.poll -> invoke SomeTopicConsumer.onMessage() for each msg
+     * in List<msg></p>
+     */
+    @Ignore // 依赖环境，无法做自动化测试
+    @Test
+    public void testSingleMsg() throws InterruptedException {
+        Thread.currentThread().join();
     }
 
-    @Bean
-    public ConsumerFactory consumerFactory() {
-      Map<String, Object> consumerConfigs = new HashMap<>();
-      consumerConfigs.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-      consumerConfigs.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-      consumerConfigs.put(VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-      return new DefaultKafkaConsumerFactory(consumerConfigs);
+    @Configuration
+    public static class SomeTopicConsumer {
+
+        @KafkaListener(id = "group_id", topics = "test",
+            containerFactory = KafkaConsumerConfig.CONTAINER_FACTORY)
+        public void onMessage(String msg) {
+            log.info("msg=> {}", msg);
+        }
     }
 
-  }
+    @Configuration
+    @EnableKafka
+    public static class KafkaConsumerConfig {
+
+        public static final String CONTAINER_FACTORY = "concurrentKafkaListenerContainerFactory";
+
+        @Bean(value = CONTAINER_FACTORY)
+        ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory(
+            ConsumerFactory consumerFactory) {
+            ConcurrentKafkaListenerContainerFactory<String, String> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+            factory.setConsumerFactory(consumerFactory);
+            ContainerProperties containerProperties = factory.getContainerProperties();
+            return factory;
+        }
+
+        @Bean
+        public ConsumerFactory consumerFactory() {
+            Map<String, Object> consumerConfigs = new HashMap<>();
+            consumerConfigs.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+            consumerConfigs.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+            consumerConfigs.put(VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+            return new DefaultKafkaConsumerFactory(consumerConfigs);
+        }
+
+    }
 }

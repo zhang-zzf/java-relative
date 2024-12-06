@@ -27,25 +27,25 @@ import org.springframework.test.context.junit4.SpringRunner;
 })
 public class ProxyTargetClassTrueTest {
 
-  @Autowired
-  AInterface interfaceService;
+    @Autowired
+    AInterface interfaceService;
 
-  @Autowired
-  NoInterfaceService noInterfaceService;
+    @Autowired
+    NoInterfaceService noInterfaceService;
 
-  @Test
-  public void givenProxyTargetClassTrue_then() {
-    then(interfaceService)
-        .isInstanceOf(AInterface.class)
-        .isInstanceOf(AInterfaceService.class)
-        .isNotInstanceOf(Proxy.class);
-    then(noInterfaceService)
-        .isInstanceOf(NoInterfaceService.class);
-  }
+    @Test
+    public void givenProxyTargetClassTrue_then() {
+        then(interfaceService)
+            .isInstanceOf(AInterface.class)
+            .isInstanceOf(AInterfaceService.class)
+            .isNotInstanceOf(Proxy.class);
+        then(noInterfaceService)
+            .isInstanceOf(NoInterfaceService.class);
+    }
 
-  @Configuration
-  @EnableAsync(mode = AdviceMode.PROXY, proxyTargetClass = true)
-  public static class ProxyTargetClassContext {
+    @Configuration
+    @EnableAsync(mode = AdviceMode.PROXY, proxyTargetClass = true)
+    public static class ProxyTargetClassContext {
 
-  }
+    }
 }

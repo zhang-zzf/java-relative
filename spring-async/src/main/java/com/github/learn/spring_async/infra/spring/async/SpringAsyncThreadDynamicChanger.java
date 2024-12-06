@@ -19,56 +19,56 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SpringAsyncThreadDynamicChanger {
 
-  /**
-   * 依赖构造器注入
-   */
-  private final Map<String, ThreadPoolTaskExecutor> NAME_TO_POOL;
+    /**
+     * 依赖构造器注入
+     */
+    private final Map<String, ThreadPoolTaskExecutor> NAME_TO_POOL;
 
-  public SpringAsyncThreadDynamicChanger(List<ThreadPoolTaskExecutor> allExecutorInSpringContext) {
-    NAME_TO_POOL = new HashMap<>(allExecutorInSpringContext.size());
-    for (ThreadPoolTaskExecutor t : allExecutorInSpringContext) {
-      ThreadFactory tf = t.getThreadPoolExecutor().getThreadFactory();
-      if (tf instanceof NamedThreadFactory) {
-        NAME_TO_POOL.putIfAbsent(((NamedThreadFactory) tf).getName(), t);
-        continue;
-      }
-      log.error("SpringAsyncThreadDynamicChanger not a NamedThreadFactory: {}", t);
+    public SpringAsyncThreadDynamicChanger(List<ThreadPoolTaskExecutor> allExecutorInSpringContext) {
+        NAME_TO_POOL = new HashMap<>(allExecutorInSpringContext.size());
+        for (ThreadPoolTaskExecutor t : allExecutorInSpringContext) {
+            ThreadFactory tf = t.getThreadPoolExecutor().getThreadFactory();
+            if (tf instanceof NamedThreadFactory) {
+                NAME_TO_POOL.putIfAbsent(((NamedThreadFactory) tf).getName(), t);
+                continue;
+            }
+            log.error("SpringAsyncThreadDynamicChanger not a NamedThreadFactory: {}", t);
+        }
+        log.info("SpringAsyncThreadDynamicChanger controlled threadPools: {}", NAME_TO_POOL);
     }
-    log.info("SpringAsyncThreadDynamicChanger controlled threadPools: {}", NAME_TO_POOL);
-  }
 
-  /**
-   * 配置中心 callback
-   *
-   * @param name   线程池的名字
-   * @param config 配置
-   */
-  void updateThreadPool(String name, ThreadPoolConfig config) {
-    if (!config.checked()) {
-      log.error("illegalThreadPoolConfig {}", config);
-      return;
+    /**
+     * 配置中心 callback
+     *
+     * @param name   线程池的名字
+     * @param config 配置
+     */
+    void updateThreadPool(String name, ThreadPoolConfig config) {
+        if (!config.checked()) {
+            log.error("illegalThreadPoolConfig {}", config);
+            return;
+        }
+        ThreadPoolTaskExecutor pool = NAME_TO_POOL.get(name);
+        pool.setCorePoolSize(config.getCore());
+        pool.setMaxPoolSize(config.getMax());
+        pool.setKeepAliveSeconds(config.getKeepAliveSeconds());
+        log.warn("updateThreadPool: {}, {} ", name, config);
     }
-    ThreadPoolTaskExecutor pool = NAME_TO_POOL.get(name);
-    pool.setCorePoolSize(config.getCore());
-    pool.setMaxPoolSize(config.getMax());
-    pool.setKeepAliveSeconds(config.getKeepAliveSeconds());
-    log.warn("updateThreadPool: {}, {} ", name, config);
-  }
 
-  @Data
-  public static class ThreadPoolConfig {
+    @Data
+    public static class ThreadPoolConfig {
 
-    private int core;
-    private int max;
-    private int keepAliveSeconds;
+        private int core;
+        private int max;
+        private int keepAliveSeconds;
 
-    public boolean checked() {
-      if (core > 0 && max > 0 && max >= core && keepAliveSeconds > 0) {
-        return true;
-      }
-      return false;
+        public boolean checked() {
+            if (core > 0 && max > 0 && max >= core && keepAliveSeconds > 0) {
+                return true;
+            }
+            return false;
+        }
     }
-  }
 
 }
 

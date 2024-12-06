@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class PersonDto {
 
-  private String name;
-  private int age;
+    private String name;
+    private int age;
 
 }

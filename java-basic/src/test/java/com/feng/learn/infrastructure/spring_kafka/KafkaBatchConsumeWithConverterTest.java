@@ -58,133 +58,134 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Disabled
 public class KafkaBatchConsumeWithConverterTest {
 
-  /**
-   * @version 2.5.1
-   * <p>测试单线程批量消息消费</p>
-   * <p>container thread => consumer.poll -> invoke SomeTopicConsumer.onMessage() </p>
-   */
-  //@Ignore // 依赖环境，无法做自动化测试
-  @Test
-  public void test() throws InterruptedException {
-    Thread.currentThread().join();
-  }
-
-  @Configuration
-  public static class Consumer {
-
-    @KafkaListener(id = GROUP_ID,
-        topics = TOPIC,
-        containerFactory = CONTAINER_FACTORY,
-        errorHandler = LISTENER_ERROR_HANDLER)
-    public void onMessage(List<Message<JsonHolder>> msg) {
-      log.info("msg=> {}", msg);
-    }
-  }
-
-  @Configuration
-  @EnableKafka
-  public static class Config {
-
-    public static final String GROUP_ID = "group_id";
-    public static final String TOPIC = "myJsonTopic";
-    public static final String CONTAINER_FACTORY = TOPIC + "ContainerFactory";
-    public static final String CONSUMER_FACTORY = TOPIC + "ConsumerFactory";
-    public static final String LISTENER_ERROR_HANDLER = TOPIC + "KafkaListenerErrorHandler";
-    public static final String CONTAINER_ERROR_HANDLER = TOPIC + "BatchErrorHandler";
-
-    @Bean(value = CONTAINER_FACTORY)
-    ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(
-        @Qualifier(CONSUMER_FACTORY) ConsumerFactory consumerFactory,
-        @Qualifier(CONTAINER_ERROR_HANDLER) BatchErrorHandler batchErrorHandler) {
-      ConcurrentKafkaListenerContainerFactory<String, String> factory =
-          new ConcurrentKafkaListenerContainerFactory<>();
-      factory.setConsumerFactory(consumerFactory);
-      // import => 设置批量消费
-      factory.setBatchListener(true);
-      // very important => 设置 converter
-      factory.setMessageConverter(new BatchMessagingMessageConverter(new JsonMessageConverter()));
-      // very important => 设置容器 errorHandler
-      factory.setBatchErrorHandler(batchErrorHandler);
-      return factory;
+    /**
+     * @version 2.5.1
+     * <p>测试单线程批量消息消费</p>
+     * <p>container thread => consumer.poll -> invoke SomeTopicConsumer.onMessage() </p>
+     */
+    //@Ignore // 依赖环境，无法做自动化测试
+    @Test
+    public void test() throws InterruptedException {
+        Thread.currentThread().join();
     }
 
-    @Bean(CONSUMER_FACTORY)
-    public ConsumerFactory consumerFactory() {
-      Map<String, Object> consumerConfigs = new HashMap<>();
-      consumerConfigs.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-      consumerConfigs.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-      consumerConfigs.put(VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-      consumerConfigs.put(INTERCEPTOR_CLASSES_CONFIG,
-          Arrays.asList(TraceConsumerInterceptor.class));
-      return new DefaultKafkaConsumerFactory(consumerConfigs);
-    }
+    @Configuration
+    public static class Consumer {
 
-    @Bean(LISTENER_ERROR_HANDLER)
-    public KafkaListenerErrorHandler kafkaListenerErrorHandler() {
-      return (Message<?> msg, ListenerExecutionFailedException exception) -> {
-        log.error("kafka Message({}) deal exception {}", msg.getPayload(), exception);
-        return null;
-      };
-    }
-
-    @Bean(CONTAINER_ERROR_HANDLER)
-    public BatchErrorHandler batchErrorHandler() {
-      return (thrownException, data) -> {
-        StringBuilder message = new StringBuilder("Error while processing:\n");
-        if (data == null) {
-          message.append("null ");
-        } else {
-          for (ConsumerRecord<?, ?> record : data) {
-            message.append(record).append('\n');
-          }
+        @KafkaListener(id = GROUP_ID,
+            topics = TOPIC,
+            containerFactory = CONTAINER_FACTORY,
+            errorHandler = LISTENER_ERROR_HANDLER)
+        public void onMessage(List<Message<JsonHolder>> msg) {
+            log.info("msg=> {}", msg);
         }
-        // 日志处理
-        log.error(message.toString(), thrownException);
-      };
     }
 
-  }
+    @Configuration
+    @EnableKafka
+    public static class Config {
 
-  @Data
-  public static class JsonHolder {
+        public static final String GROUP_ID = "group_id";
+        public static final String TOPIC = "myJsonTopic";
+        public static final String CONTAINER_FACTORY = TOPIC + "ContainerFactory";
+        public static final String CONSUMER_FACTORY = TOPIC + "ConsumerFactory";
+        public static final String LISTENER_ERROR_HANDLER = TOPIC + "KafkaListenerErrorHandler";
+        public static final String CONTAINER_ERROR_HANDLER = TOPIC + "BatchErrorHandler";
 
-    String name;
-    int age;
-  }
+        @Bean(value = CONTAINER_FACTORY)
+        ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(
+            @Qualifier(CONSUMER_FACTORY) ConsumerFactory consumerFactory,
+            @Qualifier(CONTAINER_ERROR_HANDLER) BatchErrorHandler batchErrorHandler) {
+            ConcurrentKafkaListenerContainerFactory<String, String> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+            factory.setConsumerFactory(consumerFactory);
+            // import => 设置批量消费
+            factory.setBatchListener(true);
+            // very important => 设置 converter
+            factory.setMessageConverter(new BatchMessagingMessageConverter(new JsonMessageConverter()));
+            // very important => 设置容器 errorHandler
+            factory.setBatchErrorHandler(batchErrorHandler);
+            return factory;
+        }
 
-  @Slf4j
-  public static class TraceConsumerInterceptor implements ConsumerInterceptor {
+        @Bean(CONSUMER_FACTORY)
+        public ConsumerFactory consumerFactory() {
+            Map<String, Object> consumerConfigs = new HashMap<>();
+            consumerConfigs.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+            consumerConfigs.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+            consumerConfigs.put(VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+            consumerConfigs.put(INTERCEPTOR_CLASSES_CONFIG,
+                Arrays.asList(TraceConsumerInterceptor.class));
+            return new DefaultKafkaConsumerFactory(consumerConfigs);
+        }
 
-    public static final String MSG_RECEIVE_TIME = "trace_msg_received_time";
+        @Bean(LISTENER_ERROR_HANDLER)
+        public KafkaListenerErrorHandler kafkaListenerErrorHandler() {
+            return (Message<?> msg, ListenerExecutionFailedException exception) -> {
+                log.error("kafka Message({}) deal exception {}", msg.getPayload(), exception);
+                return null;
+            };
+        }
 
-    @Override
-    public ConsumerRecords onConsume(final ConsumerRecords records) {
-      log.info("after receive msg");
-      if (records.isEmpty()) {
-        return records;
-      }
-      Iterator<ConsumerRecord> it = records.iterator();
-      while (it.hasNext()) {
-        ConsumerRecord next = it.next();
-      }
-      return records;
+        @Bean(CONTAINER_ERROR_HANDLER)
+        public BatchErrorHandler batchErrorHandler() {
+            return (thrownException, data) -> {
+                StringBuilder message = new StringBuilder("Error while processing:\n");
+                if (data == null) {
+                    message.append("null ");
+                }
+                else {
+                    for (ConsumerRecord<?, ?> record : data) {
+                        message.append(record).append('\n');
+                    }
+                }
+                // 日志处理
+                log.error(message.toString(), thrownException);
+            };
+        }
+
     }
 
-    @Override
-    public void close() {
+    @Data
+    public static class JsonHolder {
 
+        String name;
+        int age;
     }
 
-    @Override
-    public void onCommit(Map offsets) {
+    @Slf4j
+    public static class TraceConsumerInterceptor implements ConsumerInterceptor {
 
+        public static final String MSG_RECEIVE_TIME = "trace_msg_received_time";
+
+        @Override
+        public ConsumerRecords onConsume(final ConsumerRecords records) {
+            log.info("after receive msg");
+            if (records.isEmpty()) {
+                return records;
+            }
+            Iterator<ConsumerRecord> it = records.iterator();
+            while (it.hasNext()) {
+                ConsumerRecord next = it.next();
+            }
+            return records;
+        }
+
+        @Override
+        public void close() {
+
+        }
+
+        @Override
+        public void onCommit(Map offsets) {
+
+        }
+
+        @Override
+        public void configure(Map<String, ?> configs) {
+
+        }
     }
-
-    @Override
-    public void configure(Map<String, ?> configs) {
-
-    }
-  }
 }
 
 

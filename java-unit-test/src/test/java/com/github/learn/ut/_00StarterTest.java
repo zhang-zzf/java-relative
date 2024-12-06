@@ -11,37 +11,37 @@ import org.junit.Test;
  */
 public class _00StarterTest {
 
-  /**
-   * 运行成功的UT
-   */
-  @Test
-  public void testVoid() {
+    /**
+     * 运行成功的UT
+     */
+    @Test
+    public void testVoid() {
 
-  }
+    }
 
-  /**
-   * 运行失败的UT
-   */
-  @Ignore
-  @Test
-  public void testFail() {
-    fail();
-  }
+    /**
+     * 运行失败的UT
+     */
+    @Ignore
+    @Test
+    public void testFail() {
+        fail();
+    }
 
-  @Ignore
-  @Test
-  public void testException() {
-    throw new RuntimeException();
-  }
+    @Ignore
+    @Test
+    public void testException() {
+        throw new RuntimeException();
+    }
 
-  /**
-   * 被忽略的UT
-   */
-  @Ignore
-  @Test(expected = RuntimeException.class, timeout = 10L)
-  public void testIgnore() {
+    /**
+     * 被忽略的UT
+     */
+    @Ignore
+    @Test(expected = RuntimeException.class, timeout = 10L)
+    public void testIgnore() {
 
-  }
+    }
 
 
 }

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SkuServiceImpl implements SkuService {
-  @Override
-  public Sku queryById(Long skuId) {
-    return new Sku().setName("rpc-http");
-  }
+    @Override
+    public Sku queryById(Long skuId) {
+        return new Sku().setName("rpc-http");
+    }
 }

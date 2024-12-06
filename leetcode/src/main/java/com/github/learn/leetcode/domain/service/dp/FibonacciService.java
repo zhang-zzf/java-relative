@@ -9,12 +9,12 @@ import javax.validation.constraints.Min;
  */
 public interface FibonacciService {
 
-  /**
-   * fibonacci
-   *
-   * @param n n
-   * @return fib(n)
-   */
-  long fib(@Min(1) @Max(100) int n);
+    /**
+     * fibonacci
+     *
+     * @param n n
+     * @return fib(n)
+     */
+    long fib(@Min(1) @Max(100) int n);
 
 }

@@ -18,21 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class StringBodyPostController {
 
 
-  @PostMapping("/api_1")
-  public Object api_1(
-      @RequestHeader(name = "Access-Token", required = false) String token,
-      @RequestBody(required = false) String body) {
-    log.info("post request:{}, {}", token, body);
-    return body;
-  }
+    @PostMapping("/api_1")
+    public Object api_1(
+        @RequestHeader(name = "Access-Token", required = false) String token,
+        @RequestBody(required = false) String body) {
+        log.info("post request:{}, {}", token, body);
+        return body;
+    }
 
-  @PostMapping("/api_2")
-  public Object api_2(
-      @RequestHeader(name = "Access-Token", required = false) String token,
-      @RequestBody(required = false) byte[] body) {
-    log.info("post request:{}, {}", token, body);
-    return body;
-  }
+    @PostMapping("/api_2")
+    public Object api_2(
+        @RequestHeader(name = "Access-Token", required = false) String token,
+        @RequestBody(required = false) byte[] body) {
+        log.info("post request:{}, {}", token, body);
+        return body;
+    }
 
 
 }

@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Domain {
 
-  private String str;
-  private Person person;
-  private Map<String, Object> mapData;
+    private String str;
+    private Person person;
+    private Map<String, Object> mapData;
 
 }

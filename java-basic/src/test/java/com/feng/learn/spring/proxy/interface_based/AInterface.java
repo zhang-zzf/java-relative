@@ -6,5 +6,5 @@ package com.feng.learn.spring.proxy.interface_based;
  */
 public interface AInterface {
 
-  void methodA();
+    void methodA();
 }

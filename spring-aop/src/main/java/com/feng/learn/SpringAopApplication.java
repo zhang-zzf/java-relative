@@ -16,7 +16,7 @@ import org.springframework.context.annotation.FilterType;
 //@MapperScan({"com.feng.learn.dao"}) // mybatis
 public class SpringAopApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(SpringAopApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(SpringAopApplication.class, args);
+    }
 }

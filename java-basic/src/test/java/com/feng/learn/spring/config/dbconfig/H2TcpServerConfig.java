@@ -16,15 +16,15 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class H2TcpServerConfig {
 
-  public static final String TCP_PASSWORD = "h2";
+    public static final String TCP_PASSWORD = "h2";
 
-  @Bean(destroyMethod = "stop")
-  public Server h2TcpServer() throws SQLException {
-    Server tcpServer = Server.createTcpServer("-tcp", "-tcpAllowOthers",
-        "-tcpPort", "8043", "-tcpPassword", TCP_PASSWORD, "-ifNotExists"
-    ).start();
-    log.info("h2 started: {}", tcpServer.getURL());
-    return tcpServer;
-  }
+    @Bean(destroyMethod = "stop")
+    public Server h2TcpServer() throws SQLException {
+        Server tcpServer = Server.createTcpServer("-tcp", "-tcpAllowOthers",
+            "-tcpPort", "8043", "-tcpPassword", TCP_PASSWORD, "-ifNotExists"
+        ).start();
+        log.info("h2 started: {}", tcpServer.getURL());
+        return tcpServer;
+    }
 
 }

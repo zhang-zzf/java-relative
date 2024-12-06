@@ -10,18 +10,18 @@ import org.springframework.core.task.TaskDecorator;
 @Slf4j
 public class LogDecorator extends TaskDecoratorWrapper {
 
-  public LogDecorator(TaskDecorator taskDecorator) {
-    super(taskDecorator);
-  }
+    public LogDecorator(TaskDecorator taskDecorator) {
+        super(taskDecorator);
+    }
 
-  @Override
-  public Runnable decorate(Runnable runnable) {
-    final Runnable decorateTask = taskDecorator.decorate(runnable);
-    return () -> {
-      final String name = Thread.currentThread().getName();
-      log.info("{} start to run task.", name);
-      decorateTask.run();
-      log.info("{} task finished", name);
-    };
-  }
+    @Override
+    public Runnable decorate(Runnable runnable) {
+        final Runnable decorateTask = taskDecorator.decorate(runnable);
+        return () -> {
+            final String name = Thread.currentThread().getName();
+            log.info("{} start to run task.", name);
+            decorateTask.run();
+            log.info("{} task finished", name);
+        };
+    }
 }

@@ -18,30 +18,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class IpQueryService {
 
-  public Set<String> queryAllPublicIp() throws UnknownHostException, SocketException {
-    Set<String> publicIPSet = new HashSet<>(8);
-    final InetAddress localHost = InetAddress.getLocalHost();
-    final Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-    while (networkInterfaces.hasMoreElements()) {
-      final NetworkInterface ni = networkInterfaces.nextElement();
-      final Enumeration<InetAddress> inetAddresses = ni.getInetAddresses();
-      final String nicName = ni.getDisplayName();
-      while (inetAddresses.hasMoreElements()) {
-        final InetAddress inetAddress = inetAddresses.nextElement();
-        final boolean loopbackAddress = inetAddress.isLoopbackAddress();
-        final boolean anyLocalAddress = inetAddress.isAnyLocalAddress();
-        final boolean linkLocalAddress = inetAddress.isLinkLocalAddress();
-        final boolean siteLocalAddress = inetAddress.isSiteLocalAddress();
-        final String hostAddress = inetAddress.getHostAddress();
-        if (loopbackAddress || anyLocalAddress || linkLocalAddress || siteLocalAddress) {
-          continue;
+    public Set<String> queryAllPublicIp() throws UnknownHostException, SocketException {
+        Set<String> publicIPSet = new HashSet<>(8);
+        final InetAddress localHost = InetAddress.getLocalHost();
+        final Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        while (networkInterfaces.hasMoreElements()) {
+            final NetworkInterface ni = networkInterfaces.nextElement();
+            final Enumeration<InetAddress> inetAddresses = ni.getInetAddresses();
+            final String nicName = ni.getDisplayName();
+            while (inetAddresses.hasMoreElements()) {
+                final InetAddress inetAddress = inetAddresses.nextElement();
+                final boolean loopbackAddress = inetAddress.isLoopbackAddress();
+                final boolean anyLocalAddress = inetAddress.isAnyLocalAddress();
+                final boolean linkLocalAddress = inetAddress.isLinkLocalAddress();
+                final boolean siteLocalAddress = inetAddress.isSiteLocalAddress();
+                final String hostAddress = inetAddress.getHostAddress();
+                if (loopbackAddress || anyLocalAddress || linkLocalAddress || siteLocalAddress) {
+                    continue;
+                }
+                log.info("hostName: {}, nicName: {}, hostAddress: {}", localHost.getHostName(), nicName,
+                    hostAddress);
+                publicIPSet.add(hostAddress);
+            }
         }
-        log.info("hostName: {}, nicName: {}, hostAddress: {}", localHost.getHostName(), nicName,
-            hostAddress);
-        publicIPSet.add(hostAddress);
-      }
+        return publicIPSet;
     }
-    return publicIPSet;
-  }
 
 }

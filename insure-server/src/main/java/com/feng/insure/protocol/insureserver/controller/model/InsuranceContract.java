@@ -15,21 +15,21 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class InsuranceContract {
 
-  /**
-   * 保单 ID
-   */
-  private String insureNo;
-  /**
-   * 保司保险合同编号
-   */
-  private String policyNo;
-  /**
-   * 附件
-   */
-  private List<Attachment> attachmentList;
-  /**
-   * 创建时间
-   */
-  private LocalDateTime createdAt;
+    /**
+     * 保单 ID
+     */
+    private String insureNo;
+    /**
+     * 保司保险合同编号
+     */
+    private String policyNo;
+    /**
+     * 附件
+     */
+    private List<Attachment> attachmentList;
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createdAt;
 
 }

@@ -13,13 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MaxSumInArrayServiceTest {
 
-  @Autowired
-  MaxSumInArrayService service;
+    @Autowired
+    MaxSumInArrayService service;
 
-  @Test
-  void given_when_then() {
-    int maxSum = service.maxSum(new int[]{1, 2, 4, 1, 7, 8, 3});
-    then(maxSum).isEqualTo(15);
-  }
+    @Test
+    void given_when_then() {
+        int maxSum = service.maxSum(new int[]{1, 2, 4, 1, 7, 8, 3});
+        then(maxSum).isEqualTo(15);
+    }
 
 }

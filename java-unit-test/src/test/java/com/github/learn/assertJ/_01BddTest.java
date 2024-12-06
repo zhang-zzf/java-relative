@@ -18,26 +18,26 @@ import org.mockito.Mock;
  */
 public class _01BddTest extends AbstractJUnit4Mockito {
 
-  @Mock
-  Function<String, Integer> function;
+    @Mock
+    Function<String, Integer> function;
 
-  @Test
-  public void exception() {
-    // given: mock stub
-    given(function.apply(any())).willThrow(new IllegalArgumentException(""));
-    // when
-    Throwable throwable = catchThrowable(() -> function.apply(""));
-    // then
-    // 对接口返回值断言
-    then(throwable)
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("");
-    // verify: method invoke
-    BDDMockito.then(function).should(times(1)).apply(any());
-  }
+    @Test
+    public void exception() {
+        // given: mock stub
+        given(function.apply(any())).willThrow(new IllegalArgumentException(""));
+        // when
+        Throwable throwable = catchThrowable(() -> function.apply(""));
+        // then
+        // 对接口返回值断言
+        then(throwable)
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("");
+        // verify: method invoke
+        BDDMockito.then(function).should(times(1)).apply(any());
+    }
 
-  private int parse(String str) {
-    throw new IllegalArgumentException("");
-  }
+    private int parse(String str) {
+        throw new IllegalArgumentException("");
+    }
 
 }

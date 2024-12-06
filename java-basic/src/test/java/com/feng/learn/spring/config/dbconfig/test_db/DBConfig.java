@@ -47,17 +47,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Slf4j
 public class DBConfig {
 
-  public static final String DB_ID = "test_db";
-  public static final String SQLSESSIONFACTORY_BEAN_ID = DB_ID + "SqlSessionFactory";
-  public static final String DATASOURCE_BEAN_ID = DB_ID + "DataSource";
-  public static final String JDBCTEMPLATE_BEAN_ID = DB_ID + "JdbcTemplate";
-  private static final String MYBATIS_MAPPER_LOCATION = "classpath:/com/feng/learn/dao";
+    public static final String DB_ID = "test_db";
+    public static final String SQLSESSIONFACTORY_BEAN_ID = DB_ID + "SqlSessionFactory";
+    public static final String DATASOURCE_BEAN_ID = DB_ID + "DataSource";
+    public static final String JDBCTEMPLATE_BEAN_ID = DB_ID + "JdbcTemplate";
+    private static final String MYBATIS_MAPPER_LOCATION = "classpath:/com/feng/learn/dao";
 
-  // 以下2个 DataSource 选用一个即可
+    // 以下2个 DataSource 选用一个即可
 
-  /**
-   * 定义h2 内存型DataSource
-   */
+    /**
+     * 定义h2 内存型DataSource
+     */
   /*
   @Bean(DATASOURCE_BEAN_ID)
   public DataSource dataSource() {
@@ -66,82 +66,82 @@ public class DBConfig {
   }
   */
 
-  /**
-   * 定义DataSource
-   *
-   * @return Tcp H2DataSource
-   */
-  @Bean(DATASOURCE_BEAN_ID)
-  public DataSource dataSource(Server h2Server) {
-    return JdbcConnectionPool.create(
-        "jdbc:h2:" + h2Server.getURL() + "/mem:" + DB_ID + ";MODE=MYSQL",
-        "", H2TcpServerConfig.TCP_PASSWORD);
-  }
+    /**
+     * 定义DataSource
+     *
+     * @return Tcp H2DataSource
+     */
+    @Bean(DATASOURCE_BEAN_ID)
+    public DataSource dataSource(Server h2Server) {
+        return JdbcConnectionPool.create(
+            "jdbc:h2:" + h2Server.getURL() + "/mem:" + DB_ID + ";MODE=MYSQL",
+            "", H2TcpServerConfig.TCP_PASSWORD);
+    }
 
 
-  /**
-   * 定义mybatis
-   */
-  @Bean(SQLSESSIONFACTORY_BEAN_ID)
-  public SqlSessionFactory sqlSessionFactory(@Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource)
-      throws Exception {
-    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-    // 配置DataSource
-    factoryBean.setDataSource(dataSource);
+    /**
+     * 定义mybatis
+     */
+    @Bean(SQLSESSIONFACTORY_BEAN_ID)
+    public SqlSessionFactory sqlSessionFactory(@Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource)
+        throws Exception {
+        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+        // 配置DataSource
+        factoryBean.setDataSource(dataSource);
 
-    // 扫描mapper.xml
-    ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
-    factoryBean.setMapperLocations(
-        resourceResolver.getResources(MYBATIS_MAPPER_LOCATION + "/*.xml")
-    );
+        // 扫描mapper.xml
+        ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
+        factoryBean.setMapperLocations(
+            resourceResolver.getResources(MYBATIS_MAPPER_LOCATION + "/*.xml")
+        );
 
-    // mybatis 自定义配置
-    factoryBean.setConfiguration(customMybatisConfiguration());
+        // mybatis 自定义配置
+        factoryBean.setConfiguration(customMybatisConfiguration());
 
-    return factoryBean.getObject();
-  }
+        return factoryBean.getObject();
+    }
 
-  /**
-   * 用于管理mybatis的事务管理器
-   * <p>为事务管理器指定的 DataSource 必须和用来创建 SqlSessionFactoryBean 的是同一个数据源 ，
-   * 否则事务管理器就无法工作了</p>
-   *
-   * @param dataSource 数据源
-   * @return 事务管理器
-   */
-  @Bean(DB_ID + "DataSourceTransactionManager")
-  public DataSourceTransactionManager dataSourceTransactionManager(
-      @Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
-    return new DataSourceTransactionManager(dataSource);
-  }
+    /**
+     * 用于管理mybatis的事务管理器
+     * <p>为事务管理器指定的 DataSource 必须和用来创建 SqlSessionFactoryBean 的是同一个数据源 ，
+     * 否则事务管理器就无法工作了</p>
+     *
+     * @param dataSource 数据源
+     * @return 事务管理器
+     */
+    @Bean(DB_ID + "DataSourceTransactionManager")
+    public DataSourceTransactionManager dataSourceTransactionManager(
+        @Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 
-  /**
-   * 定义flyway， 用于测试数据库的初始化
-   * <p>初始化脚本放在 src/test/resources/db/migration/${DB_ID} 目录下 </p>
-   *
-   * @param dataSource 用于测试的DataSource
-   */
-  @Bean(DB_ID + "Flyway")
-  public Flyway initDb(@Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
-    Flyway flyway = Flyway.configure()
-        .dataSource(dataSource)
-        .locations("classpath:db.migration." + DB_ID)
-        .load();
-    flyway.migrate();
-    return flyway;
-  }
+    /**
+     * 定义flyway， 用于测试数据库的初始化
+     * <p>初始化脚本放在 src/test/resources/db/migration/${DB_ID} 目录下 </p>
+     *
+     * @param dataSource 用于测试的DataSource
+     */
+    @Bean(DB_ID + "Flyway")
+    public Flyway initDb(@Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
+        Flyway flyway = Flyway.configure()
+            .dataSource(dataSource)
+            .locations("classpath:db.migration." + DB_ID)
+            .load();
+        flyway.migrate();
+        return flyway;
+    }
 
-  @Bean(JDBCTEMPLATE_BEAN_ID)
-  public JdbcTemplate jdbcTemplate(@Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
-    return new JdbcTemplate(dataSource);
-  }
+    @Bean(JDBCTEMPLATE_BEAN_ID)
+    public JdbcTemplate jdbcTemplate(@Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
 
-  private org.apache.ibatis.session.Configuration customMybatisConfiguration() {
-    org.apache.ibatis.session.Configuration c = new org.apache.ibatis.session.Configuration();
-    c.setMapUnderscoreToCamelCase(true);
-    // 查询日志使用
-    c.setLogPrefix("dao." + DB_ID + ".");
-    return c;
-  }
+    private org.apache.ibatis.session.Configuration customMybatisConfiguration() {
+        org.apache.ibatis.session.Configuration c = new org.apache.ibatis.session.Configuration();
+        c.setMapUnderscoreToCamelCase(true);
+        // 查询日志使用
+        c.setLogPrefix("dao." + DB_ID + ".");
+        return c;
+    }
 
 }

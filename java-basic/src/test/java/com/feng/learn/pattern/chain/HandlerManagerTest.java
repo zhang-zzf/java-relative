@@ -9,19 +9,19 @@ import org.junit.Test;
  */
 public class HandlerManagerTest {
 
-  private AbstractHandler abstractHandler;
+    private AbstractHandler abstractHandler;
 
-  @Before
-  public void init() {
-    HandlerManager h = new HandlerManager();
-    h.addLast(new HandlerOne());
-    h.addLast(new HandlerTwo());
-    abstractHandler = h;
-  }
+    @Before
+    public void init() {
+        HandlerManager h = new HandlerManager();
+        h.addLast(new HandlerOne());
+        h.addLast(new HandlerTwo());
+        abstractHandler = h;
+    }
 
-  @Test
-  public void handle() {
-    abstractHandler.handle(new Object());
-  }
+    @Test
+    public void handle() {
+        abstractHandler.handle(new Object());
+    }
 
 }

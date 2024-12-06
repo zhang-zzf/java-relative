@@ -16,20 +16,20 @@ import org.junit.Test;
  */
 public class CommonCasesTest {
 
-  /**
-   * stub void method
-   */
-  @Test
-  public void givenVoidMethod_thenStubThrowException_then() {
-    final Person mock = mock(Person.class);
-    // given
-    // given(mock.setAge(any())).willThrow(new IllegalArgumentException());
-    doThrow(new IllegalArgumentException()).when(mock).setName(anyString());
-    // when
-    final Throwable throwable = catchThrowable(() -> mock.setName(anyString()));
-    // then
-    then(throwable).isInstanceOfAny(IllegalArgumentException.class);
-  }
+    /**
+     * stub void method
+     */
+    @Test
+    public void givenVoidMethod_thenStubThrowException_then() {
+        final Person mock = mock(Person.class);
+        // given
+        // given(mock.setAge(any())).willThrow(new IllegalArgumentException());
+        doThrow(new IllegalArgumentException()).when(mock).setName(anyString());
+        // when
+        final Throwable throwable = catchThrowable(() -> mock.setName(anyString()));
+        // then
+        then(throwable).isInstanceOfAny(IllegalArgumentException.class);
+    }
 
 
 }
@@ -38,14 +38,14 @@ public class CommonCasesTest {
 @Setter
 class Person {
 
-  private String name;
-  private int age;
+    private String name;
+    private int age;
 
-  public static Person valueOf(String name, int age) {
-    final Person p = new Person();
-    p.setName(name);
-    p.setAge(age);
-    return p;
-  }
+    public static Person valueOf(String name, int age) {
+        final Person p = new Person();
+        p.setName(name);
+        p.setAge(age);
+        return p;
+    }
 
 }

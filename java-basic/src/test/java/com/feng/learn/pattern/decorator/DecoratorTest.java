@@ -17,29 +17,29 @@ import org.junit.Test;
 @Slf4j
 public class DecoratorTest {
 
-  /**
-   * 透明装饰模式.
-   * <p>客户端完全针对抽象类编程.</p>
-   */
-  @Test
-  public void test() {
-    Beverage b = new Decaf();
-    b = new Milk(b); // 加牛奶
-    b = new Mocha(new Mocha(b)); // 双倍mocha
-    b = new Whip(b);
-    log.info("Beverage: {}, details: {}", b.cost(), b.getDescription(),
-        b.cost());
-  }
+    /**
+     * 透明装饰模式.
+     * <p>客户端完全针对抽象类编程.</p>
+     */
+    @Test
+    public void test() {
+        Beverage b = new Decaf();
+        b = new Milk(b); // 加牛奶
+        b = new Mocha(new Mocha(b)); // 双倍mocha
+        b = new Whip(b);
+        log.info("Beverage: {}, details: {}", b.cost(), b.getDescription(),
+            b.cost());
+    }
 
-  @Test
-  public void testSemiTransparentDecorator() throws FileNotFoundException {
-    URL cacheFile = ClassLoader.getSystemResource("tmp/cache.txt");
-    OutputStream os = new FileOutputStream(cacheFile.getFile());
-    os = new BufferedOutputStream(os); // 透明装饰者模式
+    @Test
+    public void testSemiTransparentDecorator() throws FileNotFoundException {
+        URL cacheFile = ClassLoader.getSystemResource("tmp/cache.txt");
+        OutputStream os = new FileOutputStream(cacheFile.getFile());
+        os = new BufferedOutputStream(os); // 透明装饰者模式
 
-    // 半透明装饰者模式
-    PrintStream ps = new PrintStream(os);
-    ps.println(10); // 使用了Decorator 中新增的方法（OutputStream中无此方法)
-  }
+        // 半透明装饰者模式
+        PrintStream ps = new PrintStream(os);
+        ps.println(10); // 使用了Decorator 中新增的方法（OutputStream中无此方法)
+    }
 
 }

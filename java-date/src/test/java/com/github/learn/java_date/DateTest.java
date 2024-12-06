@@ -6,7 +6,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.learn.java_date.jackson.DateTimeBean;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -210,10 +209,10 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 394e19a (feat: add more Date test)
+     * <<<<<<< HEAD
+     * <<<<<<< HEAD
+     * =======
+     * >>>>>>> 394e19a (feat: add more Date test)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理。前后端都默认采取一个默认时区（uct8）来操作时间。
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -245,11 +244,11 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
-<<<<<<< HEAD
-=======
->>>>>>> 1b98ae3 (feat: add Date TimeZone)
-=======
->>>>>>> 394e19a (feat: add more Date test)
+     * <<<<<<< HEAD
+     * =======
+     * >>>>>>> 1b98ae3 (feat: add Date TimeZone)
+     * =======
+     * >>>>>>> 394e19a (feat: add more Date test)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -497,7 +496,8 @@ public class DateTest {
         // XX 解析 +0800
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX").parse("1970-01-01T08:00:00+0800").getTime()).isEqualTo(0L);
         // XXX 解析 +08:00
-        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(0L);
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(
+            0L);
     }
 
     /**
@@ -560,7 +560,8 @@ public class DateTest {
         for (int i = -3; i < 21; i++) {
             Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
             Date floorDate = floor(date, "GMT+3");
-            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc3.format(date), dfUtc3.format(floorDate), dfUtc.format(floorDate));
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc3.format(date), dfUtc3.format(floorDate),
+                dfUtc.format(floorDate));
             then(dfUtc3.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000+03:00");
         }
         // utc+8
@@ -569,7 +570,8 @@ public class DateTest {
         for (int i = -8; i < 16; i++) {
             Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
             Date floorDate = floor(date, "Asia/Shanghai");
-            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc8.format(date), dfUtc8.format(floorDate), dfUtc.format(floorDate));
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc8.format(date), dfUtc8.format(floorDate),
+                dfUtc.format(floorDate));
             then(dfUtc8.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000+08:00");
         }
         // utc-4
@@ -578,7 +580,8 @@ public class DateTest {
         for (int i = 4; i < 28; i++) {
             Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
             Date floorDate = floor(date, "America/New_York");
-            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc_4.format(date), dfUtc_4.format(floorDate), dfUtc.format(floorDate));
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc_4.format(date), dfUtc_4.format(floorDate),
+                dfUtc.format(floorDate));
             then(dfUtc_4.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000-04:00");
         }
     }

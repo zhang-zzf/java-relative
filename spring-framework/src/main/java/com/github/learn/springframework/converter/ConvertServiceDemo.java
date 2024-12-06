@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class ConvertServiceDemo {
-  final ConversionService conversionService;
+    final ConversionService conversionService;
 
-  public String convertToString(Integer x) {
-    if (conversionService.canConvert(Integer.class, String.class)) {
-      return conversionService.convert(x, String.class);
+    public String convertToString(Integer x) {
+        if (conversionService.canConvert(Integer.class, String.class)) {
+            return conversionService.convert(x, String.class);
+        }
+        throw new IllegalArgumentException();
     }
-    throw new IllegalArgumentException();
-  }
 
 }

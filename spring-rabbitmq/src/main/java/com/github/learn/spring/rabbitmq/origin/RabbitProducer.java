@@ -15,17 +15,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RabbitProducer {
 
-  public static void main(String[] args) throws IOException, TimeoutException {
-    String QUEUE = "queue.test";
-    ConnectionFactory cf = new ConnectionFactory();
-    try (Connection connection = cf.newConnection();
-        Channel channel = connection.createChannel()) {
-      // 1. declare QUEUE
-      // 2. send message
-      channel.queueDeclare(QUEUE, false, false, false, null);
-      channel.basicPublish("", QUEUE, null, "Hello, World!".getBytes(StandardCharsets.UTF_8));
-      log.info("msg sent");
+    public static void main(String[] args) throws IOException, TimeoutException {
+        String QUEUE = "queue.test";
+        ConnectionFactory cf = new ConnectionFactory();
+        try (Connection connection = cf.newConnection();
+            Channel channel = connection.createChannel()) {
+            // 1. declare QUEUE
+            // 2. send message
+            channel.queueDeclare(QUEUE, false, false, false, null);
+            channel.basicPublish("", QUEUE, null, "Hello, World!".getBytes(StandardCharsets.UTF_8));
+            log.info("msg sent");
+        }
     }
-  }
 
 }

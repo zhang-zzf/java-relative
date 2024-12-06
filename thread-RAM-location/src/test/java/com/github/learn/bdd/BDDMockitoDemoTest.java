@@ -20,33 +20,33 @@ import org.mockito.junit.MockitoRule;
  */
 public class BDDMockitoDemoTest {
 
-  @Rule
-  public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-  @InjectMocks
-  PhoneBookService phoneBookService;
+    @InjectMocks
+    PhoneBookService phoneBookService;
 
-  @Mock
-  PhoneBookRepository phoneBookRepository;
+    @Mock
+    PhoneBookRepository phoneBookRepository;
 
-  String momContactName = "Mom";
-  String momPhoneNumber = "01234";
+    String momContactName = "Mom";
+    String momPhoneNumber = "01234";
 
-  @Test
-  public void givenValidContactName_whenSearchInPhoneBook_thenReturnPhoneNum() {
-    // given or stub
-    given(phoneBookRepository.contains(momContactName)).willReturn(true);
-    given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
-        .will(
-            invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
-    // when
-    String number = phoneBookService.search(momContactName);
-    // verify
-    BDDMockito.then(phoneBookRepository).should(atLeastOnce()).contains(momContactName);
-    BDDMockito.then(phoneBookRepository).should(atMost(1))
-        .getPhoneNumberByContactName(momContactName);
-    // then
-    BDDAssertions.then(number).isEqualTo(momPhoneNumber);
-  }
+    @Test
+    public void givenValidContactName_whenSearchInPhoneBook_thenReturnPhoneNum() {
+        // given or stub
+        given(phoneBookRepository.contains(momContactName)).willReturn(true);
+        given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
+            .will(
+                invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
+        // when
+        String number = phoneBookService.search(momContactName);
+        // verify
+        BDDMockito.then(phoneBookRepository).should(atLeastOnce()).contains(momContactName);
+        BDDMockito.then(phoneBookRepository).should(atMost(1))
+            .getPhoneNumberByContactName(momContactName);
+        // then
+        BDDAssertions.then(number).isEqualTo(momPhoneNumber);
+    }
 
 }

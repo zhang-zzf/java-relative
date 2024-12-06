@@ -22,33 +22,34 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @RequiredArgsConstructor
 public class SwitchAop {
 
-  /**
-   * "@DegradeSwitch" 切面逻辑
-   */
-  @Around("execution(* *(..)) && @annotation(degradeSwitch)")
-  public Object functionGray(ProceedingJoinPoint pjp, DegradeSwitch degradeSwitch)
-      throws Throwable {
-    String configKey =
-        pjp.getSignature().getDeclaringType().getSimpleName() + "#" + pjp.getSignature().getName();
-    if (!("".equals(degradeSwitch.key()))) {
-      configKey = degradeSwitch.key();
+    /**
+     * "@DegradeSwitch" 切面逻辑
+     */
+    @Around("execution(* *(..)) && @annotation(degradeSwitch)")
+    public Object functionGray(ProceedingJoinPoint pjp, DegradeSwitch degradeSwitch)
+        throws Throwable {
+        String configKey =
+            pjp.getSignature().getDeclaringType().getSimpleName() + "#" + pjp.getSignature().getName();
+        if (!("".equals(degradeSwitch.key()))) {
+            configKey = degradeSwitch.key();
+        }
+        Object retVal;
+        // 根据 configKey 判断灰度
+        boolean degrade = true;
+        if (degrade) {
+            // log event
+            log.info("{} occur degrade", configKey);
+            Class<?>[] parameterTypes = ((MethodSignature) pjp.getSignature()).getMethod()
+                .getParameterTypes();
+            Method degradeToMethod = pjp.getTarget().getClass()
+                .getDeclaredMethod(degradeSwitch.degradeTo(), parameterTypes);
+            // 设置访问权限
+            degradeToMethod.setAccessible(true);
+            retVal = degradeToMethod.invoke(pjp.getTarget(), pjp.getArgs());
+        }
+        else {
+            retVal = pjp.proceed();
+        }
+        return retVal;
     }
-    Object retVal;
-    // 根据 configKey 判断灰度
-    boolean degrade = true;
-    if (degrade) {
-      // log event
-      log.info("{} occur degrade", configKey);
-      Class<?>[] parameterTypes = ((MethodSignature) pjp.getSignature()).getMethod()
-          .getParameterTypes();
-      Method degradeToMethod = pjp.getTarget().getClass()
-          .getDeclaredMethod(degradeSwitch.degradeTo(), parameterTypes);
-      // 设置访问权限
-      degradeToMethod.setAccessible(true);
-      retVal = degradeToMethod.invoke(pjp.getTarget(), pjp.getArgs());
-    } else {
-      retVal = pjp.proceed();
-    }
-    return retVal;
-  }
 }

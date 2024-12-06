@@ -5,7 +5,7 @@ public interface PhoneBookRepository {
     /**
      * Insert phone record
      *
-     * @param name Contact name
+     * @param name  Contact name
      * @param phone Phone number
      */
     void insert(String name, String phone);

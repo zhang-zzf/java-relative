@@ -9,19 +9,19 @@ import com.alibaba.fastjson.JSONArray;
  */
 public class Utils {
 
-  /**
-   * int[][] 2维数组字符串转数组
-   *
-   * @param str data
-   * @return int[][]
-   */
-  public static int[][] to2Array(String str) {
-    return JSON.parseArray(str).stream()
-        .map(o -> ((JSONArray) o).stream()
-            .map(io -> ((Integer) io))
-            .mapToInt(Integer::intValue)
-            .toArray()
-        ).toArray(int[][]::new);
-  }
+    /**
+     * int[][] 2维数组字符串转数组
+     *
+     * @param str data
+     * @return int[][]
+     */
+    public static int[][] to2Array(String str) {
+        return JSON.parseArray(str).stream()
+            .map(o -> ((JSONArray) o).stream()
+                .map(io -> ((Integer) io))
+                .mapToInt(Integer::intValue)
+                .toArray()
+            ).toArray(int[][]::new);
+    }
 
 }

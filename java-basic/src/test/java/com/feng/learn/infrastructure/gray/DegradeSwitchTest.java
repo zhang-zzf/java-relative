@@ -19,16 +19,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 })
 public class DegradeSwitchTest {
 
-  @Autowired
-  ServiceUseDegradeSwitch serviceUseDegradeSwitch;
+    @Autowired
+    ServiceUseDegradeSwitch serviceUseDegradeSwitch;
 
-  /**
-   * 打断点， 看流程
-   */
-  @Test
-  public void testDegradeSwitch() {
-    serviceUseDegradeSwitch.methodA(0, "", null);
-    Map<String, List<Integer>> stringListMap = serviceUseDegradeSwitch.methodB();
-  }
+    /**
+     * 打断点， 看流程
+     */
+    @Test
+    public void testDegradeSwitch() {
+        serviceUseDegradeSwitch.methodA(0, "", null);
+        Map<String, List<Integer>> stringListMap = serviceUseDegradeSwitch.methodB();
+    }
 
 }

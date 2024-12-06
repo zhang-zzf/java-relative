@@ -26,24 +26,24 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserServiceAspect {
 
-  /**
-   * AfterThrowing 运行时当检测到方法抛出异常时，执行相应的advice
-   * <p><b>注意: 异常并不会被advice捕获，而是会继续向上抛出</b></p>
-   */
-  @AfterThrowing(value = "execution(* com.feng.learn.service.UserService.throwException(..))", throwing = "th")
-  public void aThrowableAdvice(Throwable th) {
-    Trace.add(String.format("0x%016X", Objects.hashCode(this)));
-    log.info("throwableAdvice: {}", th.getMessage());
-  }
+    /**
+     * AfterThrowing 运行时当检测到方法抛出异常时，执行相应的advice
+     * <p><b>注意: 异常并不会被advice捕获，而是会继续向上抛出</b></p>
+     */
+    @AfterThrowing(value = "execution(* com.feng.learn.service.UserService.throwException(..))", throwing = "th")
+    public void aThrowableAdvice(Throwable th) {
+        Trace.add(String.format("0x%016X", Objects.hashCode(this)));
+        log.info("throwableAdvice: {}", th.getMessage());
+    }
 
-  /**
-   * AfterThrowing 运行时当检测到方法抛出异常时，执行相应的advice
-   * <p><b>注意: 异常并不会被advice捕获，而是会继续向上抛出</b></p>
-   */
-  @AfterThrowing(value = "execution(* com.feng.learn.service.UserService.throwException(..))", throwing = "re")
-  public void runtimeExceptionAdvice(RuntimeException re) {
-    Trace.add(String.format("0x%016X", Objects.hashCode(this)));
-    log.info("runtimeExceptionAdvice: {}", re.getMessage());
-  }
+    /**
+     * AfterThrowing 运行时当检测到方法抛出异常时，执行相应的advice
+     * <p><b>注意: 异常并不会被advice捕获，而是会继续向上抛出</b></p>
+     */
+    @AfterThrowing(value = "execution(* com.feng.learn.service.UserService.throwException(..))", throwing = "re")
+    public void runtimeExceptionAdvice(RuntimeException re) {
+        Trace.add(String.format("0x%016X", Objects.hashCode(this)));
+        log.info("runtimeExceptionAdvice: {}", re.getMessage());
+    }
 
 }

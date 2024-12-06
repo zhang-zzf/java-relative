@@ -7,15 +7,15 @@ package com.feng.learn.pattern.singleton;
 public class PrivateConstructor {
 
 
-  private PrivateConstructor() {
+    private PrivateConstructor() {
 
-  }
+    }
 
-  /**
-   * OK
-   */
-  public static class SubPrivateConstructor extends PrivateConstructor {
+    /**
+     * OK
+     */
+    public static class SubPrivateConstructor extends PrivateConstructor {
 
-  }
+    }
 
 }

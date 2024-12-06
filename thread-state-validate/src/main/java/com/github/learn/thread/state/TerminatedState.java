@@ -10,14 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TerminatedState {
 
-  @SneakyThrows
-  public void validate() {
-    //noinspection AlibabaAvoidManuallyCreateThread
-    final Thread t = new Thread(() -> {
-    }, "thread-state-TERNINATED");
-    t.start();
-    Thread.sleep(1000);
-    log.info("Thread: {} -> state: {}", t, t.getState());
-  }
+    @SneakyThrows
+    public void validate() {
+        // noinspection AlibabaAvoidManuallyCreateThread
+        final Thread t = new Thread(() -> {
+        }, "thread-state-TERNINATED");
+        t.start();
+        Thread.sleep(1000);
+        log.info("Thread: {} -> state: {}", t, t.getState());
+    }
 
 }

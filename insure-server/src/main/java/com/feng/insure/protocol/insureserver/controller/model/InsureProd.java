@@ -14,11 +14,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class InsureProd {
 
-  /**
-   * 保司保险产品
-   * <p>保险中台不提供保险产品，仅封装第三方服务机构的产品</p>
-   * <p>值对象</p>
-   */
-  private InsuranceCarrier.Prod insuranceCarrierProd;
+    /**
+     * 保司保险产品
+     * <p>保险中台不提供保险产品，仅封装第三方服务机构的产品</p>
+     * <p>值对象</p>
+     */
+    private InsuranceCarrier.Prod insuranceCarrierProd;
 
 }

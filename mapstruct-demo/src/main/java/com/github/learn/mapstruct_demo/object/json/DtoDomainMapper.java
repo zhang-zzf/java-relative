@@ -13,26 +13,26 @@ import org.mapstruct.factory.Mappers;
 @Mapper(uses = {ToJSONString.class})
 public interface DtoDomainMapper {
 
-  DtoDomainMapper INSTANCE = Mappers.getMapper(DtoDomainMapper.class);
+    DtoDomainMapper INSTANCE = Mappers.getMapper(DtoDomainMapper.class);
 
-  @Mapping(target = "person", qualifiedByName = "toJSONStr")
-  @Mapping(target = "mapData", qualifiedByName = "toJSONStr")
-  Dto toDto(Domain domain);
+    @Mapping(target = "person", qualifiedByName = "toJSONStr")
+    @Mapping(target = "mapData", qualifiedByName = "toJSONStr")
+    Dto toDto(Domain domain);
 
-  /**
-   * Dto to Domain 时,
-   * <p>dto.person -> domain.person 会寻找 String->Person 的方法</p>
-   * <p>{@link DtoDomainMapper#stringToPerson(String)}</p>
-   */
-  Domain toDomain(Dto dto);
+    /**
+     * Dto to Domain 时,
+     * <p>dto.person -> domain.person 会寻找 String->Person 的方法</p>
+     * <p>{@link DtoDomainMapper#stringToPerson(String)}</p>
+     */
+    Domain toDomain(Dto dto);
 
-  default Person stringToPerson(String json) {
-    return JSON.parseObject(json, Person.class);
-  }
+    default Person stringToPerson(String json) {
+        return JSON.parseObject(json, Person.class);
+    }
 
-  default Map<String, Object> stringToMap(String json) {
-    return JSON.parseObject(json);
-  }
+    default Map<String, Object> stringToMap(String json) {
+        return JSON.parseObject(json);
+    }
 
 
 }

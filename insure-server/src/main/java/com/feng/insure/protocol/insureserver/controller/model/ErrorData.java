@@ -11,9 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ErrorData {
 
-  private String path;
-  private String status;
-  private String code;
-  private String message;
+    private String path;
+    private String status;
+    private String code;
+    private String message;
 
 }

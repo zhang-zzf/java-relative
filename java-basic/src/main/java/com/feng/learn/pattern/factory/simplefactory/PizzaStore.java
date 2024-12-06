@@ -5,19 +5,19 @@ import com.feng.learn.pattern.factory.Pizza;
 
 public class PizzaStore {
 
-  SimplePizzaFactory factory;
+    SimplePizzaFactory factory;
 
-  public PizzaStore(SimplePizzaFactory factory) {
-    this.factory = factory;
-  }
+    public PizzaStore(SimplePizzaFactory factory) {
+        this.factory = factory;
+    }
 
-  public Pizza orderPizza(String type) {
-    Pizza p = factory.create(type);
+    public Pizza orderPizza(String type) {
+        Pizza p = factory.create(type);
 
-    p.prepare();
-    p.bake();
-    p.cut();
-    p.box();
-    return p;
-  }
+        p.prepare();
+        p.bake();
+        p.cut();
+        p.box();
+        return p;
+    }
 }

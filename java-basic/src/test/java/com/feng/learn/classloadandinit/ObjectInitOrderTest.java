@@ -10,11 +10,11 @@ public class ObjectInitOrderTest {
     @Test
     public void testObjectInitOrder() {
         Super s = new Super();
-        //ObjectA init..
-        //init block 1
-        //ObjectB init..
-        //init block 2
-        //constructor..
+        // ObjectA init..
+        // init block 1
+        // ObjectB init..
+        // init block 2
+        // constructor..
     }
 
     public static class Super {

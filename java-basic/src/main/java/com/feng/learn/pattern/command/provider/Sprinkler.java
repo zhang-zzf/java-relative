@@ -6,11 +6,11 @@ package com.feng.learn.pattern.command.provider;
  */
 public class Sprinkler {
 
-  void waterOn() {
+    void waterOn() {
 
-  }
+    }
 
-  void wateroff() {
+    void wateroff() {
 
-  }
+    }
 }

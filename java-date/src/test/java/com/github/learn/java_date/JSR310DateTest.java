@@ -52,20 +52,25 @@ class JSR310DateTest {
         then(zdt.format(ISO_INSTANT)).isEqualTo("1970-01-01T00:00:00Z");
         then(zdt.format(ISO_OFFSET_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00");
         then(zdt.format(ISO_ZONED_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]");
-        then(zdt.format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]").isNotEqualTo("1970-01-01T08:00:00");
+        then(zdt.format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]")
+            .isNotEqualTo("1970-01-01T08:00:00");
         then(zdt.format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"))).isEqualTo("1970-01-01T08:00:00.000000+08:00");
         then(zdt.withZoneSameInstant(ZoneOffset.UTC).format(ISO_INSTANT)).isEqualTo("1970-01-01T00:00:00Z");
-        then(zdt.withZoneSameInstant(ZoneOffset.UTC).format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"))).isEqualTo("1970-01-01T00:00:00.000000Z");
+        then(zdt.withZoneSameInstant(ZoneOffset.UTC).format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"))).isEqualTo(
+            "1970-01-01T00:00:00.000000Z");
         then(zdt.withZoneSameLocal(ZoneOffset.UTC).format(ISO_INSTANT)).isEqualTo("1970-01-01T08:00:00Z");
         then(zdt.toLocalDateTime().format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00");
         //
         // parse
         // utc 当地时间 1970-01-01T08:00
-        then(ZonedDateTime.parse("1970-01-01T08:00:00Z").toLocalDateTime()).isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")));
+        then(ZonedDateTime.parse("1970-01-01T08:00:00Z").toLocalDateTime()).isEqualTo(
+            LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")));
         // UTC 08:00
-        then(ZonedDateTime.parse("1970-01-01T08:00:00.000Z").toInstant()).isNotEqualTo(Instant.EPOCH).isEqualTo(Instant.ofEpochMilli(28800000L));
+        then(ZonedDateTime.parse("1970-01-01T08:00:00.000Z").toInstant()).isNotEqualTo(Instant.EPOCH)
+            .isEqualTo(Instant.ofEpochMilli(28800000L));
         // UTC+8 时区当地时间 1970-01-01T08:00
-        then(ZonedDateTime.parse("1970-01-01T08:00+08:00").toLocalDateTime()).isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.of("UTC+8")));
+        then(ZonedDateTime.parse("1970-01-01T08:00+08:00").toLocalDateTime()).isEqualTo(
+            LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.of("UTC+8")));
         // UTC+8 08:00
         then(ZonedDateTime.parse("1970-01-01T08:00:00.000+08:00").toInstant()).isEqualTo(Instant.EPOCH);
         // 需要细品
@@ -120,10 +125,14 @@ class JSR310DateTest {
         then(ldt.format(ofPattern("yyyy-MM-dd HH:mm:ss"))).isEqualTo("1970-01-01 08:00:00");
         // LocalDateTime <- String
         // ISO_LOCAL_DATE_TIME
-        then(LocalDateTime.parse("1970-01-01T08:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01T08:00:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01T08:00:00.000").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01 08:00", ofPattern("yyyy-MM-dd HH:mm")).atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01T08:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(
+            Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01T08:00:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(
+            Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01T08:00:00.000").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(
+            Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01 08:00", ofPattern("yyyy-MM-dd HH:mm")).atZone(ZoneId.of("Asia/Shanghai"))
+            .toInstant()).isEqualTo(Instant.EPOCH);
         // 无法解析
         then(catchThrowable(() -> LocalDateTime.parse("1970-01-01"))).isNotNull();
         then(catchThrowable(() -> LocalDateTime.parse("1970-01-01T08:00:00.000Z"))).isNotNull();

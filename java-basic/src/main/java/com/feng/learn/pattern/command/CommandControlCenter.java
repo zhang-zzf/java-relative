@@ -16,41 +16,41 @@ import lombok.experimental.NonFinal;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class CommandControlCenter {
 
-  int slots = 7;
+    int slots = 7;
 
-  Command[] onCommands = new Command[slots];
-  Command[] offCommands = new Command[slots];
+    Command[] onCommands = new Command[slots];
+    Command[] offCommands = new Command[slots];
 
-  @NonFinal
-  private Command lastCommand;
+    @NonFinal
+    private Command lastCommand;
 
-  public CommandControlCenter() {
-    NoCommand noCommand = new NoCommand();
-    for (int i = 0; i < slots; i++) {
-      onCommands[i] = noCommand;
-      offCommands[i] = noCommand;
+    public CommandControlCenter() {
+        NoCommand noCommand = new NoCommand();
+        for (int i = 0; i < slots; i++) {
+            onCommands[i] = noCommand;
+            offCommands[i] = noCommand;
+        }
+        lastCommand = noCommand;
     }
-    lastCommand = noCommand;
-  }
 
-  public void setCommandToSlot(int slot, Command onCommand, Command offCommand) {
-    onCommands[slot] = onCommand;
-    offCommands[slot] = offCommand;
-  }
+    public void setCommandToSlot(int slot, Command onCommand, Command offCommand) {
+        onCommands[slot] = onCommand;
+        offCommands[slot] = offCommand;
+    }
 
-  public void onButtonPressed(int slot) {
-    Command c = onCommands[slot];
-    c.execute();
-    lastCommand = c;
-  }
+    public void onButtonPressed(int slot) {
+        Command c = onCommands[slot];
+        c.execute();
+        lastCommand = c;
+    }
 
-  public void offButtonPressed(int slog) {
-    Command c = offCommands[slog];
-    c.execute();
-    lastCommand = c;
-  }
+    public void offButtonPressed(int slog) {
+        Command c = offCommands[slog];
+        c.execute();
+        lastCommand = c;
+    }
 
-  public void undo() {
-    lastCommand.undo();
-  }
+    public void undo() {
+        lastCommand.undo();
+    }
 }

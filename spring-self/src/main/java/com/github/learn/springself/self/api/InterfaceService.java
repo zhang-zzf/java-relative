@@ -6,8 +6,8 @@ package com.github.learn.springself.self.api;
  */
 public interface InterfaceService {
 
-  void methodA();
+    void methodA();
 
-  void methodB();
+    void methodB();
 
 }

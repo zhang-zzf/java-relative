@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class NoInterfaceService {
 
-  @Async
-  public void methodA() {
+    @Async
+    public void methodA() {
 
-  }
+    }
 
 }

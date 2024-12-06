@@ -12,6 +12,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Dto {
 
-  private List<PersonDto> personList;
+    private List<PersonDto> personList;
 
 }

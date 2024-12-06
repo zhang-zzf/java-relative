@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum SingletonEnum {
-  INSTANCE;
+    INSTANCE;
 
-  @Getter
-  @Setter
-  private long l;
-  @Getter
-  @Setter
-  private String str;
+    @Getter
+    @Setter
+    private long l;
+    @Getter
+    @Setter
+    private String str;
 
 }

@@ -10,36 +10,36 @@ import lombok.NoArgsConstructor;
 @Data
 public class HttpMethodsResp {
 
-  @JsonProperty("args")
-  private Args args;
-  @JsonProperty("data")
-  private String data;
-  @JsonProperty("files")
-  private Files files;
-  @JsonProperty("form")
-  private Form form;
-  @JsonProperty("headers")
-  private Map<String, String> headers;
-  @JsonProperty("json")
-  private Object json;
-  @JsonProperty("origin")
-  private String origin;
-  @JsonProperty("url")
-  private String url;
+    @JsonProperty("args")
+    private Args args;
+    @JsonProperty("data")
+    private String data;
+    @JsonProperty("files")
+    private Files files;
+    @JsonProperty("form")
+    private Form form;
+    @JsonProperty("headers")
+    private Map<String, String> headers;
+    @JsonProperty("json")
+    private Object json;
+    @JsonProperty("origin")
+    private String origin;
+    @JsonProperty("url")
+    private String url;
 
-  @NoArgsConstructor
-  @Data
-  public static class Args extends HashMap<String, Object> {
-  }
+    @NoArgsConstructor
+    @Data
+    public static class Args extends HashMap<String, Object> {
+    }
 
-  @NoArgsConstructor
-  @Data
-  public static class Files {
-  }
+    @NoArgsConstructor
+    @Data
+    public static class Files {
+    }
 
-  @NoArgsConstructor
-  @Data
-  public static class Form {
-  }
+    @NoArgsConstructor
+    @Data
+    public static class Form {
+    }
 
 }

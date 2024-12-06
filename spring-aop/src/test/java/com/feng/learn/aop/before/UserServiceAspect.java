@@ -22,14 +22,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserServiceAspect {
 
-  @Before("execution(* com.feng.learn.service.UserService.*(..))")
-  public void advice2() {
-    Trace.add(String.format("0x%016X", Objects.hashCode(this)));
-  }
+    @Before("execution(* com.feng.learn.service.UserService.*(..))")
+    public void advice2() {
+        Trace.add(String.format("0x%016X", Objects.hashCode(this)));
+    }
 
-  @Before("execution(* com.feng.learn.service.impl.UserServiceImpl.save(..))")
-  public void advice1() {
-    Trace.add(String.format("0x%016X", Objects.hashCode(this)));
-  }
+    @Before("execution(* com.feng.learn.service.impl.UserServiceImpl.save(..))")
+    public void advice1() {
+        Trace.add(String.format("0x%016X", Objects.hashCode(this)));
+    }
 
 }

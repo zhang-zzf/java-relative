@@ -20,16 +20,16 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface DegradeSwitch {
 
-  /**
-   * 降级接口的方法的名字
-   * <p>必须和被降级的接口在同一个类中，且具有相同的方法入参</p>
-   */
-  String degradeTo();
+    /**
+     * 降级接口的方法的名字
+     * <p>必须和被降级的接口在同一个类中，且具有相同的方法入参</p>
+     */
+    String degradeTo();
 
-  /**
-   * 配置中心降级开关的名字
-   * <p>默认方法的引用</p>
-   */
-  String key() default "";
+    /**
+     * 配置中心降级开关的名字
+     * <p>默认方法的引用</p>
+     */
+    String key() default "";
 
 }

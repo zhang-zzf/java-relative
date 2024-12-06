@@ -1,7 +1,5 @@
 package com.feng.learn.aop.before;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.feng.learn.SpringAopApplication;
@@ -29,18 +27,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 public class UserServiceAspectTest {
 
-  @Autowired
-  UserService userService;
+    @Autowired
+    UserService userService;
 
-  @Test
-  public void given_when_then() {
-    // when
-    userService.save(9L, "zzf");
-    // then
-    List<String> trace = Trace.trace();
-    log.info("trace -> {}", trace);
-    then(trace.get(0)).contains("advice1");
-    then(trace.get(1)).contains("advice2");
-    then(trace.get(2)).contains("UserServiceImpl.save");
-  }
+    @Test
+    public void given_when_then() {
+        // when
+        userService.save(9L, "zzf");
+        // then
+        List<String> trace = Trace.trace();
+        log.info("trace -> {}", trace);
+        then(trace.get(0)).contains("advice1");
+        then(trace.get(1)).contains("advice2");
+        then(trace.get(2)).contains("UserServiceImpl.save");
+    }
 }

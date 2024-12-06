@@ -1,9 +1,5 @@
 package com.feng.learn.resourceloader;
 
-import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.BDDAssertions;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.BDDAssertions;
+import org.junit.Test;
 
 /**
  * <p>资源在项目根目录下：tmp/cache.txt</p>
@@ -23,8 +22,7 @@ import java.util.List;
 public class ResourceLoaderTest {
 
     /**
-     * java.lang.ClassLoader#getResource(java.lang.String)
-     * java.lang.ClassLoader#getResources(java.lang.String)
+     * java.lang.ClassLoader#getResource(java.lang.String) java.lang.ClassLoader#getResources(java.lang.String)
      * <p>getResource 和 getResources 区别：</p>
      * <p>getResource: 双亲委托父加载器加载，父加载器加载成功返回；加载失败自己加载，只会有一个结果</p>
      * <p>getResources: 同时返回双亲委托父加载器加载结果和自己加载的结果</p>
@@ -96,7 +94,8 @@ public class ResourceLoaderTest {
                 if (subPackage) {
                     list.addAll(findClasses(f, subPackage));
                 }
-            } else {
+            }
+            else {
                 list.add(f.getPath());
             }
         }

@@ -1,5 +1,10 @@
 package com.github.learn.bdd;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.atMost;
+
 import org.assertj.core.api.BDDAssertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,11 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.atMost;
 
 /**
  * @author zhanfeng.zhang
@@ -37,7 +37,7 @@ public class BDDMockitoDemoTest {
         // given or stub
         given(phoneBookRepository.contains(momContactName)).willReturn(true);
         given(phoneBookRepository.getPhoneNumberByContactName(anyString()))
-                .will(invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
+            .will(invocation -> momContactName.equals(invocation.getArgument(0)) ? momPhoneNumber : null);
         // when
         String number = phoneBookService.search(momContactName);
         // verify

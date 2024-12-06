@@ -6,17 +6,17 @@ import org.springframework.core.convert.support.DefaultConversionService;
 
 @Slf4j
 public class ConvertServiceDemo2 {
-  final ConversionService conversionService = new DefaultConversionService();
+    final ConversionService conversionService = new DefaultConversionService();
 
-  public String convertToString(Integer x) {
-    if (conversionService.canConvert(Integer.class, String.class)) {
-      return conversionService.convert(x, String.class);
+    public String convertToString(Integer x) {
+        if (conversionService.canConvert(Integer.class, String.class)) {
+            return conversionService.convert(x, String.class);
+        }
+        throw new IllegalArgumentException();
     }
-    throw new IllegalArgumentException();
-  }
 
-  public String convertObjectToString(Object o) {
-    return conversionService.convert(o, String.class);
-  }
+    public String convertObjectToString(Object o) {
+        return conversionService.convert(o, String.class);
+    }
 
 }

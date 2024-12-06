@@ -1,5 +1,5 @@
-//已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变
-//化后可能得到：
+// 已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变
+// 化后可能得到：
 // 
 // 若旋转 4 次，则可以得到 [4,5,6,7,0,1,2] 
 // 若旋转 7 次，则可以得到 [0,1,2,4,5,6,7] 
@@ -15,25 +15,25 @@
 // 示例 1： 
 //
 // 
-//输入：nums = [3,4,5,1,2]
-//输出：1
-//解释：原数组为 [1,2,3,4,5] ，旋转 3 次得到输入数组。
+// 输入：nums = [3,4,5,1,2]
+// 输出：1
+// 解释：原数组为 [1,2,3,4,5] ，旋转 3 次得到输入数组。
 // 
 //
 // 示例 2： 
 //
 // 
-//输入：nums = [4,5,6,7,0,1,2]
-//输出：0
-//解释：原数组为 [0,1,2,4,5,6,7] ，旋转 4 次得到输入数组。
+// 输入：nums = [4,5,6,7,0,1,2]
+// 输出：0
+// 解释：原数组为 [0,1,2,4,5,6,7] ，旋转 4 次得到输入数组。
 // 
 //
 // 示例 3： 
 //
 // 
-//输入：nums = [11,13,15,17]
-//输出：11
-//解释：原数组为 [11,13,15,17] ，旋转 4 次得到输入数组。
+// 输入：nums = [11,13,15,17]
+// 输出：11
+// 解释：原数组为 [11,13,15,17] ，旋转 4 次得到输入数组。
 // 
 //
 // 
@@ -59,33 +59,34 @@ import org.junit.jupiter.api.Test;
 
 public class FindMinimumInRotatedSortedArrayTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    then(solution.findMin(new int[]{1, 2, 3, 4, 0})).isEqualTo(0);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public int findMin(int[] nums) {
-      int left = 0, right = nums.length - 1;
-      int ans = nums[0];
-      while (left <= right) {
-        int mid = left + ((right - left) >> 1);
-        ans = Math.min(ans, nums[mid]);
-        if (nums[mid] < nums[right]) {
-          right = mid - 1;
-        } else {
-          left = mid + 1;
-        }
-      }
-      return ans;
+    @Test
+    void givenNormal_when_thenSuccess() {
+        then(solution.findMin(new int[]{1, 2, 3, 4, 0})).isEqualTo(0);
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int findMin(int[] nums) {
+            int left = 0, right = nums.length - 1;
+            int ans = nums[0];
+            while (left <= right) {
+                int mid = left + ((right - left) >> 1);
+                ans = Math.min(ans, nums[mid]);
+                if (nums[mid] < nums[right]) {
+                    right = mid - 1;
+                }
+                else {
+                    left = mid + 1;
+                }
+            }
+            return ans;
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

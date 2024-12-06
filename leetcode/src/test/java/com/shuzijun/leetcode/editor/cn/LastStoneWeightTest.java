@@ -1,4 +1,4 @@
-//有一堆石头，每块石头的重量都是正整数。 
+// 有一堆石头，每块石头的重量都是正整数。
 //
 // 每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x <= y。那么粉碎的可能结果如下： 
 //
@@ -14,13 +14,13 @@
 // 示例： 
 //
 // 
-//输入：[2,7,4,1,8,1]
-//输出：1
-//解释：
-//先选出 7 和 8，得到 1，所以数组转换为 [2,4,1,1,1]，
-//再选出 2 和 4，得到 2，所以数组转换为 [2,1,1,1]，
-//接着是 2 和 1，得到 1，所以数组转换为 [1,1,1]，
-//最后选出 1 和 1，得到 0，最终数组转换为 [1]，这就是最后剩下那块石头的重量。 
+// 输入：[2,7,4,1,8,1]
+// 输出：1
+// 解释：
+// 先选出 7 和 8，得到 1，所以数组转换为 [2,4,1,1,1]，
+// 再选出 2 和 4，得到 2，所以数组转换为 [2,1,1,1]，
+// 接着是 2 和 1，得到 1，所以数组转换为 [1,1,1]，
+// 最后选出 1 和 1，得到 0，最终数组转换为 [1]，这就是最后剩下那块石头的重量。
 //
 // 
 //
@@ -44,35 +44,35 @@ import org.junit.jupiter.api.Test;
 
 public class LastStoneWeightTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    final int weight = solution.lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1});
-    then(weight).isEqualTo(1);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public int lastStoneWeight(int[] stones) {
-      PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
-      for (int stone : stones) {
-        pq.add(stone);
-      }
-      while (pq.size() > 1) {
-        final Integer m = pq.poll();
-        final Integer n = pq.poll();
-        if (m > n) {
-          pq.add(m - n);
-        }
-      }
-      final Integer poll = pq.poll();
-      return poll == null ? 0 : poll.intValue();
+    @Test
+    void givenNormal_when_thenSuccess() {
+        final int weight = solution.lastStoneWeight(new int[]{2, 7, 4, 1, 8, 1});
+        then(weight).isEqualTo(1);
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int lastStoneWeight(int[] stones) {
+            PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+            for (int stone : stones) {
+                pq.add(stone);
+            }
+            while (pq.size() > 1) {
+                final Integer m = pq.poll();
+                final Integer n = pq.poll();
+                if (m > n) {
+                    pq.add(m - n);
+                }
+            }
+            final Integer poll = pq.poll();
+            return poll == null ? 0 : poll.intValue();
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

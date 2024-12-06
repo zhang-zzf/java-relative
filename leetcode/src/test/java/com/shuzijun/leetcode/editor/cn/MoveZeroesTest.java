@@ -1,4 +1,4 @@
-//给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。 
+// 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
 //
 // 请注意 ，必须在不复制数组的情况下原地对数组进行操作。 
 //
@@ -7,15 +7,15 @@
 // 示例 1: 
 //
 // 
-//输入: nums = [0,1,0,3,12]
-//输出: [1,3,12,0,0]
+// 输入: nums = [0,1,0,3,12]
+// 输出: [1,3,12,0,0]
 // 
 //
 // 示例 2: 
 //
 // 
-//输入: nums = [0]
-//输出: [0] 
+// 输入: nums = [0]
+// 输出: [0]
 //
 // 
 //
@@ -44,40 +44,40 @@ import org.junit.jupiter.api.Test;
 
 public class MoveZeroesTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    int[] nums = {0, 1, 0, 3, 12};
-    solution.moveZeroes(nums);
-    then(nums).containsExactly(1, 3, 12, 0, 0);
-  }
-
-
-  @Test
-  void givenFailedCase1_when_then() {
-    int[] nums = {1};
-    solution.moveZeroes(nums);
-    then(nums).containsExactly(1);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public void moveZeroes(int[] nums) {
-      // [0,left] is not 0
-      int left = -1, right = 0;
-      while (right < nums.length) {
-        if (nums[right] != 0 && ++left != right) {
-          nums[left] = nums[right];
-          nums[right] = 0;
-        }
-        right += 1;
-      }
+    @Test
+    void givenNormal_when_thenSuccess() {
+        int[] nums = {0, 1, 0, 3, 12};
+        solution.moveZeroes(nums);
+        then(nums).containsExactly(1, 3, 12, 0, 0);
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+
+    @Test
+    void givenFailedCase1_when_then() {
+        int[] nums = {1};
+        solution.moveZeroes(nums);
+        then(nums).containsExactly(1);
+    }
+
+    // leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public void moveZeroes(int[] nums) {
+            // [0,left] is not 0
+            int left = -1, right = 0;
+            while (right < nums.length) {
+                if (nums[right] != 0 && ++left != right) {
+                    nums[left] = nums[right];
+                    nums[right] = 0;
+                }
+                right += 1;
+            }
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

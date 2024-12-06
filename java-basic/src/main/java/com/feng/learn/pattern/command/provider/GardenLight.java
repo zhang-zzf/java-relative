@@ -6,19 +6,19 @@ package com.feng.learn.pattern.command.provider;
  */
 public class GardenLight {
 
-  void setDuskTime() {
+    void setDuskTime() {
 
-  }
+    }
 
-  void setDawnTime() {
+    void setDawnTime() {
 
-  }
+    }
 
-  void manualOn() {
+    void manualOn() {
 
-  }
+    }
 
-  void manualOff() {
+    void manualOff() {
 
-  }
+    }
 }

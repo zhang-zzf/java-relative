@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderService {
 
-  final SkuService skuService;
+    final SkuService skuService;
 
-  public Order queryById(Long id) {
-    Sku sku = skuService.queryById(1L);
-    return new Order().setSkuList(List.of(sku));
-  }
+    public Order queryById(Long id) {
+        Sku sku = skuService.queryById(1L);
+        return new Order().setSkuList(List.of(sku));
+    }
 }

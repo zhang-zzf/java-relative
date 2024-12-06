@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class HttpMethodsGetParam {
-  Long id;
-  String name;
+    Long id;
+    String name;
 }

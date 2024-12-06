@@ -16,21 +16,21 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 public class AllLightOffCommand implements Command {
 
-  Light light;
-  CeilingLight ceilingLight;
-  OutdoorLight outdoorLight;
+    Light light;
+    CeilingLight ceilingLight;
+    OutdoorLight outdoorLight;
 
-  @Override
-  public void execute() {
-    outdoorLight.off();
-    light.off();
-    ceilingLight.off();
-  }
+    @Override
+    public void execute() {
+        outdoorLight.off();
+        light.off();
+        ceilingLight.off();
+    }
 
-  @Override
-  public void undo() {
-    outdoorLight.on();
-    light.on();
-    ceilingLight.on();
-  }
+    @Override
+    public void undo() {
+        outdoorLight.on();
+        light.on();
+        ceilingLight.on();
+    }
 }

@@ -9,21 +9,21 @@ import org.junit.jupiter.api.Test;
  */
 class ObservableOneTest {
 
-  // 1个主题，2个观察者
-  ObservableOne observableOne;
-  ObserverOne observerOne;
-  ObserverTwo observerTwo;
+    // 1个主题，2个观察者
+    ObservableOne observableOne;
+    ObserverOne observerOne;
+    ObserverTwo observerTwo;
 
-  @BeforeEach
-  public void beforeEachMethod() {
-    observableOne = new ObservableOne();
-    observerOne = new ObserverOne(observableOne);
-    observerTwo = new ObserverTwo(observableOne);
+    @BeforeEach
+    public void beforeEachMethod() {
+        observableOne = new ObservableOne();
+        observerOne = new ObserverOne(observableOne);
+        observerTwo = new ObserverTwo(observableOne);
 
-  }
+    }
 
-  @Test
-  void setValue() {
-    observableOne.setValue(Integer.MAX_VALUE);
-  }
+    @Test
+    void setValue() {
+        observableOne.setValue(Integer.MAX_VALUE);
+    }
 }

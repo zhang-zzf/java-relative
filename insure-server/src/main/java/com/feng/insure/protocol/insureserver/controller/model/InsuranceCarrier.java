@@ -13,19 +13,19 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class InsuranceCarrier {
 
-  /**
-   * 保司提供的保险产品信息
-   */
-  @Data
-  @Accessors(chain = true)
-  public static class Prod {
-
     /**
-     * 产品id
+     * 保司提供的保险产品信息
      */
-    private String prodCode;
+    @Data
+    @Accessors(chain = true)
+    public static class Prod {
 
-  }
+        /**
+         * 产品id
+         */
+        private String prodCode;
+
+    }
 
 
 }

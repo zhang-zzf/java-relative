@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class EventListenerService {
 
-  @EventListener
-  public void handleEvent(Event event) {
-    log.info("recv event: {}", event);
-  }
+    @EventListener
+    public void handleEvent(Event event) {
+        log.info("recv event: {}", event);
+    }
 
 }

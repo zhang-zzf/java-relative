@@ -5,17 +5,17 @@ import com.feng.learn.pattern.decorator.beverage.Beverage;
 
 public abstract class CondimentDecorator extends Beverage {
 
-  protected Beverage beverage;
+    protected Beverage beverage;
 
-  protected CondimentDecorator(Beverage beverage) {
-    super("condiment");
-    this.beverage = beverage;
-  }
+    protected CondimentDecorator(Beverage beverage) {
+        super("condiment");
+        this.beverage = beverage;
+    }
 
-  @Override
-  public abstract String getDescription();
+    @Override
+    public abstract String getDescription();
 
-  @Override
-  public abstract double cost();
+    @Override
+    public abstract double cost();
 
 }

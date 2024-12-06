@@ -1,16 +1,15 @@
 package com.github.learn.mockito;
 
 
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.given;
+
+import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import java.util.List;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.BDDMockito.given;
 
 public class Junit4 {
 

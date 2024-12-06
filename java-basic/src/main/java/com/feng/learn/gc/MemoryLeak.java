@@ -11,13 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemoryLeak {
 
-  public static void main(String[] args) throws InterruptedException {
-    List<int[]> data = new LinkedList<>();
-    for (int i = 0; i < Integer.MAX_VALUE; i++) {
-      data.add(new int[1024]);
-      Thread.sleep(10);
-      int[] ints = new int[1024];
+    public static void main(String[] args) throws InterruptedException {
+        List<int[]> data = new LinkedList<>();
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            data.add(new int[1024]);
+            Thread.sleep(10);
+            int[] ints = new int[1024];
+        }
+        log.info("data.size => {}", data.size());
     }
-    log.info("data.size => {}", data.size());
-  }
 }

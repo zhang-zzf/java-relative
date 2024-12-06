@@ -1,7 +1,7 @@
-//给定一个二叉树 
+// 给定一个二叉树
 //
 // 
-//struct Node {
+// struct Node {
 //  int val;
 //  Node *left;
 //  Node *right;
@@ -28,10 +28,10 @@
 // 
 //
 // 
-//输入：root = [1,2,3,4,5,null,7]
-//输出：[1,#,2,3,#,4,5,7,#]
-//解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化输出按层序遍历顺序（由 next 指
-//针连接），'#' 表示每层的末尾。 
+// 输入：root = [1,2,3,4,5,null,7]
+// 输出：[1,#,2,3,#,4,5,7,#]
+// 解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化输出按层序遍历顺序（由 next 指
+// 针连接），'#' 表示每层的末尾。
 //
 // 
 //
@@ -56,14 +56,14 @@ import org.junit.jupiter.api.Test;
 
 public class PopulatingNextRightPointersInEachNodeIiTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
+    @Test
+    void givenNormal_when_thenSuccess() {
 
-  }
+    }
 
-  //leetcode submit region begin(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
 /*
 // Definition for a Node.
 class Node {
@@ -87,54 +87,54 @@ class Node {
 };
 */
 
-  class Solution {
+    class Solution {
 
-    public Node connect(Node root) {
-      Node cur = root;
-      while (cur != null) {
-        Node dummy = new Node(), pre = dummy;
-        while (cur != null) {
-          // 遍历当前层
-          if (cur.left != null) {
-            pre.next = cur.left;
-            pre = pre.next;
-          }
-          if (cur.right != null) {
-            pre.next = cur.right;
-            pre = pre.next;
-          }
-          cur = cur.next;
+        public Node connect(Node root) {
+            Node cur = root;
+            while (cur != null) {
+                Node dummy = new Node(), pre = dummy;
+                while (cur != null) {
+                    // 遍历当前层
+                    if (cur.left != null) {
+                        pre.next = cur.left;
+                        pre = pre.next;
+                    }
+                    if (cur.right != null) {
+                        pre.next = cur.right;
+                        pre = pre.next;
+                    }
+                    cur = cur.next;
+                }
+                // 去一下层
+                cur = dummy.next;
+            }
+            return root;
         }
-        // 去一下层
-        cur = dummy.next;
-      }
-      return root;
+
     }
 
-  }
+    // leetcode submit region end(Prohibit modification and deletion)
+    public class Node {
 
-  //leetcode submit region end(Prohibit modification and deletion)
-  public class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
 
-    public int val;
-    public Node left;
-    public Node right;
-    public Node next;
+        public Node() {
+        }
 
-    public Node() {
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+
     }
-
-    public Node(int _val) {
-      val = _val;
-    }
-
-    public Node(int _val, Node _left, Node _right, Node _next) {
-      val = _val;
-      left = _left;
-      right = _right;
-      next = _next;
-    }
-
-  }
 
 }

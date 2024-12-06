@@ -16,25 +16,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MaxProfitServiceTest {
 
-  @Autowired
-  @Qualifier("maxProfitServiceDpImpl")
-  MaxProfitService service;
+    @Autowired
+    @Qualifier("maxProfitServiceDpImpl")
+    MaxProfitService service;
 
-  @Test
-  void given_when_then() {
-    final List<MaxProfitService.Task> taskList = new ArrayList<MaxProfitService.Task>(8) {{
-      add(new MaxProfitService.Task(1, 4, 5));
-      add(new MaxProfitService.Task(3, 5, 1));
-      add(new MaxProfitService.Task(0, 6, 8));
-      add(new MaxProfitService.Task(4, 7, 4));
-      add(new MaxProfitService.Task(3, 8, 6));
-      add(new MaxProfitService.Task(5, 9, 3));
-      add(new MaxProfitService.Task(6, 10, 2));
-      add(new MaxProfitService.Task(8, 11, 4));
-    }};
-    then(service.maxProfit(taskList.subList(0, 1))).isEqualTo(5);
-    then(service.maxProfit(taskList.subList(0, 3))).isEqualTo(8);
-    then(service.maxProfit(taskList)).isEqualTo(13);
-  }
+    @Test
+    void given_when_then() {
+        final List<MaxProfitService.Task> taskList = new ArrayList<MaxProfitService.Task>(8) {{
+            add(new MaxProfitService.Task(1, 4, 5));
+            add(new MaxProfitService.Task(3, 5, 1));
+            add(new MaxProfitService.Task(0, 6, 8));
+            add(new MaxProfitService.Task(4, 7, 4));
+            add(new MaxProfitService.Task(3, 8, 6));
+            add(new MaxProfitService.Task(5, 9, 3));
+            add(new MaxProfitService.Task(6, 10, 2));
+            add(new MaxProfitService.Task(8, 11, 4));
+        }};
+        then(service.maxProfit(taskList.subList(0, 1))).isEqualTo(5);
+        then(service.maxProfit(taskList.subList(0, 3))).isEqualTo(8);
+        then(service.maxProfit(taskList)).isEqualTo(13);
+    }
 
 }

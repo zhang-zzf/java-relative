@@ -10,8 +10,8 @@ import org.springframework.context.support.ConversionServiceFactoryBean;
 @Configuration
 @RequiredArgsConstructor
 public class ConvertServiceConfiguration {
-  @Bean
-  public ConversionServiceFactoryBean conversionServiceFactoryBean() {
-    return new ConversionServiceFactoryBean();
-  }
+    @Bean
+    public ConversionServiceFactoryBean conversionServiceFactoryBean() {
+        return new ConversionServiceFactoryBean();
+    }
 }

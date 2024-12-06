@@ -7,8 +7,8 @@ package com.github.learn.springself.aop.api;
 
 public interface AopInterfaceService {
 
-  void methodA();
+    void methodA();
 
-  void methodB();
+    void methodB();
 
 }

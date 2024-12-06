@@ -14,22 +14,22 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ServiceC {
 
-  private ServiceC self;
+    private ServiceC self;
 
-  @Autowired
-  @Lazy
-  public void setSelf(ServiceC self) {
-    this.self = self;
-  }
+    @Autowired
+    @Lazy
+    public void setSelf(ServiceC self) {
+        this.self = self;
+    }
 
-  public void methodA() {
-    log.info("{} methodA", Thread.currentThread().getName());
-    self.methodB();
-  }
+    public void methodA() {
+        log.info("{} methodA", Thread.currentThread().getName());
+        self.methodB();
+    }
 
-  @Async
-  public void methodB() {
-    log.info("{} methodB", Thread.currentThread().getName());
-  }
+    @Async
+    public void methodB() {
+        log.info("{} methodB", Thread.currentThread().getName());
+    }
 
 }

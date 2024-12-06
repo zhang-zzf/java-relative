@@ -6,23 +6,23 @@ package com.feng.learn.pattern.command.provider;
  */
 public class GarageDoor {
 
-  void up() {
+    void up() {
 
-  }
+    }
 
-  void down() {
+    void down() {
 
-  }
+    }
 
-  void stop() {
+    void stop() {
 
-  }
+    }
 
-  void lightOn() {
+    void lightOn() {
 
-  }
+    }
 
-  void lightOff() {
+    void lightOff() {
 
-  }
+    }
 }

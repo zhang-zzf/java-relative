@@ -16,23 +16,25 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 public class SqrtServiceBinarySearchImpl implements SqrtService {
 
-  @Override
-  public @PositiveOrZero double sqrt(@PositiveOrZero int v, @PositiveOrZero double t) {
-    double left = 0, right = v;
-    int cnt = 0;
-    while (true) {
-      double mid = (left + right) / 2;
-      final double tmp = mid * mid;
-      if (tmp > v + t) {
-        right = mid - t;
-        cnt += 1;
-      } else if (tmp < v - t) {
-        left = mid + t;
-        cnt += 1;
-      } else {
-        log.info("cnt: {}", cnt);
-        return mid;
-      }
+    @Override
+    public @PositiveOrZero double sqrt(@PositiveOrZero int v, @PositiveOrZero double t) {
+        double left = 0, right = v;
+        int cnt = 0;
+        while (true) {
+            double mid = (left + right) / 2;
+            final double tmp = mid * mid;
+            if (tmp > v + t) {
+                right = mid - t;
+                cnt += 1;
+            }
+            else if (tmp < v - t) {
+                left = mid + t;
+                cnt += 1;
+            }
+            else {
+                log.info("cnt: {}", cnt);
+                return mid;
+            }
+        }
     }
-  }
 }

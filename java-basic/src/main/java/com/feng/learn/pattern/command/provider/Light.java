@@ -14,13 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Light {
 
-  String lightLocation;
+    String lightLocation;
 
-  public void on() {
-    log.info("{}: light on", lightLocation);
-  }
+    public void on() {
+        log.info("{}: light on", lightLocation);
+    }
 
-  public void off() {
-    log.info("{}: light off", lightLocation);
-  }
+    public void off() {
+        log.info("{}: light off", lightLocation);
+    }
 }

@@ -10,6 +10,6 @@ import javax.validation.constraints.NotNull;
  */
 public interface MaxSumInArrayService {
 
-  int maxSum(@NotNull int[] array);
+    int maxSum(@NotNull int[] array);
 
 }

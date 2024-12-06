@@ -12,15 +12,19 @@ import lombok.Data;
 
 @Data
 public class UserRegisterReq {
-    @NotEmpty @Pattern(regexp = USER_TYPE_PATTERN)
+    @NotEmpty
+    @Pattern(regexp = USER_TYPE_PATTERN)
     String type;
     @Size(min = 9, max = 10)
     String cardNo;
-    @Size(min = 11, max = 11) @Pattern(regexp = MOBILE_REGEXP)
+    @Size(min = 11, max = 11)
+    @Pattern(regexp = MOBILE_REGEXP)
     String mobile;
-    @NotEmpty @Size(min = 4, max = 16)
+    @NotEmpty
+    @Size(min = 4, max = 16)
     String password;
-    @NotEmpty @Size(min = 4, max = 8)
+    @NotEmpty
+    @Size(min = 4, max = 8)
     String verificationCode;
 
     public void verify() {

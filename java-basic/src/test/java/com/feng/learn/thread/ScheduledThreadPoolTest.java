@@ -13,7 +13,6 @@ public class ScheduledThreadPoolTest {
      *   1. run task
      *   1. submit next task (next exec time = period-(now-start))
      * </pre>
-     *
      */
     @Test
     public void test() throws InterruptedException {
@@ -37,7 +36,6 @@ public class ScheduledThreadPoolTest {
      *   1. run task
      *   1. submit next task, exec time = delay
      * </pre>
-     *
      */
     @Test
     public void test2() throws InterruptedException {

@@ -13,14 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class StringReverseTest {
 
-  @Autowired
-  StringReverse stringReverse;
+    @Autowired
+    StringReverse stringReverse;
 
-  @Test
-  void given_when_then() {
-    char[] chars = "hello".toCharArray();
-    stringReverse.reverse(chars);
-    then(chars).containsExactly('o', 'l', 'l', 'e', 'h');
-  }
+    @Test
+    void given_when_then() {
+        char[] chars = "hello".toCharArray();
+        stringReverse.reverse(chars);
+        then(chars).containsExactly('o', 'l', 'l', 'e', 'h');
+    }
 
 }

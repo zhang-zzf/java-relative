@@ -11,33 +11,33 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AServiceB {
 
-  /**
-   * <pre>
-   *   构造器注入
-   *   可以正常注入
-   *   {@link AServiceAABeans }定义了名字为 aServiceAA1 的 bean
-   * </pre>
-   */
-  final AServiceAA aServiceAA1;
-  AServiceAA aServiceAA2;
+    /**
+     * <pre>
+     *   构造器注入
+     *   可以正常注入
+     *   {@link AServiceAABeans }定义了名字为 aServiceAA1 的 bean
+     * </pre>
+     */
+    final AServiceAA aServiceAA1;
+    AServiceAA aServiceAA2;
 
-  public String aServiceAA1Name() {
-    return aServiceAA1.name();
-  }
+    public String aServiceAA1Name() {
+        return aServiceAA1.name();
+    }
 
-  public String aServiceAA2Name() {
-    return aServiceAA2.name();
-  }
+    public String aServiceAA2Name() {
+        return aServiceAA2.name();
+    }
 
-  /**
-   * <pre>
-   * 可以正常注入
-   * {@link AServiceAABeans }定义了名字为 aServiceAA2 的 bean
-   * </pre>
-   */
-  @Autowired
-  final void setAServiceAA2(AServiceAA aServiceAA2) {
-    this.aServiceAA2 = aServiceAA2;
-  }
+    /**
+     * <pre>
+     * 可以正常注入
+     * {@link AServiceAABeans }定义了名字为 aServiceAA2 的 bean
+     * </pre>
+     */
+    @Autowired
+    final void setAServiceAA2(AServiceAA aServiceAA2) {
+        this.aServiceAA2 = aServiceAA2;
+    }
 
 }

@@ -88,7 +88,7 @@ public class ThreadState {
          */
         // WAITING
         Object lock = new Object();
-        AtomicBoolean waitResourceReady =  new AtomicBoolean(false);
+        AtomicBoolean waitResourceReady = new AtomicBoolean(false);
         new Thread(() -> {
             printThread("try to acquire lock: lock");
             synchronized (lock) {
@@ -137,11 +137,11 @@ public class ThreadState {
 
         new Thread(() -> {
             try {
-                Thread.sleep(60*1000);
+                Thread.sleep(60 * 1000);
             } catch (InterruptedException e) {
                 // ignore
             }
-            if (waitResourceReady.compareAndSet(false, true)){
+            if (waitResourceReady.compareAndSet(false, true)) {
                 printThread("resource ready");
                 printThread("try to acquire lock: lock");
                 synchronized (lock) {

@@ -7,7 +7,6 @@ import com.feng.learn.service.UserService;
 import com.feng.learn.util.Trace;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.data.Index;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +26,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 public class UserServiceAspectTest {
 
-  @Autowired
-  UserService userService;
+    @Autowired
+    UserService userService;
 
-  @Test
-  public void given_when_then() {
-    // when
-    userService.save(0L, "zhang.zzf");
-    List<String> trace = Trace.trace();
-    // then
-    then(trace.get(0)).contains("com.feng.learn.service.impl.UserServiceImpl.save");
-    then(trace.get(1)).contains("com.feng.learn.aop.after.UserServiceAspect.advice1");
-    then(trace.get(2)).contains("com.feng.learn.aop.after.UserServiceAspect.advice2");
-    log.info("trace -> {}", trace);
-  }
+    @Test
+    public void given_when_then() {
+        // when
+        userService.save(0L, "zhang.zzf");
+        List<String> trace = Trace.trace();
+        // then
+        then(trace.get(0)).contains("com.feng.learn.service.impl.UserServiceImpl.save");
+        then(trace.get(1)).contains("com.feng.learn.aop.after.UserServiceAspect.advice1");
+        then(trace.get(2)).contains("com.feng.learn.aop.after.UserServiceAspect.advice2");
+        log.info("trace -> {}", trace);
+    }
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class HttpMethodPostBody {
-  String firstName;
-  String lastName;
+    String firstName;
+    String lastName;
 }

@@ -1,4 +1,4 @@
-//给你一个链表数组，每个链表都已经按升序排列。 
+// 给你一个链表数组，每个链表都已经按升序排列。
 //
 // 请你将所有链表合并到一个升序链表中，返回合并后的链表。 
 //
@@ -7,27 +7,27 @@
 // 示例 1： 
 //
 // 输入：lists = [[1,4,5],[1,3,4],[2,6]]
-//输出：[1,1,2,3,4,4,5,6]
-//解释：链表数组如下：
+// 输出：[1,1,2,3,4,4,5,6]
+// 解释：链表数组如下：
 //[
 //  1->4->5,
 //  1->3->4,
 //  2->6
 //]
-//将它们合并到一个有序链表中得到。
-//1->1->2->3->4->4->5->6
+// 将它们合并到一个有序链表中得到。
+// 1->1->2->3->4->4->5->6
 // 
 //
 // 示例 2： 
 //
 // 输入：lists = []
-//输出：[]
+// 输出：[]
 // 
 //
 // 示例 3： 
 //
 // 输入：lists = [[]]
-//输出：[]
+// 输出：[]
 // 
 //
 // 
@@ -54,65 +54,64 @@ import org.junit.jupiter.api.Test;
 
 public class MergeKSortedListsTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
+    @Test
+    void givenNormal_when_thenSuccess() {
 
-  }
-
-  class ListNode {
-
-    int val;
-    ListNode next;
-
-    ListNode() {
     }
 
-    ListNode(int val) {
-      this.val = val;
-    }
+    class ListNode {
 
-    ListNode(int val, ListNode next) {
-      this.val = val;
-      this.next = next;
-    }
+        int val;
+        ListNode next;
 
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-
-  /**
-   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
-   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
-   * this.next = next; } }
-   */
-
-  class Solution {
-
-    public ListNode mergeKLists(ListNode[] lists) {
-      PriorityQueue<ListNode> pq = new PriorityQueue<>(
-          lists.length > 0 ? lists.length : 1,
-          Comparator.comparing(o -> o.val));
-      for (int i = 0; i < lists.length; i++) {
-        if (lists[i] != null) {
-          pq.add(lists[i]);
+        ListNode() {
         }
-      }
-      ListNode dummy = new ListNode(), tail = dummy;
-      while (!pq.isEmpty()) {
-        final ListNode small = pq.poll();
-        tail.next = new ListNode(small.val);
-        tail = tail.next;
-        if (small.next != null) {
-          pq.add(small.next);
+
+        ListNode(int val) {
+            this.val = val;
         }
-      }
-      return dummy.next;
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+
+    /**
+     * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode() {} ListNode(int
+     * val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val; this.next = next; } }
+     */
+
+    class Solution {
+
+        public ListNode mergeKLists(ListNode[] lists) {
+            PriorityQueue<ListNode> pq = new PriorityQueue<>(
+                lists.length > 0 ? lists.length : 1,
+                Comparator.comparing(o -> o.val));
+            for (int i = 0; i < lists.length; i++) {
+                if (lists[i] != null) {
+                    pq.add(lists[i]);
+                }
+            }
+            ListNode dummy = new ListNode(), tail = dummy;
+            while (!pq.isEmpty()) {
+                final ListNode small = pq.poll();
+                tail.next = new ListNode(small.val);
+                tail = tail.next;
+                if (small.next != null) {
+                    pq.add(small.next);
+                }
+            }
+            return dummy.next;
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

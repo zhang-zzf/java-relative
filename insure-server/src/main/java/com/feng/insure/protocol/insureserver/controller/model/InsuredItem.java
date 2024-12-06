@@ -15,6 +15,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class InsuredItem {
 
-  private Map<String, String> data;
+    private Map<String, String> data;
 
 }

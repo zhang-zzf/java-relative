@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SpringRabbitmqApplicationTests {
 
-  @Autowired
-  RabbitTemplate rabbitTemplate;
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
-  @Test
-  void contextLoads() {
-    System.out.println();
-  }
+    @Test
+    void contextLoads() {
+        System.out.println();
+    }
 
 }

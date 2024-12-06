@@ -13,28 +13,31 @@ import org.hibernate.validator.constraints.Range;
  */
 public interface PersonRepo {
 
-  /**
-   * get by id
-   *
-   * @param id id
-   * @return data
-   */
-  @NotNull Person getById(@NotNull Long id);
+    /**
+     * get by id
+     *
+     * @param id id
+     * @return data
+     */
+    @NotNull
+    Person getById(@NotNull Long id);
 
-  /**
-   * update person
-   *
-   * @param person data
-   * @return updated number
-   */
-  @Range int updatePerson(@NotNull @Valid Person person);
+    /**
+     * update person
+     *
+     * @param person data
+     * @return updated number
+     */
+    @Range
+    int updatePerson(@NotNull @Valid Person person);
 
-  /**
-   * batch get by id
-   *
-   * @param idList id
-   * @return data
-   */
-  @NotNull List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList);
+    /**
+     * batch get by id
+     *
+     * @param idList id
+     * @return data
+     */
+    @NotNull
+    List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList);
 
 }

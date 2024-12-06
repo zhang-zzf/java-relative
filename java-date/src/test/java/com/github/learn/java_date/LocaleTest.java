@@ -25,9 +25,9 @@ public class LocaleTest {
 
     @Test
     void givenResourceBundle_when_then() {
-        then(ResourceBundle.getBundle("exception",Locale.ENGLISH).getString("key1"))
+        then(ResourceBundle.getBundle("exception", Locale.ENGLISH).getString("key1"))
             .isEqualTo("Hello, World!");
-        then(ResourceBundle.getBundle("exception",Locale.CHINA).getString("key1"))
+        then(ResourceBundle.getBundle("exception", Locale.CHINA).getString("key1"))
             .isEqualTo("你好，世界！");
     }
 

@@ -10,6 +10,6 @@ import org.springframework.core.task.TaskDecorator;
 @RequiredArgsConstructor
 public abstract class TaskDecoratorWrapper implements TaskDecorator {
 
-  protected final TaskDecorator taskDecorator;
+    protected final TaskDecorator taskDecorator;
 
 }

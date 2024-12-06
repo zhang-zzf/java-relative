@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 class NettyDirectMemoryControllerTest {
 
 
-    @Test void givenByteBuf_whenNoRelease_then() {
+    @Test
+    void givenByteBuf_whenNoRelease_then() {
         for (int i = 0; i < 50; ++i) {
             ByteBuf byteBuf = UnpooledByteBufAllocator.DEFAULT.buffer(1024);
             byteBuf = null;

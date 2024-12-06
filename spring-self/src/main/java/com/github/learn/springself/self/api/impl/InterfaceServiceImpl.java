@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class InterfaceServiceImpl implements InterfaceService {
 
-  /**
-   * 注入接口自己
-   */
-  private InterfaceService self;
+    /**
+     * 注入接口自己
+     */
+    private InterfaceService self;
 
-  @Override
-  public void methodA() {
-    self.methodB();
-  }
+    @Override
+    public void methodA() {
+        self.methodB();
+    }
 
-  @Override
-  public void methodB() {
-  }
+    @Override
+    public void methodB() {
+    }
 
-  @Autowired
-  public void setSelf(InterfaceService self) {
-    this.self = self;
-  }
+    @Autowired
+    public void setSelf(InterfaceService self) {
+        this.self = self;
+    }
 
 }

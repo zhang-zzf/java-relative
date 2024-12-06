@@ -22,24 +22,24 @@ import lombok.SneakyThrows;
 @RequiredArgsConstructor
 public class CacheDemo {
 
-  private final DataSource dataSource;
+    private final DataSource dataSource;
 
-  private final Cache<String, Integer> cache = CacheBuilder.newBuilder()
-      .maximumSize(8)
-      .build();
+    private final Cache<String, Integer> cache = CacheBuilder.newBuilder()
+        .maximumSize(8)
+        .build();
 
-  private Integer retrieveFromSource(String key) {
-    return dataSource.queryBy(key);
-  }
+    private Integer retrieveFromSource(String key) {
+        return dataSource.queryBy(key);
+    }
 
-  @SneakyThrows
-  public Integer getByStringKey(String key) {
-    return cache.get(key, () -> {
-      // If the key wasn't in the "easy to compute" group, we need to
-      // do things the hard way.
-      return retrieveFromSource(key);
-    });
-  }
+    @SneakyThrows
+    public Integer getByStringKey(String key) {
+        return cache.get(key, () -> {
+            // If the key wasn't in the "easy to compute" group, we need to
+            // do things the hard way.
+            return retrieveFromSource(key);
+        });
+    }
 
 }
 

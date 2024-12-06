@@ -2,7 +2,6 @@ package com.github.learn.mapstruct_demo.object.cases;
 
 import java.math.BigDecimal;
 import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -63,7 +62,7 @@ public class Cases {
          */
         @Mapping(target = ".", source = "dto.dto1")
         @Mapping(target = ".", source = "dto.dto2")
-        //忽略 id
+        // 忽略 id
         Domain updateExistBean(Dto dto, @MappingTarget Domain domain);
 
         @Data
@@ -110,7 +109,7 @@ public class Cases {
     public interface NToOneDtoDomainMapper {
 
         NToOneDtoDomainMapper INSTANCE = Mappers.getMapper(
-                NToOneDtoDomainMapper.class);
+            NToOneDtoDomainMapper.class);
 
         /**
          * <pre>
@@ -128,8 +127,8 @@ public class Cases {
          *
          * </pre>
          */
-//    @Mapping(target = "id", source = "dto2.id")
-//    @Mapping(target = "str", source = "dto1.str")
+        //    @Mapping(target = "id", source = "dto2.id")
+        //    @Mapping(target = "str", source = "dto1.str")
         Domain toDomain(Dto1 dto1, Dto2 dto2);
 
         /**

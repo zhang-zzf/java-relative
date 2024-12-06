@@ -6,11 +6,11 @@ package com.feng.learn.pattern.command.provider;
  */
 public class ApplianceControl {
 
-  public void on() {
+    public void on() {
 
-  }
+    }
 
-  public void off() {
+    public void off() {
 
-  }
+    }
 }

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AInterfaceService implements AInterface {
 
-  @Async
-  @Override
-  public void methodA() {
+    @Async
+    @Override
+    public void methodA() {
 
-  }
+    }
 }

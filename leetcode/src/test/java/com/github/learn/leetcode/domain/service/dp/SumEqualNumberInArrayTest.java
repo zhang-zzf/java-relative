@@ -13,14 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SumEqualNumberInArrayTest {
 
-  @Autowired
-  SumEqualNumberInArray service;
+    @Autowired
+    SumEqualNumberInArray service;
 
-  @Test
-  void given_when_then() {
-    then(service.equal(new int[]{1}, 1)).isTrue();
-    then(service.equal(new int[]{1}, 2)).isFalse();
-    then(service.equal(new int[]{3, 34, 4, 12, 5, 2}, 9)).isTrue();
-  }
+    @Test
+    void given_when_then() {
+        then(service.equal(new int[]{1}, 1)).isTrue();
+        then(service.equal(new int[]{1}, 2)).isFalse();
+        then(service.equal(new int[]{3, 34, 4, 12, 5, 2}, 9)).isTrue();
+    }
 
 }

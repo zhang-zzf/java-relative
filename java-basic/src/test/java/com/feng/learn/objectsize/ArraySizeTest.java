@@ -1,10 +1,10 @@
 package com.feng.learn.objectsize;
 
+import static java.lang.System.out;
+
 import org.junit.Test;
 import org.openjdk.jol.info.ClassLayout;
 import org.openjdk.jol.vm.VM;
-
-import static java.lang.System.out;
 
 /**
  * 测量数组对象头的大小

@@ -12,17 +12,17 @@ import feign.jackson.JacksonEncoder;
 
 public class HttpBinClient {
 
-  final ObjectMapper objectMapper = new ObjectMapper()
-      .setSerializationInclusion(Include.NON_NULL)
-      .configure(SerializationFeature.INDENT_OUTPUT, true)
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    final ObjectMapper objectMapper = new ObjectMapper()
+        .setSerializationInclusion(Include.NON_NULL)
+        .configure(SerializationFeature.INDENT_OUTPUT, true)
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-  final HttpBin httpBin = Feign.builder()
-      .decoder(new JacksonDecoder(objectMapper))
-      .encoder(new JacksonEncoder(objectMapper))
-      .target(HttpBin.class, "https://httpbin.org/");
+    final HttpBin httpBin = Feign.builder()
+        .decoder(new JacksonDecoder(objectMapper))
+        .encoder(new JacksonEncoder(objectMapper))
+        .target(HttpBin.class, "https://httpbin.org/");
 
-  HttpMethodsResp get() {
-    return httpBin.httpMethodGet(null);
-  }
+    HttpMethodsResp get() {
+        return httpBin.httpMethodGet(null);
+    }
 }

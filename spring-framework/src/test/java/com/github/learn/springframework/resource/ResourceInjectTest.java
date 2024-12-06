@@ -7,12 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ResourceInjectTest {
 
-  @Autowired
-  ResourceInject resourceBean;
+    @Autowired
+    ResourceInject resourceBean;
 
-  @Test
-  void given_when_then() {
-    resourceBean.loadApplicationYaml();
-  }
+    @Test
+    void given_when_then() {
+        resourceBean.loadApplicationYaml();
+    }
 
 }

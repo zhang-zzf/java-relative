@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class PointCuts {
 
-  @Before("execution(* com.github.learn.springself.aop..*.methodB(..))")
-  public void beforeMethodB() {
-    log.info("beforeMethodB.");
-  }
+    @Before("execution(* com.github.learn.springself.aop..*.methodB(..))")
+    public void beforeMethodB() {
+        log.info("beforeMethodB.");
+    }
 
 }

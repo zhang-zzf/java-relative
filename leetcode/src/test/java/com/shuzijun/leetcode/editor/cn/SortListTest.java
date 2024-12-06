@@ -1,4 +1,4 @@
-//给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。 
+// 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 //
 // 
 // 
@@ -8,22 +8,22 @@
 // 示例 1： 
 //
 // 
-//输入：head = [4,2,1,3]
-//输出：[1,2,3,4]
+// 输入：head = [4,2,1,3]
+// 输出：[1,2,3,4]
 // 
 //
 // 示例 2： 
 //
 // 
-//输入：head = [-1,5,3,4,0]
-//输出：[-1,0,3,4,5]
+// 输入：head = [-1,5,3,4,0]
+// 输出：[-1,0,3,4,5]
 // 
 //
 // 示例 3： 
 //
 // 
-//输入：head = []
-//输出：[]
+// 输入：head = []
+// 输出：[]
 // 
 //
 // 
@@ -52,61 +52,60 @@ import org.junit.jupiter.api.Test;
 
 public class SortListTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    final ListNode head = new ListNode(-1,
-        new ListNode(5, new ListNode(3, new ListNode(4, new ListNode(0)))));
-    final ListNode sortL = solution.sortList(head);
-    then(sortL.val).isEqualTo(-1);
-  }
-
-
-  public class ListNode {
-
-    int val;
-    ListNode next;
-
-    ListNode() {
+    @Test
+    void givenNormal_when_thenSuccess() {
+        final ListNode head = new ListNode(-1,
+            new ListNode(5, new ListNode(3, new ListNode(4, new ListNode(0)))));
+        final ListNode sortL = solution.sortList(head);
+        then(sortL.val).isEqualTo(-1);
     }
 
-    ListNode(int val) {
-      this.val = val;
+
+    public class ListNode {
+
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+
     }
+    // leetcode submit region begin(Prohibit modification and deletion)
 
-    ListNode(int val, ListNode next) {
-      this.val = val;
-      this.next = next;
+    /**
+     * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode() {} ListNode(int
+     * val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val; this.next = next; } }
+     */
+    class Solution {
+
+        public ListNode sortList(ListNode head) {
+            ListNode dummy = new ListNode(), tail = dummy;
+            PriorityQueue<ListNode> pq = new PriorityQueue<>(
+                Comparator.comparing(listNode -> listNode.val));
+            for (ListNode ptr = head; ptr != null; ptr = ptr.next) {
+                pq.add(ptr);
+            }
+            while (!pq.isEmpty()) {
+                tail.next = pq.poll();
+                tail = tail.next;
+            }
+            tail.next = null;
+            return dummy.next;
+        }
+
     }
-
-  }
-  //leetcode submit region begin(Prohibit modification and deletion)
-
-  /**
-   * Definition for singly-linked list. public class ListNode { int val; ListNode next; ListNode()
-   * {} ListNode(int val) { this.val = val; } ListNode(int val, ListNode next) { this.val = val;
-   * this.next = next; } }
-   */
-  class Solution {
-
-    public ListNode sortList(ListNode head) {
-      ListNode dummy = new ListNode(), tail = dummy;
-      PriorityQueue<ListNode> pq = new PriorityQueue<>(
-          Comparator.comparing(listNode -> listNode.val));
-      for (ListNode ptr = head; ptr != null; ptr = ptr.next) {
-        pq.add(ptr);
-      }
-      while (!pq.isEmpty()) {
-        tail.next = pq.poll();
-        tail = tail.next;
-      }
-      tail.next = null;
-      return dummy.next;
-    }
-
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

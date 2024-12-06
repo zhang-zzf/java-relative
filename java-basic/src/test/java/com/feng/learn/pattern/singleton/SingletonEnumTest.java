@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 
 class SingletonEnumTest {
 
-  @Test
-  void givenEnum_whenSingleton_then() {
-    SingletonEnum instance = SingletonEnum.INSTANCE;
-    then(instance.getStr()).isNull();
-    instance.setStr("Hello");
-    then(instance.getStr()).isEqualTo("Hello");
-  }
+    @Test
+    void givenEnum_whenSingleton_then() {
+        SingletonEnum instance = SingletonEnum.INSTANCE;
+        then(instance.getStr()).isNull();
+        instance.setStr("Hello");
+        then(instance.getStr()).isEqualTo("Hello");
+    }
 
 }

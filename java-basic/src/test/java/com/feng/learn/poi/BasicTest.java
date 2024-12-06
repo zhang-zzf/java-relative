@@ -16,18 +16,18 @@ import org.junit.Test;
  */
 public class BasicTest {
 
-  @Test
-  public void getNumberToString() throws IOException {
-    final InputStream file = ClassLoader.getSystemResourceAsStream("poi/test.xlsx");
-    final XSSFWorkbook workbook = new XSSFWorkbook(file);
-    final Sheet sheet = workbook.getSheetAt(0);
-    final int lastRowNum = sheet.getLastRowNum();
-    for (int i = 0; i <= lastRowNum; i++) {
-      final Cell cell = sheet.getRow(i).getCell(0);
-      cell.setCellType(CellType.STRING);
-      final String cellValue = cell.getStringCellValue();
-      then(cellValue).isNotNull();
+    @Test
+    public void getNumberToString() throws IOException {
+        final InputStream file = ClassLoader.getSystemResourceAsStream("poi/test.xlsx");
+        final XSSFWorkbook workbook = new XSSFWorkbook(file);
+        final Sheet sheet = workbook.getSheetAt(0);
+        final int lastRowNum = sheet.getLastRowNum();
+        for (int i = 0; i <= lastRowNum; i++) {
+            final Cell cell = sheet.getRow(i).getCell(0);
+            cell.setCellType(CellType.STRING);
+            final String cellValue = cell.getStringCellValue();
+            then(cellValue).isNotNull();
+        }
     }
-  }
 
 }

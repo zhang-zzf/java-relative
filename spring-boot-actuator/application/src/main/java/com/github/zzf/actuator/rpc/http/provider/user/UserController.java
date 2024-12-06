@@ -73,7 +73,8 @@ public class UserController {
      * 获取用户信息
      */
     @GetMapping("/{type}/{username}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') && hasAuthority('ROLE_ENDPOINT_ADMIN') && #username == authentication.name")// 只有登陆用户可以获取自己的数据
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') && hasAuthority('ROLE_ENDPOINT_ADMIN') && #username == authentication.name")
+    // 只有登陆用户可以获取自己的数据
     public UserResp user(
         @PathVariable @Pattern(regexp = USER_TYPE_PATTERN) String type,
         @PathVariable String username) {

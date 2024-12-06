@@ -14,27 +14,27 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-  @Autowired
-  private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-  @Override
-  public User get(long id) {
-    User user = userDao.get(id);
-    return user;
-  }
-
-  @Override
-  public boolean save(long id, String name) {
-    Trace.add(String.format("0x%016X", Objects.hashCode(this)));
-    log.info("save -> obj: {}", objectHex(this));
-    return userDao.save(id, name);
-  }
-
-  @Override
-  public void throwException(boolean flag) {
-    if (flag) {
-      throw new IllegalArgumentException("userServiceImpl");
+    @Override
+    public User get(long id) {
+        User user = userDao.get(id);
+        return user;
     }
-  }
+
+    @Override
+    public boolean save(long id, String name) {
+        Trace.add(String.format("0x%016X", Objects.hashCode(this)));
+        log.info("save -> obj: {}", objectHex(this));
+        return userDao.save(id, name);
+    }
+
+    @Override
+    public void throwException(boolean flag) {
+        if (flag) {
+            throw new IllegalArgumentException("userServiceImpl");
+        }
+    }
 
 }

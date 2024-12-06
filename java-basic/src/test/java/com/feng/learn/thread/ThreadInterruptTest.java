@@ -20,7 +20,7 @@ public class ThreadInterruptTest {
         Runnable task = new LoopTask();
         Thread thread = new Thread(task, "a-test-thread");
         thread.start();
-//        Thread.sleep(1000); // 等待线程启动
+        //        Thread.sleep(1000); // 等待线程启动
         thread.interrupt(); // 中断
         thread.join();
     }
@@ -46,7 +46,7 @@ class LoopTask implements Runnable {
     @Override
     public void run() {
         String thread = Thread.currentThread().getName();
-//      while (true) {
+        //      while (true) {
         while (!Thread.interrupted()) {
             System.out.println(thread + " is running...");
             try {

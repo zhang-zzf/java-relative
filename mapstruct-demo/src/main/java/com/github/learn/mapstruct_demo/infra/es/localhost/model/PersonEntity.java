@@ -21,30 +21,30 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class PersonEntity {
 
-  private Long personId;
+    private Long personId;
 
-  private Set<Account> account;
+    private Set<Account> account;
 
-  private Account activeAccount;
+    private Account activeAccount;
 
-  /**
-   * 账户状态
-   * <p>正常</p>
-   * <p>注销:人下所有的账号都是注销</p>
-   */
-  private String accountStatus;
+    /**
+     * 账户状态
+     * <p>正常</p>
+     * <p>注销:人下所有的账号都是注销</p>
+     */
+    private String accountStatus;
 
-  private Register register;
+    private Register register;
 
-  private Identity identity;
+    private Identity identity;
 
-  private Health health;
+    private Health health;
 
-  private Disability disability;
+    private Disability disability;
 
-  /**
-   * 装备
-   */
-  private List<Equipment> equipment;
+    /**
+     * 装备
+     */
+    private List<Equipment> equipment;
 
 }

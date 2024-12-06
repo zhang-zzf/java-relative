@@ -6,11 +6,11 @@ package com.feng.learn.pattern.command.provider;
  */
 public class FaucetControl {
 
-  void openValue() {
+    void openValue() {
 
-  }
+    }
 
-  void closeValue() {
+    void closeValue() {
 
-  }
+    }
 }

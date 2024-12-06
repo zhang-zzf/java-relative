@@ -11,23 +11,23 @@ import org.junit.Test;
  */
 public class Junit4DemoTest {
 
-  /**
-   * 运行失败的UT
-   */
-  @Ignore
-  @Test
-  public void testFail() {
-    fail();
-  }
+    /**
+     * 运行失败的UT
+     */
+    @Ignore
+    @Test
+    public void testFail() {
+        fail();
+    }
 
-  /**
-   * 方法用时测试
-   */
-  @Ignore
-  @Test(timeout = 10L)
-  public void testTimeout() throws InterruptedException {
-    Thread.sleep(100);
-  }
+    /**
+     * 方法用时测试
+     */
+    @Ignore
+    @Test(timeout = 10L)
+    public void testTimeout() throws InterruptedException {
+        Thread.sleep(100);
+    }
 
 
 }

@@ -10,12 +10,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DtoDomainMapper {
 
-  DtoDomainMapper mapper = Mappers.getMapper(DtoDomainMapper.class);
+    DtoDomainMapper mapper = Mappers.getMapper(DtoDomainMapper.class);
 
-  // Dto 与 Domain 在转换时 copy 的 person 的 reference (浅copy)
+    // Dto 与 Domain 在转换时 copy 的 person 的 reference (浅copy)
 
-  Dto toDto(Domain domain);
+    Dto toDto(Domain domain);
 
-  Domain toDomain(Dto dto);
+    Domain toDomain(Dto dto);
 
 }

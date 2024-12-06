@@ -16,26 +16,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfig {
 
-  @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
-  private String pattern;
+    @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
+    private String pattern;
 
-  @Bean
-  public LocalDateTimeSerializer localDateTimeSerializer() {
-    return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
-  }
+    @Bean
+    public LocalDateTimeSerializer localDateTimeSerializer() {
+        return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
+    }
 
-  @Bean
-  public LocalDateTimeDeserializer localDateTimeDeserializer() {
-    return new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(pattern));
-  }
+    @Bean
+    public LocalDateTimeDeserializer localDateTimeDeserializer() {
+        return new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(pattern));
+    }
 
-  @Bean
-  public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-    return builder -> {
-      builder.serializerByType(LocalDateTime.class, localDateTimeSerializer());
-      builder.deserializerByType(LocalDateTime.class, localDateTimeDeserializer());
-      builder.simpleDateFormat(pattern);
-    };
-  }
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+        return builder -> {
+            builder.serializerByType(LocalDateTime.class, localDateTimeSerializer());
+            builder.deserializerByType(LocalDateTime.class, localDateTimeDeserializer());
+            builder.simpleDateFormat(pattern);
+        };
+    }
 
 }

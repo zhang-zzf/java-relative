@@ -9,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Application {
 
-  public static void main(String[] args) {
-    log.info("starting Application...");
-    new ThreadRamLocation().startThread(args);
-    log.info("Application started");
-  }
+    public static void main(String[] args) {
+        log.info("starting Application...");
+        new ThreadRamLocation().startThread(args);
+        log.info("Application started");
+    }
 
 }

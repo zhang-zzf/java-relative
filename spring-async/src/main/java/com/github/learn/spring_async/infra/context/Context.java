@@ -6,6 +6,6 @@ package com.github.learn.spring_async.infra.context;
  */
 public class Context {
 
-  public static final ThreadLocal<Long> USER_ID = new ThreadLocal<>();
+    public static final ThreadLocal<Long> USER_ID = new ThreadLocal<>();
 
 }

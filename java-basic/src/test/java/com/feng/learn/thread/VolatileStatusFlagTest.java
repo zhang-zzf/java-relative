@@ -9,8 +9,7 @@ public class VolatileStatusFlagTest {
 
 
     /**
-     * work-thread will never stop. work-thread 看不到shutdown-thread 对 `shutdown`
-     * 变量做的改变.
+     * work-thread will never stop. work-thread 看不到shutdown-thread 对 `shutdown` 变量做的改变.
      */
     @Test
     public void testNoneVolatile() throws InterruptedException {
@@ -35,10 +34,9 @@ public class VolatileStatusFlagTest {
     }
 
     /**
-     * work-thread-1 will never see the change to `shutdown` field. work-thread-2
-     * will never see the change to `shutdown` field. work-thread-3 will see the
-     * change to `shutdown` field. why? work-thread-4 will see the change to
-     * `shutdown` field. why?
+     * work-thread-1 will never see the change to `shutdown` field. work-thread-2 will never see the change to
+     * `shutdown` field. work-thread-3 will see the change to `shutdown` field. why? work-thread-4 will see the change
+     * to `shutdown` field. why?
      */
     @Test
     public void testNoneVolatile2() throws InterruptedException {

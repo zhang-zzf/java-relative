@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderServiceImpl {
 
-  final OrderService orderService;
+    final OrderService orderService;
 
-  @GetMapping("/order/{id}")
-  public Order getByOrderId(@PathVariable Long id) {
-    return orderService.queryById(id);
-  }
+    @GetMapping("/order/{id}")
+    public Order getByOrderId(@PathVariable Long id) {
+        return orderService.queryById(id);
+    }
 }

@@ -9,18 +9,18 @@ import java.util.List;
  */
 public interface LocationRepository {
 
-  void updateLocation(List<Location> locations);
+    void updateLocation(List<Location> locations);
 
-  List<Location> batchGetById(List<Long> ids);
+    List<Location> batchGetById(List<Long> ids);
 
-  /**
-   * 中心点+半径 GEO 搜索
-   * <p>按距离中心点的距离自然排序</p>
-   *
-   * @param lat    维度
-   * @param lon    经度
-   * @param radius 半径, 单位：米
-   */
-  List<Long> searchGeo(double lat, double lon, long radius);
+    /**
+     * 中心点+半径 GEO 搜索
+     * <p>按距离中心点的距离自然排序</p>
+     *
+     * @param lat    维度
+     * @param lon    经度
+     * @param radius 半径, 单位：米
+     */
+    List<Long> searchGeo(double lat, double lon, long radius);
 
 }

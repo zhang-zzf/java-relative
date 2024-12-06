@@ -14,15 +14,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class LightOffCommand implements Command {
 
-  Light light;
+    Light light;
 
-  @Override
-  public void execute() {
-    light.off();
-  }
+    @Override
+    public void execute() {
+        light.off();
+    }
 
-  @Override
-  public void undo() {
-    light.on();
-  }
+    @Override
+    public void undo() {
+        light.on();
+    }
 }

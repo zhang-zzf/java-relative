@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class Sku {
-  String name;
+    String name;
 }

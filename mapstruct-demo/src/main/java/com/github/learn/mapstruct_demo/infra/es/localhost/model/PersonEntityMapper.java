@@ -11,22 +11,22 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface PersonEntityMapper {
 
-  PersonEntityMapper INSTANCE = Mappers.getMapper(PersonEntityMapper.class);
+    PersonEntityMapper INSTANCE = Mappers.getMapper(PersonEntityMapper.class);
 
-  /**
-   * toEntity
-   *
-   * @param domain data
-   * @return entity
-   */
-  PersonEntity fromDomain(Person domain);
+    /**
+     * toEntity
+     *
+     * @param domain data
+     * @return entity
+     */
+    PersonEntity fromDomain(Person domain);
 
-  /**
-   * toDomain
-   *
-   * @param entity data
-   * @return domain model
-   */
-  Person toDomain(PersonEntity entity);
+    /**
+     * toDomain
+     *
+     * @param entity data
+     * @return domain model
+     */
+    Person toDomain(PersonEntity entity);
 
 }

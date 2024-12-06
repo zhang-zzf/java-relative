@@ -11,10 +11,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NoneContext.class})
 public class SpringTest {
 
-  @Repeat(3) // 需要依赖spring context
-  @Test
-  public void testRepeat() {
-    System.out.println("testRepeat");
-  }
+    @Repeat(3) // 需要依赖spring context
+    @Test
+    public void testRepeat() {
+        System.out.println("testRepeat");
+    }
 
 }

@@ -19,14 +19,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AsyncServiceJob {
 
-  final AsyncService asyncService;
+    final AsyncService asyncService;
 
-  @Scheduled(fixedDelay = 8000)
-  public void schedule() {
-    Context.USER_ID.set(999L);
-    log.info("{} => {}", Thread.currentThread().getName(), USER_ID.get());
-    asyncService.methodA();
-    USER_ID.remove();
-  }
+    @Scheduled(fixedDelay = 8000)
+    public void schedule() {
+        Context.USER_ID.set(999L);
+        log.info("{} => {}", Thread.currentThread().getName(), USER_ID.get());
+        asyncService.methodA();
+        USER_ID.remove();
+    }
 
 }

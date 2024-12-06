@@ -42,56 +42,56 @@ import org.junit.jupiter.params.provider.ValueSource;
 @DisplayName("junit 5 learn demo")
 public class _00DemoUnitTest {
 
-  static Stream<Arguments> stringIntAndListProvider() {
-    return Stream.of(
-        arguments("apple", 1, Arrays.asList("a", "b")),
-        arguments("lemon", 2, Arrays.asList("x", "y"))
-    );
-  }
+    static Stream<Arguments> stringIntAndListProvider() {
+        return Stream.of(
+            arguments("apple", 1, Arrays.asList("a", "b")),
+            arguments("lemon", 2, Arrays.asList("x", "y"))
+        );
+    }
 
-  @DisplayName("@ParameterizedTest with ValueSource")
-  @ParameterizedTest(name = "using parameter: {0}")
-  @NullSource
-  @EmptySource
-  @NullAndEmptySource
-  @ValueSource(strings = {"  ", " ", "    "})
-  void givenParameterizedTest_whenWithValueSource_thenSuccess(String str) {
-    boolean b = str == null || str.trim().isEmpty();
-    then(b).isTrue();
-  }
+    @DisplayName("@ParameterizedTest with ValueSource")
+    @ParameterizedTest(name = "using parameter: {0}")
+    @NullSource
+    @EmptySource
+    @NullAndEmptySource
+    @ValueSource(strings = {"  ", " ", "    "})
+    void givenParameterizedTest_whenWithValueSource_thenSuccess(String str) {
+        boolean b = str == null || str.trim().isEmpty();
+        then(b).isTrue();
+    }
 
-  @DisplayName("@ParameterizedTest with CsvSource")
-  @ParameterizedTest(name = "concat({0}, {1}) is {2}")
-  @CsvSource({
-      "4,5,45",
-      "1,2,12",
-  })
-  void givenParameterizedTest_whenWithCsvSource_thenSuccess(int i, long l, String str) {
-    String r = "" + i + l;
-    then(r).isEqualTo(str);
-  }
+    @DisplayName("@ParameterizedTest with CsvSource")
+    @ParameterizedTest(name = "concat({0}, {1}) is {2}")
+    @CsvSource({
+        "4,5,45",
+        "1,2,12",
+    })
+    void givenParameterizedTest_whenWithCsvSource_thenSuccess(int i, long l, String str) {
+        String r = "" + i + l;
+        then(r).isEqualTo(str);
+    }
 
-  @DisplayName("@ParameterizedTest with CsvFileSource")
-  @ParameterizedTest(name = "concat({0}, {1}) is {2}")
-  @CsvFileSource(resources = {"/csv_file.txt"})
-  void givenParameterizedTest_whenWithCsvFileSource_thenSuccess(int i, long l, String str) {
-    String r = "" + i + l;
-    then(r).isEqualTo(str);
-  }
+    @DisplayName("@ParameterizedTest with CsvFileSource")
+    @ParameterizedTest(name = "concat({0}, {1}) is {2}")
+    @CsvFileSource(resources = {"/csv_file.txt"})
+    void givenParameterizedTest_whenWithCsvFileSource_thenSuccess(int i, long l, String str) {
+        String r = "" + i + l;
+        then(r).isEqualTo(str);
+    }
 
-  @DisplayName("@ParameterizedTest with EnumSource")
-  @ParameterizedTest()
-  @EnumSource(value = TimeUnit.class, names = {"MINUTES", "DAYS"})
-  void givenParameterizedTest_whenWithEnumParams_thenSuccess(TimeUnit unit) {
-    then(EnumSet.allOf(TimeUnit.class).contains(unit)).isTrue();
-  }
+    @DisplayName("@ParameterizedTest with EnumSource")
+    @ParameterizedTest()
+    @EnumSource(value = TimeUnit.class, names = {"MINUTES", "DAYS"})
+    void givenParameterizedTest_whenWithEnumParams_thenSuccess(TimeUnit unit) {
+        then(EnumSet.allOf(TimeUnit.class).contains(unit)).isTrue();
+    }
 
-  @DisplayName("@ParameterizedTest with MethodSource")
-  @ParameterizedTest
-  @MethodSource("stringIntAndListProvider")
-  void testWithMultiArgMethodSource(String str, int num, List<String> list) {
-    assertEquals(5, str.length());
-    assertTrue(num >= 1 && num <= 2);
-    assertEquals(2, list.size());
-  }
+    @DisplayName("@ParameterizedTest with MethodSource")
+    @ParameterizedTest
+    @MethodSource("stringIntAndListProvider")
+    void testWithMultiArgMethodSource(String str, int num, List<String> list) {
+        assertEquals(5, str.length());
+        assertTrue(num >= 1 && num <= 2);
+        assertEquals(2, list.size());
+    }
 }

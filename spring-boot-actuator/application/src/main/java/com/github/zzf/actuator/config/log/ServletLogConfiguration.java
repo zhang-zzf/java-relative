@@ -21,7 +21,7 @@ public class ServletLogConfiguration {
 
     @Bean
     public FilterRegistrationBean<Filter> logTracerFilter() {
-        return new FilterRegistrationBean<>(){
+        return new FilterRegistrationBean<>() {
             @Override
             public Filter getFilter() {
                 // log filter should be the head of the chain

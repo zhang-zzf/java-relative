@@ -21,19 +21,19 @@ import lombok.RequiredArgsConstructor;
 public class LoadingCacheDemo {
 
 
-  private final DataSource dataSource;
+    private final DataSource dataSource;
 
-  private final LoadingCache<String, Integer> cache1 = CacheBuilder.newBuilder()
-      .maximumSize(8)
-      .build(CacheLoader.from(this::retrieveFromSource));
+    private final LoadingCache<String, Integer> cache1 = CacheBuilder.newBuilder()
+        .maximumSize(8)
+        .build(CacheLoader.from(this::retrieveFromSource));
 
-  private Integer retrieveFromSource(String key) {
-    return dataSource.queryBy(key);
-  }
+    private Integer retrieveFromSource(String key) {
+        return dataSource.queryBy(key);
+    }
 
-  public Integer getByStringKey(String key) {
-    return cache1.getUnchecked(key);
-  }
+    public Integer getByStringKey(String key) {
+        return cache1.getUnchecked(key);
+    }
 
 }
 

@@ -9,6 +9,7 @@ public interface UserRepo {
     @Nullable
     User queryUserByUserNo(@NotNull String userNo);
 
-    @NotNull long tryCreateUser(@NotNull User user);
+    @NotNull
+    long tryCreateUser(@NotNull User user);
 
 }

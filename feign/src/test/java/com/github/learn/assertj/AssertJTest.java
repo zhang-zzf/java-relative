@@ -1,5 +1,16 @@
 package com.github.learn.assertj;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.from;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+
+import java.util.function.Function;
 import lombok.Getter;
 import lombok.Setter;
 import org.assertj.core.api.BDDAssertions;
@@ -9,15 +20,6 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import java.util.function.Function;
-
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.Assertions.from;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 
 /**
  * @author zhanfeng.zhang
@@ -55,11 +57,11 @@ public class AssertJTest {
     @Test
     public void assertThatUsage() {
         BDDAssertions.then(STR)
-                .isEqualTo(STR).isNotEqualTo("").isEqualToIgnoringCase(STR)
-                .startsWith("He").endsWith("ld").contains(", ")
-                .isNotNull().isNotBlank().isNotEmpty()
-                .hasSizeBetween(1, 20).hasSize(12).hasLineCount(1)
-                .isOfAnyClassIn(String.class).isInstanceOfAny(CharSequence.class);
+            .isEqualTo(STR).isNotEqualTo("").isEqualToIgnoringCase(STR)
+            .startsWith("He").endsWith("ld").contains(", ")
+            .isNotNull().isNotBlank().isNotEmpty()
+            .hasSizeBetween(1, 20).hasSize(12).hasLineCount(1)
+            .isOfAnyClassIn(String.class).isInstanceOfAny(CharSequence.class);
 
     }
 
@@ -75,8 +77,8 @@ public class AssertJTest {
         });
         // then
         BDDAssertions.then(throwable)
-                .isInstanceOfAny(IllegalArgumentException.class)
-                .hasMessage(null);
+            .isInstanceOfAny(IllegalArgumentException.class)
+            .hasMessage(null);
     }
 
     /**
@@ -87,8 +89,8 @@ public class AssertJTest {
         Person person = Person.valueOf("zhanfeng.zhang", 22);
         // method one
         then(person)
-                .returns("zhanfeng.zhang", from(Person::getName))
-                .returns(22, from(Person::getAge));
+            .returns("zhanfeng.zhang", from(Person::getName))
+            .returns(22, from(Person::getAge));
     }
 
     /**

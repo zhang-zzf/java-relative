@@ -7,7 +7,11 @@ import lombok.Data;
 
 @Data
 public class LoginReq {
-  @NotNull @Pattern(regexp = User.USER_TYPE_PATTERN) String type;
-  @NotNull String username;
-  @NotNull String password;
+    @NotNull
+    @Pattern(regexp = User.USER_TYPE_PATTERN)
+    String type;
+    @NotNull
+    String username;
+    @NotNull
+    String password;
 }

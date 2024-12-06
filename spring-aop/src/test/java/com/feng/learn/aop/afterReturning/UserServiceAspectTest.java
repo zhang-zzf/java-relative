@@ -27,18 +27,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 public class UserServiceAspectTest {
 
-  @Autowired
-  UserService userService;
+    @Autowired
+    UserService userService;
 
-  @Test
-  public void given_when_then() {
-    // when
-    userService.save(1L, "zhang.zzf");
-    // then
-    List<String> trace = Trace.trace();
-    then(trace.get(0)).contains("com.feng.learn.service.impl.UserServiceImpl.save");
-    then(trace.get(1)).contains("advice1");
-    then(trace.get(2)).contains("advice2");
-    log.info("trace -> {}", trace);
-  }
+    @Test
+    public void given_when_then() {
+        // when
+        userService.save(1L, "zhang.zzf");
+        // then
+        List<String> trace = Trace.trace();
+        then(trace.get(0)).contains("com.feng.learn.service.impl.UserServiceImpl.save");
+        then(trace.get(1)).contains("advice1");
+        then(trace.get(2)).contains("advice2");
+        log.info("trace -> {}", trace);
+    }
 }

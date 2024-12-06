@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OutdoorLight {
 
-  public void on() {
-    log.info("outdoorLight on");
-  }
+    public void on() {
+        log.info("outdoorLight on");
+    }
 
-  public void off() {
-    log.info("outdoorLight off");
-  }
+    public void off() {
+        log.info("outdoorLight off");
+    }
 }

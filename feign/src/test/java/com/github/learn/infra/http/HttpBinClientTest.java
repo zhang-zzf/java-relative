@@ -11,13 +11,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class HttpBinClientTest {
 
-  @InjectMocks
-  HttpBinClient client;
+    @InjectMocks
+    HttpBinClient client;
 
-  @Test
-  void givenFein_when_then() {
-    HttpMethodsResp resp = client.get();
-    then(resp).isNotNull();
-  }
+    @Test
+    void givenFein_when_then() {
+        HttpMethodsResp resp = client.get();
+        then(resp).isNotNull();
+    }
 
 }

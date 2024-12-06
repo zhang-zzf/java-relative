@@ -1,19 +1,19 @@
-//给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。 
+// 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
 //
 // 
 //
 // 示例 1: 
 //
 // 
-//输入: nums = [1,1,1,2,2,3], k = 2
-//输出: [1,2]
+// 输入: nums = [1,1,1,2,2,3], k = 2
+// 输出: [1,2]
 // 
 //
 // 示例 2: 
 //
 // 
-//输入: nums = [1], k = 1
-//输出: [1] 
+// 输入: nums = [1], k = 1
+// 输出: [1]
 //
 // 
 //
@@ -44,43 +44,44 @@ import org.junit.jupiter.api.Test;
 
 public class TopKFrequentElementsTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    final int[] topKFrequent = solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
-    then(topKFrequent).contains(1, 2);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public int[] topKFrequent(int[] nums, int k) {
-      Map<Integer, Integer> numToRate = new HashMap<>(nums.length);
-      for (int i = 0; i < nums.length; i++) {
-        final int num = nums[i];
-        numToRate.put(num, numToRate.getOrDefault(num, 0) + 1);
-      }
-      PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
-          Comparator.comparingInt(arr -> arr[0]));
-      for (Map.Entry<Integer, Integer> e : numToRate.entrySet()) {
-        final Integer value = e.getValue();
-        if (pq.size() < k) {
-          pq.add(new int[]{value, e.getKey()});
-        } else if (value > pq.peek()[0]) {
-          pq.add(new int[]{value, e.getKey()});
-          pq.poll();
-        }
-      }
-      final int[] ret = new int[k];
-      while (!pq.isEmpty()) {
-        ret[--k] = pq.poll()[1];
-      }
-      return ret;
+    @Test
+    void givenNormal_when_thenSuccess() {
+        final int[] topKFrequent = solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
+        then(topKFrequent).contains(1, 2);
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int[] topKFrequent(int[] nums, int k) {
+            Map<Integer, Integer> numToRate = new HashMap<>(nums.length);
+            for (int i = 0; i < nums.length; i++) {
+                final int num = nums[i];
+                numToRate.put(num, numToRate.getOrDefault(num, 0) + 1);
+            }
+            PriorityQueue<int[]> pq = new PriorityQueue<>(k + 1,
+                Comparator.comparingInt(arr -> arr[0]));
+            for (Map.Entry<Integer, Integer> e : numToRate.entrySet()) {
+                final Integer value = e.getValue();
+                if (pq.size() < k) {
+                    pq.add(new int[]{value, e.getKey()});
+                }
+                else if (value > pq.peek()[0]) {
+                    pq.add(new int[]{value, e.getKey()});
+                    pq.poll();
+                }
+            }
+            final int[] ret = new int[k];
+            while (!pq.isEmpty()) {
+                ret[--k] = pq.poll()[1];
+            }
+            return ret;
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

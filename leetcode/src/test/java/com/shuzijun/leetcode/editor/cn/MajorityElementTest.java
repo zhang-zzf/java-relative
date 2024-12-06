@@ -1,4 +1,4 @@
-//给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素。 
+// 给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素。
 //
 // 你可以假设数组是非空的，并且给定的数组总是存在多数元素。 
 //
@@ -7,18 +7,18 @@
 // 示例 1： 
 //
 // 
-//输入：nums = [3,2,3]
-//输出：3 
+// 输入：nums = [3,2,3]
+// 输出：3
 //
 // 示例 2： 
 //
 // 
-//输入：nums = [2,2,1,1,1,2,2]
-//输出：2
+// 输入：nums = [2,2,1,1,1,2,2]
+// 输出：2
 // 
 //
 // 
-//提示：
+// 提示：
 //
 // 
 // n == nums.length 
@@ -45,33 +45,33 @@ import org.junit.jupiter.api.Test;
 
 public class MajorityElementTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    int element = solution.majorityElement(new int[]{2, 2, 1, 1, 1, 2, 2});
-    then(element).isEqualTo(2);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public int majorityElement(int[] nums) {
-      int ans = nums[0], maxCnt = 1;
-      Map<Integer, Integer> cnt = new HashMap<>();
-      for (int num : nums) {
-        int val = cnt.getOrDefault(num, 0) + 1;
-        cnt.put(num, val);
-        if (val > maxCnt) {
-          maxCnt = val;
-          ans = num;
-        }
-      }
-      return ans;
+    @Test
+    void givenNormal_when_thenSuccess() {
+        int element = solution.majorityElement(new int[]{2, 2, 1, 1, 1, 2, 2});
+        then(element).isEqualTo(2);
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int majorityElement(int[] nums) {
+            int ans = nums[0], maxCnt = 1;
+            Map<Integer, Integer> cnt = new HashMap<>();
+            for (int num : nums) {
+                int val = cnt.getOrDefault(num, 0) + 1;
+                cnt.put(num, val);
+                if (val > maxCnt) {
+                    maxCnt = val;
+                    ans = num;
+                }
+            }
+            return ans;
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

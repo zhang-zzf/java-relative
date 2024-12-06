@@ -10,18 +10,18 @@ import org.springframework.core.task.TaskDecorator;
 @Slf4j
 public class TimedDecorator extends TaskDecoratorWrapper {
 
-  public TimedDecorator(TaskDecorator taskDecorator) {
-    super(taskDecorator);
-  }
+    public TimedDecorator(TaskDecorator taskDecorator) {
+        super(taskDecorator);
+    }
 
-  @Override
-  public Runnable decorate(Runnable runnable) {
-    final Runnable decorate = taskDecorator.decorate(runnable);
-    return () -> {
-      final long start = System.currentTimeMillis();
-      decorate.run();
-      log.info("{} task executed in {}ms", Thread.currentThread().getName(),
-          System.currentTimeMillis() - start);
-    };
-  }
+    @Override
+    public Runnable decorate(Runnable runnable) {
+        final Runnable decorate = taskDecorator.decorate(runnable);
+        return () -> {
+            final long start = System.currentTimeMillis();
+            decorate.run();
+            log.info("{} task executed in {}ms", Thread.currentThread().getName(),
+                System.currentTimeMillis() - start);
+        };
+    }
 }

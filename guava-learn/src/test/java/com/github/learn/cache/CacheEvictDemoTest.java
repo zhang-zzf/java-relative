@@ -8,12 +8,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CacheEvictDemoTest {
 
-  @InjectMocks
-  CacheEvictDemo demo;
+    @InjectMocks
+    CacheEvictDemo demo;
 
-  @Test
-  void givenLoadingCache_when_then() {
-    demo.queryFromTimeBasedCache("1");
-  }
+    @Test
+    void givenLoadingCache_when_then() {
+        demo.queryFromTimeBasedCache("1");
+    }
 
 }

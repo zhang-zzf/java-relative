@@ -19,11 +19,11 @@ public final class ImmutableHolder {
 
     // 构造时，保护性拷贝
     public ImmutableHolder(int i, Integer itg, List<BigDecimal> list,
-                           MutableObject mutableObject) {
+        MutableObject mutableObject) {
         this.i = i; // 不可变，可以直接赋值
         this.itg = itg;// 不可变，可以直接赋值
 
-        //this.list = list; // error 可变对象不可以直接赋值
+        // this.list = list; // error 可变对象不可以直接赋值
         this.list = new ArrayList<>(list); // 把List中的所有BigDecimal全部拷贝过来，BigDecimal是不可变对象
 
         // this.mutableObject = mutableObject; // error 可变对象不可以直接赋值

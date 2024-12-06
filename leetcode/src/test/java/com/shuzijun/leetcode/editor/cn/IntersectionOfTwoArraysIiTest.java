@@ -1,20 +1,20 @@
-//给你两个整数数组 nums1 和 nums2 ，请你以数组形式返回两数组的交集。返回结果中每个元素出现的次数，应与元素在两个数组中都出现的次数一致（如果出现
-//次数不一致，则考虑取较小值）。可以不考虑输出结果的顺序。 
+// 给你两个整数数组 nums1 和 nums2 ，请你以数组形式返回两数组的交集。返回结果中每个元素出现的次数，应与元素在两个数组中都出现的次数一致（如果出现
+// 次数不一致，则考虑取较小值）。可以不考虑输出结果的顺序。
 //
 // 
 //
 // 示例 1： 
 //
 // 
-//输入：nums1 = [1,2,2,1], nums2 = [2,2]
-//输出：[2,2]
+// 输入：nums1 = [1,2,2,1], nums2 = [2,2]
+// 输出：[2,2]
 // 
 //
 // 示例 2: 
 //
 // 
-//输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
-//输出：[4,9] 
+// 输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+// 输出：[4,9]
 //
 // 
 //
@@ -51,42 +51,42 @@ import org.junit.jupiter.api.Test;
 
 public class IntersectionOfTwoArraysIiTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
-    then(solution.intersect(new int[]{1, 1, 2, 2, 2, 2}, new int[]{2, 2})).containsExactly(2, 2);
-    then(solution.intersect(new int[]{4, 9, 5}, new int[]{9, 4, 9, 8, 4})).contains(4, 9);
-  }
-
-  //leetcode submit region begin(Prohibit modification and deletion)
-  class Solution {
-
-    public int[] intersect(int[] nums1, int[] nums2) {
-      List<Integer> ret = new LinkedList<>();
-      final Map<Integer, Long> numToCount = Arrays.stream(nums1)
-          .boxed()
-          .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
-      Arrays.sort(nums2);
-      for (int i = 0; i < nums2.length; i++) {
-        final int num = nums2[i];
-        Long cnt = numToCount.get(num);
-        if (cnt == null) {
-          continue;
-        }
-        ret.add(num);
-        while ((i + 1) < nums2.length && nums2[i + 1] == num) {
-          if (--cnt > 0) {
-            ret.add(num);
-          }
-          i += 1;
-        }
-      }
-      return ret.stream().mapToInt(Integer::intValue).toArray();
+    @Test
+    void givenNormal_when_thenSuccess() {
+        then(solution.intersect(new int[]{1, 1, 2, 2, 2, 2}, new int[]{2, 2})).containsExactly(2, 2);
+        then(solution.intersect(new int[]{4, 9, 5}, new int[]{9, 4, 9, 8, 4})).contains(4, 9);
     }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    // leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+
+        public int[] intersect(int[] nums1, int[] nums2) {
+            List<Integer> ret = new LinkedList<>();
+            final Map<Integer, Long> numToCount = Arrays.stream(nums1)
+                .boxed()
+                .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+            Arrays.sort(nums2);
+            for (int i = 0; i < nums2.length; i++) {
+                final int num = nums2[i];
+                Long cnt = numToCount.get(num);
+                if (cnt == null) {
+                    continue;
+                }
+                ret.add(num);
+                while ((i + 1) < nums2.length && nums2[i + 1] == num) {
+                    if (--cnt > 0) {
+                        ret.add(num);
+                    }
+                    i += 1;
+                }
+            }
+            return ret.stream().mapToInt(Integer::intValue).toArray();
+        }
+
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 
 
 }

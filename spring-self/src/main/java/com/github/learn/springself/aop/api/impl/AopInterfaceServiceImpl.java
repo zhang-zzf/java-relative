@@ -13,21 +13,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AopInterfaceServiceImpl implements AopInterfaceService {
 
-  AopInterfaceServiceImpl self;
+    AopInterfaceServiceImpl self;
 
-  @Override
-  public void methodA() {
-    self.methodB();
-  }
+    @Override
+    public void methodA() {
+        self.methodB();
+    }
 
-  @Override
-  public void methodB() {
+    @Override
+    public void methodB() {
 
-  }
+    }
 
-  @Autowired
-  public void setSelf(AopInterfaceServiceImpl self) {
-    this.self = self;
-  }
+    @Autowired
+    public void setSelf(AopInterfaceServiceImpl self) {
+        this.self = self;
+    }
 
 }

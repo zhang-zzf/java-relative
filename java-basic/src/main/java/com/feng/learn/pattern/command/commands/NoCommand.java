@@ -9,13 +9,13 @@ import com.feng.learn.pattern.command.Command;
  */
 public class NoCommand implements Command {
 
-  @Override
-  public void execute() {
-    // do nothing
-  }
+    @Override
+    public void execute() {
+        // do nothing
+    }
 
-  @Override
-  public void undo() {
-    // still do nothing
-  }
+    @Override
+    public void undo() {
+        // still do nothing
+    }
 }

@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ServiceA {
 
-  final FacadeA facadeA;
+    final FacadeA facadeA;
 
-  public void methodA() {
-    facadeA.methodA();
-  }
+    public void methodA() {
+        facadeA.methodA();
+    }
 
 }

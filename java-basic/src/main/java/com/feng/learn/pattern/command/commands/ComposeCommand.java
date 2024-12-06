@@ -14,15 +14,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ComposeCommand implements Command {
 
-  Command[] commands;
+    Command[] commands;
 
-  @Override
-  public void execute() {
-    Arrays.stream(commands).forEach(Command::execute);
-  }
+    @Override
+    public void execute() {
+        Arrays.stream(commands).forEach(Command::execute);
+    }
 
-  @Override
-  public void undo() {
-    Arrays.stream(commands).forEach(Command::undo);
-  }
+    @Override
+    public void undo() {
+        Arrays.stream(commands).forEach(Command::undo);
+    }
 }

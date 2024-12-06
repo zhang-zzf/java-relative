@@ -15,11 +15,11 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class FibonacciServiceImpl implements FibonacciService {
 
-  @Override
-  public long fib(@Min(1) @Max(100) int n) {
-    if (n == 1 || n == 2) {
-      return 1;
+    @Override
+    public long fib(@Min(1) @Max(100) int n) {
+        if (n == 1 || n == 2) {
+            return 1;
+        }
+        return fib(n - 1) + fib(n - 2);
     }
-    return fib(n - 1) + fib(n - 2);
-  }
 }

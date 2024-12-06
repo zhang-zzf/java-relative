@@ -5,17 +5,17 @@ import com.feng.learn.pattern.decorator.beverage.Beverage;
 
 public class Whip extends CondimentDecorator {
 
-  public Whip(Beverage beverage) {
-    super(beverage);
-  }
+    public Whip(Beverage beverage) {
+        super(beverage);
+    }
 
-  @Override
-  public String getDescription() {
-    return beverage.getDescription() + ",whip";
-  }
+    @Override
+    public String getDescription() {
+        return beverage.getDescription() + ",whip";
+    }
 
-  @Override
-  public double cost() {
-    return beverage.cost() + .55;
-  }
+    @Override
+    public double cost() {
+        return beverage.cost() + .55;
+    }
 }

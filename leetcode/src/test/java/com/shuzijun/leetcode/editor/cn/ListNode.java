@@ -6,38 +6,38 @@ package com.shuzijun.leetcode.editor.cn;
  */
 public class ListNode<T> {
 
-  public T val;
-  public ListNode next;
+    public T val;
+    public ListNode next;
 
-  ListNode() {
-  }
-
-  ListNode(T val) {
-    this.val = val;
-  }
-
-  ListNode(T val, ListNode next) {
-    this.val = val;
-    this.next = next;
-  }
-
-  public static String toString(ListNode head) {
-    StringBuilder buf = new StringBuilder("[");
-    while (head != null) {
-      buf.append(head.val);
-      if (head.next != null) {
-        buf.append(',');
-      }
-      head = head.next;
+    ListNode() {
     }
-    buf.append(']');
-    return buf.toString();
-  }
 
-  ListNode<T> addToTail(ListNode<T> next) {
-    this.next = next;
-    return next;
-  }
+    ListNode(T val) {
+        this.val = val;
+    }
+
+    ListNode(T val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+
+    public static String toString(ListNode head) {
+        StringBuilder buf = new StringBuilder("[");
+        while (head != null) {
+            buf.append(head.val);
+            if (head.next != null) {
+                buf.append(',');
+            }
+            head = head.next;
+        }
+        buf.append(']');
+        return buf.toString();
+    }
+
+    ListNode<T> addToTail(ListNode<T> next) {
+        this.next = next;
+        return next;
+    }
 
 }
 

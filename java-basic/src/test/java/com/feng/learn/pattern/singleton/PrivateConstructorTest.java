@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
  */
 class PrivateConstructorTest {
 
-  @Test
-  void test() {
-    final SubPrivateConstructor instance = new SubPrivateConstructor();
-    then(instance).isNotNull();
-  }
+    @Test
+    void test() {
+        final SubPrivateConstructor instance = new SubPrivateConstructor();
+        then(instance).isNotNull();
+    }
 
 }

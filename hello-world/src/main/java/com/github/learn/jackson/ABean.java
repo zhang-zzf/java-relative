@@ -1,14 +1,13 @@
 package com.github.learn.jackson;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
+import lombok.Data;
 
 @Data
 @JsonInclude(value = NON_ABSENT, content = NON_ABSENT)

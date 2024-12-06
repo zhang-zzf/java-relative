@@ -54,8 +54,8 @@ public class Junit5DemoTest {
     @DisplayName("@ParameterizedTest with CsvSource")
     @ParameterizedTest(name = "concat({0}, {1}) is {2}")
     @CsvSource({
-            "4,5,45",
-            "1,2,12",
+        "4,5,45",
+        "1,2,12",
     })
     void givenParameterizedTest_whenWithCsvSource_thenSuccess(int i, long l, String str) {
         String r = "" + i + l;
@@ -69,8 +69,8 @@ public class Junit5DemoTest {
     @DisplayName("@ParameterizedTest with CsvFileSource")
     @ParameterizedTest(name = "concat({0}, {1}) is {2}")
     @CsvSource({
-            "4,5,45",
-            "1,2,12",
+        "4,5,45",
+        "1,2,12",
     })
     @CsvFileSource(resources = {"/csv_file.txt"})
     void givenParameterizedTest_whenWithCsvFileSource_thenSuccess(int i, long l, String str) {
@@ -96,8 +96,8 @@ public class Junit5DemoTest {
 
     static Stream<Arguments> stringIntAndListProvider() {
         return Stream.of(
-                arguments("apple", 1, Arrays.asList("a", "b")),
-                arguments("lemon", 2, Arrays.asList("x", "y"))
+            arguments("apple", 1, Arrays.asList("a", "b")),
+            arguments("lemon", 2, Arrays.asList("x", "y"))
         );
     }
 

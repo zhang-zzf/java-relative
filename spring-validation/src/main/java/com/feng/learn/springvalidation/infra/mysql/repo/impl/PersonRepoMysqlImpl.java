@@ -17,19 +17,19 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class PersonRepoMysqlImpl implements PersonRepo {
 
-  @Override
-  public Person getById(Long id) {
-    return new Person().setId(id);
-  }
+    @Override
+    public Person getById(Long id) {
+        return new Person().setId(id);
+    }
 
-  @Override
-  public int updatePerson(Person person) {
-    return 0;
-  }
+    @Override
+    public int updatePerson(Person person) {
+        return 0;
+    }
 
-  @Override
-  public List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList) {
-    return Collections.emptyList();
-  }
+    @Override
+    public List<Person> batchGetById(@NotNull @Size(min = 1, max = 2) List<Long> idList) {
+        return Collections.emptyList();
+    }
 
 }

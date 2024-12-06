@@ -1,6 +1,5 @@
 package com.github.learn.jackson.serialization;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter

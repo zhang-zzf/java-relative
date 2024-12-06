@@ -9,14 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class AServiceBTest {
 
-  @Autowired
-  AServiceB aServiceB;
+    @Autowired
+    AServiceB aServiceB;
 
 
-  @Test
-  void given_when_then() {
-    String name = aServiceB.aServiceAA1Name();
-    then(name).isEqualTo("aServiceAA1");
-  }
+    @Test
+    void given_when_then() {
+        String name = aServiceB.aServiceAA1Name();
+        then(name).isEqualTo("aServiceAA1");
+    }
 
 }

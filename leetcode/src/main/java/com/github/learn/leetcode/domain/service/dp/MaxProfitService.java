@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 public interface MaxProfitService {
 
 
-  int maxProfit(@NotNull List<Task> taskList);
+    int maxProfit(@NotNull List<Task> taskList);
 
-  @Data
-  @AllArgsConstructor
-  @NoArgsConstructor
-  class Task {
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class Task {
 
-    int start;
-    int end;
-    int value;
-  }
+        int start;
+        int end;
+        int value;
+    }
 }

@@ -16,40 +16,40 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventNotifyServiceEmailImpl implements EventNotifyService {
 
-  private final MailSender mailSender;
-  private final String sender;
-  private final String receiverList;
+    private final MailSender mailSender;
+    private final String sender;
+    private final String receiverList;
 
-  public EventNotifyServiceEmailImpl(@Value("${email.sender.host:#{null}}") String host,
-      @Value("${email.sender.username:#{null}}") String sender,
-      @Value("${email.sender.password:#{null}}") String password,
-      @Value("${email.receivers:#{null}}") String receiverList) {
-    this.mailSender = mailSender(host, sender, password);
-    this.sender = sender;
-    this.receiverList = receiverList;
-  }
-
-  @Override
-  public void sendIpChangeEvent(String hostName, Set<String> curIpSet) {
-    if (sender == null) {
-      // 没有配置
-      return;
+    public EventNotifyServiceEmailImpl(@Value("${email.sender.host:#{null}}") String host,
+        @Value("${email.sender.username:#{null}}") String sender,
+        @Value("${email.sender.password:#{null}}") String password,
+        @Value("${email.receivers:#{null}}") String receiverList) {
+        this.mailSender = mailSender(host, sender, password);
+        this.sender = sender;
+        this.receiverList = receiverList;
     }
-    final SimpleMailMessage m = new SimpleMailMessage();
-    m.setFrom(sender);
-    m.setTo(receiverList.split(","));
-    m.setSubject("Ip change event: " + hostName);
-    m.setText("Public IP set: " + curIpSet);
-    mailSender.send(m);
-  }
 
-  public MailSender mailSender(String host, String username, String password) {
-    final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    mailSender.setHost(host);
-    mailSender.setUsername(username);
-    mailSender.setPassword(password);
-    return mailSender;
-  }
+    @Override
+    public void sendIpChangeEvent(String hostName, Set<String> curIpSet) {
+        if (sender == null) {
+            // 没有配置
+            return;
+        }
+        final SimpleMailMessage m = new SimpleMailMessage();
+        m.setFrom(sender);
+        m.setTo(receiverList.split(","));
+        m.setSubject("Ip change event: " + hostName);
+        m.setText("Public IP set: " + curIpSet);
+        mailSender.send(m);
+    }
+
+    public MailSender mailSender(String host, String username, String password) {
+        final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(host);
+        mailSender.setUsername(username);
+        mailSender.setPassword(password);
+        return mailSender;
+    }
 
 
 }

@@ -10,7 +10,7 @@ public class PhoneBookService {
     /**
      * Register a contact
      *
-     * @param name Contact name
+     * @param name  Contact name
      * @param phone Phone number
      */
     public void register(String name, String phone) {

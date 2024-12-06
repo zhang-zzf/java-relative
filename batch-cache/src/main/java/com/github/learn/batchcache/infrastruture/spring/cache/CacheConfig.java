@@ -22,37 +22,37 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 @EnableCaching
 public class CacheConfig {
 
-  public static final String REDIS_CACHE_MANAGER = "redisCacheManager";
+    public static final String REDIS_CACHE_MANAGER = "redisCacheManager";
 
-  public static final String REDIS_CACHE_NAME_1 = "redis_1";
-  public static final String REDIS_CACHE_NAME_2 = "redis_2";
-  private static final RedisCacheConfiguration REDIS_CACHE_NAME_1_CONF = RedisCacheConfiguration
-      .defaultCacheConfig()
-      .serializeValuesWith(
-          RedisSerializationContext.SerializationPair.fromSerializer(
-              new GenericFastJsonRedisSerializer()))
-      .entryTtl(Duration.ofMinutes(4));
-  private static final RedisCacheConfiguration REDIS_CACHE_NAME_2_CONF = RedisCacheConfiguration
-      .defaultCacheConfig()
-      .serializeValuesWith(
-          RedisSerializationContext.SerializationPair.fromSerializer(
-              new GenericFastJsonRedisSerializer()))
-      .entryTtl(Duration.ofMinutes(2));
-
-  @Bean(REDIS_CACHE_MANAGER)
-  public RedisCacheManager redisCacheManager(
-      @Qualifier(REDIS_FACTORY) RedisConnectionFactory factory) {
-    RedisCacheConfiguration defaultConf = RedisCacheConfiguration.defaultCacheConfig()
-        .entryTtl(Duration.ofMinutes(16))
+    public static final String REDIS_CACHE_NAME_1 = "redis_1";
+    public static final String REDIS_CACHE_NAME_2 = "redis_2";
+    private static final RedisCacheConfiguration REDIS_CACHE_NAME_1_CONF = RedisCacheConfiguration
+        .defaultCacheConfig()
         .serializeValuesWith(
             RedisSerializationContext.SerializationPair.fromSerializer(
-                new GenericFastJsonRedisSerializer()));
-    return RedisCacheManager.builder(factory)
-        .disableCreateOnMissingCache()
-        .initialCacheNames(Sets.newHashSet()).cacheDefaults(defaultConf)
-        .withCacheConfiguration(REDIS_CACHE_NAME_1, REDIS_CACHE_NAME_1_CONF)
-        .withCacheConfiguration(REDIS_CACHE_NAME_2, REDIS_CACHE_NAME_2_CONF)
-        .build();
-  }
+                new GenericFastJsonRedisSerializer()))
+        .entryTtl(Duration.ofMinutes(4));
+    private static final RedisCacheConfiguration REDIS_CACHE_NAME_2_CONF = RedisCacheConfiguration
+        .defaultCacheConfig()
+        .serializeValuesWith(
+            RedisSerializationContext.SerializationPair.fromSerializer(
+                new GenericFastJsonRedisSerializer()))
+        .entryTtl(Duration.ofMinutes(2));
+
+    @Bean(REDIS_CACHE_MANAGER)
+    public RedisCacheManager redisCacheManager(
+        @Qualifier(REDIS_FACTORY) RedisConnectionFactory factory) {
+        RedisCacheConfiguration defaultConf = RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(16))
+            .serializeValuesWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(
+                    new GenericFastJsonRedisSerializer()));
+        return RedisCacheManager.builder(factory)
+            .disableCreateOnMissingCache()
+            .initialCacheNames(Sets.newHashSet()).cacheDefaults(defaultConf)
+            .withCacheConfiguration(REDIS_CACHE_NAME_1, REDIS_CACHE_NAME_1_CONF)
+            .withCacheConfiguration(REDIS_CACHE_NAME_2, REDIS_CACHE_NAME_2_CONF)
+            .build();
+    }
 
 }

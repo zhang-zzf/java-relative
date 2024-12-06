@@ -18,13 +18,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 public class EventListenerServiceTest {
 
-  @Autowired
-  EventBusService eventBusService;
+    @Autowired
+    EventBusService eventBusService;
 
-  @Test
-  public void handleEvent() {
-    eventBusService.publish(new Event().setId(1L));
-    // 观察日志输出
-  }
+    @Test
+    public void handleEvent() {
+        eventBusService.publish(new Event().setId(1L));
+        // 观察日志输出
+    }
 
 }

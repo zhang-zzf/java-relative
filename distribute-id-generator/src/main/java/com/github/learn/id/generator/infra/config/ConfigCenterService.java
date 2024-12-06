@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigCenterService {
 
-  public long getSequencePercentThreshold() {
-    return 80;
-  }
+    public long getSequencePercentThreshold() {
+        return 80;
+    }
 
 }

@@ -16,29 +16,29 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ServiceA {
 
-  private ServiceB serviceB;
-  private ServiceA self;
+    private ServiceB serviceB;
+    private ServiceA self;
 
-  @Lazy
-  @Autowired
-  private void setServiceB(ServiceB serviceB) {
-    this.serviceB = serviceB;
-  }
+    @Lazy
+    @Autowired
+    private void setServiceB(ServiceB serviceB) {
+        this.serviceB = serviceB;
+    }
 
-  @Lazy
-  @Autowired
-  private void setSelf(ServiceA self) {
-    this.self = self;
-  }
+    @Lazy
+    @Autowired
+    private void setSelf(ServiceA self) {
+        this.self = self;
+    }
 
-  @Async
-  public void methodA() {
-    log.info("serviceA.methodA");
-  }
+    @Async
+    public void methodA() {
+        log.info("serviceA.methodA");
+    }
 
-  public void methodB() {
-    log.info("serviceA.methodB");
-    serviceB.methodB();
-    self.methodA();
-  }
+    public void methodB() {
+        log.info("serviceA.methodB");
+        serviceB.methodB();
+        self.methodA();
+    }
 }

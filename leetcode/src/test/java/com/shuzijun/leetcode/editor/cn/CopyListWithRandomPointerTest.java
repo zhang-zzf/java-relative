@@ -1,7 +1,7 @@
-//给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。 
+// 给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。
 //
 // 构造这个链表的 深拷贝。 深拷贝应该正好由 n 个 全新 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 next 指针和 random 
-//指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。 
+// 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。
 //
 // 例如，如果原链表中有 X 和 Y 两个节点，其中 X.random --> Y 。那么在复制链表中对应的两个节点 x 和 y ，同样有 x.random 
 //--> y 。 
@@ -24,8 +24,8 @@
 // 
 //
 // 
-//输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
-//输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+// 输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+// 输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
 // 
 //
 // 示例 2： 
@@ -33,8 +33,8 @@
 // 
 //
 // 
-//输入：head = [[1,1],[2,1]]
-//输出：[[1,1],[2,1]]
+// 输入：head = [[1,1],[2,1]]
+// 输出：[[1,1],[2,1]]
 // 
 //
 // 示例 3： 
@@ -42,8 +42,8 @@
 // 
 //
 // 
-//输入：head = [[3,null],[3,0],[3,null]]
-//输出：[[3,null],[3,0],[3,null]]
+// 输入：head = [[3,null],[3,0],[3,null]]
+// 输出：[[3,null],[3,0],[3,null]]
 // 
 //
 // 
@@ -65,28 +65,28 @@ import org.junit.jupiter.api.Test;
 
 public class CopyListWithRandomPointerTest {
 
-  final Solution solution = new Solution();
+    final Solution solution = new Solution();
 
-  @Test
-  void givenNormal_when_thenSuccess() {
+    @Test
+    void givenNormal_when_thenSuccess() {
 
-  }
-
-  class Node {
-
-    int val;
-    Node next;
-    Node random;
-
-    public Node(int val) {
-      this.val = val;
-      this.next = null;
-      this.random = null;
     }
 
-  }
+    class Node {
 
-  //leetcode submit region begin(Prohibit modification and deletion)
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+
+    }
+
+    // leetcode submit region begin(Prohibit modification and deletion)
 /*
 // Definition for a Node.
 class Node {
@@ -102,33 +102,33 @@ class Node {
 }
 */
 
-  class Solution {
+    class Solution {
 
-    public Node copyRandomList(Node head) {
-      if (head == null) {
-        return null;
-      }
-      for (Node ptr = head; ptr != null; ) {
-        final Node newNode = new Node(ptr.val);
-        newNode.next = ptr.next;
-        ptr.next = newNode;
-        ptr = ptr.next.next;
-      }
-      for (Node ptr = head; ptr != null; ) {
-        if (ptr.next != null) {
-          ptr.next.random = ptr.random == null ? null : ptr.random.next;
+        public Node copyRandomList(Node head) {
+            if (head == null) {
+                return null;
+            }
+            for (Node ptr = head; ptr != null; ) {
+                final Node newNode = new Node(ptr.val);
+                newNode.next = ptr.next;
+                ptr.next = newNode;
+                ptr = ptr.next.next;
+            }
+            for (Node ptr = head; ptr != null; ) {
+                if (ptr.next != null) {
+                    ptr.next.random = ptr.random == null ? null : ptr.random.next;
+                }
+                ptr = ptr.next.next;
+            }
+            Node dummy = new Node(0), tail = dummy;
+            for (Node ptr = head; ptr != null; ptr = ptr.next) {
+                tail.next = ptr.next;
+                tail = tail.next;
+                ptr.next = ptr.next.next;
+            }
+            return dummy.next;
         }
-        ptr = ptr.next.next;
-      }
-      Node dummy = new Node(0), tail = dummy;
-      for (Node ptr = head; ptr != null; ptr = ptr.next) {
-        tail.next = ptr.next;
-        tail = tail.next;
-        ptr.next = ptr.next.next;
-      }
-      return dummy.next;
-    }
 
-  }
-//leetcode submit region end(Prohibit modification and deletion)
+    }
+    // leetcode submit region end(Prohibit modification and deletion)
 }

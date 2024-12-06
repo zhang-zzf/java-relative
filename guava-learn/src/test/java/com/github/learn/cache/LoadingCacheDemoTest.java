@@ -12,19 +12,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class LoadingCacheDemoTest {
 
-  @Spy
-  DataSource dataSource;
+    @Spy
+    DataSource dataSource;
 
-  @InjectMocks
-  LoadingCacheDemo demo;
+    @InjectMocks
+    LoadingCacheDemo demo;
 
-  @Test
-  void givenLoadingCache_when_then() {
-    demo.getByStringKey("1");
-    demo.getByStringKey("1");
-    // verify
-    // 仅溯源 1 次
-    BDDMockito.then(dataSource).should(times(1)).queryBy("1");
-  }
+    @Test
+    void givenLoadingCache_when_then() {
+        demo.getByStringKey("1");
+        demo.getByStringKey("1");
+        // verify
+        // 仅溯源 1 次
+        BDDMockito.then(dataSource).should(times(1)).queryBy("1");
+    }
 
 }

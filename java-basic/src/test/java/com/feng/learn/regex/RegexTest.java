@@ -2,7 +2,6 @@ package com.feng.learn.regex;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 

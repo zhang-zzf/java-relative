@@ -11,17 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ObserverOne implements Observer {
 
-  final ObservableOne observableOne;
+    final ObservableOne observableOne;
 
-  public ObserverOne(ObservableOne observableOne) {
-    this.observableOne = observableOne;
-    observableOne.addObserver(this);
-  }
+    public ObserverOne(ObservableOne observableOne) {
+        this.observableOne = observableOne;
+        observableOne.addObserver(this);
+    }
 
-  @Override
-  public void update(Observable o, Object arg) {
-    ObservableOne observableOne = (ObservableOne) o;
-    int valueAfterUpdate = observableOne.getValue();
-    log.info("ObserverOne receive notify from {}: {}", o, valueAfterUpdate);
-  }
+    @Override
+    public void update(Observable o, Object arg) {
+        ObservableOne observableOne = (ObservableOne) o;
+        int valueAfterUpdate = observableOne.getValue();
+        log.info("ObserverOne receive notify from {}: {}", o, valueAfterUpdate);
+    }
 }

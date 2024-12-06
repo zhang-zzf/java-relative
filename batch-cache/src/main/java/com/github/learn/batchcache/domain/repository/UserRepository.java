@@ -10,15 +10,15 @@ import java.util.Set;
  */
 public interface UserRepository {
 
-  User insert(User user);
+    User insert(User user);
 
-  List<User> batchInsert(Set<User> users);
+    List<User> batchInsert(Set<User> users);
 
-  void update(User user);
+    void update(User user);
 
-  User getById(Long id);
+    User getById(Long id);
 
-  List<User> getByIds(Set<Long> ids);
+    List<User> getByIds(Set<Long> ids);
 
-  void deleteByIds(Set<Long> ids);
+    void deleteByIds(Set<Long> ids);
 }

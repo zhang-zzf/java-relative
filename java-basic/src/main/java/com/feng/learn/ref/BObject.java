@@ -7,9 +7,9 @@ import javax.validation.constraints.NotNull;
  * @date : 2024-09-12
  */
 public class BObject {
-  @NotNull
-  public BObject() {
-    int a = 5;
+    @NotNull
+    public BObject() {
+        int a = 5;
 
-  }
+    }
 }

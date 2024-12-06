@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  public void create(User user) {
-    userRepository.insert(user);
-  }
+    public void create(User user) {
+        userRepository.insert(user);
+    }
 }

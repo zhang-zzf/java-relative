@@ -102,9 +102,15 @@ class PersonService_IT {
     }
 
     @Test
+    void givenObjectParam_whenValidateMethodObjectParam2_thenFail() {
+        // @Valid without @NotNull
+        then(catchThrowable(() -> personService.updatePerson11(null))).isNull();
+        ;
+    }
+
+    @Test
     void given0_whenValidateMethodObjectField_thenFail() {
-        final Person person = new Person().setId(-1L)
-            .setAddress(new Address());
+        final Person person = new Person().setId(-1L).setAddress(new Address());
         final Throwable throwable = catchThrowable(() -> personService.updatePerson(person));
         then(throwable).isNotNull().isInstanceOf(ConstraintViolationException.class);
         then(throwable.getMessage()).contains("updatePerson.person.address.province: must not be blank")

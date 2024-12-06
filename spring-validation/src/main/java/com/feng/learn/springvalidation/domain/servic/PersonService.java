@@ -41,6 +41,16 @@ public class PersonService {
         return 0;
     }
 
+    /**
+     * <pre>
+     *    `@Valid` 级联校验，校验 Person 内的注解
+     *    若没有 `@NotNull`, person = null elements are considered valid
+     * </pre>
+     */
+    public @Range(min = 0L) int updatePerson11(@Valid Person person) {
+        return 0;
+    }
+
     public @Range(min = 0L) int updatePerson2(@NotNull @Size(min = 1) List<@NotNull Person> personList) {
         return 0;
     }

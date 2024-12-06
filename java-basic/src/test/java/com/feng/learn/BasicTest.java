@@ -14,6 +14,14 @@ import org.junit.jupiter.api.Test;
 public class BasicTest {
 
   /**
+   * null + "" 不会导致 NPE
+   */
+  @Test
+  void givenNull_whenCombineString_then() {
+    then(null + "").isEqualTo("null");
+  }
+
+  /**
    * 测试 BigDecimal 值大小比较
    */
   boolean compareBigDecimal(BigDecimal v1, BigDecimal v2) {

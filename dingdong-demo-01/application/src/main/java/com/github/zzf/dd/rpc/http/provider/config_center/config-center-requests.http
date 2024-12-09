@@ -1,0 +1,9 @@
+###
+GET {{host}}/api/config/config-defined-by-application
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/config/config-defined-by-dingdong-demo-01
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz

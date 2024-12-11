@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-public class ThreadPoolForDemo {
+public class ThreadPoolForRedisCache {
 
-    public static final String ASYNC_THREAD = "spring-@Async-demo";
+    public static final String ASYNC_THREAD = "spring-@Async-cache";
 
     @Bean(name = ASYNC_THREAD)
     public ThreadPoolTaskExecutor taskExecutor() {

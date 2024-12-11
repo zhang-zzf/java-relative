@@ -13,3 +13,16 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJhdXRoIjpbIlJPTEVfRU5EUE9JTlRfQURNSU4iLCJST0xFX0FETUlOIl0sImlhdCI6MTcyODM4Mzk3MywibmJmIjoxNzI4MzgzOTczLCJleHAiOjE3NDM5MzU5NzN9.nEEunZZAiCKa3593qPu31Dr36BU3_Ox5ZhAKyph3JFw # Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 
+###
+GET {{host}}/api/redis-multi-get/shanghai/users/_search?userNoList=mobile/15618536513,mobile/15618536514,mobile/15618536515,mobile/15618536516,mobile/15618536517
+Content-Type: application/json
+
+###
+GET {{host}}/api/redis-multi-get/beijing/users/_search?userNoList=mobile/15618536513,mobile/15618536513,mobile/15618536513,mobile/15618536513,mobile/15618536513
+Content-Type: application/json
+
+###
+GET {{host}}/api/redis-multi-get/shanghai/users/mobile/15618536513
+Content-Type: application/json
+
+

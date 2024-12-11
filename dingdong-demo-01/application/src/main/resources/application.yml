@@ -72,14 +72,19 @@ spring:
         password: test
         driver-class-name: com.mysql.cj.jdbc.Driver
 
+---
+spring:
+  profiles: mini234b
+  redis:
+    cluster:
+      nodes:
+        - '192.168.56.21:9000'
 
 ---
-# prod config
 spring:
-  config:
-    activate:
-      on-profile: [ prod ]
+  profiles: prod
 
+# prod config
 logging:
   level:
     root: info

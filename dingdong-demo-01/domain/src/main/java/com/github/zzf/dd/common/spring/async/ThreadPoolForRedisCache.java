@@ -1,6 +1,7 @@
 package com.github.zzf.dd.common.spring.async;
 
 import com.github.zzf.dd.common.spring.async.SpringAsyncConfig.NamedThreadFactory;
+import com.github.zzf.dd.common.spring.async.task_decorator.ContextPropagateDecorator;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ public class ThreadPoolForRedisCache {
         taskExecutor.setKeepAliveSeconds(60);// 默认60s
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());// 拒绝策略
         taskExecutor.setDaemon(false);// 守护进程
-        // taskExecutor.setTaskDecorator(new ContextPropagateDecorator(r -> r));// 上下文传递
+        taskExecutor.setTaskDecorator(new ContextPropagateDecorator(r -> r));// 上下文传递
         return taskExecutor;
     }
 

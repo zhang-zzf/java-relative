@@ -8,6 +8,7 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toUnmodifiableList;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.ofNullable;
 
@@ -58,14 +59,10 @@ public class SomeRepoRedisPipelineCacheImpl extends SomeRepoImpl {
      */
     @Override
     public List<User> getBy(String area, List<String> userNoList) {
-        List<User> cachedData = Lists.partition(userNoList, BATCH_SIZE).stream()
-            // async get from cache
-            .map(list -> supplyAsync(() -> fetchFromCache(area, list), executor))
-            // combine all the future task
-            .reduce(completedFuture(empty()), (a, b) -> a.thenCombine(b, Stream::concat))
-            // wait for task done
-            .join()
-            .collect(toList());
+        // List<User> cachedData = fetchFromCacheWithKeyNumLimit(area, userNoList);
+        // lettuce pipeline 底层使用异步
+        // pipeline 一次可以支持 10K 个批量查询，一般远远超过业务请求数量
+        List<User> cachedData = fetchFromCache(area, userNoList).collect(toUnmodifiableList());
         if (cachedData.size() == userNoList.size()) { // all hit cache
             return cachedData;
         }
@@ -74,6 +71,18 @@ public class SomeRepoRedisPipelineCacheImpl extends SomeRepoImpl {
         List<User> dbData = super.getBy(area, missed);
         dbData.forEach(d -> runAsync(() -> self.cachePut(area, d), executor));
         return Stream.concat(cachedData.stream(), dbData.stream()).collect(toList());
+    }
+
+    private List<User> fetchFromCacheWithKeyNumLimit(String area, List<String> userNoList) {
+        List<User> cachedData = Lists.partition(userNoList, BATCH_SIZE).stream()
+            // async get from cache
+            .map(list -> supplyAsync(() -> fetchFromCache(area, list), executor))
+            // combine all the future task
+            .reduce(completedFuture(empty()), (a, b) -> a.thenCombine(b, Stream::concat))
+            // wait for task done
+            .join()
+            .collect(toList());
+        return cachedData;
     }
 
     @Override

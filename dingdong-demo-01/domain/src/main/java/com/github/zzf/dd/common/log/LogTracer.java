@@ -23,7 +23,6 @@ public final class LogTracer {
         return MDC.get(X_TRACE_ID);
     }
 
-
     public void removeTraceId() {
         MDC.remove(X_TRACE_ID);
     }

@@ -21,10 +21,15 @@ public class ContextPropagateDecorator extends TaskDecoratorWrapper {
     @Override
     public Runnable decorate(Runnable runnable) {
         final Runnable decorate = super.taskDecorator.decorate(runnable);
+        // MDC 上下文传递
         final Map<String, String> mdcContextMap = MDC.getCopyOfContextMap();
         return () -> {
             MDC.setContextMap(mdcContextMap);
-            decorate.run();
+            try {
+                decorate.run();
+            } finally {
+                MDC.clear();
+            }
         };
     }
 }

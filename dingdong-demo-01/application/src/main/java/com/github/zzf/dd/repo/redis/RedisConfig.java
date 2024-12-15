@@ -17,9 +17,14 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -71,4 +76,16 @@ public class RedisConfig {
         redisTemplate.setHashValueSerializer(VALUE_SERIALIZER);
         return redisTemplate;
     }
+
+    @Configuration
+    @Profile("jedisCluster")
+    @EnableConfigurationProperties(RedisProperties.class)
+    public static class JedisClusterConnectionFactory {
+
+        public @Bean RedisConnectionFactory connectionFactory(RedisProperties redisProperties) {
+            return new JedisConnectionFactory(new RedisClusterConfiguration(redisProperties.getCluster().getNodes()));
+        }
+
+    }
+
 }

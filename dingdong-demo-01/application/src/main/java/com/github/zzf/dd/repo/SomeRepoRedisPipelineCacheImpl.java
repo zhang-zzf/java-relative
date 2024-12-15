@@ -54,8 +54,6 @@ public class SomeRepoRedisPipelineCacheImpl extends SomeRepoImpl {
     }
 
     /**
-     * <pre>
-     * </pre>
      */
     @Override
     public List<User> getBy(String area, List<String> userNoList) {

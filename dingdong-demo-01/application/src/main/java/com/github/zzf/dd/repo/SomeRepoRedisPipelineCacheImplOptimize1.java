@@ -14,8 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -25,10 +27,10 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.*;
 import static com.github.zzf.dd.repo.redis.spring.cache.SpringRedisCacheConfig.APP_PREFIX;
-import static java.util.concurrent.CompletableFuture.*;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static java.util.stream.Stream.empty;
@@ -43,11 +45,11 @@ import static java.util.stream.Stream.ofNullable;
 @Repository
 @RequiredArgsConstructor
 @CacheConfig(cacheManager = CACHE_MANAGER_FOR_REDIS, cacheNames = {CACHE_REDIS_TTL_5_MINUTES})
-public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
+public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
 
     final @Qualifier("someRepoImpl") SomeRepo delegator;
     final @Qualifier(ASYNC_THREAD) Executor executor;
-    final @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> userRedisTemplate;
+    final @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> redisTemplate;
 
     @Override
     public List<User> getBy(String area, List<String> userNoList) {
@@ -61,8 +63,22 @@ public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
         List<String> cached = cachedData.stream().map(User::getUserNo).collect(toList());
         List<String> missed = userNoList.stream().filter(d -> !cached.contains(d)).collect(toList());
         List<User> dbData = delegator.getBy(area, missed);
-        dbData.forEach(d -> runAsync(() -> self.cachePut(area, d), executor));
+        // dbData.forEach(d -> runAsync(() -> self.cachePut(area, d), executor));
+        //
+        // 优化点：pipeline 批量更新
+        executor.execute(() -> updateCache(dbData));
         return Stream.concat(cachedData.stream(), dbData.stream()).collect(toList());
+    }
+
+    private void updateCache(List<User> dbData) {
+        // todo record
+        redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                dbData.forEach(d -> operations.opsForValue().set(toRedisKey(d.getUserNo()), d, TTL_30_MINUTES));
+                return null;
+            }
+        });
     }
 
     private List<User> fetchFromCacheWithKeyNumLimit(String area, List<String> userNoList) {
@@ -88,29 +104,44 @@ public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
         return d;
     }
 
-    private SomeRepoRedisPipelineCacheImpl self;
+    private SomeRepoRedisPipelineCacheImplOptimize1 self;
 
     @Autowired
     @Lazy
-    public void setSelf(SomeRepoRedisPipelineCacheImpl self) {
+    public void setSelf(SomeRepoRedisPipelineCacheImplOptimize1 self) {
         this.self = self;
     }
 
     private Stream<User> fetchFromCache(String area, List<String> userNoList) {
         log.info("fetchFromCache -> userNoList: {}", userNoList);
-        List<byte[]> redisKeyList = userNoList.stream()
-            .map(id -> APP_PREFIX + "u:" + id)
-            .map(key -> userRedisTemplate.getStringSerializer().serialize(key))
-            .collect(toList());
+        // List<byte[]> redisKeyList = userNoList.stream()
+        //     .map(id -> toRedisKey(id))
+        //     .map(key -> redisTemplate.getStringSerializer().serialize(key))
+        //     .collect(toList());
         // 实测 lettuce key 可以跨 node
-        List<Object> userList = userRedisTemplate.executePipelined((RedisCallback<List<User>>) connection -> {
-            redisKeyList.forEach(connection::get);
-            return null;
+        // List<Object> userList = userRedisTemplate.executePipelined((RedisCallback<List<User>>) connection -> {
+        //     redisKeyList.forEach(connection::get);
+        //     return null;
+        // });
+        //
+        // 优化点： 使用 SessionCallback
+        // lettuce pipeline 底层使用异步
+        // 实测 lettuce key 可以跨 node
+        List<Object> userList = redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+                userNoList.forEach(id -> operations.opsForValue().get(toRedisKey(id)));
+                return null;
+            }
         });
         return ofNullable(userList)
             .flatMap(Collection::stream)
             .map(d -> (User) d)
             .filter(Objects::nonNull);
+    }
+
+    private String toRedisKey(String id) {
+        return APP_PREFIX + "u:" + id;
     }
 
     private static final String USER_REDIS_TEMPLATE

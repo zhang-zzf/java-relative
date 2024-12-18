@@ -1,23 +1,9 @@
 package com.github.zzf.dd.repo;
 
-import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
-import static com.github.zzf.dd.repo.redis.spring.cache.SpringRedisCacheConfig.APP_PREFIX;
-import static java.util.concurrent.CompletableFuture.completedFuture;
-import static java.util.concurrent.CompletableFuture.runAsync;
-import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.empty;
-import static java.util.stream.Stream.ofNullable;
-
+import com.github.zzf.dd.redis_multi_get.repo.SomeRepo;
 import com.github.zzf.dd.user.model.User;
 import com.google.common.collect.Lists;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +16,21 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.stream.Stream;
+
+import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
+import static com.github.zzf.dd.repo.redis.spring.cache.SpringRedisCacheConfig.APP_PREFIX;
+import static java.util.concurrent.CompletableFuture.*;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.empty;
+import static java.util.stream.Stream.ofNullable;
+
 /**
  * @author : zhanfeng.zhang@icloud.com
  * @date : 2024-12-10
@@ -37,18 +38,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @CacheConfig(cacheManager = CACHE_MANAGER_FOR_REDIS, cacheNames = {CACHE_REDIS_TTL_5_MINUTES})
 @Slf4j
-// @Primary
-public class SomeRepoRedisHashtagCacheImpl extends SomeRepoImpl {
+@RequiredArgsConstructor
+public class SomeRepoRedisHashtagCacheImpl implements SomeRepo {
 
-    final Executor executor;
-    final RedisTemplate<String, User> userRedisTemplate;
-
-    public SomeRepoRedisHashtagCacheImpl(@Qualifier(ASYNC_THREAD) Executor executor,
-        @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> userRedisTemplate) {
-        super(executor);
-        this.executor = executor;
-        this.userRedisTemplate = userRedisTemplate;
-    }
+    final @Qualifier("someRepoImpl") SomeRepo delegator;
+    final @Qualifier(ASYNC_THREAD) Executor executor;
+    final @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> userRedisTemplate;
 
     /**
      * <pre>
@@ -58,7 +53,7 @@ public class SomeRepoRedisHashtagCacheImpl extends SomeRepoImpl {
      */
     @Override
     public List<User> getBy(String area, List<String> userNoList) {
-        List<User> cachedData = Lists.partition(userNoList, BATCH_SIZE).stream()
+        List<User> cachedData = Lists.partition(userNoList, 2).stream()
             // async get from cache
             .map(list -> supplyAsync(() -> fetchFromCache(area, list), executor))
             // combine all the future task
@@ -71,7 +66,7 @@ public class SomeRepoRedisHashtagCacheImpl extends SomeRepoImpl {
         }
         List<String> cached = cachedData.stream().map(User::getUserNo).collect(toList());
         List<String> missed = userNoList.stream().filter(d -> !cached.contains(d)).collect(toList());
-        List<User> dbData = super.getBy(area, missed);
+        List<User> dbData = delegator.getBy(area, missed);
         dbData.forEach(d -> runAsync(() -> self.cachePut(area, d), executor));
         return Stream.concat(cachedData.stream(), dbData.stream()).collect(toList());
     }
@@ -79,7 +74,7 @@ public class SomeRepoRedisHashtagCacheImpl extends SomeRepoImpl {
     @Override
     @Cacheable(key = "'a:{' + #area + '}:u:' + #userNo")
     public User getBy(String area, String userNo) {
-        return super.getBy(area, userNo);
+        return delegator.getBy(area, userNo);
     }
 
     @CachePut(key = "'a:{' + #area + '}:u:' + #d.userNo")

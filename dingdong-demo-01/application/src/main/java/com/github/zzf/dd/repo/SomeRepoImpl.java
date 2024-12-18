@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  * @author : zhanfeng.zhang@icloud.com
  * @date : 2024-12-10
  */
-@Repository
+@Repository("someRepoImpl")
 @RequiredArgsConstructor
 @Slf4j
 public class SomeRepoImpl implements SomeRepo {

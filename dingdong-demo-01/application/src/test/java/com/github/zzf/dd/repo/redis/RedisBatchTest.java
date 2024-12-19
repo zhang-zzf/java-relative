@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("mini234b")
 @Slf4j
-public class RedisConfigTest {
+public class RedisBatchTest {
 
     @Autowired
     RedisTemplate redisTemplate;

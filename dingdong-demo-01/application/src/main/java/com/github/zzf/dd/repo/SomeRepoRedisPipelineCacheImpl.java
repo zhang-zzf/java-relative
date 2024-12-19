@@ -39,7 +39,7 @@ import static java.util.stream.Stream.ofNullable;
  * @date : 2024-12-10
  */
 @Slf4j
-@Primary
+// @Primary
 @Repository
 @RequiredArgsConstructor
 @CacheConfig(cacheManager = CACHE_MANAGER_FOR_REDIS, cacheNames = {CACHE_REDIS_TTL_5_MINUTES})

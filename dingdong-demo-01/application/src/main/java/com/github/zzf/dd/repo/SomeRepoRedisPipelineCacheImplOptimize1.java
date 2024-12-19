@@ -145,7 +145,7 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
     }
 
     private static final String USER_REDIS_TEMPLATE
-        = "SomeRepoRedisPipelineCacheImplUserRedisTemplate";
+        = "SomeRepoRedisPipelineCacheImplOptimized1UserRedisTemplate";
 
     @Configuration
     public static class RedisTemplateAutowire {

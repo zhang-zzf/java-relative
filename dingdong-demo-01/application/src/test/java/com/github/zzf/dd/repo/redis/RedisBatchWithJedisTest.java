@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ActiveProfiles(profiles = {"mini234b", "jedisCluster"})
 @Slf4j
-public class RedisConfigWithJedisTest {
+public class RedisBatchWithJedisTest {
 
     @Autowired
     RedisTemplate redisTemplate;

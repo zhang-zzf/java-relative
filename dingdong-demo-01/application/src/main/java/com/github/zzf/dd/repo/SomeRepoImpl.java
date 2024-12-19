@@ -8,7 +8,9 @@ import static java.util.stream.Stream.empty;
 
 import com.github.zzf.dd.redis_multi_get.repo.SomeRepo;
 import com.github.zzf.dd.user.model.User;
+import com.github.zzf.dd.user.model.User.Address;
 import com.google.common.collect.Lists;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
@@ -32,7 +34,7 @@ public class SomeRepoImpl implements SomeRepo {
 
     @Override
     public User getBy(String area, String userNo) {
-        return User.from(userNo);
+        return User.from(userNo).setCreatedAt(LocalDateTime.now()).setAddress(new Address(area));
     }
 
     @Override

@@ -1,24 +1,17 @@
 package com.github.zzf.dd.repo.redis;
 
 
-import static java.time.format.DateTimeFormatter.ofPattern;
 import static org.assertj.core.api.Java6BDDAssertions.then;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.github.zzf.dd.user.model.User;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +41,9 @@ public class RedisJacksonSerializeTest {
 
     static final String USER_REDIS_TEMPLATE = "USER_REDIS_TEMPLATE_RedisBasicTest";
 
+    @Autowired
+    @Lazy
+    @Qualifier(USER_REDIS_TEMPLATE)
     RedisTemplate<String, User> redisTemplate;
 
     /**
@@ -60,17 +56,11 @@ public class RedisJacksonSerializeTest {
     @Test
     public void givenJackson_whenSerializeAndDeserialize_then() {
         String number = "15618536513";
-        User u = User.from("mobile", number);
+        User u = User.from("mobile", number).setCreatedAt(LocalDateTime.now());
         ValueOperations<String, User> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(u.getUserNo(), u);
         User redisData = redisTemplate.opsForValue().get(u.getUserNo());
         then(redisData).returns(number, User::getUsername);
-    }
-
-    @Autowired
-    @Lazy
-    public void setRedisTemplate(@Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> redisTemplate) {
-        this.redisTemplate = redisTemplate;
     }
 
 }
@@ -85,23 +75,16 @@ class RedisTemplateAutowire {
 
     private static ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
         // 日期序列化
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss.XXX";
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(ofPattern(pattern)));
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(ofPattern("HH:mm:ss")));
-        // 日期反序列化
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(ofPattern(pattern)));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(ofPattern("HH:mm:ss")));
         //
-        mapper.registerModule(javaTimeModule);
+        mapper.registerModule(new JavaTimeModule());
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);// 序列化成 timestamp
+        // 会把 LocalDateTime 序列化成 []
+        // mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);// 序列化成 timestamp
         mapper.setSerializationInclusion(Include.NON_NULL);
-        // json string 中不添加类信息
-        // mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
+        // json string 中添加类信息
+        mapper.enableDefaultTyping(DefaultTyping.JAVA_LANG_OBJECT, As.PROPERTY);
         return mapper;
     }
 

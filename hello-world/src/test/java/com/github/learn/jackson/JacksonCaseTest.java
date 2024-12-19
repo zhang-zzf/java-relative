@@ -5,11 +5,15 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.learn.jackson.deserialization.AliasBean;
 import com.github.learn.jackson.serialization.ExtendableBean;
@@ -42,6 +46,42 @@ class JacksonCaseTest {
         mapper.registerModule(new JavaTimeModule());
     }
 
+    /**
+     * jackson 序列化上带上 类型信息
+     */
+    @SneakyThrows
+    @Test
+    void givenAtClass_when_then() {
+        TypeBean typeBean = new TypeBean();
+        String json = mapper.writeValueAsString(typeBean);
+        then(json).isNotNull();
+        //
+        //
+        ObjectMapper dateStrMapper = new ObjectMapper();
+        // java8 java.time
+        dateStrMapper.registerModule(new JavaTimeModule());
+        // 同时对 java.time.* / java.util.Date 生效
+        dateStrMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
+        String dateStringJson = dateStrMapper.writeValueAsString(typeBean);
+        then(dateStringJson).isNotNull();
+        //
+        //
+        ObjectMapper dateStrAndTypeMapper = new ObjectMapper();
+        // java8 java.time
+        dateStrAndTypeMapper.registerModule(new JavaTimeModule());
+        // 同时对 java.time.* / java.util.Date 生效
+        dateStrAndTypeMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
+        dateStrAndTypeMapper.activateDefaultTyping(
+            LaissezFaireSubTypeValidator.instance,
+            DefaultTyping.JAVA_LANG_OBJECT,
+            As.PROPERTY
+            );
+        String typedJson = dateStrAndTypeMapper.writeValueAsString(typeBean);
+        then(typedJson).isNotNull();
+        then(dateStrAndTypeMapper.readValue(typedJson, Object.class))
+            .isInstanceOf(TypeBean.class)
+            .isEqualTo(typeBean);
+    }
 
     /**
      * <pre>
@@ -90,6 +130,36 @@ class JacksonCaseTest {
         then(bJson).isEqualTo(
             "{\"createdAt\":\"2023-10-15 14:10:29\",\"updatedAt\":\"2023-10-15T14:10:29.79718\",\"localDate\":\"2023-10-15\",\"localTime\":\"14:10:29.79718\"}");
         // todo
+    }
+
+    @SneakyThrows
+    @Test
+    void givenDate_whenSerializationAndDeserializationUseISO_then() {
+        Date createdAt = new Date(1697350229079L);
+        LocalDateTime updatedAt = LocalDateTime.parse("2023-10-15T14:10:29.79718000");
+        DateTimeBean b = new DateTimeBean()
+            // 默认序列化成 unix time 数字 1697350229079
+            .setCreatedAt(createdAt)
+            // 默认序列化成 [2023,10,15,14,10,29,797180000]
+            .setUpdatedAt(updatedAt)
+            // 默认序列化成 [2023,10,15]
+            .setLocalDate(updatedAt.toLocalDate())
+            // 默认序列化成 [14,10,29,797180000]
+            .setLocalTime(updatedAt.toLocalTime());
+        String jsonStr = mapper.writeValueAsString(b);
+        String defaultJsonStr = "{\"createdAt\":1697350229079,\"updatedAt\":[2023,10,15,14,10,29,797180000],\"localDate\":[2023,10,15],\"localTime\":[14,10,29,797180000]}";
+        then(jsonStr).isEqualTo(defaultJsonStr);
+        ObjectMapper customMapper = new ObjectMapper();
+        // java8 java.time
+        customMapper.registerModule(new JavaTimeModule());
+        // 同时对 java.time.* / java.util.Date 生效
+        customMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
+        String bJson = customMapper.writeValueAsString(b);
+        String isoDateStr = "{\"createdAt\":\"2023-10-15T14:10:29.079+08:00\","
+            + "\"updatedAt\":\"2023-10-15T14:10:29.79718\","
+            + "\"localDate\":\"2023-10-15\","
+            + "\"localTime\":\"14:10:29.79718\"}";
+        then(bJson).isEqualTo(isoDateStr);
     }
 
     /**

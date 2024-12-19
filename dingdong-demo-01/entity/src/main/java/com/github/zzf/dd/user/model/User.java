@@ -4,10 +4,14 @@ package com.github.zzf.dd.user.model;
 import static com.github.zzf.dd.common.Common.MOBILE_REGEXP_PATTERN;
 import static com.github.zzf.dd.common.Common._MOBILE_REGEXP;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class User {
 
     public static final String USER_TYPE_PATTERN = "^card$|^mobile$";
@@ -23,6 +27,7 @@ public class User {
     private String username;
     private String password;
     private LocalDateTime createdAt;
+    private Address address;
 
     public static User fromMobile(String mobile) {
         if (!MOBILE_REGEXP_PATTERN.matcher(mobile).matches()) {
@@ -90,5 +95,12 @@ public class User {
 
     public boolean cardUser() {
         return cardUser(type);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Address {
+        String province;
     }
 }

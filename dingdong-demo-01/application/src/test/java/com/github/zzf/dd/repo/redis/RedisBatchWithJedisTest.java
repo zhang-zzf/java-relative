@@ -12,7 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -86,5 +89,74 @@ public class RedisBatchWithJedisTest {
         long end = System.currentTimeMillis();
         log.info("RT -> Total: {}, avg: {}, cnt: {}", (end - start), (end - start) / CNT, CNT);
     }
+
+    /**
+     * 结论: redis 集群下 spring-data-redis + jedis mget/mget with hashtag 命令可以跨 node 使用
+     *
+     * <pre>
+     *     jedis 把 keys 拆成单个 key 使用  GET / DEL / DEL 执行，且使用同步一个一个执行命令
+     * </pre>
+     *
+     * <pre>
+     *     16	1.377118	192.168.56.2	64735	192.168.56.21	RESP	99	Request: SET {0}:11 11
+     *     18	1.378028	192.168.56.21	9002	192.168.56.2	RESP	71	Response: OK
+     *     20	1.378346	192.168.56.2	64735	192.168.56.21	RESP	99	Request: SET {0}:12 12
+     *     22	1.379135	192.168.56.21	9002	192.168.56.2	RESP	71	Response: OK
+     * </pre>
+     */
+    @Test
+    public void givenRedisClusterAndJedis_whenMgetWithHashtag_then() {
+        Map<String, Integer> map = Stream
+            .iterate(0, i -> i + 1)
+            .limit(100)
+            .collect(toMap(i -> i < 50 ? "{0}:" + i : "{4}:" + i, i -> i));
+        // mset
+        ValueOperations valueOp = redisTemplate.opsForValue();
+        valueOp.multiSet(map);
+        // mget
+        List list = valueOp.multiGet(map.keySet());
+        then(list).containsAll(map.values());
+        // clear
+        redisTemplate.delete(map.keySet());
+    }
+
+    /**
+     * 结论: redis 集群下 spring-data-redis(2.1.21.RELEASE) + jedis 不支持 pipeline
+     *
+     * <pre>
+     *     Pipeline is currently not supported for JedisClusterConnection
+     * </pre>
+     */
+    @Test
+    public void givenRedisClusterAndLettuce_whenGetWithPipeline_then() {
+        Map<String, Integer> map = Stream
+            .iterate(0, i -> i + 1)
+            .limit(100)
+            .collect(toMap(String::valueOf, i -> i));
+        // mset
+        redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                // class io.lettuce.core.cluster.PipelinedRedisFuture cannot be cast to class io.lettuce.core.protocol.RedisCommand (io.lettuce.core.cluster.PipelinedRedisFuture and io.lettuce.core.protocol.RedisCommand are in unnamed module of loader 'app')
+                // operations.opsForValue().multiSet(map);
+                map.forEach(operations.opsForValue()::set);
+                return null;
+            }
+        });
+        List list = redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                // operations.opsForValue().multiGet(map.keySet());
+                map.keySet().forEach(operations.opsForValue()::get);
+                return null;
+            }
+        });
+        // mget
+        then(list).containsAll(map.values());
+        // clear
+        redisTemplate.delete(map.keySet());
+    }
+
+
 
 }

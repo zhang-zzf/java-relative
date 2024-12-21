@@ -1,8 +1,26 @@
 package com.github.zzf.dd.repo;
 
+import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
+import static com.github.zzf.dd.repo.redis.spring.cache.SpringRedisCacheConfig.APP_PREFIX;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toUnmodifiableList;
+import static java.util.stream.Stream.empty;
+import static java.util.stream.Stream.ofNullable;
+
 import com.github.zzf.dd.redis_multi_get.repo.SomeRepo;
 import com.github.zzf.dd.user.model.User;
 import com.google.common.collect.Lists;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +37,6 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Repository;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.stream.Stream;
-
-import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.*;
-import static com.github.zzf.dd.repo.redis.spring.cache.SpringRedisCacheConfig.APP_PREFIX;
-import static java.util.concurrent.CompletableFuture.completedFuture;
-import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toUnmodifiableList;
-import static java.util.stream.Stream.empty;
-import static java.util.stream.Stream.ofNullable;
 
 /**
  * @author : zhanfeng.zhang@icloud.com
@@ -94,7 +96,7 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
     }
 
     @Override
-    @Cacheable(key = "'u:' + #userNo")
+    @Cacheable(key = "'u:' + #userNo", cacheNames = {CACHE_REDIS_TTL_5_MINUTES, CACHE_REDIS_TTL_30_MINUTES})
     public User getBy(String area, String userNo) {
         return delegator.getBy(area, userNo);
     }

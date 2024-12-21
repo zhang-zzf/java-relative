@@ -5,6 +5,7 @@ import static com.github.zzf.dd.common.Common.MOBILE_REGEXP_PATTERN;
 import static com.github.zzf.dd.common.Common._MOBILE_REGEXP;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.github.zzf.dd.common.TypeBean;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class User {
     private String password;
     private LocalDateTime createdAt;
     private Address address;
+    private TypeBean typeBean = new TypeBean();
 
     public static User fromMobile(String mobile) {
         if (!MOBILE_REGEXP_PATTERN.matcher(mobile).matches()) {

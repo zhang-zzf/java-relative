@@ -5,6 +5,8 @@ spring:
     name: dingdong-demo-01
   jackson:
     default-property-inclusion: non_null
+    time-zone: Asia/Shanghai
+    date-format: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
 
 logging:
   level:

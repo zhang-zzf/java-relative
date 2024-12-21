@@ -7,9 +7,9 @@ import static com.github.zzf.dd.repo.redis.RedisConfig.STRING_REDIS_SERIALIZER;
 import static com.github.zzf.dd.repo.redis.RedisConfig.VALUE_SERIALIZER;
 import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer;
 
+import com.github.zzf.dd.repo.redis.RedisMsgPackConfig;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Set;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +31,15 @@ public class SpringRedisCacheConfig {
         return RedisCacheManager.builder(cf)
             .cacheDefaults(defaultConfiguration())
             .disableCreateOnMissingCache() // 禁止自动创建
-            .initialCacheNames(Set.of(CACHE_REDIS_TTL_5_MINUTES))
+            // .initialCacheNames(Set.of(CACHE_REDIS_TTL_5_MINUTES))
             .withInitialCacheConfigurations(new HashMap<>() {{
                 // cacheName <-> Configuration
-                put(CACHE_REDIS_TTL_30_MINUTES, defaultConfiguration().entryTtl(Duration.ofMinutes(30)));
+                put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration().prefixKeysWith(APP_PREFIX + "json:"));
+                put(CACHE_REDIS_TTL_30_MINUTES, defaultConfiguration()
+                    .prefixKeysWith(APP_PREFIX + "msgpack:")
+                    .entryTtl(Duration.ofMinutes(30))
+                    .serializeKeysWith(fromSerializer(RedisMsgPackConfig.STRING_REDIS_SERIALIZER))
+                    .serializeValuesWith(fromSerializer(RedisMsgPackConfig.VALUE_SERIALIZER)));
             }})
             .build();
     }

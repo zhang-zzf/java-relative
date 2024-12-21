@@ -1,11 +1,11 @@
-package com.github.zzf.dd.repo;
+package com.github.zzf.dd.repo.redis;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
-import static com.github.zzf.dd.repo.redis.spring.cache.SpringRedisCacheConfig.APP_PREFIX;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.stream.Collectors.toList;

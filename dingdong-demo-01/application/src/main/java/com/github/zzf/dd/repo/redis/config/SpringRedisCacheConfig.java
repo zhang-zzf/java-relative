@@ -1,13 +1,12 @@
-package com.github.zzf.dd.repo.redis.spring.cache;
+package com.github.zzf.dd.repo.redis.config;
 
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
-import static com.github.zzf.dd.repo.redis.RedisConfig.STRING_REDIS_SERIALIZER;
-import static com.github.zzf.dd.repo.redis.RedisConfig.VALUE_SERIALIZER;
+import static com.github.zzf.dd.repo.redis.config.RedisConfig.STRING_REDIS_SERIALIZER;
+import static com.github.zzf.dd.repo.redis.config.RedisConfig.VALUE_SERIALIZER;
 import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer;
 
-import com.github.zzf.dd.repo.redis.RedisMsgPackConfig;
 import java.time.Duration;
 import java.util.HashMap;
 import org.springframework.cache.annotation.EnableCaching;

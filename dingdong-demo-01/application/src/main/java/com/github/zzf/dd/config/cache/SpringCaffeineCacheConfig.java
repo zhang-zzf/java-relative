@@ -1,4 +1,4 @@
-package com.github.zzf.dd.repo.redis.spring.cache;
+package com.github.zzf.dd.config.cache;
 
 import com.github.benmanes.caffeine.cache.CaffeineSpec;
 import org.springframework.cache.CacheManager;

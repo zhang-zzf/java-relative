@@ -1,4 +1,4 @@
-package com.github.zzf.dd.repo;
+package com.github.zzf.dd.repo.mysql;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
 import static java.util.concurrent.CompletableFuture.completedFuture;

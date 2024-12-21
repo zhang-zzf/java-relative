@@ -1,6 +1,7 @@
 package com.github.zzf.dd.repo.mysql;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
+import static com.github.zzf.dd.repo.mysql.SomeRepoImpl.BEAN_NAME;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.stream.Collectors.toList;
@@ -17,16 +18,20 @@ import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author : zhanfeng.zhang@icloud.com
  * @date : 2024-12-10
  */
-@Repository("someRepoImpl")
+@Repository(BEAN_NAME)
 @RequiredArgsConstructor
 @Slf4j
+@Primary
 public class SomeRepoImpl implements SomeRepo {
+
+    public static final String BEAN_NAME = "someRepoImpl";
 
     public static final int BATCH_SIZE = 4;
 

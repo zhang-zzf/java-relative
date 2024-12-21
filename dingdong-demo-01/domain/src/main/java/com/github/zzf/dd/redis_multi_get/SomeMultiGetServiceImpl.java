@@ -1,5 +1,7 @@
 package com.github.zzf.dd.redis_multi_get;
 
+import static com.github.zzf.dd.redis_multi_get.SomeMultiGetServiceImpl.BEAN;
+
 import com.github.zzf.dd.redis_multi_get.repo.SomeRepo;
 import com.github.zzf.dd.user.model.User;
 import java.util.List;
@@ -13,10 +15,13 @@ import org.springframework.validation.annotation.Validated;
  * @author : zhanfeng.zhang@icloud.com
  * @date : 2024-12-10
  */
-@Service
+@Service(BEAN)
 @RequiredArgsConstructor
 @Validated
 public class SomeMultiGetServiceImpl implements SomeMultiGetService {
+
+    public static final String BEAN = "someMultiGetServiceImpl";
+
     final SomeRepo someRepo;
 
     public List<User> batchGetBy(@NotEmpty String area, @NotEmpty @Size(max = 200) List<@NotEmpty String> userNoList) {

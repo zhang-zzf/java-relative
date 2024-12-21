@@ -21,6 +21,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 public class SpringRedisCacheConfig {
 
     public static final String APP_PREFIX = "dd:";
+    public static final String APP_PREFIX_TTL_30_MINUTES = APP_PREFIX + "msgpack:";
+    public static final String APP_PREFIX_TTL_5_MINUTES = APP_PREFIX + "json:";
 
     @Bean(CACHE_MANAGER_FOR_REDIS)
     // @Primary // 存在多个 CacheManager 时必须制定一个默认的 CacheManager
@@ -33,9 +35,9 @@ public class SpringRedisCacheConfig {
             // .initialCacheNames(Set.of(CACHE_REDIS_TTL_5_MINUTES))
             .withInitialCacheConfigurations(new HashMap<>() {{
                 // cacheName <-> Configuration
-                put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration().prefixKeysWith(APP_PREFIX + "json:"));
+                put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration().prefixKeysWith(APP_PREFIX_TTL_5_MINUTES));
                 put(CACHE_REDIS_TTL_30_MINUTES, defaultConfiguration()
-                    .prefixKeysWith(APP_PREFIX + "msgpack:")
+                    .prefixKeysWith(APP_PREFIX_TTL_30_MINUTES)
                     .entryTtl(Duration.ofMinutes(30))
                     .serializeKeysWith(fromSerializer(RedisMsgPackConfig.STRING_REDIS_SERIALIZER))
                     .serializeValuesWith(fromSerializer(RedisMsgPackConfig.VALUE_SERIALIZER)));

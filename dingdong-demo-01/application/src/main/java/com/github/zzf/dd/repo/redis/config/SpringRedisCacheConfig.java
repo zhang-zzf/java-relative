@@ -1,6 +1,7 @@
 package com.github.zzf.dd.repo.redis.config;
 
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_15_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.RedisConfig.STRING_REDIS_SERIALIZER;
@@ -23,6 +24,7 @@ public class SpringRedisCacheConfig {
     public static final String APP_PREFIX = "dd:";
     public static final String APP_PREFIX_TTL_30_MINUTES = APP_PREFIX + "msgpack:";
     public static final String APP_PREFIX_TTL_5_MINUTES = APP_PREFIX + "json:";
+    public static final String APP_PREFIX_TTL_15_MINUTES = APP_PREFIX + "kryo:";
 
     @Bean(CACHE_MANAGER_FOR_REDIS)
     // @Primary // 存在多个 CacheManager 时必须制定一个默认的 CacheManager
@@ -36,6 +38,12 @@ public class SpringRedisCacheConfig {
             .withInitialCacheConfigurations(new HashMap<>() {{
                 // cacheName <-> Configuration
                 put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration().prefixKeysWith(APP_PREFIX_TTL_5_MINUTES));
+                put(CACHE_REDIS_TTL_15_MINUTES, defaultConfiguration()
+                    .prefixKeysWith(APP_PREFIX_TTL_15_MINUTES)
+                    .entryTtl(Duration.ofMinutes(15))
+                    .serializeKeysWith(fromSerializer(RedisKryoConfig.STRING_REDIS_SERIALIZER))
+                    .serializeValuesWith(fromSerializer(RedisKryoConfig.VALUE_SERIALIZER))
+                );
                 put(CACHE_REDIS_TTL_30_MINUTES, defaultConfiguration()
                     .prefixKeysWith(APP_PREFIX_TTL_30_MINUTES)
                     .entryTtl(Duration.ofMinutes(30))

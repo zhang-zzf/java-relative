@@ -1,10 +1,10 @@
 package com.github.zzf.dd.repo.redis;
 
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_15_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
-import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_30_MINUTES;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -76,7 +76,11 @@ public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
     }
 
     @Override
-    @Cacheable(key = "'d:u:' + #userNo", cacheNames = {CACHE_REDIS_TTL_30_MINUTES, CACHE_REDIS_TTL_5_MINUTES})
+    @Cacheable(key = "'d:u:' + #userNo", cacheNames = {
+        CACHE_REDIS_TTL_5_MINUTES,
+        CACHE_REDIS_TTL_15_MINUTES,
+        CACHE_REDIS_TTL_30_MINUTES,
+    })
     public User getBy(String area, String userNo) {
         return delegator.getBy(area, userNo);
     }

@@ -15,6 +15,8 @@ public class SpringCacheConfig {
     // cache for 5 minutes
     public static final String CACHE_REDIS_TTL_5_MINUTES = "REDIS_TTL_5_MINUTES";
     public static final Duration TTL_5_MINUTES = Duration.ofMinutes(5);
+    public static final String CACHE_REDIS_TTL_15_MINUTES = "REDIS_TTL_15_MINUTES";
+    public static final Duration TTL_15_MINUTES = Duration.ofMinutes(15);
     public static final String CACHE_REDIS_TTL_30_MINUTES = "REDIS_TTL_30_MINUTES";
     public static final Duration TTL_30_MINUTES = Duration.ofMinutes(30);
 

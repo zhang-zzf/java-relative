@@ -30,7 +30,7 @@ public class RedisMsgPackConfig {
 
     public static final GenericJackson2JsonRedisSerializer VALUE_SERIALIZER
         = new GenericJackson2JsonRedisSerializer(objectMapper());
-    public static final String REDIS_TEMPLATE_MSGPACK = "redisTemplate_msgpack";
+    public static final String REDIS_TEMPLATE = "redisTemplate_msgpack";
 
     private static ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper(new MessagePackFactory());
@@ -55,7 +55,7 @@ public class RedisMsgPackConfig {
         return mapper;
     }
 
-    @Bean(REDIS_TEMPLATE_MSGPACK)
+    @Bean(REDIS_TEMPLATE)
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);

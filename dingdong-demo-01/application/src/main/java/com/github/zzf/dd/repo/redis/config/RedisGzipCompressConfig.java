@@ -1,12 +1,8 @@
 package com.github.zzf.dd.repo.redis.config;
 
-import static com.github.zzf.dd.repo.redis.config.RedisConfig.optimizeForRedis;
+import static com.github.zzf.dd.repo.redis.config.RedisConfig.objectMapper;
+import static org.apache.commons.compress.compressors.CompressorStreamFactory.GZIP;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import org.msgpack.jackson.dataformat.MessagePackFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -19,20 +15,12 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @date : 2024-12-10
  */
 @Configuration
-public class RedisMsgPackConfig {
+public class RedisGzipCompressConfig {
 
     public static final RedisSerializer<String> STRING_REDIS_SERIALIZER = RedisSerializer.string();
-    public static final RedisSerializer<Object> VALUE_SERIALIZER =
-        new GenericJackson2JsonRedisSerializer(objectMapper());
-    public static final String REDIS_TEMPLATE = "redisTemplate_msgpack";
-
-    private static ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper(new MessagePackFactory());
-        // Serialize and deserialize BigDecimal as str type internally in MessagePack format
-        mapper.configOverride(BigInteger.class).setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
-        mapper.configOverride(BigDecimal.class).setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
-        return optimizeForRedis(mapper);
-    }
+    public static final RedisSerializer<Object> VALUE_SERIALIZER
+        = new RedisSerializerCompressWrapper(new GenericJackson2JsonRedisSerializer(objectMapper()), GZIP);
+    public static final String REDIS_TEMPLATE = "redisTemplate_gzip";
 
     @Bean(REDIS_TEMPLATE)
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {

@@ -1,9 +1,13 @@
 package com.github.zzf.dd.repo.redis.config;
 
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_15_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_10_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_8_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_10_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
+import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_8_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.RedisConfig.STRING_REDIS_SERIALIZER;
 import static com.github.zzf.dd.repo.redis.config.RedisConfig.VALUE_SERIALIZER;
 import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer;
@@ -24,6 +28,8 @@ public class SpringRedisCacheConfig {
     public static final String APP_PREFIX = "dd:";
     public static final String APP_PREFIX_TTL_30_MINUTES = APP_PREFIX + "msgpack:";
     public static final String APP_PREFIX_TTL_5_MINUTES = APP_PREFIX + "json:";
+    public static final String APP_PREFIX_TTL_8_MINUTES = APP_PREFIX + "gzip:";
+    public static final String APP_PREFIX_TTL_10_MINUTES = APP_PREFIX + "lz4:";
     public static final String APP_PREFIX_TTL_15_MINUTES = APP_PREFIX + "kryo:";
 
     @Bean(CACHE_MANAGER_FOR_REDIS)
@@ -38,15 +44,27 @@ public class SpringRedisCacheConfig {
             .withInitialCacheConfigurations(new HashMap<>() {{
                 // cacheName <-> Configuration
                 put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration().prefixKeysWith(APP_PREFIX_TTL_5_MINUTES));
-                put(CACHE_REDIS_TTL_15_MINUTES, defaultConfiguration()
-                    .prefixKeysWith(APP_PREFIX_TTL_15_MINUTES)
-                    .entryTtl(Duration.ofMinutes(15))
-                    .serializeKeysWith(fromSerializer(RedisKryoConfig.STRING_REDIS_SERIALIZER))
-                    .serializeValuesWith(fromSerializer(RedisKryoConfig.VALUE_SERIALIZER))
+                put(CACHE_REDIS_TTL_8_MINUTES, defaultConfiguration()
+                    .prefixKeysWith(APP_PREFIX_TTL_8_MINUTES)
+                    .entryTtl(TTL_8_MINUTES)
+                    .serializeKeysWith(fromSerializer(RedisGzipCompressConfig.STRING_REDIS_SERIALIZER))
+                    .serializeValuesWith(fromSerializer(RedisGzipCompressConfig.VALUE_SERIALIZER))
                 );
+                put(CACHE_REDIS_TTL_10_MINUTES, defaultConfiguration()
+                    .prefixKeysWith(APP_PREFIX_TTL_10_MINUTES)
+                    .entryTtl(TTL_10_MINUTES)
+                    .serializeKeysWith(fromSerializer(RedisLz4CompressConfig.STRING_REDIS_SERIALIZER))
+                    .serializeValuesWith(fromSerializer(RedisLz4CompressConfig.VALUE_SERIALIZER))
+                );
+                // put(CACHE_REDIS_TTL_15_MINUTES, defaultConfiguration()
+                //     .prefixKeysWith(APP_PREFIX_TTL_15_MINUTES)
+                //     .entryTtl(TTL_15_MINUTES)
+                //     .serializeKeysWith(fromSerializer(RedisKryoConfig.STRING_REDIS_SERIALIZER))
+                //     .serializeValuesWith(fromSerializer(RedisKryoConfig.VALUE_SERIALIZER))
+                // );
                 put(CACHE_REDIS_TTL_30_MINUTES, defaultConfiguration()
                     .prefixKeysWith(APP_PREFIX_TTL_30_MINUTES)
-                    .entryTtl(Duration.ofMinutes(30))
+                    .entryTtl(TTL_30_MINUTES)
                     .serializeKeysWith(fromSerializer(RedisMsgPackConfig.STRING_REDIS_SERIALIZER))
                     .serializeValuesWith(fromSerializer(RedisMsgPackConfig.VALUE_SERIALIZER)));
             }})

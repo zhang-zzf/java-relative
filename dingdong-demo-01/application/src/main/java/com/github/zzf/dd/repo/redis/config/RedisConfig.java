@@ -28,13 +28,15 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 public class RedisConfig {
 
     public static final RedisSerializer<String> STRING_REDIS_SERIALIZER = RedisSerializer.string();
-
     public static final GenericJackson2JsonRedisSerializer VALUE_SERIALIZER
         = new GenericJackson2JsonRedisSerializer(objectMapper());
 
-    private static ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
+    public static ObjectMapper objectMapper() {
         // 日期序列化
+        return optimizeForRedis(new ObjectMapper());
+    }
+
+    public static ObjectMapper optimizeForRedis(ObjectMapper mapper) {
         mapper.registerModule(new JavaTimeModule());
         // java.util.Date / java.time.* 生效
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));

@@ -520,19 +520,25 @@ public class DateTest {
     @SneakyThrows
     @Test
     void givenDateString_whenToDate_then() {
-        // 1729036800000L 在 CST 时区表示 2024-10-16T08:00:00
-        // 1729008000000L 在 CST 时区表示 2024-10-16T00:00:00
+        // 1729036800000L (UTC 2024-10-16T00:00:00)在 CST 时区表示 2024-10-16T08:00:00
+        // 1729008000000L（UTC 2024-10-15T16:00:00） 在 CST 时区表示 2024-10-16T00:00:00
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         then(df.parse("2024-10-16T08:00:00").getTime()).isEqualTo(1729036800000L);
         //
         // 丢弃时间格式
-        SimpleDateFormat dfShort = new SimpleDateFormat("yyyy-MM-dd");
-        dfShort.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        then(dfShort.parse("2024-10-16T08:00:00").getTime()).isEqualTo(1729008000000L);
-        then(dfShort.parse("2024-10-16T07:00:00").getTime()).isEqualTo(1729008000000L);
-        then(dfShort.parse("2024-10-16T00:00:00").getTime()).isEqualTo(1729008000000L);
-        then(dfShort.parse("2024-10-16").getTime()).isEqualTo(1729008000000L);
+        SimpleDateFormat dfShanghai = new SimpleDateFormat("yyyy-MM-dd");
+        dfShanghai.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        then(dfShanghai.parse("2024-10-16T08:00:00").getTime()).isEqualTo(1729008000000L);
+        then(dfShanghai.parse("2024-10-16T07:00:00").getTime()).isEqualTo(1729008000000L);
+        then(dfShanghai.parse("2024-10-16T00:00:00").getTime()).isEqualTo(1729008000000L);
+        then(dfShanghai.parse("2024-10-16").getTime()).isEqualTo(1729008000000L);
+        //
+        // riyadh
+        SimpleDateFormat dfRiyadh = new SimpleDateFormat("yyyy-MM-dd");
+        dfRiyadh.setTimeZone(TimeZone.getTimeZone("Asia/Riyadh"));
+        // 1729026000000L (UTC 2024-10-15 21:00) 在 riyadh 表示 2024-10-16T00:00:00
+        then(dfRiyadh.parse("2024-10-16").getTime()).isEqualTo(1729026000000L);
     }
 
     @Test

@@ -24,7 +24,7 @@
         <mockito.junit5.version>2.25.1</mockito.junit5.version>
         <junit4.version>4.12</junit4.version>
         <assertj-core.version>3.14.0</assertj-core.version>
-        <springframework.version>5.1.8.RELEASE</springframework.version>
+        <springframework.version>5.2.21.RELEASE</springframework.version>
 
     </properties>
 

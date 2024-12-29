@@ -1,10 +1,7 @@
 package com.github.zzf.dd.repo.redis;
 
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_10_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_8_MINUTES;
 import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_30_MINUTES;
 import static java.util.stream.Collectors.toList;
@@ -14,9 +11,12 @@ import static java.util.stream.Stream.ofNullable;
 import com.github.zzf.dd.redis_multi_get.SomeMultiGetService;
 import com.github.zzf.dd.redis_multi_get.SomeMultiGetServiceImpl;
 import com.github.zzf.dd.user.model.User;
+import com.github.zzf.dd.user.model.User.Address;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +51,7 @@ import org.springframework.stereotype.Service;
 public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
 
     final @Qualifier(SomeMultiGetServiceImpl.BEAN) SomeMultiGetService delegator;
-    final @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> redisTemplate;
+    final @Qualifier(REDIS_TEMPLATE) RedisTemplate<String, User> redisTemplate;
 
     @Override
     public List<User> batchGetBy(String area, List<@NotEmpty String> userNoList) {
@@ -66,50 +69,40 @@ public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
         return Stream.concat(cachedData.stream(), dbData.stream()).collect(toList());
     }
 
-    private void updateCache(List<User> dbData) {
-        redisTemplate.executePipelined(new SessionCallback<>() {
-            @Override
-            public Object execute(RedisOperations operations) throws DataAccessException {
-                dbData.forEach(d -> operations.opsForValue().set(toRedisKey(d.getUserNo()), d, TTL_30_MINUTES));
-                return null;
-            }
-        });
-    }
-
     @Override
-    @Cacheable(key = "'d:u:' + #userNo", cacheNames = {
-        CACHE_REDIS_TTL_10_MINUTES,
-        CACHE_REDIS_TTL_8_MINUTES,
-        CACHE_REDIS_TTL_5_MINUTES,
+    @Cacheable(key = "'d:a:'+ #area +':u:' + #userNo", cacheNames = {
+        // CACHE_REDIS_TTL_10_MINUTES,
+        // CACHE_REDIS_TTL_8_MINUTES,
+        // CACHE_REDIS_TTL_5_MINUTES,
         CACHE_REDIS_TTL_30_MINUTES,
     })
     public User getBy(String area, String userNo) {
         return delegator.getBy(area, userNo);
     }
 
-    private Stream<User> fetchFromCache(String area, List<String> userNoList) {
-        log.info("fetchFromCache -> userNoList: {}", userNoList);
-        // lettuce pipeline 底层使用异步 实测 lettuce key 可以跨 node
-        List<Object> userList = redisTemplate.executePipelined(new SessionCallback<>() {
-            @Override
-            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
-                userNoList.forEach(id -> operations.opsForValue().get(toRedisKey(id)));
-                return null;
-            }
-        });
-        return ofNullable(userList)
-            .flatMap(Collection::stream)
-            .map(d -> (User) d)
-            .filter(Objects::nonNull);
+    private String toRedisKey(String area, String id) {
+        return APP_PREFIX_TTL_30_MINUTES + "d:a:" + area + ":u:" + id;
     }
 
-    private String toRedisKey(String id) {
-        return APP_PREFIX_TTL_30_MINUTES + "d:u:" + id;
-    }
-
-    @CachePut(key = "'d:u:' + #d.userNo")
+    @CachePut(key = "'d:a:' + #area +':u:' + #d.userNo")
     public User cachePut(String area, User d) {
         return d;
+    }
+
+    public void batchEvictCacheByArea(String area) {
+        final String pattern = APP_PREFIX_TTL_30_MINUTES + "d:a:" + area + ":u:*";
+        redisTemplate.execute((RedisCallback<Object>) connection -> {
+            ScanOptions scanOptions = ScanOptions.scanOptions().match(pattern).build();
+            try (Cursor<byte[]> cursor = connection.scan(scanOptions)) {
+                while (cursor.hasNext()) { // 删除所有满足条件的 key
+                    byte[] key = cursor.next(); // 返回的是单个 key
+                    log.info("scan -> pattern: {}, key: {}", pattern, redisTemplate.getKeySerializer().deserialize(key));
+                    connection.del(key);
+                }
+            } catch (IOException e) {// ignore
+            }
+            return null;
+        });
     }
 
     private SomeRepoRedisPipelineCacheImplOptimize1 self;
@@ -120,13 +113,42 @@ public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
         this.self = self;
     }
 
-    private static final String USER_REDIS_TEMPLATE
+    private void updateCache(List<User> dbData) {
+        redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                dbData.forEach(d -> {
+                    String area = Optional.ofNullable(d.getAddress()).map(Address::getProvince).orElse("");
+                    operations.opsForValue().set(toRedisKey(area, d.getUserNo()), d, TTL_30_MINUTES);
+                });
+                return null;
+            }
+        });
+    }
+
+    private Stream<User> fetchFromCache(String area, List<String> userNoList) {
+        log.info("fetchFromCache -> userNoList: {}", userNoList);
+        // lettuce pipeline 底层使用异步 实测 lettuce key 可以跨 node
+        List<Object> userList = redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+                userNoList.forEach(id -> operations.opsForValue().get(toRedisKey(area, id)));
+                return null;
+            }
+        });
+        return ofNullable(userList)
+            .flatMap(Collection::stream)
+            .map(d -> (User) d)
+            .filter(Objects::nonNull);
+    }
+
+    private static final String REDIS_TEMPLATE
         = "RedisTemplateAutowire_SomeMultiGetServiceCacheImpl";
 
     @Configuration
     public static class RedisTemplateAutowire {
 
-        @Bean(USER_REDIS_TEMPLATE)
+        @Bean(REDIS_TEMPLATE)
         public RedisTemplate<String, User> userRedisTemplate(RedisTemplate redisTemplate) {
             return redisTemplate;
         }

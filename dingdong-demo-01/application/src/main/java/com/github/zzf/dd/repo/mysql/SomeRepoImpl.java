@@ -57,7 +57,10 @@ public class SomeRepoImpl implements SomeRepo {
 
     private Stream<User> fetchFromDb(String area, List<String> userNoList) {
         log.info("fetchFromDb -> userNoList: {}", userNoList);
-        return userNoList.stream().map(User::from);
+        return userNoList.stream().map(userNo -> User.from(userNo)
+            .setAddress(new Address(area))
+            .setCreatedAt(LocalDateTime.now())
+        );
     }
 
 }

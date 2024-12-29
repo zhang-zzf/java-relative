@@ -18,7 +18,7 @@ GET {{host}}/api/redis-multi-get/shanghai/users/_search?userNoList=mobile/156185
 Content-Type: application/json
 
 ###
-GET {{host}}/api/redis-multi-get/beijing/users/_search?userNoList=mobile/15618536513,mobile/15618536513,mobile/15618536513,mobile/15618536513,mobile/15618536513
+GET {{host}}/api/redis-multi-get/beijing/users/_search?userNoList=mobile/15618536513,mobile/15618536514,mobile/15618536515
 Content-Type: application/json
 
 ###
@@ -27,3 +27,10 @@ Content-Type: application/json
 
 ###
 GET http://{{host}}/api/base/users
+
+### 批量清除缓存
+DELETE http://localhost:8080/api/redis-multi-get/shanghai/users/cache
+
+
+### 批量清除缓存
+DELETE http://localhost:8080/redis/?keyPattern=dd:msgpack:d:a:beijing:u:*

@@ -327,7 +327,7 @@
                   
       <artifactId>hibernate-validator</artifactId>
                   
-      <version>6.0.17.Final</version>
+      <version>6.2.0.Final</version>
               
     </dependency>
             

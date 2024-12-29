@@ -80,7 +80,7 @@ public class RedisBatchWithJedisTest {
     }
 
     @Test
-    public void givenRedisClusterAndLettuce_whenMget_thenRT() {
+    public void givenRedisClusterAndJedis_whenMget_thenRT() {
         int CNT = 100;
         long start = System.currentTimeMillis();
         for (int i = 0; i < CNT; i++) {
@@ -121,14 +121,14 @@ public class RedisBatchWithJedisTest {
     }
 
     /**
-     * 结论: redis 集群下 spring-data-redis(2.1.21.RELEASE) + jedis 不支持 pipeline
+     * 结论: redis 集群下 spring-data-redis(2.1.21.RELEASE) + jedis(2.10.2) 不支持 pipeline
      *
      * <pre>
      *     Pipeline is currently not supported for JedisClusterConnection
      * </pre>
      */
     @Test
-    public void givenRedisClusterAndLettuce_whenGetWithPipeline_then() {
+    public void givenRedisClusterAndJedis_whenGetWithPipeline_then() {
         Map<String, Integer> map = Stream
             .iterate(0, i -> i + 1)
             .limit(100)

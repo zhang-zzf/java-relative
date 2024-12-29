@@ -1,13 +1,5 @@
 package com.github.zzf.dd.repo.redis.config;
 
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_10_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_8_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_10_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_8_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.RedisConfig.STRING_REDIS_SERIALIZER;
 import static com.github.zzf.dd.repo.redis.config.RedisConfig.VALUE_SERIALIZER;
 import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer;
@@ -25,6 +17,20 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 @EnableCaching
 public class SpringRedisCacheConfig {
 
+    // cache manage for redis
+    public static final String CACHE_MANAGER = "CacheManager/repo/redis";
+    // cache for 5 minutes
+    public static final String CACHE_REDIS_TTL_5_MINUTES = "REDIS_TTL_5_MINUTES";
+    public static final Duration TTL_5_MINUTES = Duration.ofMinutes(5);
+    public static final String CACHE_REDIS_TTL_8_MINUTES = "REDIS_TTL_8_MINUTES";
+    public static final Duration TTL_8_MINUTES = Duration.ofMinutes(8);
+    public static final String CACHE_REDIS_TTL_10_MINUTES = "REDIS_TTL_10_MINUTES";
+    public static final Duration TTL_10_MINUTES = Duration.ofMinutes(10);
+    // public static final String CACHE_REDIS_TTL_15_MINUTES = "REDIS_TTL_15_MINUTES";
+    public static final Duration TTL_15_MINUTES = Duration.ofMinutes(15);
+    public static final String CACHE_REDIS_TTL_30_MINUTES = "REDIS_TTL_30_MINUTES";
+    public static final Duration TTL_30_MINUTES = Duration.ofMinutes(30);
+
     public static final String APP_PREFIX = "dd:";
     public static final String APP_PREFIX_TTL_30_MINUTES = APP_PREFIX + "msgpack:";
     public static final String APP_PREFIX_TTL_5_MINUTES = APP_PREFIX + "json:";
@@ -32,7 +38,7 @@ public class SpringRedisCacheConfig {
     public static final String APP_PREFIX_TTL_10_MINUTES = APP_PREFIX + "lz4:";
     public static final String APP_PREFIX_TTL_15_MINUTES = APP_PREFIX + "kryo:";
 
-    @Bean(CACHE_MANAGER_FOR_REDIS)
+    @Bean(CACHE_MANAGER)
     // @Primary // 存在多个 CacheManager 时必须制定一个默认的 CacheManager
     // public RedisCacheManager cacheManager(RedisConnectionFactory cf) {
     public RedisCacheManager cacheManager(RedisConnectionFactory cf) {

@@ -23,9 +23,9 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_MANAGER;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static java.util.concurrent.CompletableFuture.*;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.empty;
@@ -36,7 +36,7 @@ import static java.util.stream.Stream.ofNullable;
  * @date : 2024-12-10
  */
 @Repository
-@CacheConfig(cacheManager = CACHE_MANAGER_FOR_REDIS, cacheNames = {CACHE_REDIS_TTL_5_MINUTES})
+@CacheConfig(cacheManager = CACHE_MANAGER, cacheNames = {CACHE_REDIS_TTL_5_MINUTES})
 @Slf4j
 @RequiredArgsConstructor
 public class SomeRepoRedisHashtagCacheImpl implements SomeRepo {

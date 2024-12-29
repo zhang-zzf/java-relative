@@ -1,9 +1,9 @@
 package com.github.zzf.dd.repo.redis;
 
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_MANAGER_FOR_REDIS;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
-import static com.github.zzf.dd.common.spring.cache.SpringCacheConfig.TTL_30_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_30_MINUTES;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_MANAGER;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.TTL_30_MINUTES;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static java.util.stream.Stream.ofNullable;
@@ -47,7 +47,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Primary
 @RequiredArgsConstructor
-@CacheConfig(cacheManager = CACHE_MANAGER_FOR_REDIS, cacheNames = {CACHE_REDIS_TTL_30_MINUTES})
+@CacheConfig(cacheManager = CACHE_MANAGER, cacheNames = {CACHE_REDIS_TTL_30_MINUTES})
 public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
 
     final @Qualifier(SomeMultiGetServiceImpl.BEAN) SomeMultiGetService delegator;

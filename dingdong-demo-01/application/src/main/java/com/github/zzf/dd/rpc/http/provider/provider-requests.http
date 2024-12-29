@@ -32,5 +32,9 @@ GET http://{{host}}/api/base/users
 DELETE http://localhost:8080/api/redis-multi-get/shanghai/users/cache
 
 
-### 批量清除缓存
-DELETE http://localhost:8080/redis/?keyPattern=dd:msgpack:d:a:beijing:u:*
+### 批量清除缓存 （单个key）
+DELETE http://{{host}}/redis/?keyPattern=dd:msgpack:d:a::u:mobile/15618536513
+
+### 批量清除缓存 (key pattern)
+DELETE http://{{host}}/redis/?keyPattern=dd:msgpack:d:a:shanghai:u:*
+

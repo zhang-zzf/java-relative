@@ -52,7 +52,6 @@ public class SomeRepoImpl implements SomeRepo {
             // wait for task done
             .join()
             .collect(toList());
-
     }
 
     private Stream<User> fetchFromDb(String area, List<String> userNoList) {

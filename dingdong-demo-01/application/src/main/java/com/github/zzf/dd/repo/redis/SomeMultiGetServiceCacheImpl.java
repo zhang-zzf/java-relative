@@ -137,6 +137,7 @@ public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
             }
         });
         return ofNullable(userList)
+            // .flatMap(list -> list.stream())
             .flatMap(Collection::stream)
             .map(d -> (User) d)
             .filter(Objects::nonNull);

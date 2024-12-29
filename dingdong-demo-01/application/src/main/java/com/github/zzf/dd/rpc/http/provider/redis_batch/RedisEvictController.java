@@ -35,7 +35,7 @@ public class RedisEvictController {
         redisTemplate.execute((RedisCallback<Object>) connection -> {
             ScanOptions scanOptions = ScanOptions.scanOptions().match(keyPattern).build();
             try (Cursor<byte[]> cursor = connection.scan(scanOptions)) {
-                while (cursor.hasNext()) { // 删除所有满足条件的 key
+                while (cursor.hasNext()) { // 遍历所有满足条件的 key
                     byte[] key = cursor.next(); // 返回的是单个 key
                     String keyStr = (String) redisTemplate.getKeySerializer().deserialize(key);
                     log.info("scan -> pattern: {}, key: {}", keyPattern, keyStr);

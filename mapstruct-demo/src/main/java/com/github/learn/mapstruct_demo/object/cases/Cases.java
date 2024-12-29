@@ -25,7 +25,7 @@ public class Cases {
 
         /**
          * 保留2为小数，不存在的以 0 填充
-         * <p>尽在 String -> Number / Number -> String 时生效</p>
+         * <p>仅在 String -> Number / Number -> String 时生效</p>
          * <p>Number -> Number 不生效</p>
          */
         @Mapping(target = "price", numberFormat = "#.##")
@@ -108,8 +108,7 @@ public class Cases {
     @Mapper
     public interface NToOneDtoDomainMapper {
 
-        NToOneDtoDomainMapper INSTANCE = Mappers.getMapper(
-            NToOneDtoDomainMapper.class);
+        NToOneDtoDomainMapper INSTANCE = Mappers.getMapper(NToOneDtoDomainMapper.class);
 
         /**
          * <pre>

@@ -4,6 +4,7 @@ package com.github.zzf.dd.repo.redis;
 import static java.util.stream.Collectors.toMap;
 import static org.assertj.core.api.BDDAssertions.then;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -13,8 +14,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.ActiveProfiles;
@@ -137,9 +141,9 @@ public class RedisBatchTest {
     }
 
     /**
-     * 结论: redis 集群下 spring-data-redis + lettuce pipeline+get/set 命令可以跨 slot/node 使用
-     * pipeline 只是在1个 tcp packet 发送中多条命令，在客户端和 redis-server 端没有做任何特殊处理。
-     * 在 redis-server 看来，pipeline 1个 tcp packet 发过来的多个命令，和使用多个 tcp packet 发送的多个命令没有任务区别
+     * 结论: redis 集群下 spring-data-redis + lettuce pipeline+get/set 命令可以跨 slot/node 使用 pipeline 只是在1个 tcp packet
+     * 发送中多条命令，在客户端和 redis-server 端没有做任何特殊处理。 在 redis-server 看来，pipeline 1个 tcp packet 发过来的多个命令，和使用多个 tcp packet
+     * 发送的多个命令没有任务区别
      *
      * <pre>
      *     lettuce 把 key 分批异步发送到 redis-server 的一个 node（同一批命令必须是归属在同一个 node下的）
@@ -182,7 +186,64 @@ public class RedisBatchTest {
             }
         });
         // mget
-        // then(list).containsAll(map.values());
+        then(list).containsAll(map.values());
+        // clear
+        redisTemplate.delete(map.keySet());
+    }
+
+    /**
+     * <pre>
+     *     结论: redis 集群下 spring-data-redis + lettuce scan 可以扫描整个集群中的所有 key
+     *
+     * </pre>
+     */
+    @Test
+    public void givenRedisClusterAndLettuce_whenScan_then() {
+        Map<String, Integer> map = Stream
+            .iterate(0, i -> i + 1)
+            .limit(100)
+            .collect(toMap(String::valueOf, i -> i));
+        // mset
+        redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                map.forEach(operations.opsForValue()::set);
+                return null;
+            }
+        });
+        final String pattern01 = "1*";
+        Integer keyDeleted = (Integer) redisTemplate.execute((RedisCallback) connection -> {
+            int count = 0;
+            ScanOptions scanOptions = ScanOptions.scanOptions().match(pattern01).build();
+            try (Cursor<byte[]> cursor = connection.scan(scanOptions)) {
+                while (cursor.hasNext()) { // 删除所有满足条件的 key
+                    byte[] key = cursor.next(); // 返回的是单个 key
+                    log.info("scan -> pattern: {}, key: {}", pattern01,
+                        redisTemplate.getKeySerializer().deserialize(key));
+                    // connection.del(key);
+                    count += 1;
+                }
+            } catch (IOException e) {// ignore
+            }
+            return count;
+        });
+        //
+        then(keyDeleted).isGreaterThan(0);
+        //
+        //
+        String pattern2 = "2*";
+        Cursor<byte[]> cursor = (Cursor<byte[]>) redisTemplate.execute((RedisCallback) connection -> {
+            ScanOptions scanOptions = ScanOptions.scanOptions().match(pattern2).build();
+            return connection.scan(scanOptions);
+        });
+        assert cursor != null;
+        try (cursor) { // 使用完成后自动关闭 cursor
+            while (cursor.hasNext()) {
+                byte[] key = cursor.next();
+                log.info("scan -> pattern: {}, key: {}", pattern2, redisTemplate.getKeySerializer().deserialize(key));
+            }
+        } catch (IOException e) {//
+        }
         // clear
         redisTemplate.delete(map.keySet());
     }

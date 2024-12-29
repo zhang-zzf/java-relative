@@ -24,7 +24,8 @@ public class SpringCaffeineCacheConfig {
     @Primary // 存在多个 CacheManager 时必须制定一个默认的 CacheManager
     public CacheManager jvmCacheManager() {
         CaffeineCacheManager m = new CaffeineCacheManager();
-        String caffeineSpec = "maximumSize=-1,expireAfterAccess=24h,expireAfterWrite=24h";
+        // 134217728 = 128 * 1024 * 1024L; //128m
+        String caffeineSpec = "maximumSize=134217728,expireAfterAccess=24h,expireAfterWrite=24h";
         m.setCaffeineSpec(CaffeineSpec.parse(caffeineSpec));
         return m;
     }

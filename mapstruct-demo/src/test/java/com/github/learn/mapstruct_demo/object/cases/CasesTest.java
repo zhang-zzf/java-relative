@@ -24,7 +24,6 @@ class CasesTest {
         then(domain.getPrice()).isNotEqualTo(new BigDecimal("50.00"));
     }
 
-
     /**
      * Map to Bean
      */

@@ -25,4 +25,5 @@ Content-Type: application/json
 GET {{host}}/api/redis-multi-get/shanghai/users/mobile/15618536513
 Content-Type: application/json
 
-
+###
+GET http://{{host}}/api/base/users

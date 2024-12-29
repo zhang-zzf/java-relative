@@ -143,14 +143,13 @@ public class SomeMultiGetServiceCacheImpl implements SomeMultiGetService {
             .filter(Objects::nonNull);
     }
 
-    private static final String REDIS_TEMPLATE
-        = "RedisTemplateAutowire_SomeMultiGetServiceCacheImpl";
+    private static final String REDIS_TEMPLATE = "RedisTemplate_SomeMultiGetServiceCacheImpl";
 
     @Configuration
     public static class RedisTemplateAutowire {
 
         @Bean(REDIS_TEMPLATE)
-        public RedisTemplate<String, User> userRedisTemplate(RedisTemplate redisTemplate) {
+        public RedisTemplate<String, User> redisTemplate(RedisTemplate redisTemplate) {
             return redisTemplate;
         }
     }

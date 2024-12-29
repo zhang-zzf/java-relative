@@ -3,16 +3,18 @@ package com.github.zzf.dd.rpc.http.provider.redis_batch;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class RedisEvictController {
 
-    final @Qualifier(REDIS_TEMPLATE) RedisTemplate<String, Object> redisTemplate;
+    // 1. 按类型（包括范型）注入；找不到，进行下一步
+    // 2. 按名字 redisTemplate 注入；找不到，进行下一步
+    // 3. 报错
+    final RedisTemplate<String, Object> redisTemplate;
+    final RedisTemplate<Object, Object> objectObjectRedisTemplate;
+    final RedisTemplate<String, String> stringStringRedisTemplate;
+    final StringRedisTemplate stringRedisTemplate;
+    final ApplicationContext applicationContext;
 
     @DeleteMapping("/")
     public List<String> deleteKey(@RequestParam String keyPattern) {
@@ -49,16 +58,16 @@ public class RedisEvictController {
         return ret;
     }
 
-    private static final String REDIS_TEMPLATE = "RedisTemplateAutowire_RedisEvictController";
-
-    @Configuration
-    public static class RedisTemplateAutowire {
-
-        @Bean(REDIS_TEMPLATE)
-        public RedisTemplate<String, Object> userRedisTemplate(RedisTemplate redisTemplate) {
-            return redisTemplate;
-        }
+    @GetMapping("/same/template")
+    public boolean sameRedisTemplate() {
+        Map<String, RedisTemplate> beansOfType = applicationContext.getBeansOfType(RedisTemplate.class);
+        // RedisTemplate 没有重写 hashCode，hashCode 代表对象的地址
+        // true
+        return Objects.hashCode(redisTemplate) == Objects.hashCode(objectObjectRedisTemplate)
+            // false
+            // && Objects.hashCode(objectObjectRedisTemplate) == Objects.hashCode(stringStringRedisTemplate)
+            // true
+            && Objects.hashCode(stringStringRedisTemplate) == Objects.hashCode(stringRedisTemplate);
     }
-
 
 }

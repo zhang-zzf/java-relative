@@ -31,7 +31,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,7 +50,7 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
 
     final @Qualifier("someRepoImpl") SomeRepo delegator;
     final @Qualifier(ASYNC_THREAD) Executor executor;
-    final @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> redisTemplate;
+    final @Qualifier(REDIS_TEMPLATE) RedisTemplate<String, User> redisTemplate;
 
     @Override
     public List<User> getBy(String area, List<String> userNoList) {
@@ -146,13 +145,12 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
         return APP_PREFIX + "u:" + id;
     }
 
-    private static final String USER_REDIS_TEMPLATE
-        = "SomeRepoRedisPipelineCacheImplOptimized1UserRedisTemplate";
+    private static final String REDIS_TEMPLATE = "RedisTemplate_SomeRepoRedisPipelineCacheImplOptimize1";
 
     @Configuration
     public static class RedisTemplateAutowire {
-        @Bean(USER_REDIS_TEMPLATE)
-        public RedisTemplate<String, User> userRedisTemplate(RedisTemplate redisTemplate) {
+        @Bean(REDIS_TEMPLATE)
+        public RedisTemplate<String, User> redisTemplate(RedisTemplate redisTemplate) {
             return redisTemplate;
         }
     }

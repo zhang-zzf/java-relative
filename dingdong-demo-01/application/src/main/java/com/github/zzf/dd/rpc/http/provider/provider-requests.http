@@ -38,3 +38,5 @@ DELETE http://{{host}}/redis/?keyPattern=dd:msgpack:d:a::u:mobile/15618536513
 ### 批量清除缓存 (key pattern)
 DELETE http://{{host}}/redis/?keyPattern=dd:msgpack:d:a:shanghai:u:*
 
+###
+GET http://{{host}}/redis/same/template

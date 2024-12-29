@@ -7,12 +7,14 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.summarizingDouble;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.offset;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.feng.learn.jdk8.stream.Person.Sex;
+import com.feng.learn.jdk8.stream.StreamTest.Writer.Book;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +27,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -89,8 +93,7 @@ public class StreamTest {
             .reduce(0, Integer::sum);
         then(sum).isEqualTo(0);
         //
-        Optional<Integer> reduceWithoutInitValue = personList.stream().map(Person::getAge)
-            .reduce(Integer::sum);
+        Optional<Integer> reduceWithoutInitValue = personList.stream().map(Person::getAge).reduce(Integer::sum);
         //
         BigDecimal sumWithBigDecimal = personList.stream().map(Person::getAge)
             // identity 初始值
@@ -206,6 +209,50 @@ public class StreamTest {
             .findFirst()
             .orElse("not Found");
         then(s).isEqualTo("not Found");
+    }
+
+
+    /**
+     * <pre>
+     *     flatMap 是一个中间操作，与 map 类似，但它的映射函数会将每个元素转换为一个流，并将多个流合并成一个新的流。
+     *     flatMap 常用于处理嵌套集合或多对多的映射关系。
+     *
+     * </pre>
+     */
+    @Test
+    void givenStream_whenFlatMap_then() {
+        List<List<Object>> listList = new ArrayList<>();
+        List<Object> listObject = listList.stream()
+            // List 对象压平
+            .flatMap(List::stream)
+            .collect(toList());
+        //
+        Stream<Stream<Object>> streamStream = Stream.empty();
+        List<Object> ListObject = streamStream.flatMap(s -> s).collect(toList());
+        //
+        Integer[][] data = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        Integer[] flattedData = Arrays.stream(data)
+            // .flatMap(array -> Arrays.stream(array))
+            .flatMap(Arrays::stream)
+            .toArray(Integer[]::new);
+        //
+        List<Writer> writers = Arrays.asList();
+        List<Book> bookList = writers.stream()
+            // 把所有作家的书压平
+            .flatMap(w -> w.getBooks().stream())
+            .collect(toList());
+    }
+
+    @Data
+    public static class Writer {
+        private String name;
+        private List<Book> books;
+
+        @Data
+        public static class Book {
+            private int price;
+            private String name;
+        }
     }
 
 }

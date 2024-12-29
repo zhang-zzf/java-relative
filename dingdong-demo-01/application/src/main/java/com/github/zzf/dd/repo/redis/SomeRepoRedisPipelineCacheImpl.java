@@ -46,7 +46,7 @@ public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
 
     final @Qualifier("someRepoImpl") SomeRepo delegator;
     final @Qualifier(ASYNC_THREAD) Executor executor;
-    final @Qualifier(USER_REDIS_TEMPLATE) RedisTemplate<String, User> userRedisTemplate;
+    final @Qualifier(REDIS_TEMPLATE) RedisTemplate<String, User> userRedisTemplate;
 
     @Override
     public List<User> getBy(String area, List<String> userNoList) {
@@ -112,13 +112,12 @@ public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
             .filter(Objects::nonNull);
     }
 
-    private static final String USER_REDIS_TEMPLATE
-        = "SomeRepoRedisPipelineCacheImplUserRedisTemplate";
+    private static final String REDIS_TEMPLATE = "RedisTemplate_SomeRepoRedisPipelineCacheImpl";
 
     @Configuration
     public static class RedisTemplateAutowire {
-        @Bean(USER_REDIS_TEMPLATE)
-        public RedisTemplate<String, User> userRedisTemplate(RedisTemplate redisTemplate) {
+        @Bean(REDIS_TEMPLATE)
+        public RedisTemplate<String, User> redisTemplate(RedisTemplate redisTemplate) {
             return redisTemplate;
         }
     }

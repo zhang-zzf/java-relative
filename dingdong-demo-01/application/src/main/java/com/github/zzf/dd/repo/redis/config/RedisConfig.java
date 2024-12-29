@@ -44,17 +44,23 @@ public class RedisConfig {
         // 会把 LocalDateTime 序列化成 []
         // mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);// 序列化成 timestamp
         mapper.setSerializationInclusion(Include.NON_NULL);
+        // 这里有大坑，会吞掉异常
+        // mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
         // json String 中会有多个 @class 字段
         // mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL, As.PROPERTY);
         //
         // 配置模型上 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS) 只在最外层添加 @class 字段
         // 配置的意思在于：只有 Object 类型的字段会添加 @class 字段。
         // 主要用于反序列化时解析最外层 @class
+        // mapper.enableDefaultTyping(DefaultTyping.JAVA_LANG_OBJECT, As.PROPERTY);
         mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.JAVA_LANG_OBJECT, As.PROPERTY);
         return mapper;
     }
 
-    @Bean
+    /**
+     * Bean 名字必须是 redisTemplate
+     */
+    @Bean("redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -65,6 +71,16 @@ public class RedisConfig {
         redisTemplate.setHashKeySerializer(STRING_REDIS_SERIALIZER);
         // hash的value序列化方式采用jackson
         redisTemplate.setHashValueSerializer(VALUE_SERIALIZER);
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<Object, Object> objectObjectRedisTemplate(RedisTemplate redisTemplate) {
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> stringObjectRedisTemplate(RedisTemplate redisTemplate) {
         return redisTemplate;
     }
 

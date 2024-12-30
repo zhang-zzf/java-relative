@@ -5,3 +5,8 @@ spring:
 mysql:
   db:
     url: jdbc:mysql://10.0.9.18:3306/
+
+map:
+  from:
+    config: '{ 5: "10" }' # 必须有单引号
+

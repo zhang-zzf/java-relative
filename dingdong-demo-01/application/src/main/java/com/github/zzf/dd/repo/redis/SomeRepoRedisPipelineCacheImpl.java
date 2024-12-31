@@ -102,7 +102,7 @@ public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
             .map(key -> userRedisTemplate.getStringSerializer().serialize(key))
             .collect(toList());
         // 实测 lettuce key 可以跨 node
-        List<Object> userList = userRedisTemplate.executePipelined((RedisCallback<List<User>>) connection -> {
+        List<Object> userList = userRedisTemplate.executePipelined((RedisCallback<?>) connection -> {
             redisKeyList.forEach(connection::get);
             return null;
         });

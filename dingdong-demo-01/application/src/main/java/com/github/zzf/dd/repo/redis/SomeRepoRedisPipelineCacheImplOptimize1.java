@@ -32,6 +32,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
@@ -115,15 +117,18 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
 
     private Stream<User> fetchFromCache(String area, List<String> userNoList) {
         log.info("fetchFromCache -> userNoList: {}", userNoList);
-        // List<byte[]> redisKeyList = userNoList.stream()
-        //     .map(id -> toRedisKey(id))
-        //     .map(key -> redisTemplate.getStringSerializer().serialize(key))
-        //     .collect(toList());
+        List<byte[]> redisKeyList = userNoList.stream()
+            .map(id -> toRedisKey(id))
+            .map(key -> redisTemplate.getStringSerializer().serialize(key))
+            .collect(toList());
         // 实测 lettuce key 可以跨 node
-        // List<Object> userList = userRedisTemplate.executePipelined((RedisCallback<List<User>>) connection -> {
-        //     redisKeyList.forEach(connection::get);
-        //     return null;
-        // });
+        List<Object> objectList = redisTemplate.executePipelined(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                redisKeyList.forEach(connection::get);
+                return null;
+            }
+        });
         //
         // 优化点： 使用 SessionCallback
         // lettuce pipeline 底层使用异步
@@ -145,7 +150,7 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
         return APP_PREFIX + "u:" + id;
     }
 
-    private static final String REDIS_TEMPLATE = "RedisTemplate_SomeRepoRedisPipelineCacheImplOptimize1";
+    public static final String REDIS_TEMPLATE = "RedisTemplate_SomeRepoRedisPipelineCacheImplOptimize1";
 
     @Configuration
     public static class RedisTemplateAutowire {

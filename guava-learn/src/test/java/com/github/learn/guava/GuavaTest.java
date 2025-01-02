@@ -16,6 +16,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import com.google.common.base.*;
 import com.google.common.collect.Comparators;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.hash.BloomFilter;
@@ -112,9 +113,23 @@ public class GuavaTest {
         Collections.emptyMap();
         // Lists
         List<List<Integer>> partitionList = Lists.partition(list, 50);
+        Lists.reverse(partitionList);
         // Sets
         Set<Integer> union = Sets.union(set, setCopyOf);
         // Set<Integer> union = Stream.concat(set.stream(), setCopyOf.stream()).collect(toSet());
+        //
+        // Iterables -> Stream
+        Integer[] array = Iterables.toArray(list, Integer.class);
+        Stream.of(array).allMatch(Objects::nonNull);
+        // Iterables.all(list, Objects::isNull);
+        Stream.of(array).anyMatch(Objects::nonNull);
+        // Iterables.any(set, Objects::nonNull);
+        partitionList.stream().flatMap(List::stream).collect(toList());
+        // Iterable<Integer> concat = Iterables.concat(partitionList);
+        Integer i = list.stream().skip(0).findFirst().get();
+        // Integer i = Iterables.get(list, 0);
+        Iterable<List<Integer>> partition = Iterables.partition(union, 50);
+
     }
 
     @Test

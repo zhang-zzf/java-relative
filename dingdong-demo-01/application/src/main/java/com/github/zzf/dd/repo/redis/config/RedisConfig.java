@@ -24,6 +24,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @author : zhanfeng.zhang@icloud.com
  * @date : 2024-12-10
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Configuration
 public class RedisConfig {
 

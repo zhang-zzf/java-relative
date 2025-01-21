@@ -1,0 +1,132 @@
+---
+# global config
+spring:
+  application:
+    name: spring-consul-app
+  jackson:
+    default-property-inclusion: non_null
+  config:
+    # To change the connection properties of Consul Config either set spring.cloud.consul.host and spring.cloud.consul.port or add the host/port pair to the spring.config.import statement such as, spring.config.import=optional:consul:myhost:8500. The location in the import property has precedence over the host and port propertie.
+    # import: 'optional:consul:'
+    # Removing the optional: prefix will cause Consul Config to fail if it is unable to connect to Consul
+    import: 'optional:consul:localhost:8500'
+  cloud:
+    consul:
+      enabled: false
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        enabled: true # default
+        instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        tags: ['spring-boot-actuator']
+        metadata:
+          author: zhang.zzf
+        # health check
+        register-health-check: true
+        health-check-path: "/actuator/health" # default
+        health-check-interval: 10s
+        health-check-timeout: 1s
+      config:
+        enabled: true # default
+        prefixes: [config] # consul用于存储配置的文件夹根目录名为config
+        # sets the folder name used by all applications
+        # /config/application/data 中的配置可以配所有服务读取
+        default-context: application # default
+        profile-separator: '::' # default
+        # format: key_value
+        format: yaml
+        data-key: data # default
+        watch:
+          enabled: true
+
+# 假设 consul 有以下配置。数字越小，配置优先级越高：
+# 1. config/spring-consul-app::dev/data
+# 2. config/spring-consul-app/data
+# 3. config/application::dev/data
+# 4. config/application/data
+
+# 指定 `-Dspring.profiles.active=dev` 加载 1,2,3,4 配置
+# 启动没有指定 profile，加载 2,4 配置
+
+logging:
+  level:
+    root: info
+  pattern:
+#    console: '%d{HH:mm:ss} %-5p [%15.15t] %-40.40logger{39} :[%X{x-trace-id}] %m%n%wEx'
+    file: "%d{yyyy-MM-dd'T'HH:mm:ssXXX} %-5p [%15.15t] %-40.40logger{39} :[%X{x-trace-id}] %m%n%wEx"
+    console: '%clr(%d{HH:mm:ssXXX}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr([%X{x-trace-id}]) %m%n%wEx'
+# %clr(...){faint}  颜色 / %highlight(...) 高亮显示
+# %d{yyyy-MM-dd'T'HH:mm:ssXXX} 时间格式
+# %-5p 显示日志级别ERROR，WARN，INFO，DEBUG，TRACE；%5若字符长度小于5，则右边用空格填充，%-5若字符长度小于5，则左边用空格填充
+# %15.15t 若字符长度小于5，则右边用空格填充；若字符长度超过15，截去多余字符
+# %-40.40logger{39}  logger
+# %X{x-trace-id} MDC 中的 `x-trace-id`
+
+#
+# spring-boot actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        # https://docs.spring.io/spring-boot/reference/actuator/endpoints.html
+        include: 'health,info,env,caches,auditevents,prometheus,threaddump,scheduledtasks,mappings,metrics,loggers'
+  endpoint:
+    env:
+      # For HTTP endpoints, a user is considered to be authorized
+      # if they have authenticated and have the roles configured by the endpoint?s roles property.
+      # By default, any authenticated user is authorized
+      show-values: WHEN_AUTHORIZED
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+    env:
+      enabled: true
+# user authorities
+user:
+  authority:
+    configs:
+      15618536513:
+        - ROLE_ENDPOINT_ADMIN
+        - ROLE_ADMIN
+      18121127912:
+        - ROLE_ADMIN
+      17612156408:
+        - ROLE_ADMIN
+
+---
+# rpc-http module config
+server:
+  port: 8080
+
+---
+# repo module config
+spring:
+  datasource:
+    hikari:
+      iot-card:
+        maximum-pool-size: 4
+        jdbc-url: jdbc:mysql://localhost:3306/iot_card
+        username: root
+        password: test
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      my-db:
+        maximum-pool-size: 4
+        jdbc-url: jdbc:mysql://localhost:3307/my_db
+        username: root
+        password: test
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+---
+# prod config
+spring:
+  config:
+    activate:
+      on-profile: [ prod ]
+logging:
+  config: classpath:logback-spring-prod.xml # 配置文件的问题

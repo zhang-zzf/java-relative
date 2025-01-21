@@ -1,0 +1,89 @@
+<configuration>
+
+  <springProperty name="logging.path" source="logging.file.path" defaultValue="./logs/"/>
+
+  <!-- Strictly speaking, the level attribute is not necessary since -->
+  <!-- the level of the root level is set to DEBUG by default.       -->
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+  </root>
+
+  <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->
+  <!-- 级别依次为【从高到低】：FATAL > ERROR > WARN > INFO > DEBUG > TRACE  -->
+  <logger name="com.github.zzf.learn.rpc.http.provider.log" level="debug" additivity="false">
+    <appender-ref ref="FILE"/>
+  </logger>
+
+  <!-- 利用logback输入mybatis的sql日志，
+  注意：如果不加 additivity="false" 则此logger会将输出转发到自身以及祖先的logger中，就会出现日志文件中sql重复打印-->
+  <!-- mybatis 不可以配置 logPrefix,否者以下默认包名的 logger 是不会生效的 -->
+  <logger name="com.github.zzf.learn.repo.mysql.iot_card.mapper" level="DEBUG" additivity="false">
+    <appender-ref ref="FILE"/>
+  </logger>
+
+  <!-- ConsoleAppender：把日志输出到控制台 -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <!--    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+    <!--      <level>DEBUG</level>-->
+    <!--    </filter>-->
+    <encoder>
+      <!-- %37():如果字符没有37个字符长度,则左侧用空格补齐 -->
+      <!-- %-37():如果字符没有37个字符长度,则右侧用空格补齐 -->
+      <!-- %15.15():如果记录的线程字符长度小于15(第一个)则用空格在左侧补齐,如果字符长度大于15(第二个),则从开头开始截断多余的字符 -->
+      <!-- %-40.40():如果记录的logger字符长度小于40(第一个)则用空格在右侧补齐,如果字符长度大于40(第二个),则从开头开始截断多余的字符 -->
+      <!-- %msg：日志打印详情 -->
+      <!-- %n:换行符 -->
+      <!-- %highlight():转换说明符以粗体红色显示其级别为ERROR的事件，红色为WARN，BLUE为INFO，以及其他级别的默认颜色。 -->
+      <pattern>
+        %d{HH:mm:ssXXX} %highlight(%5p) [%15.15t] %cyan(%-40.40logger{39}) : %highlight([%X{x-trace-id}]) %m%n
+      </pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <!-- todo 监控 queue 大小-->
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="FILE"/>
+    <!-- 设置异步阻塞队列的大小，为了不丢失日志建议设置的大一些，单机压测时100000是没问题的，应该不用担心OOM -->
+    <queueSize>100000</queueSize>
+    <!-- 设置丢弃DEBUG、TRACE、INFO日志的阀值，不丢失 -->
+    <discardingThreshold>0</discardingThreshold>
+    <!-- 设置队列入队时非阻塞，当队列满时会直接丢弃日志，但是对性能提升极大 -->
+    <neverBlock>false</neverBlock>
+  </appender>
+
+  <!-- info 日志-->
+  <!-- RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+  <!-- 以下的大概意思是：1.先按日期存日志，日期变了，将前一天的日志文件名重命名为XXX%日期%索引，新的日志仍然是project_info.log -->
+  <!--             2.如果日期没有发生变化，但是当前日志的文件大小超过10MB时，对当前日志进行分割 重命名-->
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--日志文件路径和名称-->
+    <File>${logging.path}/app.log</File>
+    <!--是否追加到文件末尾,默认为true-->
+    <append>true</append>
+    <!--有两个与RollingFileAppender交互的重要子组件。 第一个RollingFileAppender子组件，即RollingPolicy:负责执行翻转所需的操作。
+     RollingFileAppender的第二个子组件，即TriggeringPolicy:将确定是否以及何时发生翻转。 因此，RollingPolicy负责什么和TriggeringPolicy负责什么时候.
+    作为任何用途，RollingFileAppender必须同时设置RollingPolicy和TriggeringPolicy,但是，如果其RollingPolicy也实现了TriggeringPolicy接口，则只需要显式指定前者。-->
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- 日志文件的名字会根据fileNamePattern的值，每隔一段时间改变一次 -->
+      <!-- 文件名：logs/project_info.2017-12-05.0.log -->
+      <!-- 注意：SizeAndTimeBasedRollingPolicy 中 ％i和％d令牌都是强制性的，必须存在，要不会报错 -->
+      <fileNamePattern>${logging.path}/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <!-- 每产生一个日志文件，该日志文件的保存期限为30天, ps:maxHistory的单位是根据fileNamePattern中的翻转策略自动推算出来的,例如上面选用了yyyy-MM-dd,则单位为天
+      如果上面选用了yyyy-MM,则单位为月,另外上面的单位默认为yyyy-MM-dd-->
+      <maxHistory>30</maxHistory>
+      <!-- 每个日志文件到10mb的时候开始切分，最多保留30天，但最大到20GB，哪怕没到30天也要删除多余的日志 -->
+      <totalSizeCap>20GB</totalSizeCap>
+      <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成5KB看效果 -->
+      <maxFileSize>10MB</maxFileSize>
+    </rollingPolicy>
+    <!--编码器-->
+    <encoder>
+      <!-- pattern节点，用来设置日志的输入格式 ps:日志文件中没有设置颜色,否则颜色部分会有ESC[0:39em等乱码-->
+      <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p [%15.15t] %-40.40logger{39} : [%X{x-trace-id}] %m%n</pattern>
+      <!-- 记录日志的编码:此处设置字符集 - -->
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+</configuration>

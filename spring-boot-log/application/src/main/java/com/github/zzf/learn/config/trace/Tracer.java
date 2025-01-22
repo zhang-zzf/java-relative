@@ -1,4 +1,4 @@
-package com.github.zzf.learn.config.log;
+package com.github.zzf.learn.config.trace;
 
 
 import com.github.zzf.learn.common.annotation.Idempotent;

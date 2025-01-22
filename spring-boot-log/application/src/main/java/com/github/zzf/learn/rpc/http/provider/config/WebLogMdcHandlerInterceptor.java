@@ -1,8 +1,8 @@
 package com.github.zzf.learn.rpc.http.provider.config;
 
-import static com.github.zzf.learn.config.log.Tracer.X_TRACE_ID;
+import static com.github.zzf.learn.config.trace.Tracer.X_TRACE_ID;
 
-import com.github.zzf.learn.config.log.Tracer;
+import com.github.zzf.learn.config.trace.Tracer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

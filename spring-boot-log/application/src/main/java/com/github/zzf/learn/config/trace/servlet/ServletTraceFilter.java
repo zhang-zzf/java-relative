@@ -1,9 +1,10 @@
-package com.github.zzf.learn.config.log;
+package com.github.zzf.learn.config.trace.servlet;
 
 
-import static com.github.zzf.learn.config.log.Tracer.X_TRACE_ID;
-import static com.github.zzf.learn.config.log.Tracer.X_TRACE_LOG_ENABLED;
+import static com.github.zzf.learn.config.trace.Tracer.X_TRACE_ID;
+import static com.github.zzf.learn.config.trace.Tracer.X_TRACE_LOG_ENABLED;
 
+import com.github.zzf.learn.config.trace.Tracer;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

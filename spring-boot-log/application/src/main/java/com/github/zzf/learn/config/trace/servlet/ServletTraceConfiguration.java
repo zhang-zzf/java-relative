@@ -1,4 +1,4 @@
-package com.github.zzf.learn.config.log;
+package com.github.zzf.learn.config.trace.servlet;
 
 import jakarta.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.github.zzf.learn.config.log;
+package com.github.zzf.learn.config.trace;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

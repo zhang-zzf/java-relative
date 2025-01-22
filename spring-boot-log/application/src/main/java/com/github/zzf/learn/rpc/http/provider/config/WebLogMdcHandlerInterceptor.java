@@ -18,7 +18,6 @@ public class WebLogMdcHandlerInterceptor implements HandlerInterceptor {
         throws Exception {
         try {
             response.addHeader(X_TRACE_ID, tracer.traceId());
-            log.info("http -> {} {}", request.getMethod(), request.getRequestURI());
         } catch (Exception e) {
             log.error("preHandle -> unExpected exception", e);
         }

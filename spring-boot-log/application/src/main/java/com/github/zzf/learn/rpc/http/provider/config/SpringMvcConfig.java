@@ -10,9 +10,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 迁移到 filter 实现
         // traceId
-        // registry.addInterceptor(new WebLogMdcHandlerInterceptor());
+        registry.addInterceptor(new WebLogMdcHandlerInterceptor());
     }
 
     @Override

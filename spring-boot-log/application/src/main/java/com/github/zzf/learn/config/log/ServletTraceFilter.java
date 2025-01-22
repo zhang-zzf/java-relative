@@ -1,9 +1,9 @@
 package com.github.zzf.learn.config.log;
 
 
-import static com.github.zzf.learn.common.log.LogTracer.X_TRACE_ID;
+import static com.github.zzf.learn.config.log.Tracer.X_TRACE_ID;
+import static com.github.zzf.learn.config.log.Tracer.X_TRACE_LOG_ENABLED;
 
-import com.github.zzf.learn.common.log.LogTracer;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,8 +19,8 @@ import lombok.extern.slf4j.Slf4j;
  * @date : 2024-10-08
  */
 @Slf4j
-public class ServletLogFilter implements Filter {
-    final LogTracer logTracer = LogTracer.INSTANCE;
+public class ServletTraceFilter implements Filter {
+    final Tracer tracer = Tracer.INSTANCE;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -28,11 +28,20 @@ public class ServletLogFilter implements Filter {
         if (request instanceof HttpServletRequest httpRequest &&
             response instanceof HttpServletResponse httpResponse) {
             // set trace id
-            httpResponse.addHeader(X_TRACE_ID, logTracer.addTraceId());
+            httpResponse.addHeader(X_TRACE_ID, tracer.traceId());
             log.info("http -> {} {}", httpRequest.getMethod(), httpRequest.getRequestURI());
-            chain.doFilter(request, response);
-            // remove trace id
-            logTracer.removeTraceId();
+            // trace log flag
+            String traceEnabled = httpRequest.getHeader(X_TRACE_LOG_ENABLED);
+            if (Boolean.parseBoolean(traceEnabled)) {
+                tracer.enableTraceLog();
+            }
+            try {
+                chain.doFilter(request, response);
+            } finally {
+                // remove trace id
+                tracer.removeTraceId();
+                tracer.disableTraceLog();
+            }
         }
         else {
             chain.doFilter(request, response);

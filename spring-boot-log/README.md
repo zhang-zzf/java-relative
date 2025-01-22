@@ -1,12 +1,51 @@
 # README.md
 
+       
+## Aop 统一 debug 日志
+
+### controller 入口
+
+### DB mybatis
+
+### feign rpc
+
 ## 动态更新日志级别
+
+env: spring-boot + logback
 
 - 配置中心下发
 
+### http 接口
+
+controller 参考: com.github.zzf.learn.rpc.http.provider.log.LoggerController
+
+```http
+### 获取日志级别
+GET {{host}}/loggers
+Content-Type: application/json
+
+### 获取日志级别
+GET {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+Content-Type: application/json
+
+### 设置日志级别
+PUT {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+Content-Type: application/json
+
+{ "level": "DEBUG" }
+
+### 设置日志级别
+PUT {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+Content-Type: application/json
+
+{ "level": "info" }
+```
+
 ### logback-spring.xml
 
+参考 logback-spring-prod.xml
 
+用于定义 prod 环境的日志配置
 
 ### spring application.yml
 
@@ -185,7 +224,7 @@ spring 配置 CORS 有2种方式：
 参考：
 - com.github.zzf.learn.rpc.http.provider.config.SpringMvcConfig.addInterceptors
   > spring interceptor 只能拦截 spring mvc 请求
-- com.github.zzf.learn.config.log.ServletLogConfiguration
+- com.github.zzf.learn.config.log.ServletTraceConfiguration
   > servlet filter 实现，可以拦截所有 http 请求
 
 ### JWT

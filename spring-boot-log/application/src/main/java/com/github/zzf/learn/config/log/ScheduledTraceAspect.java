@@ -1,6 +1,5 @@
 package com.github.zzf.learn.config.log;
 
-import com.github.zzf.learn.common.log.LogTracer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -15,9 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Aspect
 @Slf4j
 @RequiredArgsConstructor
-public class LogTracerScheduledAspect {
+public class ScheduledTraceAspect {
 
-    final LogTracer logTracer = LogTracer.INSTANCE;
+    final Tracer tracer = Tracer.INSTANCE;
 
     /**
      * 调度任务
@@ -25,10 +24,10 @@ public class LogTracerScheduledAspect {
     @Around("execution(* *(..)) && @annotation(annotation)")
     public Object addTraceId(ProceedingJoinPoint pjp, Scheduled annotation) throws Throwable {
         try {
-            logTracer.addTraceId();
+            tracer.traceId();
             return pjp.proceed();
         } finally {
-            logTracer.removeTraceId();
+            tracer.removeTraceId();
         }
     }
 

@@ -12,17 +12,18 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Slf4j
-public class ServletLogConfiguration {
+public class ServletTraceConfiguration {
 
     @Bean
-    public FilterRegistrationBean<Filter> logTracerFilter() {
+    public FilterRegistrationBean<Filter> servletTraceFilter() {
         return new FilterRegistrationBean<>() {
             @Override
             public Filter getFilter() {
                 // log filter should be the head of the chain
                 setOrder(Integer.MIN_VALUE);
-                return new ServletLogFilter();
+                return new ServletTraceFilter();
             }
         };
     }
+
 }

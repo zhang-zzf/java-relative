@@ -4,9 +4,9 @@ import static com.feng.learn.spring.redis.ClusterRedisTest.ClusterRedisConfig.RE
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
-import javax.annotation.Resource;
 import org.junit.Ignore;
 import org.junit.Test;
+import javax.annotation.Resource;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

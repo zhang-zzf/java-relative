@@ -11,6 +11,7 @@ import org.mapstruct.factory.Mappers;
 public interface DtoDomainMapper {
 
     DtoDomainMapper mapper = Mappers.getMapper(DtoDomainMapper.class);
+    // cohesive
 
     // Dto 与 Domain 在转换时 copy 的 person 的 reference (浅copy)
 

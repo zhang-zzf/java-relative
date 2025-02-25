@@ -8,5 +8,10 @@ mysql:
 
 map:
   from:
-    config: '{ 5: "10" }' # 必须有单引号
+    # config: '{ 5: "10" }'  # ok # 必须有单引号
+    # config: '{ "5": 10 }'  # ok # 必须有单引号
+    config: '{ 5: 10 }'  # ok # 必须有单引号
+    strMap: '{ "5": "10", "key1": "value1", "key2": "value2"}'
+
+priority-zzf: 'value from application.yaml'
 

@@ -84,4 +84,20 @@ public class ConfigService {
     @Value("#{${map.from.config:{'5':5}}}")
     Map<Long, Long> mapValue;
 
+    @Value("#{${map.from.strMap:{'5': 5}}}")
+    Map<String , String> strMapValue;
+
+    // SpEL 读取 map 中的值
+    @Value("#{${map.from.strMap2: {'key100': 'defaultValue1'}}.key100}")
+    String key1FromStrMap2;
+
+    // SpEL 读取 System.getEnv() 中的值
+    // 配置文件中的值(spring.Environment) 不会生效
+    @Value("#{systemEnvironment['priority-zzf']}")
+    String configFromSystemEvn;
+
+    // SpEL 读取 System.getProperty() 中的值
+    // 配置文件中的值(spring.Environment) 不会生效
+    @Value("#{systemProperties['priority-zzf']}")
+    String configFromSystemProperty;
 }

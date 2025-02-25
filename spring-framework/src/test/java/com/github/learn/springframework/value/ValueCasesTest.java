@@ -18,7 +18,8 @@ class ValueCasesTest {
 
     @Test
     void givenValueConstructorInject_when_then() {
-        then(valueCases.getDbUrl()).isNotNull()
+        then(valueCases.getDbUrl())
+            .isNotNull()
             .isEqualTo("jdbc:mysql://10.0.9.18:3306/")
         ;
     }
@@ -36,7 +37,10 @@ class ValueCasesTest {
         then(configService.getJsonString()).isEqualTo("[{\"name\":\"zhang.zzf\",\"age\":5,\"adult\":false}]");
         then(configService.getExceptionBundleList()).hasSize(2);
         then(configService.getMapValue()).hasSize(1);
+        then(configService.getStrMapValue()).hasSize(3);
+        then(configService.getKey1FromStrMap2()).isEqualTo("defaultValue1");
+        then(configService.getConfigFromSystemEvn()).isNull();
+        then(configService.getConfigFromSystemProperty()).isNull();
     }
-
 
 }

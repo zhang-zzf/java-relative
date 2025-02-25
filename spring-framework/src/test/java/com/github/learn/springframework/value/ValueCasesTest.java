@@ -40,7 +40,7 @@ class ValueCasesTest {
         then(configService.getStrMapValue()).hasSize(3);
         then(configService.getKey1FromStrMap2()).isEqualTo("defaultValue1");
         then(configService.getConfigFromSystemEvn()).isNull();
-        then(configService.getConfigFromSystemProperty()).isNull();
+        then(configService.getConfigFromSystemProperty()).isNotNull().isEqualTo("defaultVal");
     }
 
 }

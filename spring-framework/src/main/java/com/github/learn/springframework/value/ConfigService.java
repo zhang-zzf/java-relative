@@ -98,6 +98,6 @@ public class ConfigService {
 
     // SpEL 读取 System.getProperty() 中的值
     // 配置文件中的值(spring.Environment) 不会生效
-    @Value("#{systemProperties['priority-zzf']}")
+    @Value("#{systemProperties['priority-zzf'] ?: 'defaultVal'}")
     String configFromSystemProperty;
 }

@@ -1,7 +1,7 @@
 package com.github.zzf.dd.repo.redis;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_5_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_MANAGER;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_30_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
@@ -74,7 +74,6 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
     }
 
     private void updateCache(List<User> dbData) {
-        // todo record
         redisTemplate.executePipelined(new SessionCallback<>() {
             @Override
             public Object execute(RedisOperations operations) throws DataAccessException {
@@ -147,7 +146,7 @@ public class SomeRepoRedisPipelineCacheImplOptimize1 implements SomeRepo {
     }
 
     private String toRedisKey(String id) {
-        return APP_PREFIX + "u:" + id;
+        return APP_PREFIX_TTL_5_MINUTES + "u:" + id;
     }
 
     public static final String REDIS_TEMPLATE = "RedisTemplate_SomeRepoRedisPipelineCacheImplOptimize1";

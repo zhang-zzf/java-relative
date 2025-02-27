@@ -24,7 +24,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_5_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_MANAGER;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static java.util.concurrent.CompletableFuture.*;
@@ -98,7 +98,7 @@ public class SomeRepoRedisPipelineCacheImpl implements SomeRepo {
     private Stream<User> fetchFromCache(String area, List<String> userNoList) {
         log.info("fetchFromCache -> userNoList: {}", userNoList);
         List<byte[]> redisKeyList = userNoList.stream()
-            .map(id -> APP_PREFIX + "u:" + id)
+            .map(id -> APP_PREFIX_TTL_5_MINUTES + "u:" + id)
             .map(key -> userRedisTemplate.getStringSerializer().serialize(key))
             .collect(toList());
         // 实测 lettuce key 可以跨 node

@@ -23,7 +23,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
-import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX;
+import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_5_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_MANAGER;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_5_MINUTES;
 import static java.util.concurrent.CompletableFuture.*;
@@ -93,7 +93,7 @@ public class SomeRepoRedisHashtagCacheImpl implements SomeRepo {
     private Stream<User> fetchFromCache(String area, List<String> userNoList) {
         log.info("fetchFromCache -> userNoList: {}", userNoList);
         List<String> redisKeyList = userNoList.stream()
-            .map(id -> APP_PREFIX + "a:{" + area + "}:u:" + id)
+            .map(id -> APP_PREFIX_TTL_5_MINUTES + "a:{" + area + "}:u:" + id)
             .collect(toList());
         List<User> userList = userRedisTemplate.opsForValue().multiGet(redisKeyList);
         return ofNullable(userList)

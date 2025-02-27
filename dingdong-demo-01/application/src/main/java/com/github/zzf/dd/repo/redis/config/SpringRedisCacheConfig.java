@@ -49,7 +49,8 @@ public class SpringRedisCacheConfig {
             // .initialCacheNames(Set.of(CACHE_REDIS_TTL_5_MINUTES))
             .withInitialCacheConfigurations(new HashMap<>() {{
                 // cacheName <-> Configuration
-                put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration().prefixKeysWith(APP_PREFIX_TTL_5_MINUTES));
+                put(CACHE_REDIS_TTL_5_MINUTES, defaultConfiguration()
+                    .prefixKeysWith(APP_PREFIX_TTL_5_MINUTES));
                 put(CACHE_REDIS_TTL_8_MINUTES, defaultConfiguration()
                     .prefixKeysWith(APP_PREFIX_TTL_8_MINUTES)
                     .entryTtl(TTL_8_MINUTES)

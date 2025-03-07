@@ -17,7 +17,7 @@ env: spring-boot + logback
 
 ### http 接口
 
-controller 参考: com.github.zzf.learn.rpc.http.provider.log.LoggerController
+controller 参考: log.provider.http.rpc.com.github.zzf.learn.app.LoggerController
 
 ```http
 ### 获取日志级别
@@ -185,7 +185,7 @@ logging:
 1. Exposing Endpoints，参考 application/application.yml
 1. security 控制，参考 com.github.zzf.learn.config.ActuatorSecurityConfiguration
    > 要求用户有 `ROLE_ENDPOINT_ADMIN`
-1. 注册自定义 metric，参考 com.github.zzf.learn.config.actuator.ActuatorMeterConfiguration
+1. 注册自定义 metric，参考 actuator.config.com.github.zzf.learn.app.ActuatorMeterConfiguration
 
 ### security/cors
 
@@ -222,9 +222,9 @@ spring 配置 CORS 有2种方式：
 ### springweb 添加 日志 filter
 
 参考：
-- com.github.zzf.learn.rpc.http.provider.config.SpringMvcConfig.addInterceptors
+- config.provider.http.rpc.com.github.zzf.learn.app.SpringMvcConfig.addInterceptors
   > spring interceptor 只能拦截 spring mvc 请求
-- com.github.zzf.learn.config.trace.servlet.ServletTraceConfiguration
+- servlet.trace.config.com.github.zzf.learn.app.ServletTraceConfiguration
   > servlet filter 实现，可以拦截所有 http 请求
 
 ### JWT
@@ -248,10 +248,10 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0
 ```
 
 参考: 
-- com.github.zzf.learn.rpc.http.provider.config.security.JWTService
-- com.github.zzf.learn.rpc.http.provider.config.security.JWTAuthenticationFilter
-- com.github.zzf.learn.config.actuator.ActuatorSecurityConfiguration.actuatorSecurityFilterChain
-- com.github.zzf.learn.rpc.http.provider.user.UserController.userToken
+- security.config.provider.http.rpc.com.github.zzf.learn.app.JWTService
+- security.config.provider.http.rpc.com.github.zzf.learn.app.JWTAuthenticationFilter
+- actuator.config.com.github.zzf.learn.app.ActuatorSecurityConfiguration.actuatorSecurityFilterChain
+- user.provider.http.rpc.com.github.zzf.learn.app.UserController.userToken
 
 ## project structure
 

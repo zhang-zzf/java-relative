@@ -1,0 +1,31 @@
+# 必须启动本机的 Docker
+services:
+  #  mysql-my-db:
+  #    image: 'mysql:8.0'
+  #    environment:
+  #      - TZ=Asia/Shanghai
+  #      - MYSQL_DATABASE=my_db
+  #      - MYSQL_ROOT_PASSWORD=test
+  #    ports:
+  #      - 3307:3306
+  mysql-iot-card:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    image: 'mysql:8.0'
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_DATABASE=iot_card
+      - MYSQL_ROOT_PASSWORD=test
+    ports:
+      - 3306:3306
+  redis-stack:
+    image: 'redis/redis-stack:7.4.0-v0'
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    ports:
+      - 6379:6379
+      # - 8001:8001

@@ -25,17 +25,17 @@ GET {{host}}/loggers
 Content-Type: application/json
 
 ### 获取日志级别
-GET {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+GET {{host}}/loggers/com.github.zzf.learn.app.rpc.http.provider.log
 Content-Type: application/json
 
 ### 设置日志级别
-PUT {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+PUT {{host}}/loggers/com.github.zzf.learn.app.rpc.http.provider.log
 Content-Type: application/json
 
 { "level": "DEBUG" }
 
 ### 设置日志级别
-PUT {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+PUT {{host}}/loggers/com.github.zzf.learn.app.rpc.http.provider.log
 Content-Type: application/json
 
 { "level": "info" }
@@ -183,7 +183,7 @@ logging:
 
 1. 添加依赖，参考 application/pom.xml
 1. Exposing Endpoints，参考 application/application.yml
-1. security 控制，参考 com.github.zzf.learn.config.ActuatorSecurityConfiguration
+1. security 控制，参考 com.github.zzf.learn.app.config.ActuatorSecurityConfiguration
    > 要求用户有 `ROLE_ENDPOINT_ADMIN`
 1. 注册自定义 metric，参考 actuator.config.com.github.zzf.learn.app.ActuatorMeterConfiguration
 

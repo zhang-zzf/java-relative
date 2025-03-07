@@ -21,17 +21,17 @@ GET {{host}}/loggers
 Content-Type: application/json
 
 ### 获取日志级别
-GET {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+GET {{host}}/loggers/com.github.zzf.learn.app.rpc.http.provider.log
 Content-Type: application/json
 
 ### 设置日志级别
-PUT {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+PUT {{host}}/loggers/com.github.zzf.learn.app.rpc.http.provider.log
 Content-Type: application/json
 
 { "level": "DEBUG" }
 
 ### 设置日志级别
-PUT {{host}}/loggers/com.github.zzf.learn.rpc.http.provider.log
+PUT {{host}}/loggers/com.github.zzf.learn.app.rpc.http.provider.log
 Content-Type: application/json
 x-trace-log-enabled: true
 

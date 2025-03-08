@@ -92,6 +92,61 @@ logging:
     dateformat: MM-dd'T'HH:mm:ssXXX
 ```
 
+## Consul 默认配置
+
+```yaml
+spring:
+  application:
+    name: spring-boot-app
+  config:
+    # To change the connection properties of Consul Config either set spring.cloud.consul.host and spring.cloud.consul.port or add the host/port pair to the spring.config.import statement such as, spring.config.import=optional:consul:myhost:8500. The location in the import property has precedence over the host and port propertie.
+    # import: 'optional:consul:'
+    # Removing the optional: prefix will cause Consul Config to fail if it is unable to connect to Consul
+    import: 'optional:consul:localhost:8500'
+  cloud:
+    consul:
+      # enabled: true # default
+      # host: localhost # default
+      # port: 8500 # default
+      discovery:
+        # enabled: true # default
+        # prefer-ip-address: false # default
+        # instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        instanceId: ${spring.application.name}:${server.port}
+        tags: ['spring-boot', 'actuator']
+        metadata:
+          author: zhang.zzf
+          env: dev
+          cluster: spring-boot-app
+        # health check
+        # register-health-check: true # default
+        # health-check-path: "/actuator/health" # default
+        # health-check-interval: 10s # default
+        health-check-timeout: 1s
+        healthCheckCriticalTimeout: 5m
+      config:
+        enabled: true # default
+        prefixes: [config] # consul用于存储配置的文件夹根目录名为config
+        # sets the folder name used by all applications
+        # /config/application/data 中的配置可以配所有服务读取
+        default-context: ${spring.application.name} # default
+        profile-separator: '::' # default
+        # format: key_value
+        format: yaml
+        data-key: data # default
+        watch:
+          enabled: true
+
+# 假设 consul 有以下配置。数字越小，配置优先级越高：
+# 1. config/spring-consul-app::dev/data
+# 2. config/spring-consul-app/data
+# 3. config/application::dev/data
+# 4. config/application/data
+
+# 指定 `-Dspring.profiles.active=dev` 加载 1,2,3,4 配置
+# 启动没有指定 profile，加载 2,4 配置
+```
+
 ## Distributed Configuration with Consul
 
 [consul 做配配置中心]( https://cloud.spring.io/spring-cloud-consul/reference/html/)

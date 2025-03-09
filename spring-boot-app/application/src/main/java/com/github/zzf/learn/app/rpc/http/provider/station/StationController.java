@@ -47,7 +47,7 @@ public class StationController {
     // todo RESTFul 如何表达
     @GetMapping("/ids")
     public List<Long> queryIdList() {
-        return stationService.queryIdList();
+        return stationService.queryIdList().stream().map(Station::getId).toList();
     }
 
     @Mapper

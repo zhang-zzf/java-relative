@@ -30,8 +30,8 @@ public class StationService {
         return stationRepo.query(idList);
     }
 
-    public @NotNull List<Long> queryIdList() {
-        return stationRepo.queryIdList();
+    public @NotNull List<Station> queryIdList() {
+        return stationRepo.queryList();
     }
 
 }

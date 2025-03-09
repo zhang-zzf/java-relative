@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.zzf.learn.app.repo.mysql.db0.mapper.DdmallWarehouseMapper">
+  <resultMap id="BaseResultMap" type="com.github.zzf.learn.app.repo.mysql.db0.entity.DdmallWarehouse">
+    <!--@mbg.generated-->
+    <!--@Table ddmall_warehouse-->
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="address" jdbcType="VARCHAR" property="address"/>
+    <result column="city" jdbcType="VARCHAR" property="city"/>
+    <result column="district" jdbcType="VARCHAR" property="district"/>
+    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+    <result column="open_time" jdbcType="TIME" property="openTime"/>
+    <result column="close_time" jdbcType="TIME" property="closeTime"/>
+    <result column="capacity" jdbcType="INTEGER" property="capacity"/>
+    <result column="status" jdbcType="OTHER" property="status"/>
+    <result column="is_operating" jdbcType="BOOLEAN" property="isOperating"/>
+    <result column="is_deleted" jdbcType="BOOLEAN" property="isDeleted"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, address, city, district, contact_phone, open_time, close_time, capacity,
+    `status`, is_operating, is_deleted, remark, created_at, updated_at
+  </sql>
+
+  <select id="selectByIdList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ddmall_warehouse
+    where id in
+    <foreach collection="idSet" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+    and is_deleted = 0
+  </select>
+
+  <select id="pageGetId" resultType="long">
+    select id
+    from ddmall_warehouse
+    where id > #{startId}
+      and is_deleted = 0
+    limit #{pageSize}
+  </select>
+</mapper>

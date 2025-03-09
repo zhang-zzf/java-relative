@@ -2,6 +2,7 @@ package com.github.zzf.learn.app.repo.mysql.db0;
 
 import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.github.zzf.learn.app.repo.mysql.db0.mapper.DaoPackage;
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // 开始事务管理
 @EnableTransactionManagement
 // 配置mapper接口包
-@MapperScan(sqlSessionFactoryRef = DBConfig.SQL_SESSION_FACTORY_BEAN_ID)
+@MapperScan(sqlSessionFactoryRef = DBConfig.SQL_SESSION_FACTORY_BEAN_ID, basePackageClasses = {DaoPackage.class})
 @Slf4j
 @RequiredArgsConstructor
 // @PropertySource("classpath:app-repo.properties")

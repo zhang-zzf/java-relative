@@ -43,7 +43,8 @@ public class DBConfig {
     public static final String DB_ID = "iot-card";
     public static final String TX = "DataSourceTransactionManager/" + DB_ID;
     public static final String SQL_SESSION_FACTORY_BEAN_ID = "SqlSessionFactory/" + DB_ID;
-    public static final String DATASOURCE_BEAN_ID = "DataSource/" + DB_ID;
+    // 因为 spring-boot-actuator, DataSource BeanName 不能使用 '/' 和 ':'
+    public static final String DATASOURCE_BEAN_ID = "DataSource_" + DB_ID;
     public static final String JDBC_TEMPLATE_BEAN_ID = "JdbcTemplate/" + DB_ID;
 
     @Bean(DATASOURCE_BEAN_ID)

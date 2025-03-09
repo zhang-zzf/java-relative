@@ -5,8 +5,6 @@
     "tags": ["spring-boot", "JVM"],
     "checks": [
       {
-        "id": "actuator/health",
-        "name": "actuator/health",
         "http": "http://localhost:8080/actuator/health",
         "interval": "5s"
       }

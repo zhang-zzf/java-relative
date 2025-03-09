@@ -1,6 +1,64 @@
 # README.md
 
-       
+## 202503
+
+### DDD maven 项目命名
+
+项目服务名为: `spring-boot-app`, 项目目录结构如下
+
+```text
+mini243b ➜  spring-boot-app git:(master*)tree -L 2   
+.
+├── README.md
+├── application
+│   ├── pom.xml
+├── domain
+│   ├── pom.xml
+├── entity
+│   ├── pom.xml
+└── pom.xml
+```
+
+项目 pom.xml 中配置 module 关系如下:
+
+```xml
+  <groupId>com.github.zzf.learn.app</groupId>
+  <artifactId>spring-boot-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>application</module>
+    <module>domain</module>
+    <!-- module 是目录名字，可以和 entity 的 artifactId 不一致 -->
+    <module>entity</module>
+  </modules>
+```
+
+entity pom.xml 的配置如下:
+
+```xml
+  <parent>
+    <artifactId>spring-boot-app</artifactId>
+    <groupId>com.github.zzf.learn.app</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <version>${entity.version}</version>
+  <artifactId>spring-boot-app-entity</artifactId>
+```
+
+关注点:
+
+1. entity 要发布到公司 maven repo，共第三方服务使用。 `artifactId` 必须唯一。
+   > maven 使用 groupId + artifactId 来定位 jar 包  
+   > entity module 的 artifactId 使用 `${serviceName}-entity` 来区分其他项目的 entity  
+   > 代码的 package 使用 `${业务组group}.${项目}` 的方式组织，避免和其他 entity package 重复
+
+   ![package](README/2025-03-09-17-35-04.png)
+
+1. domain module 和 application module 是不能给第三方服务依赖的
+
 ## Aop 统一 debug 日志
 
 ### controller 入口
@@ -50,6 +108,7 @@ Content-Type: application/json
 ### spring application.yml
 
 简单配置
+
 - 本地开发环境打印日志到 console
 - prod 环境打印日志到文件
 
@@ -262,21 +321,23 @@ spring 配置 CORS 有2种方式：
   @EnableWebSecurity
   public class CorsSecurityConfig {
  
-  	@Bean
-  	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-  		http.cors(withDefaults());
-  		return http.build();
-  	}
+      @Bean
+      public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+          http.cors(withDefaults());
+          return http.build();
+      }
   }
 ```
 
 参考：
+
 - <https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html#page-title>
 - <https://docs.spring.io/spring-framework/reference/web/webmvc-cors.html>
 
 ### springweb 添加 日志 filter
 
 参考：
+
 - config.provider.http.rpc.com.github.zzf.learn.app.SpringMvcConfig.addInterceptors
   > spring interceptor 只能拦截 spring mvc 请求
 - servlet.trace.config.com.github.zzf.learn.app.ServletTraceConfiguration
@@ -303,6 +364,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0
 ```
 
 参考: 
+
 - security.config.provider.http.rpc.com.github.zzf.learn.app.JWTService
 - security.config.provider.http.rpc.com.github.zzf.learn.app.JWTAuthenticationFilter
 - actuator.config.com.github.zzf.learn.app.ActuatorSecurityConfiguration.actuatorSecurityFilterChain

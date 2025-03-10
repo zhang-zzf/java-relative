@@ -38,6 +38,7 @@ spring:
 logging:
   level:
     root: info
+    mybatis.sql: debug
   pattern:
 #    console: '%d{HH:mm:ss} %-5p [%15.15t] %-40.40logger{39} :[%X{x-trace-id}] %m%n%wEx'
     file: "%d{yyyy-MM-dd'T'HH:mm:ssXXX} %-5p [%15.15t] %-40.40logger{39} :[%X{x-trace-id}] %m%n%wEx"

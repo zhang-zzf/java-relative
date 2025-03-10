@@ -2,6 +2,40 @@
 
 ## 202503
 
+### mybatis 打印日志
+
+1. 在自定义的 MybatisSqlSessionFactoryBean 中添加配置
+
+    ```java
+        /**
+         * 定义mybatis
+         */
+        @Bean(SQL_SESSION_FACTORY_BEAN_ID)
+        public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(
+            @Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
+            MybatisSqlSessionFactoryBean factory = new MybatisSqlSessionFactoryBean();
+            factory.setConfiguration(myCustomConfiguration());
+            factory.setDataSource(dataSource);
+            factory.setVfs(SpringBootVFS.class);
+            return factory;
+        }
+
+        private MybatisConfiguration myCustomConfiguration() {
+            MybatisConfiguration c = new MybatisConfiguration();
+            c.setLogPrefix("mybatis.sql.");
+            return c;
+        }
+    ```
+
+1. application.yaml 中添加日志配置
+
+    ```yaml
+    logging:
+      level:
+        root: info
+        mybatis.sql: debug
+    ```
+
 ### DDD maven 项目命名
 
 项目服务名为: `spring-boot-app`, 项目目录结构如下

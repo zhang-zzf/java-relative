@@ -1,6 +1,7 @@
 package com.github.zzf.learn.app.repo.mysql.db0;
 
 import com.baomidou.mybatisplus.autoconfigure.SpringBootVFS;
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.github.zzf.learn.app.repo.mysql.db0.mapper.DaoPackage;
 import com.zaxxer.hikari.HikariDataSource;
@@ -63,9 +64,16 @@ public class DBConfig {
     public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(
         @Qualifier(DATASOURCE_BEAN_ID) DataSource dataSource) {
         MybatisSqlSessionFactoryBean factory = new MybatisSqlSessionFactoryBean();
+        factory.setConfiguration(myCustomConfiguration());
         factory.setDataSource(dataSource);
         factory.setVfs(SpringBootVFS.class);
         return factory;
+    }
+
+    private MybatisConfiguration myCustomConfiguration() {
+        MybatisConfiguration c = new MybatisConfiguration();
+        c.setLogPrefix("mybatis.sql.");
+        return c;
     }
 
     /**

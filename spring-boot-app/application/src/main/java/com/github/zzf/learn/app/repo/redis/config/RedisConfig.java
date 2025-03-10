@@ -28,6 +28,8 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    public static final String REDIS_TEMPLATE = "redisTemplate";
+
     public static final RedisSerializer<String> STRING_REDIS_SERIALIZER = RedisSerializer.string();
     public static final GenericJackson2JsonRedisSerializer VALUE_SERIALIZER
         = new GenericJackson2JsonRedisSerializer(objectMapper());
@@ -61,7 +63,7 @@ public class RedisConfig {
     /**
      * Bean 名字必须是 redisTemplate
      */
-    @Bean("redisTemplate")
+    @Bean(REDIS_TEMPLATE)
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);

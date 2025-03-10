@@ -70,6 +70,14 @@ public class ConfigService {
         return usernameEncryptKey.getBytes(StandardCharsets.UTF_8);
     }
 
+    public int getQueryStationByIdListCacheBatchSize() {
+        return 5000;
+    }
+
+    public boolean isCheckStationIdExistsBeforeQuery() {
+        return true;
+    }
+
     @Data
     @ConfigurationProperties(prefix = "user.authority")
     public static class UserAuthorities {

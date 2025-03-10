@@ -1,5 +1,6 @@
 package com.github.zzf.learn.app.repo;
 
+import static com.github.zzf.learn.app.repo.StationRepoMySQLImpl.BEAN_NAME;
 import static com.github.zzf.learn.app.repo.StationRepoMySQLImpl.DomainMapper.INSTANCE;
 
 import com.github.zzf.learn.app.repo.mysql.db0.entity.DdmallWarehouse;
@@ -7,9 +8,11 @@ import com.github.zzf.learn.app.repo.mysql.db0.mapper.DdmallWarehouseMapper;
 import com.github.zzf.learn.app.station.model.Station;
 import com.github.zzf.learn.app.station.model.StationIdList;
 import com.github.zzf.learn.app.station.repo.StationRepo;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
@@ -21,18 +24,37 @@ import org.springframework.validation.annotation.Validated;
  * @author : zhanfeng.zhang@icloud.com
  * @date : 2025-03-08
  */
-@Repository
+@Repository(BEAN_NAME)
 @Slf4j
 @Validated
 @RequiredArgsConstructor
 public class StationRepoMySQLImpl implements StationRepo {
+
+    public static final String BEAN_NAME = "stationRepoMySQLImpl";
+
     final DomainMapper mapper = INSTANCE;
     final DdmallWarehouseMapper ddmallWarehouseMapper;
 
     @Override
-    public List<Station> query(StationIdList idList) {
+    public void save(Station station) {
+        if (station.getId() == null) {
+            ddmallWarehouseMapper.insert(mapper.toPO(station));
+        }
+        else {
+            ddmallWarehouseMapper.updateById(mapper.toPO(station));
+        }
+    }
+
+    @Override
+    public List<Station> queryBy(StationIdList idList) {
         List<DdmallWarehouse> dbData = ddmallWarehouseMapper.selectByIdList(idList.getIdSet());
         return mapper.toDomain(dbData);
+    }
+
+    @Nullable
+    @Override
+    public Station queryBy(Long id) {
+        return queryBy(new StationIdList(Set.of(id))).stream().findAny().orElse(null);
     }
 
     @Override
@@ -79,6 +101,8 @@ public class StationRepoMySQLImpl implements StationRepo {
         DomainMapper INSTANCE = Mappers.getMapper(DomainMapper.class);
 
         List<Station> toDomain(List<DdmallWarehouse> poList);
+
+        DdmallWarehouse toPO(Station station);
     }
 
 }

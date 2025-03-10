@@ -26,12 +26,16 @@ public class StationService {
     /**
      * 批量查询接口
      */
-    public @NotNull List<Station> query(@NotNull @Valid StationIdList idList) {
-        return stationRepo.query(idList);
+    public @NotNull List<Station> queryBy(@NotNull @Valid StationIdList idList) {
+        return stationRepo.queryBy(idList);
     }
 
     public @NotNull List<Station> queryIdList() {
         return stationRepo.queryList();
+    }
+
+    public Station queryById(Long id) {
+        return stationRepo.queryBy(id);
     }
 
 }

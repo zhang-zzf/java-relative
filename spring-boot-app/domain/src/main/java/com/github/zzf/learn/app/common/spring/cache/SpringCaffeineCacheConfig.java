@@ -15,16 +15,19 @@ import org.springframework.context.annotation.Primary;
 @EnableCaching
 public class SpringCaffeineCacheConfig {
 
-    public static final String MANAGER = "CacheManager/repo/caffeine";
+    public static final String CAFFEINE_STATION = "CacheManager/repo/caffeine";
+    public static final String CAFFEINE_5_MINUTES = "ttl5Minutes";
 
     /**
-     * 保留 1 day
+     * station 专用 CacheManager
      */
-    @Bean(MANAGER)
+    @Bean(CAFFEINE_STATION)
     @Primary // 存在多个 CacheManager 时必须制定一个默认的 CacheManager
-    public CacheManager jvmCacheManager() {
-        CaffeineCacheManager m = new CaffeineCacheManager();
-        String caffeineSpec = "maximumSize=-1,expireAfterAccess=24h,expireAfterWrite=24h";
+    public CacheManager cacheForStationOnly() {
+        // 设置 cacheNames 后，禁止动态创建 Cache
+        CaffeineCacheManager m = new CaffeineCacheManager(CAFFEINE_5_MINUTES);
+        // 16777216 = 16*1024*1024
+        String caffeineSpec = "maximumSize=16777216,expireAfterWrite=5m";
         m.setCaffeineSpec(CaffeineSpec.parse(caffeineSpec));
         return m;
     }

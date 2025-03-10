@@ -17,6 +17,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,9 +40,14 @@ public class StationController {
     @GetMapping("")
     public List<StationDto> query(@RequestParam @Size(max = 2) List<@NotNull Long> idList) {
         StationIdList idSet = StationIdList.builder().idSet(new HashSet<>(idList)).build();
-        return stationService.query(idSet).stream()
-            .map(mapper::toDomain)
+        return stationService.queryBy(idSet).stream()
+            .map(mapper::toDto)
             .collect(toList());
+    }
+
+    @GetMapping("/{id}")
+    public StationDto queryById(@PathVariable Long id) {
+        return mapper.toDto(stationService.queryById(id));
     }
 
     // todo RESTFul 如何表达
@@ -54,6 +60,7 @@ public class StationController {
     interface DomainMapper {
         DomainMapper INSTANCE = Mappers.getMapper(DomainMapper.class);
 
-        StationDto toDomain(Station domain);
+        StationDto toDto(Station domain);
+
     }
 }

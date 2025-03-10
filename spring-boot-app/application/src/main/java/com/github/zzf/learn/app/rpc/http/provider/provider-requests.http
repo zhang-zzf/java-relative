@@ -9,6 +9,12 @@ Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ###
+GET {{host}}/api/v1/stations/3954
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+
+###
 GET {{host}}/api/users/mobile/15618536513
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz

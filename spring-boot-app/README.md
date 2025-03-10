@@ -2,6 +2,14 @@
 
 ## 202503
 
+### idea mybatis + mybatis-plus 快速开发
+
+idea MybatisCodeHelperPro 根据表快速生成 entity.java / mapper.java / mapper.xml
+
+1. 打开 idea 的 Database，连接到 DEV 数据库
+1. 在 Database 中右击需要生成代码的表，选择 `Mybatis generator`
+1. 调整下生成配置，点击 `OK`
+
 ### app TE/PROD 启动步骤
 
 #### idea 启动项目

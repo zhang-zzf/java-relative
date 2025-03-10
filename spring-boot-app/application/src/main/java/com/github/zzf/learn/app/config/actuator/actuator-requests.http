@@ -3,7 +3,11 @@ GET {{host}}/actuator
 # Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJhdXRoIjpbIlJPTEVfRU5EUE9JTlRfQURNSU4iLCJST0xFX0FETUlOIl0sImlhdCI6MTcyODM4Mzk3MywibmJmIjoxNzI4MzgzOTczLCJleHAiOjE3NDM5MzU5NzN9.nEEunZZAiCKa3593qPu31Dr36BU3_Ox5ZhAKyph3JFw # Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
-### 健康
+### host/jvm info 信息
+GET {{host}}/actuator/info
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### 健康检查
 GET {{host}}/actuator/health
 #Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
@@ -11,8 +15,16 @@ GET {{host}}/actuator/health
 GET {{host}}/actuator/prometheus
 #Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
+### all metrics
+GET {{host}}/actuator/metrics
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
 ### cache 信息
 GET {{host}}/actuator/caches
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### cache 信息
+GET {{host}}/actuator/caches/5_MINUTES
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ### Spring Env 信息
@@ -26,11 +38,11 @@ Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ### Spring loggers 信息
 # /actuator/loggers/{log-name}
-GET {{host}}/actuator/loggers/com.github.zzf.actuator.rpc.http.provider.direct_memory.DirectMemoryController
+GET {{host}}/actuator/loggers/com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ### 更改 logger 日志级别
-POST {{host}}/actuator/loggers/com.github.zzf.actuator.rpc.http.provider.direct_memory.DirectMemoryController
+POST {{host}}/actuator/loggers/com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
@@ -39,7 +51,7 @@ Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 }
 
 ### 重置 logger 日志级别
-POST {{host}}/actuator/loggers/com.github.zzf.actuator.rpc.http.provider.direct_memory.DirectMemoryController
+POST {{host}}/actuator/loggers/com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
@@ -47,23 +59,15 @@ Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
   "configuredLevel": null
 }
 
-###
+### 线程 dump
 GET {{host}}/actuator/threaddump
-Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
-
-### all metrics
-GET {{host}}/actuator/metrics
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ### 定时任务
 GET {{host}}/actuator/scheduledtasks
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
-###
+### url mapping
 GET {{host}}/actuator/mappings
-Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
-
-###
-GET {{host}}/actuator/info
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 

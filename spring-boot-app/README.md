@@ -2,7 +2,161 @@
 
 ## 202503
 
+### app TE/PROD 启动步骤
+
+#### idea 启动项目
+
+1. 通过 env/*.sh 把项目需要的资源(MySQL / Redis / Consul 等) 通过 ssh 本地代理端口映射到本地
+1. 项目 `application.yaml` 中添加配置
+1. 直接在 idea debug Application 即可
+
+#### TE / PROD 启动步骤
+
+```text
+u2004020 ➜  spring-boot-app tree .
+.
+├── application-1.0-SNAPSHOT.jar
+├── application-prod.yaml
+├── logs
+│   └── app.log
+└── nohup.out
+```
+
+1. 在项目 jar 包的同目录下放置 `application-prod.yaml` , 配置 prod 环境需要的资源地址等配置
+1. 指定 spring profile `-Dspring.profiles.active=prod` 启动
+    > `nohup java -server -Xmx256m -Xms256m -XX:MaxDirectMemorySize=4g -XX:+UseZGC -Dspring.profiles.active=prod -jar application-1.0-SNAPSHOT.jar &>nohup.out &`  
+    >
+    > `application-prod.yaml` 会自动覆盖项目中 `application.yaml` 中的同名配置
+
+### spring-boot 项目配置原则
+
+1. 代码中的 `application.yaml` 配置可以让项目在本地环境中启动
+1. 生产环境的配置**不能**放在代码中
+
+#### iot-card 项目配置方案整理
+
+1. 代码中的 `application.yaml` 存放 dev 配置及 prod 非机密配置
+1. `application-wx-pay.yaml` 及 `application-wx-mp.yaml` 只是配置参考模版，并无 prod 环境配置
+1. prod 环境中存在 `application-prod.yaml` 配置文件
+   > `nohup java -server -Xms256m -Xmx256m -Xmn128M -Dspring.profiles.active=prod -jar app.jar &> /dev/null &`
+   >
+   > prod 项目启动时指定 profile
+   >
+   > 注意: spring 将同时加载 `application-prod.yaml` 和 `application.yaml` 中的配置。`application-prod.yaml` 将覆盖 `application.yaml` 中的同名配置
+
+方案总结：
+
+1. 本地环境(`application.yaml`)存在启动的全量配置，可以直接启动
+1. TE / prod 环境存在和环境相关的配置文件，启动时指定 `-Dspring.profiles.active=prod` 额外加载和环境相关的配置
+
+#### 本地使用 prod 配置
+
+线上环境配置不能存放在 code 项目中。使用 idea 启动配置的方式，额外添加 `-Dspring.application.json` 配置。
+
+```text
+-Xms384M
+-Xmx384M
+-Dspring.application.json={\"wx\":{\"mp\":{\"enabled\":true,\"checkSignature\":true,\"configs\":[{\"appId\":\"wx06ae7a55f5083fa0\",\"secret\":\"17daabdbbee106ad016bba3dce5fd192\",\"token\":\"oKuHHi00aZGTmbfp4t6p98OXdOwiC9T\",\"aesKey\":\"171mMpWutCRTJ99ssHbJuRCvzSEDZ01QlY728bXupie\",\"oauth2redirectUri\":\"https://mp-wx.iot.chuanshi.ltd/\"}]}}}
+```
+
+![idea 启动项目配置文件](README/2025-03-10-17-35-04.png)
+
+### micrometer 实战
+
+参考项目： mqtt / iot-card
+
+### spring-boot-actuator 能力
+
+参考: [actuator-requests.http](.)
+
+1. `/actuator/info` host/jvm info
+1. `/actuator/health` 健康检查
+1. `/actuator/prometheus` prometheus exporter
+1. `/actuator/metrics`
+1. `/actuator/caches`
+1. `/actuator/env`
+1. `/actuator/loggers`
+    > query / update logger level
+1. `/actuator/scheduledtasks`
+1. `/actuator/mappings`
+    > url mapping
+
+#### actuator 监控能力
+
+For metrics and traces, Spring Boot uses Micrometer Observation.
+
+参考:
+
+- [ActuatorMeterConfiguration](com.github.zzf.learn.app.config.actuator.ActuatorMeterConfiguration)
+- [Supported Metrics and Meters](https://docs.spring.io/spring-boot/reference/actuator/metrics.html#actuator.metrics.supported)
+
+#### actuator + prometheus + grafana + consul 监控能力
+
+1. spring-boot-actuator 提供基础监控指标
+1. spring-boot 启动时注册服务到 consul
+
+    ```yaml
+    spring:
+      application:
+        name: spring-boot-app
+      config:
+        import: 'optional:consul:'
+      cloud:
+        consul:
+          discovery:
+            instanceId: ${spring.application.name}:${server.port} # 单机启动多个服务，以 server.port 区分
+            tags: ['spring-boot', 'actuator']
+            metadata:
+              author: zhang.zzf
+              env: dev
+              cluster: spring-boot-app
+            health-check-timeout: 1s
+            healthCheckCriticalTimeout: 1m
+    ```
+
+1. prometheus.yaml 配置收集服务的监控指标
+
+```yaml
+scrape_configs:
+  - job_name: "spring-actuator"
+    metrics_path: "/actuator/prometheus"
+    # 从 consul 中拉取所有包含 `.*spring-boot.*` consul tag 的服务
+    consul_sd_configs:
+    - server: '192.168.56.20:8500'
+      services: []
+    relabel_configs:
+    - source_labels: [__meta_consul_tags]
+      regex: '.*spring-boot.*'
+      action: keep
+```
+
+1. grafana 展示
+   1. JVM (Micrometer)
+      1. JVM 相关 HEAP / GC / Threads
+      1. JVM 进程内存 / CPU / LOAD / 进程打开的文件
+   1. Spring Boot Actuator
+      1. HTTP 请求监控
+      1. 线程池
+      1. Basic  CPU / LOAD / 进程打开的文件
+      1. HikariCP 链接池
+      1. 日志
+
 ### mybatis 打印日志
+
+#### 方案1
+
+`application.yaml` 文件中把 mapper 接口所在的 package 的日志打印级别配置为 debug
+> 可以配置多个包哈
+
+```yaml
+logging:
+  level:
+    root: info
+    # mapper 接口所在的 package
+    com.github.zzf.learn.app.repo.mysql.db0.mapper: debug
+```
+
+#### 方案2（优先使用方案1）
 
 1. 在自定义的 MybatisSqlSessionFactoryBean 中添加配置
 
@@ -311,6 +465,48 @@ spring:
 
 1. 启动时从 Env 获取配置，配置线程池
 2. consul 配置变更后，监听 Env 变动消息，配置线程池
+
+## netty 内存泄漏检测
+
+### 搞问题
+
+```shell
+java --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED
+-XX:MaxDirectMemorySize=512M
+-Xms256M
+-Xmx256M
+-Dio.netty.leakDetection.level=PARANOID
+```
+
+1. 开启 netty 内存泄漏检测 `-Dio.netty.leakDetection.level=PARANOID`
+1. 使用默认的 Cleaner 方案
+1. 创建大量 ByteBuf（ByteBuffer） 堆外内存 `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.createUnpooledByteBuffer`
+1. 清除 ByteBuf 引用 `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.clearByteBuffer`
+1. 触发 GC `com.github.zzf.actuator.rpc.http.provider.direct_memory.NettyDirectMemoryController.gc`
+1. 检测堆外内存是否被回收（看监控哈）
+
+猜测结论：netty 报告堆外内存泄漏，实际上堆外内存会被回收，GC -> ByteBuffer Cleaner.clean() -> 回收堆外内存  
+实验结论：堆外内存会被回收
+
+![img.png](README/img.png)
+
+### Cleaner 策略内存回收
+
+```text
+ByteBuf buf = Unpooled.directBuffer(); //1
+try {
+    // ... do something with buf
+    buf.release(); //2
+} finally {
+    System.gc(); // 触发清理基于 ByteBuffer 的堆外内存
+}
+```
+
+堆外内存在使用完毕后，推荐及时使用 `buf.release()` 也就是 ByteBuffer.Cleaner.clean() 主动清理堆外内存。
+
+GC 触发的堆外内存回收仅作为兜底方案。
+
+netty 内存泄漏检测：若 ByteBuf 被 GC 回收时没有被 release()，即认为内存泄漏。
 
 ## actuator
 

@@ -6,11 +6,12 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ConsulApiTest {
 
-
+    @Disabled
     @Test
     void givenConsulApi_when_then() {
         ConsulClient client = new ConsulClient();

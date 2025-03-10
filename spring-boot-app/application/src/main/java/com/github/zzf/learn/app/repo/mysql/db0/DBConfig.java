@@ -72,7 +72,7 @@ public class DBConfig {
 
     private MybatisConfiguration myCustomConfiguration() {
         MybatisConfiguration c = new MybatisConfiguration();
-        c.setLogPrefix("mybatis.sql.");
+        // c.setLogPrefix("mybatis.sql.");
         return c;
     }
 

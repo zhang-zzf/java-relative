@@ -5,20 +5,20 @@
   <!-- Strictly speaking, the level attribute is not necessary since -->
   <!-- the level of the root level is set to DEBUG by default.       -->
   <root level="INFO">
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="ASYNC_FILE"/>
   </root>
 
   <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->
   <!-- 级别依次为【从高到低】：FATAL > ERROR > WARN > INFO > DEBUG > TRACE  -->
   <logger name="com.github.zzf.learn.rpc.http.provider.log" level="debug" additivity="false">
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="ASYNC_FILE"/>
   </logger>
 
   <!-- 利用logback输入mybatis的sql日志，
   注意：如果不加 additivity="false" 则此logger会将输出转发到自身以及祖先的logger中，就会出现日志文件中sql重复打印-->
   <!-- mybatis 不可以配置 logPrefix,否者以下默认包名的 logger 是不会生效的 -->
   <logger name="com.github.zzf.learn.repo.mysql.iot_card.mapper" level="DEBUG" additivity="false">
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="ASYNC_FILE"/>
   </logger>
 
   <!-- ConsoleAppender：把日志输出到控制台 -->
@@ -42,7 +42,7 @@
   </appender>
 
   <!-- todo 监控 queue 大小-->
-  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+  <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
     <appender-ref ref="FILE"/>
     <!-- 设置异步阻塞队列的大小，为了不丢失日志建议设置的大一些，单机压测时100000是没问题的，应该不用担心OOM -->
     <queueSize>100000</queueSize>

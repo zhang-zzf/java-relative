@@ -1,32 +1,29 @@
-###
-GET {{host}}/api/v1/stations?idList=1,2
+### ------------------------ 门店缓存测试 ------------------------#
+GET {{HOST}}/ping
+
+### 获取所有门店
+GET {{host}}/api/v1/stations
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
-###
+### 批量获取门店
+GET {{host}}/api/v1/stations/batch?idList=3918,3954
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### 获取所有门店id
 GET {{host}}/api/v1/stations/ids
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
-###
+### 获取单个门店
 GET {{host}}/api/v1/stations/3954
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 
-###
-GET {{host}}/api/users/mobile/15618536513
-Content-Type: application/json
-Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
-
-###
-GET {{host}}/api/users/mobile/15618536513/token?password=536513
-Content-Type: application/json
-
-###
-GET {{host}}/api/users/mobile/15618536513
-Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJhdXRoIjpbIlJPTEVfRU5EUE9JTlRfQURNSU4iLCJST0xFX0FETUlOIl0sImlhdCI6MTcyODM4Mzk3MywibmJmIjoxNzI4MzgzOTczLCJleHAiOjE3NDM5MzU5NzN9.nEEunZZAiCKa3593qPu31Dr36BU3_Ox5ZhAKyph3JFw # Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+### ------------------------ 日志操作 ------------------------#
+GET {{HOST}}/ping
 
 ###
 GET {{host}}/log/demo
@@ -52,3 +49,22 @@ Content-Type: application/json
 x-trace-log-enabled: true
 
 { "level": "info" }
+
+
+### ------------------------ 用户信息 ------------------------#
+GET {{HOST}}/ping
+
+###
+GET {{host}}/api/users/mobile/15618536513
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/users/mobile/15618536513/token?password=536513
+Content-Type: application/json
+
+###
+GET {{host}}/api/users/mobile/15618536513
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3UFhvRFRaU0VXVTVTNFc4UytJcTR3PT0iLCJhdXRoIjpbIlJPTEVfRU5EUE9JTlRfQURNSU4iLCJST0xFX0FETUlOIl0sImlhdCI6MTcyODM4Mzk3MywibmJmIjoxNzI4MzgzOTczLCJleHAiOjE3NDM5MzU5NzN9.nEEunZZAiCKa3593qPu31Dr36BU3_Ox5ZhAKyph3JFw # Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+

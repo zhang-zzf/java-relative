@@ -2,6 +2,7 @@ package com.github.zzf.learn.app.rpc.http.provider.station;
 
 import static com.github.zzf.learn.app.rpc.http.provider.station.StationController.DomainMapper.INSTANCE;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 import com.github.zzf.learn.app.rpc.http.provider.station.dto.StationDto;
 import com.github.zzf.learn.app.station.StationService;
@@ -11,6 +12,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
@@ -38,6 +41,15 @@ public class StationController {
     final StationService stationService;
 
     @GetMapping("")
+    public List<StationDto> queryList() {
+        Set<Long> idSet = stationService.queryIdList().stream().map(Station::getId).collect(toSet());
+        StationIdList stationIdList = StationIdList.builder().idSet(idSet).build();
+        return stationService.queryBy(stationIdList).stream()
+            .map(mapper::toDto)
+            .collect(toList());
+    }
+
+    @GetMapping("/batch")
     public List<StationDto> query(@RequestParam @Size(max = 2) List<@NotNull Long> idList) {
         StationIdList idSet = StationIdList.builder().idSet(new HashSet<>(idList)).build();
         return stationService.queryBy(idSet).stream()

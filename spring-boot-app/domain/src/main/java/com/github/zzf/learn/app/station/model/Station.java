@@ -1,8 +1,11 @@
 package com.github.zzf.learn.app.station.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Date;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author : zhanfeng.zhang@icloud.com
@@ -10,6 +13,9 @@ import lombok.Getter;
  */
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class Station {
 
     /**

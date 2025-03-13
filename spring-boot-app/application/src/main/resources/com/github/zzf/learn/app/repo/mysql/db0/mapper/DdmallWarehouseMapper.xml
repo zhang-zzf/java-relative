@@ -20,6 +20,7 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
   </resultMap>
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `name`, address, city, district, contact_phone, open_time, close_time, capacity,
@@ -42,6 +43,39 @@
     from ddmall_warehouse
     where id > #{startId}
       and is_deleted = 0
+    order by id
     limit #{pageSize}
   </select>
+
+  <select id="queryPageBy" resultType="java.lang.Long">
+    select id
+    from ddmall_warehouse
+    <include refid="Page_Query_Where"/>
+    <if test="pageable.sort != null and !pageable.sort.isEmpty()">
+      ORDER BY
+      <!-- // todo record-->
+      <foreach collection="pageable.sort" item="order" separator=",">
+        ${order.property} ${order.direction}
+      </foreach>
+    </if>
+    limit #{pageable.offset}, #{pageable.pageSize}
+  </select>
+
+  <select id="queryCountBy" resultType="java.lang.Integer">
+    select count(id)
+    from ddmall_warehouse
+    <include refid="Page_Query_Where"/>
+  </select>
+
+  <sql id="Page_Query_Where">
+    <where>
+      <if test="parameters.name != null and parameters.name != ''">
+        and `name` like concat('%', #{parameters.name}, '%')
+      </if>
+      <if test="parameters.isOperating != null and parameters.isOperating != ''">
+        and is_operating = #{parameters.isOperating}
+      </if>
+      and is_deleted = 0
+    </where>
+  </sql>
 </mapper>

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -51,6 +52,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.cache.CacheKeyPrefix;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -127,6 +130,11 @@ public class StationRepoRedisImpl implements StationRepo {
     @Override
     public Iterator<List<Long>> iterator() {
         return delegate.iterator();
+    }
+
+    @Override
+    public Page<Long> queryPageBy(Map<String, String> parameters, Pageable pageable) {
+        return delegate.queryPageBy(parameters, pageable);
     }
 
     /**

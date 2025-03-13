@@ -5,9 +5,15 @@ import com.github.zzf.learn.app.station.model.StationIdList;
 import com.github.zzf.learn.app.station.repo.StationRepo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -36,6 +42,19 @@ public class StationService {
 
     public Station queryById(Long id) {
         return stationRepo.queryBy(id);
+    }
+
+    public Page<Station> queryPageBy(Map<String, String> parameters, Pageable pageable) {
+        Page<Long> idPage = stationRepo.queryPageBy(parameters, pageable);
+        List<Long> idList = idPage.getContent();
+        // watch out: StationIdList 本身是无序的
+        StationIdList idSet = new StationIdList(new HashSet<>(idList));
+        // watch out: 分页是按有排序规则的
+        List<Station> stationList = queryBy(idSet)
+            .stream()
+            .sorted(Comparator.comparing(s -> idList.indexOf(s.getId())))
+            .toList();
+        return new PageImpl<>(stationList, pageable, idPage.getTotalPages());
     }
 
 }

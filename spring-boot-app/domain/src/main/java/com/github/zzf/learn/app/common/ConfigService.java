@@ -4,7 +4,9 @@ import com.github.zzf.learn.app.common.ConfigService.UserAuthorities;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,6 +79,10 @@ public class ConfigService {
     public boolean isCheckStationIdExistsBeforeQuery() {
         return true;
     }
+
+    @Value("${app.stationRepoMySQLImplSortFields: updatedAt,id,createdAt}")
+    @Getter
+    Set<String> stationRepoMySQLImplSortFields;
 
     @Data
     @ConfigurationProperties(prefix = "user.authority")

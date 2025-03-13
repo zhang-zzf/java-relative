@@ -21,6 +21,16 @@ GET {{host}}/api/v1/stations/3954
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
+### 分页搜索门店
+GET {{host}}/api/v1/stations/_search?isOperating=1&page=2&size=4
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### 分页搜索门店
+GET {{host}}/api/v1/stations/_search?page=1&size=4&sortBy=-createdAt,name
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
 
 ### ------------------------ 日志操作 ------------------------#
 GET {{HOST}}/ping

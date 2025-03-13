@@ -2,7 +2,10 @@ package com.github.zzf.learn.app.repo;
 
 import static com.github.zzf.learn.app.repo.StationRepoMySQLImpl.BEAN_NAME;
 import static com.github.zzf.learn.app.repo.StationRepoMySQLImpl.DomainMapper.INSTANCE;
+import static com.google.common.base.CaseFormat.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
+import com.github.zzf.learn.app.common.ConfigService;
 import com.github.zzf.learn.app.repo.mysql.db0.entity.DdmallWarehouse;
 import com.github.zzf.learn.app.repo.mysql.db0.mapper.DdmallWarehouseMapper;
 import com.github.zzf.learn.app.station.model.Station;
@@ -12,11 +15,18 @@ import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
@@ -34,6 +44,7 @@ public class StationRepoMySQLImpl implements StationRepo {
 
     final DomainMapper mapper = INSTANCE;
     final DdmallWarehouseMapper ddmallWarehouseMapper;
+    final ConfigService configService;
 
     @Override
     public void save(Station station) {
@@ -95,6 +106,36 @@ public class StationRepoMySQLImpl implements StationRepo {
         };
     }
 
+    @Override
+    public Page<Long> queryPageBy(Map<String, String> parameters, final Pageable pageable) {
+        // todo 优化方案， PageHelper / Mybatis Plus
+        Integer total = ddmallWarehouseMapper.queryCountBy(parameters);
+        if (total == 0) {
+            return new PageImpl<>(List.of(), pageable, 0);
+        }
+        Sort defaultSort = Sort.by(DESC, "updatedAt").and(Sort.by(DESC, "id"));
+        List<Long> dbData = ddmallWarehouseMapper.queryPageBy(parameters, toMySQLPageable(pageable, defaultSort));
+        return new PageImpl<>(dbData, pageable, total);
+    }
+
+    // todo JPA 方案
+    private Pageable toMySQLPageable(Pageable pageable, Sort defaultSort) {
+        // watch out: MySQL injection
+        List<Order> orderList = pageable.getSortOr(defaultSort).stream()
+            // 可排序的字段配置化
+            .filter(this::fieldCanBeUseToSort)
+            .map(d -> new Order(d.getDirection(), LOWER_CAMEL.converterTo(LOWER_UNDERSCORE).convert(d.getProperty())))
+            .toList();
+        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orderList));
+    }
+
+    private boolean fieldCanBeUseToSort(Order d) {
+        boolean ret = configService.getStationRepoMySQLImplSortFields().contains(d.getProperty());
+        if (!ret) {
+            log.warn("field can not be use to sort: {}", d.getProperty());
+        }
+        return ret;
+    }
 
     @Mapper
     public interface DomainMapper {

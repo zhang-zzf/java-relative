@@ -13,6 +13,7 @@ spring:
   cloud:
     consul:
       discovery:
+        prefer-ip-address: true
         instanceId: ${spring.application.name}:${server.port} # 单机启动多个服务，以 server.port 区分
         tags: ['spring-boot', 'actuator']
         metadata:

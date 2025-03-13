@@ -70,6 +70,12 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- 利用 commons 下的 Page 领域模型  -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>

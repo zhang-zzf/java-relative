@@ -1,6 +1,7 @@
 package com.github.zzf.learn.app.repo.mysql.db0.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.zzf.learn.app.common.SearchAfter;
 import com.github.zzf.learn.app.repo.mysql.db0.entity.DdmallWarehouse;
 import java.util.Collection;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface DdmallWarehouseMapper extends BaseMapper<DdmallWarehouse> {
         @Param("pageable") Pageable pageable);
 
     Integer queryCountBy(@Param("parameters") Map<String, String> parameters);
+
+    List<DdmallWarehouse> searchAfter(SearchAfter req);
 }

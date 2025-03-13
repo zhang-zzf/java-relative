@@ -6,18 +6,19 @@ GET {{host}}/api/v1/stations
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
+### 获取单个门店
+GET {{host}}/api/v1/stations/3954
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+
 ### 批量获取门店
-GET {{host}}/api/v1/stations/batch?idList=3918,3954
+GET {{host}}/api/v1/stations/_batch?idList=3918,3954
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
 ### 获取所有门店id
-GET {{host}}/api/v1/stations/ids
-Content-Type: application/json
-Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
-
-### 获取单个门店
-GET {{host}}/api/v1/stations/3954
+GET {{host}}/api/v1/stations/_ids
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
@@ -31,6 +32,18 @@ GET {{host}}/api/v1/stations/_search?page=1&size=4&sortBy=-createdAt,name
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 
+### searchAfter 遍历门店
+POST {{host}}/api/v1/stations/_searchAfter
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+{
+  "id": 6,
+  "size": 2,
+  "updatedAt": {
+    "gte": "2025-02-12T18:34:49"
+  }
+}
 
 ### ------------------------ 日志操作 ------------------------#
 GET {{HOST}}/ping

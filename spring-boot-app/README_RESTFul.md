@@ -2,9 +2,9 @@
 
 ## 202503
 
-### ids 查询
+### 查询 resources 的全部 id
 
-1. 使用专用的 Endpoint `GET /resources/ids`
+1. 使用专用的 Endpoint `GET /resources/_ids`
    1. 清晰明了，容易理解。
    1. 不会影响现有资源的查询逻辑。
 1. 使用过滤器（Filter）`GET /resources?select=id` / `GET /resources?fields=id`
@@ -19,7 +19,7 @@
 
 如果数据量较大，建议结合分页和排序功能，以避免一次性返回过多数据。
 
-`GET /resources/ids?page=1&size=100`
+`GET /resources/_ids?page=1&size=100`
 
 ```json
 {
@@ -76,9 +76,71 @@ page 实现方案
     }
 ```
 
+#### search_after 全量遍历 / 增量遍历
+
+1. DB 全量遍历，不要走缓存，否则可能造成严重缓存污染
+1. 限流做好，防止 DB 被打挂
+1. 默认只提供全量(按 id asc) / 增量(按 updatedAt 选择数据集， id asc) 2中遍历方法
+
+- `POST {{host}}/api/v1/stations/_searchAfter`
+  > 去掉 updatedAt 可拉取全量数据
+
+  ```json
+  {
+    "id": 6,
+    "size": 2,
+    "updatedAt": {
+      "gte": "2025-02-12T18:34:49"
+    }
+  }
+  ```
+
+  ```sql
+  -- watch out: id > ? order by id limit ? 
+  -- 3个条件缺一不可
+  select * from tb_resource 
+  where id > ? and updated_at >= ? and is_deleted = 0 
+  order by id 
+  limit ?
+  ```
+
+- `GET /resources/_searchAfter?id[gt]=-1`  
+  > 增量遍历: `GET /resources/_searchAfter?updatedAt[gt]=20240312T08:00:00Z&id[gt]=-1`
+
+#### url 参数传递
+
+- 简单参数 `GET /users/_search?name=John&age=30&page=1,size=10`
+- 数组 `GET /users/_batch?ids=1,2,3`
+- 对象 `GET /users/_search?age[gt]=18&age[lt]=65&status=active`
+  > 对象 `GET /users/_search?age[gt]=18&age[lt]=65&status[eq]=active`
+
+  ```json
+  { 
+    "age": { "gt": 18, "lt": 65 },
+    "status": "active"
+  }
+  ```
+
+##### 对象的 LHS Brackets 表示法
+
+> Java Spring-Web 后端暂未探索出可用方案
+
+LHS Brackets。 对运算符进行编码的一种方法是在键名上使用方括号 [] 。例如，`GET /items?price[gte]=10&price[lte]=100` 意思是查找价格大于或等于 10 但小于或等于 100 的所有项目。
+
+可以根据需要使用任意数量的运算符，例如 [lte]、[gte]、[exists]、[regex]、[before] 和  [after]。
+
+LHS Brackets 客户端的过滤器值提供了更大的灵活性，无需以不同方式处理特殊字符。
+
+- `npm install qs`
+
+LHS Brackets 服务端的解析框架
+
+- Spring 框架提供了 MultiValueMap 和 UriComponentsBuilder 等工具来处理查询字符串
+  > 暂未探索出可行方案
+
 #### Sort
 
-`GET /users?sortBy=-lastModified,+email`
+`GET /resources?sortBy=-lastModified,+email`
 
 关注点：
 

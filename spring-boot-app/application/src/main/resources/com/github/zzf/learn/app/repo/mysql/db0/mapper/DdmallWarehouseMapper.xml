@@ -78,4 +78,20 @@
       and is_deleted = 0
     </where>
   </sql>
+
+  <select id="searchAfter" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ddmall_warehouse
+    where id > #{id}
+    <if test="updatedAt != null">
+        and updated_at >= #{updatedAt.gte}
+      <if test="updatedAt.getLte() != null">
+        and updated_at <![CDATA[<=]]> #{updatedAt.lte}
+      </if>
+    </if>
+    and is_deleted = 0
+    order by id
+    limit #{size}
+  </select>
 </mapper>

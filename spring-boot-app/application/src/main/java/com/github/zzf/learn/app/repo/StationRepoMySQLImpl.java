@@ -6,6 +6,7 @@ import static com.google.common.base.CaseFormat.*;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import com.github.zzf.learn.app.common.ConfigService;
+import com.github.zzf.learn.app.common.SearchAfter;
 import com.github.zzf.learn.app.repo.mysql.db0.entity.DdmallWarehouse;
 import com.github.zzf.learn.app.repo.mysql.db0.mapper.DdmallWarehouseMapper;
 import com.github.zzf.learn.app.station.model.Station;
@@ -17,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
@@ -118,6 +120,11 @@ public class StationRepoMySQLImpl implements StationRepo {
         return new PageImpl<>(dbData, pageable, total);
     }
 
+    @Override
+    public Stream<Station> searchAfter(SearchAfter req) {
+        return ddmallWarehouseMapper.searchAfter(req).stream().map(mapper::toDomain);
+    }
+
     // todo JPA 方案
     private Pageable toMySQLPageable(Pageable pageable, Sort defaultSort) {
         // watch out: MySQL injection
@@ -144,6 +151,8 @@ public class StationRepoMySQLImpl implements StationRepo {
         List<Station> toDomain(List<DdmallWarehouse> poList);
 
         DdmallWarehouse toPO(Station station);
+
+        Station toDomain(DdmallWarehouse d);
     }
 
 }

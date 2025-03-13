@@ -1,5 +1,6 @@
 package com.github.zzf.learn.app.station;
 
+import com.github.zzf.learn.app.common.SearchAfter;
 import com.github.zzf.learn.app.station.model.Station;
 import com.github.zzf.learn.app.station.model.StationIdList;
 import com.github.zzf.learn.app.station.repo.StationRepo;
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -57,4 +59,7 @@ public class StationService {
         return new PageImpl<>(stationList, pageable, idPage.getTotalPages());
     }
 
+    public Stream<Station> searchAfter(SearchAfter req) {
+       return stationRepo.searchAfter(req);
+    }
 }

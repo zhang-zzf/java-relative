@@ -19,6 +19,7 @@ import static java.util.stream.Stream.ofNullable;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.zzf.learn.app.common.ConfigService;
+import com.github.zzf.learn.app.common.SearchAfter;
 import com.github.zzf.learn.app.repo.redis.config.RedisConfig;
 import com.github.zzf.learn.app.station.model.Station;
 import com.github.zzf.learn.app.station.model.StationIdList;
@@ -135,6 +136,11 @@ public class StationRepoRedisImpl implements StationRepo {
     @Override
     public Page<Long> queryPageBy(Map<String, String> parameters, Pageable pageable) {
         return delegate.queryPageBy(parameters, pageable);
+    }
+
+    @Override
+    public Stream<Station> searchAfter(SearchAfter req) {
+        return delegate.searchAfter(req);
     }
 
     /**

@@ -5,10 +5,12 @@ import static com.github.zzf.learn.app.utils.LogUtils.json;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import com.github.zzf.learn.app.common.SearchAfter;
 import com.github.zzf.learn.app.rpc.http.provider.station.dto.StationDto;
 import com.github.zzf.learn.app.station.StationService;
 import com.github.zzf.learn.app.station.model.Station;
 import com.github.zzf.learn.app.station.model.StationIdList;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Arrays;
@@ -29,6 +31,8 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +52,18 @@ public class StationController {
 
     final StationService stationService;
 
+    /**
+     * 按 id 查询 station
+     */
+    @GetMapping("/{id}")
+    public StationDto queryById(@PathVariable Long id) {
+        return mapper.toDto(stationService.queryById(id));
+    }
+
+    /**
+     * 查询所有 station
+     * <p> todo 是否考虑在此 endpoint 中添加分页能力</p>
+     */
     @GetMapping
     public List<StationDto> queryList() {
         Set<Long> idSet = stationService.queryIdList().stream().map(Station::getId).collect(toSet());
@@ -55,6 +71,15 @@ public class StationController {
         return stationService.queryBy(stationIdList).stream()
             .map(mapper::toDto)
             .collect(toList());
+    }
+
+    /**
+     * 查询所有 station 的 id
+     */
+    // todo RESTFul 如何表达
+    @GetMapping("/_ids")
+    public List<Long> queryIdList() {
+        return stationService.queryIdList().stream().map(Station::getId).toList();
     }
 
     /**
@@ -90,7 +115,7 @@ public class StationController {
             s.startsWith("+") ? Order.asc(s.substring(1)) : Order.asc(s);
     }
 
-    @GetMapping("/batch")
+    @GetMapping("/_batch")
     public List<StationDto> query(@RequestParam @Size(max = 2) List<@NotNull Long> idList) {
         StationIdList idSet = StationIdList.builder().idSet(new HashSet<>(idList)).build();
         return stationService.queryBy(idSet).stream()
@@ -98,15 +123,12 @@ public class StationController {
             .collect(toList());
     }
 
-    @GetMapping("/{id}")
-    public StationDto queryById(@PathVariable Long id) {
-        return mapper.toDto(stationService.queryById(id));
-    }
-
-    // todo RESTFul 如何表达
-    @GetMapping("/ids")
-    public List<Long> queryIdList() {
-        return stationService.queryIdList().stream().map(Station::getId).toList();
+    // todo 目前能力不足，无法使用 LHS query url
+    @PostMapping("/_searchAfter")
+    public List<StationDto> searchAfter(@RequestBody @Valid SearchAfter req) {
+        return stationService.searchAfter(req)
+            .map(mapper::toDto)
+            .collect(toList());
     }
 
     @Mapper

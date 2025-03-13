@@ -81,7 +81,6 @@ public class StationRepoMySQLImpl implements StationRepo {
         return ret;
     }
 
-    @Override
     public Iterator<List<Long>> iterator() {
         return new Iterator<>() {
             // 配置中心动态更改大小

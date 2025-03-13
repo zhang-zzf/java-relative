@@ -129,11 +129,6 @@ public class StationRepoRedisImpl implements StationRepo {
     }
 
     @Override
-    public Iterator<List<Long>> iterator() {
-        return delegate.iterator();
-    }
-
-    @Override
     public Page<Long> queryPageBy(Map<String, String> parameters, Pageable pageable) {
         return delegate.queryPageBy(parameters, pageable);
     }

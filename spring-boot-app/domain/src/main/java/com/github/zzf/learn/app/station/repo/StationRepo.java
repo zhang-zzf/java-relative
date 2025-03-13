@@ -27,15 +27,25 @@ public interface StationRepo {
     @Nullable
     Station queryBy(@NotNull Long id);
 
-    @NotNull
-    List<Station> queryList();
-
+    /**
+     * 方法可以使用 searchAfter 替换
+     */
     // todo iterator 只返回 id list
     @NotNull
-    Iterator<List<Long>> iterator();
+    // Iterator<List<Long>> iterator();
 
     // todo repo 只返回 id list 方便性能优化
     Page<Long> queryPageBy(Map<String, String> parameters, Pageable pageable);
+
+    /**
+     * <pre>
+     *      queryList / searchAfter 2 选 1
+     *      DB 数量少 (如 1W) 使用 queryList; DB 数量多 (如 1B) 使用 searchAfter
+     * </pre>
+     *
+     */
+    @NotNull
+    List<Station> queryList();
 
     Stream<Station> searchAfter(SearchAfter req);
 }

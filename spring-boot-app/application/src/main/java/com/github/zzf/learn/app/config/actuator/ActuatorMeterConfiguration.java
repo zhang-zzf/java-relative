@@ -12,6 +12,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ActuatorMeterConfiguration {
 
+    /**
+     * <pre>
+     *     进程信息 gauge
+     *      - process.memory.vss
+     *      - process.memory.rss
+     * </pre>
+     */
     @Bean
     public MeterBinder processMemoryMetrics() {
         return new ProcessMemoryMetrics();

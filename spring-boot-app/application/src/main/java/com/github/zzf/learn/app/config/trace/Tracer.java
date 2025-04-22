@@ -9,7 +9,7 @@ import org.slf4j.MDC;
 
 public final class Tracer {
     public static final Tracer INSTANCE = new Tracer();
-    public static final String X_TRACE_ID = "x-trace-id";
+    public static final String X_TRACE_ID = "X-Trace-Id";
 
     final ThreadLocal<Map<String, Object>> traceContext = ThreadLocal.withInitial(HashMap::new);
 

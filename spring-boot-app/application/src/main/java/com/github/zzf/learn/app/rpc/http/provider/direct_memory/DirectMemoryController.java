@@ -43,7 +43,7 @@ public class DirectMemoryController {
     }
 
     @GetMapping("/")
-    @Timed
+    @Timed(percentiles = {0.5, 0.9, 0.95, 0.99})
     public Map<Long, Integer> getByteBufferMap() {
         log.debug("getByteBufferMap req");
         return bufferMap.entrySet().stream()

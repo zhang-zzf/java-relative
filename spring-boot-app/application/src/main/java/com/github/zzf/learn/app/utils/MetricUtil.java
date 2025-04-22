@@ -25,8 +25,8 @@ public class MetricUtil {
      * Timer 监控
      *
      * @param metricName "指标名"
-     * @param value 要记录的 count 值，默认单位 TimeUnit.NANOSECONDS
-     * @param tags 对应业务监控中的 "字段"。可以为空。
+     * @param value      要记录的 count 值，默认单位 TimeUnit.NANOSECONDS
+     * @param tags       对应业务监控中的 "字段"。可以为空。
      */
     public static final void nanoTime(String metricName, long value, String... tags) {
         if (!metricOn) {
@@ -36,11 +36,13 @@ public class MetricUtil {
         Timer timer = timers.get(id);
         if (timer == null) {
             timers.putIfAbsent(id, Timer.builder(metricName)
-                    .tags(tags)
-                    .publishPercentileHistogram()
-                    .minimumExpectedValue(Duration.ofNanos(1))
-                    .maximumExpectedValue(Duration.ofNanos(64))
-                    .register(Metrics.globalRegistry));
+                .tags(tags)
+                // .publishPercentileHistogram()
+                // .minimumExpectedValue(Duration.ofNanos(1))
+                // .maximumExpectedValue(Duration.ofNanos(64))
+                .serviceLevelObjectives(Duration.ofNanos(1000), Duration.ofNanos(2000))
+                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
+                .register(Metrics.globalRegistry));
             timer = timers.get(id);
         }
         timer.record(value, TimeUnit.NANOSECONDS);
@@ -50,8 +52,8 @@ public class MetricUtil {
      * Timer 监控
      *
      * @param metricName "指标名"
-     * @param value 要记录的 count 值，默认单位 TimeUnit.MILLISECONDS
-     * @param tags 对应业务监控中的 "字段"。可以为空。
+     * @param value      要记录的 count 值，默认单位 TimeUnit.MILLISECONDS
+     * @param tags       对应业务监控中的 "字段"。可以为空。
      */
     public static final void time(String metricName, long value, String... tags) {
         if (!metricOn) {
@@ -61,11 +63,11 @@ public class MetricUtil {
         Timer timer = timers.get(id);
         if (timer == null) {
             timers.putIfAbsent(id, Timer.builder(metricName)
-                    .tags(tags)
-                    .publishPercentileHistogram()
-                    .minimumExpectedValue(Duration.ofMillis(1))
-                    .maximumExpectedValue(Duration.ofSeconds(10))
-                    .register(Metrics.globalRegistry));
+                .tags(tags)
+                .publishPercentileHistogram()
+                .minimumExpectedValue(Duration.ofMillis(1))
+                .maximumExpectedValue(Duration.ofSeconds(10))
+                .register(Metrics.globalRegistry));
             timer = timers.get(id);
         }
         timer.record(value, TimeUnit.MILLISECONDS);
@@ -84,7 +86,7 @@ public class MetricUtil {
      * <p>value == 1 即为记录的QPS</p>
      *
      * @param metricName "指标名"
-     * @param tags 对应业务监控中的 "字段"。可以为空。
+     * @param tags       对应业务监控中的 "字段"。可以为空。
      */
     public static final void count(String metricName, String... tags) {
         if (!metricOn) {
@@ -98,8 +100,8 @@ public class MetricUtil {
      * <p>value == 1 即为记录的QPS</p>
      *
      * @param metricName "指标名"
-     * @param value 要记录的 count 值
-     * @param tags 对应业务监控中的 "字段"。可以为空。
+     * @param value      要记录的 count 值
+     * @param tags       对应业务监控中的 "字段"。可以为空。
      */
     public static final void count(String metricName, int value, String... tags) {
         if (!metricOn) {

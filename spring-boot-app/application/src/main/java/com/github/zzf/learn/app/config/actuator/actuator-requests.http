@@ -18,6 +18,10 @@ GET {{host}}/actuator/prometheus
 ### all metrics
 GET {{host}}/actuator/metrics
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+### 获取特定 metric 的配置
+GET {{host}}/actuator/metrics/ActuatorAutoController.timed
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
 
 ### cache 信息
 GET {{host}}/actuator/caches

@@ -1,5 +1,172 @@
 # README.md
 
+## 202504
+
+### springboot actuator 配置打点
+
+```yaml
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      slo: # 按 metric 名字维度，配置直方桶 bucket
+        ActuatorAutoController.timed: 1ms, 5ms
+        http.server.requests: 10ms, 50ms, 100ms
+      percentiles:
+        all: 0.95, 0.99 # 配置默认百分比
+        http.server.requests: 0.95 # 针对单个 metric 配置
+```
+
+#### @Timed
+
+默认全部都统计到 `method_timed` 指标下，只用 `class` / `method` 来区分不同的方法
+
+```text
+# 指标分析
+# # TYPE method_timed_seconds summary
+	  # 1个 count 统计的次数
+	  # 1个 sum 统计值的总和
+# TYPE method_timed_seconds_max gauge
+		# 1个 max 记录最大值
+		
+# 默认配置只能计算 avg 哈
+```
+
+```text
+# HELP method_timed_seconds  
+# TYPE method_timed_seconds summary
+method_timed_seconds_count{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController",exception="none",method="getByteBufferMap",} 1.0
+method_timed_seconds_sum{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController",exception="none",method="getByteBufferMap",} 1.477970834
+# HELP method_timed_seconds_max  
+# TYPE method_timed_seconds_max gauge
+method_timed_seconds_max{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController",exception="none",method="getByteBufferMap",} 1.477970834
+```
+
+- 如何自定义指标名字
+- 如何自定义 Percentiles / bucket
+
+```text
+自定义指标名字和 percentiles
+@Timed(value = "ActuatorAutoController.timed", percentiles = {0.5, 0.9, 0.95, 0.99}, extraTags = {"tag1", "time1"})
+
+# 指标分析
+# # ActuatorAutoController_timed summary
+		# 4个 quantile 计算好的百分比
+	  # 1个 count 统计的次数
+	  # 1个 sum 统计值的总和
+# ActuatorAutoController_timed gauge
+		# 1个 max 记录最大值
+		
+# HELP ActuatorAutoController_timed_seconds  
+# TYPE ActuatorAutoController_timed_seconds summary
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.5",} 6.5536E-5
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.9",} 0.005500928
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.95",} 0.005500928
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.99",} 0.005500928
+ActuatorAutoController_timed_seconds_count{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",} 2.0
+ActuatorAutoController_timed_seconds_sum{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",} 0.00552125
+# HELP ActuatorAutoController_timed_seconds_max  
+# TYPE ActuatorAutoController_timed_seconds_max gauge
+ActuatorAutoController_timed_seconds_max{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",} 0.005455
+```
+
+```text
+自定义指标名字和 percentiles
+@Timed(value = "ActuatorAutoController.timed", percentiles = {0.5, 0.9, 0.95, 0.99}, extraTags = {"tag1", "time1"})
+
+application.yaml 中自定义 bucket 
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      slo:
+        ActuatorAutoController.timed: 1ms, 5ms
+        ActuatorAutoController.timed2: 1ms, 5ms, 10ms
+
+# 指标分析
+# # ActuatorAutoController_timed histogram
+		# 4个 quantile 计算好的百分比
+		# 2个 bucket 分布桶
+	  # 1个 count 统计的次数
+	  # 1个 sum 统计值的总和
+# ActuatorAutoController_timed gauge
+		# 1个 max 记录最大值
+
+# HELP ActuatorAutoController_timed_seconds  
+# TYPE ActuatorAutoController_timed_seconds histogram
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.5",} 7.168E-5
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.9",} 3.25632E-4
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.95",} 0.008124416
+ActuatorAutoController_timed_seconds{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",quantile="0.99",} 0.008124416
+ActuatorAutoController_timed_seconds_bucket{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",le="0.001",} 9.0
+ActuatorAutoController_timed_seconds_bucket{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",le="0.005",} 9.0
+ActuatorAutoController_timed_seconds_bucket{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",le="+Inf",} 10.0
+ActuatorAutoController_timed_seconds_count{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",} 10.0
+ActuatorAutoController_timed_seconds_sum{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",} 0.008821459
+
+# HELP ActuatorAutoController_timed_seconds_max  
+# TYPE ActuatorAutoController_timed_seconds_max gauge
+ActuatorAutoController_timed_seconds_max{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.micrometer.ActuatorAutoController",exception="none",method="timed",tag1="time1",} 0.007896542
+```
+
+#### @Counted
+
+默认全部都统计到 `method_counted` 指标下，只用 `class` / `method` 来区分不同的方法
+
+```text
+# 指标分析
+# TYPE method_counted_total counter
+	  # 1个 count 统计的的值的和（QPS 的值是1）
+```
+
+```text
+# HELP method_counted_total  
+# TYPE method_counted_total counter
+method_counted_total{application="spring-boot-app",class="com.github.zzf.learn.app.rpc.http.provider.direct_memory.DirectMemoryController",exception="none",method="clearByteBuffer",result="success",} 2.0
+```
+
+#### 自定义 timer 同时指定 bucket 和 percentiles
+
+```java
+Timer.builder(metricName)
+                .tags(tags)
+                // .publishPercentileHistogram()
+                // .minimumExpectedValue(Duration.ofNanos(1))
+                // .maximumExpectedValue(Duration.ofNanos(64))
+                .serviceLevelObjectives(Duration.ofNanos(1000), Duration.ofNanos(2000))
+                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
+                .register(Metrics.globalRegistry)
+```
+
+```text
+# 指标分析
+# TYPE ActuatorAutoController_nanoTimer_seconds histogram
+		# 4个 quantile 计算好的百分比
+	  # 3个 bucket 直方图
+	  # 1个 count 统计的次数
+	  # 1个 sum 统计值的总和
+# TYPE ActuatorAutoController_nanoTimer_seconds_max gauge
+```
+
+```text
+# HELP ActuatorAutoController_nanoTimer_seconds  
+# TYPE ActuatorAutoController_nanoTimer_seconds histogram
+ActuatorAutoController_nanoTimer_seconds{application="spring-boot-app",quantile="0.5",} 5.2E-8
+ActuatorAutoController_nanoTimer_seconds{application="spring-boot-app",quantile="0.9",} 6.7E-7
+ActuatorAutoController_nanoTimer_seconds{application="spring-boot-app",quantile="0.95",} 6.7E-7
+ActuatorAutoController_nanoTimer_seconds{application="spring-boot-app",quantile="0.99",} 6.7E-7
+ActuatorAutoController_nanoTimer_seconds_bucket{application="spring-boot-app",le="1.0E-6",} 2.0
+ActuatorAutoController_nanoTimer_seconds_bucket{application="spring-boot-app",le="2.0E-6",} 2.0
+ActuatorAutoController_nanoTimer_seconds_bucket{application="spring-boot-app",le="+Inf",} 2.0
+ActuatorAutoController_nanoTimer_seconds_count{application="spring-boot-app",} 2.0
+ActuatorAutoController_nanoTimer_seconds_sum{application="spring-boot-app",} 6.92E-7
+# HELP ActuatorAutoController_nanoTimer_seconds_max  
+# TYPE ActuatorAutoController_nanoTimer_seconds_max gauge
+ActuatorAutoController_nanoTimer_seconds_max{application="spring-boot-app",} 6.4E-7
+```
+
 ## 202503
 
 ### idea mybatis + mybatis-plus 快速开发

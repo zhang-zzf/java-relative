@@ -1,6 +1,8 @@
 package com.github.zzf.learn.app.rpc.http.provider.micrometer;
 
 import com.github.zzf.learn.app.utils.MetricUtil;
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import java.util.concurrent.ThreadLocalRandom;
@@ -24,6 +26,9 @@ public class ActuatorAutoController {
 
     final MeterRegistry meterRegistry;
 
+    /**
+     * 探索 spring actuator meterRegistry 是否绑定到 Metrics.globalRegistry
+     */
     @GetMapping("/")
     public void checkMeterRegistry() {
         meterRegistry.forEachMeter(meter -> {
@@ -39,9 +44,28 @@ public class ActuatorAutoController {
         }
     }
 
+    /**
+     * 自定义打点
+     */
     @GetMapping("/nanoTimer")
     public void nanoTimer() {
         MetricUtil.nanoTime("ActuatorAutoController.nanoTimer", ThreadLocalRandom.current().nextInt(1000));
+    }
+
+    /**
+     * 自定义名字和 percentiles
+     */
+    @GetMapping("/@timed")
+    @Timed(value = "ActuatorAutoController.timed", percentiles = {0.5, 0.9, 0.95, 0.99}, extraTags = {"tag1", "time1"})
+    public void timed() {
+    }
+
+    /**
+     * 自定义名字和 percentiles
+     */
+    @GetMapping("/@counted")
+    @Counted(value = "ActuatorAutoController.counted", extraTags = {"tag1", "count1", "tag2", "count2"})
+    public void counted() {
     }
 
 }

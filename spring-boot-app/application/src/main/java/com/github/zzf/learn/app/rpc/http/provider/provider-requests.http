@@ -104,3 +104,21 @@ Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 GET {{host}}/api/micrometer/nanoTimer
 Content-Type: application/json
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/micrometer/@timed
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+###
+GET {{host}}/api/micrometer/@counted
+Content-Type: application/json
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### 获取 metric 配置
+GET {{host}}/actuator/metrics
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+### 获取 metric 配置
+GET {{host}}/actuator/metrics/ActuatorAutoController.timed
+Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz

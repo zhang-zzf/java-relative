@@ -69,6 +69,15 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+    distribution:
+      slo:
+        ActuatorAutoController.timed: 1ms, 5ms
+        ActuatorAutoController.timed2: 1ms, 5ms, 10ms
+        http.server.requests: 10ms, 50ms, 100ms
+      percentiles:
+        all: 0.95, 0.99 # 配置默认百分比
+        'http.server.requests': 0.95 # 针对单个 metric 配置
+
   info:
     java:
       enabled: true

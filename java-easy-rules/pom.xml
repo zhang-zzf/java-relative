@@ -19,7 +19,7 @@
         <powermock.version>2.0.4</powermock.version>
         <junit5.version>5.5.2</junit5.version>
         <mockito.junit5.version>2.25.1</mockito.junit5.version>
-        <junit4.version>4.12</junit4.version>
+        <junit4.version>4.13.1</junit4.version>
         <assertj-core.version>3.19.0</assertj-core.version>
 
     </properties>

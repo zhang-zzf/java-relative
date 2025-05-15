@@ -4,6 +4,8 @@
 
 ### springboot actuator 配置打点
 
+推荐优先使用 spring-boot application.yaml 配置文件的方式配置 Histogram / Summary 的 bucket / percentiles。
+
 ```yaml
 management:
   metrics:
@@ -44,7 +46,8 @@ method_timed_seconds_max{application="spring-boot-app",class="com.github.zzf.lea
 ```
 
 - 如何自定义指标名字
-- 如何自定义 Percentiles / bucket
+  - 如何自定义 Percentiles / bucket
+
 
 ```text
 自定义指标名字和 percentiles
@@ -52,7 +55,7 @@ method_timed_seconds_max{application="spring-boot-app",class="com.github.zzf.lea
 
 # 指标分析
 # # ActuatorAutoController_timed summary
-		# 4个 quantile 计算好的百分比
+	  # 4个 quantile 计算好的百分比
 	  # 1个 count 统计的次数
 	  # 1个 sum 统计值的总和
 # ActuatorAutoController_timed gauge

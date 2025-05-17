@@ -50,7 +50,7 @@ GET {{HOST}}/ping
 
 ###
 GET {{host}}/log/demo
-Content-Type: application/json
+Content-Type: application/x-www-form-urlencoded
 
 ### 获取日志级别
 GET {{host}}/loggers

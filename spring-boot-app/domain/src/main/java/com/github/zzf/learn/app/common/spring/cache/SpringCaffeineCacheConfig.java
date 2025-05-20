@@ -29,6 +29,8 @@ public class SpringCaffeineCacheConfig {
         // 16777216 = 16*1024*1024
         String caffeineSpec = "maximumSize=16777216,expireAfterWrite=5m";
         m.setCaffeineSpec(CaffeineSpec.parse(caffeineSpec));
+        // spring-cache 使用 @Cacheable / @CachePut 等注解实现数据回源。目前暂未找到可以和 Caffeine 的 CacheLoader 融合的使用方式
+        // m.setCacheLoader();
         return m;
     }
 

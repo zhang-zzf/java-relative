@@ -75,8 +75,7 @@ public class StationRepoMySQLImpl implements StationRepo {
         Iterator<List<Long>> it = iterator();
         List<Station> ret = new ArrayList<>();
         while (it.hasNext()) {
-            List<DdmallWarehouse> dbData = ddmallWarehouseMapper.selectByIdList(it.next());
-            ret.addAll(mapper.toDomain(dbData));
+            ret.addAll(mapper.toDomain(ddmallWarehouseMapper.selectByIdList(it.next())));
         }
         return ret;
     }

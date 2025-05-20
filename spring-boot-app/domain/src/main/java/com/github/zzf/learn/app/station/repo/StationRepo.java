@@ -38,6 +38,7 @@ public interface StationRepo {
     Page<Long> queryPageBy(Map<String, String> parameters, Pageable pageable);
 
     /**
+* 查询全部
      * <pre>
      *      queryList / searchAfter 2 选 1
      *      DB 数量少 (如 1W) 使用 queryList; DB 数量多 (如 1B) 使用 searchAfter

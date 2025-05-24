@@ -2,6 +2,7 @@ package com.github.zzf.learn.app.repo;
 
 import static com.github.zzf.learn.app.common.spring.async.ThreadPoolForStation.ASYNC_THREAD;
 import static com.github.zzf.learn.app.repo.StationRepoMySQLImpl.BEAN_NAME;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toSet;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -11,12 +12,12 @@ import com.github.zzf.learn.app.station.model.Station;
 import com.github.zzf.learn.app.station.model.StationIdList;
 import com.github.zzf.learn.app.station.repo.StationRepo;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,9 +35,11 @@ import org.springframework.validation.annotation.Validated;
 @Repository
 @Slf4j
 @Validated
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 // @Primary
 public class StationRepoCaffeineImpl implements StationRepo {
+
+    static final String STATION_ALL = "stations";
 
     final @Qualifier(BEAN_NAME) StationRepo delegate;
     final @Qualifier(ASYNC_THREAD) AsyncTaskExecutor executor;
@@ -44,12 +47,31 @@ public class StationRepoCaffeineImpl implements StationRepo {
     // refresh 的逻辑: 4m 后，会触发一次 loadAll 的回调，重新回源获取数据，并更新缓存。
     // refresh 的逻辑: 更新完成之前，返回 cache 中现有的值
     // refresh 的逻辑: refresh 仅由 get / getAll 等查询触发。
-    final String caffeineSpec = "maximumSize=16777216,expireAfterWrite=5m,refreshAfterWrite=4m";
+    // final String caffeineSpec = "maximumSize=16777216,expireAfterWrite=5m,refreshAfterWrite=4m";
     // stations -> 缓存全量门店
-    final String STATION_ALL = "stations";
-    final LoadingCache<String, List<Station>> stationCache = Caffeine.from(caffeineSpec)
-        .executor(executor)
-        .build(key -> delegate.queryList());
+    // final LoadingCache<String, List<Station>> stationCache = Caffeine.from(caffeineSpec)
+    //     .executor(executor)
+    //     .build(key -> delegate.queryList());
+
+    final LoadingCache<String, List<Station>> stationCache;
+
+    // why 手写 constructor? variable executor might not have been initialized
+    // 实例属性在声明时赋值和初始化块中赋值会被提取到构造器的前面
+    public StationRepoCaffeineImpl(
+        @Qualifier(BEAN_NAME) @NotNull StationRepo delegate,
+        @Qualifier(ASYNC_THREAD) @NotNull AsyncTaskExecutor executor) {
+        this.delegate = delegate;
+        this.executor = executor;
+        // cache strategy: 5 minutes expire; 4 minute refresh
+        // refresh 的逻辑: 4m 后，会触发一次 loadAll 的回调，重新回源获取数据，并更新缓存。
+        // refresh 的逻辑: 更新完成之前，返回 cache 中现有的值
+        // refresh 的逻辑: refresh 仅由 get / getAll 等查询触发。
+        String caffeineSpec = "maximumSize=16777216,expireAfterWrite=5m,refreshAfterWrite=4m";
+        this.stationCache = Caffeine.from(caffeineSpec)
+            .executor(executor)
+            // .build(key -> delegate.queryList());
+            .build(key -> emptyList());
+    }
 
     @Override
     public void save(Station station) {

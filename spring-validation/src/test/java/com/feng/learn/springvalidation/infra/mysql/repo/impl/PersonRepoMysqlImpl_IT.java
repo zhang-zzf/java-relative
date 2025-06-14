@@ -1,15 +1,19 @@
 package com.feng.learn.springvalidation.infra.mysql.repo.impl;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
-
 import com.feng.learn.springvalidation.domain.model.Person;
 import com.feng.learn.springvalidation.domain.model.Person.Address;
 import com.feng.learn.springvalidation.domain.repo.PersonRepo;
-import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.validation.ConstraintViolationException;
+import java.util.*;
+
+import static java.beans.Beans.isInstanceOf;
+import static java.util.Collections.emptyMap;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
@@ -47,15 +51,61 @@ class PersonRepoMysqlImpl_IT {
 
     @Test
     void givenNullList_whenBatchGetById_thenFail() {
-        final Throwable throwable = catchThrowable(() -> personRepo.batchGetById(null));
+        Set<Long> idSet = Set.of(1L);
+        Map<Long, String> idMap = Map.of(1L, "1");
+        final Throwable throwable = catchThrowable(() -> personRepo.batchGetById(null, idSet, idSet, idSet, idMap, idMap));
         then(throwable).isNotNull();
     }
 
     @Test
     void givenEmptyList_whenBatchGetById_thenFail() {
-        final Throwable throwable = catchThrowable(() -> personRepo.batchGetById(new ArrayList<>()));
+        Set<Long> idSet = Set.of(1L);
+        Map<Long, String> idMap = Map.of(1L, "1");
+        final Throwable throwable = catchThrowable(() -> personRepo.batchGetById(new ArrayList<>(), idSet, idSet, idSet, idMap, idMap));
         then(throwable).isNotNull();
     }
+
+    @Test
+    void givenEmptySet_whenBatchGetById_thenFail() {
+        Set<Long> idSet = Set.of(1L);
+        Map<Long, String> idMap = Map.of(1L, "1");
+        List<Long> idList = List.of(1L);
+        Set<Long> nullIdSet = new HashSet<>() {{
+            add(null);
+        }};
+        HashMap<Long, String> nullKeyMap = new HashMap<>() {{
+            put(null, null);
+        }};
+        HashMap<Long, String> nullValueMap = new HashMap<>() {{
+            put(1L, null);
+        }};
+        // idListSet0 可以为 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, idMap, idMap))).isNull();
+        //
+        // idListSet 不可以为 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, null, idSet, idMap, idMap))).isInstanceOf(ConstraintViolationException.class);
+        // idListSet 不可以为 null, emptySet
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, Set.of(), idSet, idMap, idMap))).isInstanceOf(ConstraintViolationException.class);
+        // idListSet 不可以为 null, emptySet, 可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, nullIdSet, idSet, idMap, idMap))).isNull();
+        //
+        // idListSet2 不可以为 null, emptySet, 不可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, nullIdSet, nullIdSet, idMap, idMap))).isInstanceOf(ConstraintViolationException.class).isNotNull();
+        //
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, null, idMap))).isInstanceOf(ConstraintViolationException.class).isNotNull();
+        // idListMap 不可以为 null, emptySet, key 不可以包含 null, value 可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, null, idMap))).isInstanceOf(ConstraintViolationException.class).isNotNull();
+        // idListMap 不可以为 null, emptySet, key 不可以包含 null, value 可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, emptyMap(), idMap))).isInstanceOf(ConstraintViolationException.class).isNotNull();
+        // idListMap 不可以为 null, emptySet, key 不可以包含 null, value 可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, nullKeyMap, idMap))).isInstanceOf(ConstraintViolationException.class).isNotNull();
+        // idListMap 不可以为 null, emptySet, key 不可以包含 null, value 可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, nullValueMap, idMap))).isNull();
+        //
+        // idListMap2 不可以为 null, emptySet, key 不可以包含 null, value 不可以包含 null
+        then(catchThrowable(() -> personRepo.batchGetById(idList, null, idSet, idSet, nullValueMap, nullValueMap))).isInstanceOf(ConstraintViolationException.class).isNotNull();
+    }
+
 
 
 }

@@ -1,57 +1,66 @@
 package com.feng.learn.springvalidation.infra.rpc.http;
 
 import com.feng.learn.springvalidation.domain.model.Person;
-import java.util.List;
-import java.util.Set;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Set;
+
 @RestController()
 @RequestMapping(path = {"/api/persons", "/web/persons"})
 @Slf4j
-// @Validated
+@Validated
 public class PersonController {
+
+    @PostMapping("/_search-by-name")
+    @NotNull /* 需要配合 @Validated 生效 */
+    public List<Person> searchByName(
+            @RequestBody/* 可以保证 name != null*/ @Size(min = 10, max = 40) /* @Size 需要配合 @Validate */ String name) {
+        return null;
+    }
 
     @PostMapping("/_search-by-ids")
     @NotNull /* 需要配合 @Validated 生效 */
     public List<Person> searchBy(
-        @RequestBody(required = false /* 当 body 不存在时， idSet 为 null */) Set<Long> idSet) {
+            @RequestBody(required = false /* 当 body 不存在时， idSet 为 null */) Set<Long> idSet) {
         return null;
     }
 
     @PostMapping("/_search-by-ids-2")
     public List<Person> searchBy2(
-        @RequestBody(required = false /* 当 body 不存在时， idSet 为 null */)
-        @NotNull /* 需要配合 @Validated 生效 */ Set<Long> idSet) {
+            @RequestBody(required = false /* 当 body 不存在时， idSet 为 null */)
+            @NotNull /* 需要配合 @Validated 生效 */ Set<Long> idSet) {
         return null;
     }
 
     @PostMapping("/_search-by-ids-3")
     public List<Person> searchBy3(
-        @RequestBody(required = false /* 当 body 不存在时， idSet 为 null */)
-        @NotEmpty /* 需要配合 @Validated 生效 */ Set<@NotNull/* 需要配合 @Validated 生效 */ Long> idSet) {
+            @RequestBody(required = false /* 当 body 不存在时， idSet 为 null */)
+            @NotEmpty /* 需要配合 @Validated 生效 */ Set<@NotNull/* 需要配合 @Validated 生效 */ Long> idSet) {
         return null;
     }
 
     @PostMapping("/_search-by-ids-4")
     public List<Person> searchBy4(
-        @RequestBody
-        @Size(min = 2) /* 需要配合 @Validated 生效 */ Set<@NotNull/* 需要配合 @Validated 生效 */ Long> idSet) {
+            @RequestBody
+            @Size(min = 2) /* 需要配合 @Validated 生效 */ Set<@NotNull/* 需要配合 @Validated 生效 */ Long> idSet) {
         return null;
     }
 
     @PostMapping("/_search-by-ids-5")
     public List<Person> searchBy5(
-        @RequestBody
-        @Valid /* 需要配合 @Validated 生效。若无 @Validate 无法校验 Set 对象；有 @Validated 时不需要 @Valid 也可校验，实际上没有任何意义*/
-        @Size(min = 2) /* 需要配合 @Validated 生效 */ Set<@NotNull/* 需要配合 @Validated 生效 */ Long> idSet) {
+            @RequestBody
+            @Valid /* 需要配合 @Validated 生效。若无 @Validate 无法校验 Set 对象；有 @Validated 时不需要 @Valid 也可校验，实际上没有任何意义*/
+            @Size(min = 2) /* 需要配合 @Validated 生效 */ Set<@NotNull/* 需要配合 @Validated 生效 */ Long> idSet) {
         return null;
     }
 
@@ -62,7 +71,7 @@ public class PersonController {
 
     @PostMapping("/c2")
     public List<Person> createPerson2(@RequestBody
-    @Valid /*不需要 @Validate , spring-web 可以识别 @Valid 进行校验*/ Person person) {
+                                      @Valid /*不需要 @Validate , spring-web 可以识别 @Valid 进行校验*/ Person person) {
         return null;
     }
 }

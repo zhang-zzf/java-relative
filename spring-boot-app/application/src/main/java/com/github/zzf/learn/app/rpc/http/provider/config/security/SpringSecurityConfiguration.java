@@ -35,20 +35,23 @@ public class SpringSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JWTService jwtService) throws Exception {
         // permitAll 登陆/匿名 都可以 -> anonymous and authenticated
         // anonymous 必须时匿名，登陆的用户会授权失败
-        http.securityMatcher("/api/**")
-            .authorizeHttpRequests((requests) -> requests
-                // 权限配置按从上到下的顺序依次校验
-                .requestMatchers(HttpMethod.GET, "/api/users/*/*/token").permitAll()// 登陆
-                .requestMatchers(HttpMethod.GET, "/api/users/card/*/status").permitAll()// 登陆
-                .requestMatchers("/api/users/auth/*").permitAll()// 登陆
-                .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()// 登陆
-                .requestMatchers(HttpMethod.POST, "/api/users/sms/*").anonymous()// 短信验证码
-                .requestMatchers(HttpMethod.POST, "/api/users").anonymous()// 用户注册
-                //.requestMatchers("/api/admin/**").hasRole("ADMIN")// ant 语法
-                //.requestMatchers(HttpMethod.GET, "/**").anonymous()
-                .requestMatchers(HttpMethod.POST, "/api/cards/*/_verified").anonymous()// 卡实名认证后的回调接口
-                .anyRequest().authenticated() // 任何人都可以访问，但必须要登陆
-            );
+        http.securityMatcher("/api/**").authorizeHttpRequests((requests) -> requests
+            // 权限配置按从上到下的顺序依次校验
+            .requestMatchers(HttpMethod.GET, "/api/users/*/*/token").permitAll()// 登陆
+            .requestMatchers(HttpMethod.GET, "/api/users/card/*/status").permitAll()// 登陆
+            .requestMatchers("/api/users/auth/*").permitAll()// 登陆
+            .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()// 登陆
+            .requestMatchers(HttpMethod.POST, "/api/users/sms/*").anonymous()// 短信验证码
+            .requestMatchers(HttpMethod.POST, "/api/users").anonymous()// 用户注册
+            //.requestMatchers("/api/admin/**").hasRole("ADMIN")// ant 语法
+            //.requestMatchers(HttpMethod.GET, "/**").anonymous()
+            .requestMatchers(HttpMethod.POST, "/api/cards/*/_verified").anonymous()// 卡实名认证后的回调接口
+            .requestMatchers("/api/**").authenticated() // 任何人都可以访问，但必须要登陆
+        );
+        // test 免登录
+        http.securityMatcher("/test/**").authorizeHttpRequests((requests) -> requests.
+            requestMatchers("/**").permitAll()
+        );
         // http.formLogin(withDefaults());
         // 添加 jwt token filter to the filter chain, just before the basic authentication filter
         http.addFilterBefore(new JWTAuthenticationFilter(jwtService), BasicAuthenticationFilter.class);

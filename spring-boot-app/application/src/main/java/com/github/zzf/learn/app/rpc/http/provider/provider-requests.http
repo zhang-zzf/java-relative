@@ -122,3 +122,7 @@ Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
 ### 获取 metric 配置
 GET {{host}}/actuator/metrics/ActuatorAutoController.timed
 Authorization: Basic MTU2MTg1MzY1MTM6NTM2NTEz
+
+
+### 测试 long 被截断
+GET {{host}}/test/long/truncate

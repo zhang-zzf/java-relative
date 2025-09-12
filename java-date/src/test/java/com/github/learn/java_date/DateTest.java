@@ -101,13 +101,12 @@ public class DateTest {
     @SneakyThrows
     @Test
     void givenTimeZone_whenDST_then() {
-        // 在 Asia/Shanghai CST 时区，代表 1988-08-13 13:13:13
-        Date date = new Date(587448793000L);
+        Date date = new Date(587448793000L); /* 1988-08-13T04:13:13Z */
         // UTC 时区
         SimpleDateFormat dfOfUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dfOfUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
         then(dfOfUTC.format(date)).isEqualTo("1988-08-13 04:13:13");
-        // CST 时区，在夏令时期间使用 GMT+09 时区
+        // CST Asia/Shanghai 时区，在夏令时期间使用 GMT+09 时区
         SimpleDateFormat dfOfCST = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dfOfCST.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         then(dfOfCST.format(date)).isEqualTo("1988-08-13 13:13:13");
@@ -209,10 +208,6 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
-     * <<<<<<< HEAD
-     * <<<<<<< HEAD
-     * =======
-     * >>>>>>> 394e19a (feat: add more Date test)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理。前后端都默认采取一个默认时区（uct8）来操作时间。
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串

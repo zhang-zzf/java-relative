@@ -239,11 +239,6 @@ public class DateTest {
      * Date <-> String
      * <pre>
      *     结论：针对 C/S 模式的服务
-     * <<<<<<< HEAD
-     * =======
-     * >>>>>>> 1b98ae3 (feat: add Date TimeZone)
-     * =======
-     * >>>>>>> 394e19a (feat: add more Date test)
      *     1. Client 与 Server 在同一个时区(utc8)，无需做额外处理
      *     2. Client 与 Server 在不同的时区，Client 分布在 utc0 / utc3 / utc8 时区，Server 部署在 utc0 区
      *        1. Server 端处理 Client 的 String 时间时，需要使用 Client 所在的时区来 parse String 字符串
@@ -324,8 +319,9 @@ public class DateTest {
     }
 
     /**
-     * Date <-> String with TimeZone
      * <pre>
+     * String with TimeZone -> Date
+     * 挂钟时间 -> 世界时间
      *     DateFormat 时区优先级
      *     // TimeZone 优先级依次降低
      *     // 1. 字符串中的时区
@@ -337,7 +333,6 @@ public class DateTest {
     void givenString_whenConvertToDate_then() {
         // 设置 utc3 为默认时区
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Riyadh"));
-        //
         then(TimeZone.getDefault().getID()).isEqualTo("Asia/Riyadh");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         // df 设置 utc 时区
@@ -347,7 +342,9 @@ public class DateTest {
         // 结果：按字符串中的时区解析字符串
         then(parseByStrZone.getTime()).isEqualTo(0L); // utc 时间为 0 点
         //
-        // pattern 中没有时区，会忽略 DateStr 中的时区
+        // 前置条件: 1. 默认时区为 utc3; 2. DateFormat.TimeZone 为 utc0
+        // pattern 中没有时区，会忽略 时间字符串 中的时区
+        // "1970-01-01T08:00:00.000+08:00" 按 "yyyy-MM-dd'T'HH:mm:ss.SSS" 解析时会忽略字符串中的时区
         then(TimeZone.getDefault().getID()).isEqualTo("Asia/Riyadh");
         SimpleDateFormat dfutc0 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         then(dfutc0.getTimeZone().getID()).isEqualTo("Asia/Riyadh");
@@ -357,6 +354,7 @@ public class DateTest {
         then(dfutc0.parse("1970-01-01T08:00:00.000+08:00").getTime()).isEqualTo(28800000L); // utc 时间为 8 点
         //
         //
+        // 前置条件: 1. 默认时区为 utc3;
         then(TimeZone.getDefault().getID()).isEqualTo("Asia/Riyadh");
         SimpleDateFormat dfUseDefaultZone = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         then(dfUseDefaultZone.getTimeZone().getID()).isEqualTo("Asia/Riyadh");
@@ -366,25 +364,40 @@ public class DateTest {
     }
 
     /**
-     * String -> Date
      * <pre>
+     * String -> Date
+     * 挂钟时间 -> 世界时间
      *     结论： 解析 pattern < 时间格式 都可以被正常解析
      * </pre>
      */
     @SneakyThrows
     @Test
     void givenDate_whenParseString_then() {
-        TimeZone utc8 = TimeZone.getTimeZone("Asia/Shanghai");
-        TimeZone.setDefault(utc8);
-        Date _zero_utc = new Date(0); // utc8 1970-01-01 08:00:00
+        // 默认 utc3
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Riyadh"));
+        // df utc8
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        String dateStr = df.format(_zero_utc);
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        // utc8 1970-01-01 08:00:00
+        String dateStr = df.format(new Date(0));
         then(dateStr).isEqualTo("1970-01-01T08:00:00.000+08:00");
         then(catchThrowable(() -> {
-            new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
-            new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(dateStr);
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(dateStr);
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(dateStr);
+            /* 1970-01-01T00:00:00 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy").parse(dateStr).getTime()).isEqualTo(-10800000);
+            /* 1970-01-01T00:00:00 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM").parse(dateStr).getTime()).isEqualTo(-10800000);
+            /* 1970-01-01T00:00:00 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM-dd").parse(dateStr).getTime()).isEqualTo(-10800000);
+            /* 1970-01-01T08:00:00 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(dateStr).getTime()).isEqualTo(18000000L);
+            /* 1970-01-01T08:00:00 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(dateStr).getTime()).isEqualTo(18000000L);
+            /* 1970-01-01T08:00:00 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateStr).getTime()).isEqualTo(18000000L);
+            /* 1970-01-01T08:00:00.000 -> 按默认时区 utc3 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(dateStr).getTime()).isEqualTo(18000000L);
+            /* 1970-01-01T08:00:00.000+08:00 -> 按字符串中的时区 utc8 转换成世界时间 */
+            then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(dateStr).getTime()).isEqualTo(0L);
         })).isNull();
     }
 
@@ -561,8 +574,8 @@ public class DateTest {
         for (int i = -3; i < 21; i++) {
             Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
             Date floorDate = floor(date, "GMT+3");
-            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc3.format(date), dfUtc3.format(floorDate),
-                dfUtc.format(floorDate));
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}",
+                    dfUtc3.format(date), dfUtc3.format(floorDate), dfUtc.format(floorDate));
             then(dfUtc3.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000+03:00");
         }
         // utc+8
@@ -571,8 +584,8 @@ public class DateTest {
         for (int i = -8; i < 16; i++) {
             Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
             Date floorDate = floor(date, "Asia/Shanghai");
-            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc8.format(date), dfUtc8.format(floorDate),
-                dfUtc.format(floorDate));
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}",
+                    dfUtc8.format(date), dfUtc8.format(floorDate), dfUtc.format(floorDate));
             then(dfUtc8.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000+08:00");
         }
         // utc-4
@@ -581,8 +594,8 @@ public class DateTest {
         for (int i = 4; i < 28; i++) {
             Date date = new Date(1729123200000L + i * 60 * 60 * 1000);
             Date floorDate = floor(date, "America/New_York");
-            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}", dfUtc_4.format(date), dfUtc_4.format(floorDate),
-                dfUtc.format(floorDate));
+            log.info("\nbiz -> now: {}, floor: {}\nutc -> {}",
+                    dfUtc_4.format(date), dfUtc_4.format(floorDate), dfUtc.format(floorDate));
             then(dfUtc_4.format(floorDate)).isEqualTo("2024-10-17T00:00:00.000-04:00");
         }
     }

@@ -1,37 +1,20 @@
 package com.github.learn.java_date;
 
-import static java.time.format.DateTimeFormatter.ISO_DATE;
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
-import static java.time.format.DateTimeFormatter.ISO_INSTANT;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-import static java.time.format.DateTimeFormatter.ISO_TIME;
-import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
-import static java.time.format.DateTimeFormatter.ofPattern;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.MonthDay;
-import java.time.OffsetDateTime;
-import java.time.Period;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+
+import static java.time.format.DateTimeFormatter.*;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author zhanfeng.zhang
@@ -53,33 +36,36 @@ class JSR310DateTest {
         then(zdt.format(ISO_OFFSET_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00");
         then(zdt.format(ISO_ZONED_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]");
         then(zdt.format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]")
-            .isNotEqualTo("1970-01-01T08:00:00");
+                .isNotEqualTo("1970-01-01T08:00:00");
         then(zdt.format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"))).isEqualTo("1970-01-01T08:00:00.000000+08:00");
         then(zdt.withZoneSameInstant(ZoneOffset.UTC).format(ISO_INSTANT)).isEqualTo("1970-01-01T00:00:00Z");
-        then(zdt.withZoneSameInstant(ZoneOffset.UTC).format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"))).isEqualTo(
-            "1970-01-01T00:00:00.000000Z");
+        then(zdt.withZoneSameInstant(ZoneOffset.UTC).format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX")))
+                .isEqualTo("1970-01-01T00:00:00.000000Z");
+        then(zdt.withZoneSameInstant(ZoneId.of("Asia/Riyadh")).format(ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX")))
+                .isEqualTo("1970-01-01T03:00:00.000000+03:00");
         then(zdt.withZoneSameLocal(ZoneOffset.UTC).format(ISO_INSTANT)).isEqualTo("1970-01-01T08:00:00Z");
         then(zdt.toLocalDateTime().format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00");
         //
         // parse
         // utc 当地时间 1970-01-01T08:00
-        then(ZonedDateTime.parse("1970-01-01T08:00:00Z").toLocalDateTime()).isEqualTo(
-            LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")));
+        then(ZonedDateTime.parse("1970-01-01T08:00:00Z").toLocalDateTime())
+                .isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")));
         // UTC 08:00
-        then(ZonedDateTime.parse("1970-01-01T08:00:00.000Z").toInstant()).isNotEqualTo(Instant.EPOCH)
-            .isEqualTo(Instant.ofEpochMilli(28800000L));
+        then(ZonedDateTime.parse("1970-01-01T08:00:00.000Z").toInstant())
+                .isNotEqualTo(Instant.EPOCH)
+                .isEqualTo(Instant.ofEpochMilli(28800000L));
         // UTC+8 时区当地时间 1970-01-01T08:00
-        then(ZonedDateTime.parse("1970-01-01T08:00+08:00").toLocalDateTime()).isEqualTo(
-            LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.of("UTC+8")));
+        then(ZonedDateTime.parse("1970-01-01T08:00+08:00").toLocalDateTime())
+                .isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.of("UTC+8")));
         // UTC+8 08:00
         then(ZonedDateTime.parse("1970-01-01T08:00:00.000+08:00").toInstant()).isEqualTo(Instant.EPOCH);
         // 需要细品
         then(ZonedDateTime.parse("1970-01-01T08:00+08:00").toLocalDateTime())
-            .isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")));
+                .isEqualTo(LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")));
         // LocalDateTime 是一个值对象，不保存时区信息
         // 以下2个对象都表示 1970-01-01T08:00
         then(LocalDateTime.ofInstant(Instant.ofEpochMilli(28800000L), ZoneId.of("UTC")))
-            .isEqualTo(LocalDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC+8")));
+                .isEqualTo(LocalDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC+8")));
         //
         SimpleDateFormat df8 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         df8.setTimeZone(TimeZone.getTimeZone("GMT+8"));
@@ -107,10 +93,10 @@ class JSR310DateTest {
         // long <-> LocalDateTime
         // long -> LocalDateTime
         then(LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.of("Asia/Shanghai")))
-            .isEqualTo(LocalDateTime.parse("1970-01-01T08:00"));
+                .isEqualTo(LocalDateTime.parse("1970-01-01T08:00"));
         // LocalDateTime -> long
         then(LocalDateTime.parse("1970-01-01T08:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant())
-            .isEqualTo(Instant.EPOCH);
+                .isEqualTo(Instant.EPOCH);
         // String <-> LocalDateTime
         // LocalDateTime -> String
         LocalDateTime ldt = LocalDateTime.ofInstant(Instant.EPOCH, ZoneId.of("Asia/Shanghai"));
@@ -125,17 +111,25 @@ class JSR310DateTest {
         then(ldt.format(ofPattern("yyyy-MM-dd HH:mm:ss"))).isEqualTo("1970-01-01 08:00:00");
         // LocalDateTime <- String
         // ISO_LOCAL_DATE_TIME
-        then(LocalDateTime.parse("1970-01-01T08:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(
-            Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01T08:00:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(
-            Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01T08:00:00.000").atZone(ZoneId.of("Asia/Shanghai")).toInstant()).isEqualTo(
-            Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01 08:00", ofPattern("yyyy-MM-dd HH:mm")).atZone(ZoneId.of("Asia/Shanghai"))
-            .toInstant()).isEqualTo(Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01T08:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant())
+                .isEqualTo(Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01T08:00:00").atZone(ZoneId.of("Asia/Shanghai")).toInstant())
+                .isEqualTo(Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01T08:00:00.000").atZone(ZoneId.of("Asia/Shanghai")).toInstant())
+                .isEqualTo(Instant.EPOCH);
+        then(LocalDateTime.parse("1970-01-01 08:00", ofPattern("yyyy-MM-dd HH:mm")).atZone(ZoneId.of("Asia/Shanghai")).toInstant())
+                .isEqualTo(Instant.EPOCH);
         // 无法解析
         then(catchThrowable(() -> LocalDateTime.parse("1970-01-01"))).isNotNull();
         then(catchThrowable(() -> LocalDateTime.parse("1970-01-01T08:00:00.000Z"))).isNotNull();
+        then(LocalDateTime.parse("1970-01-01T08:00:00.000Z", ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")).format(ISO_LOCAL_DATE_TIME))
+                .isEqualTo("1970-01-01T08:00:00");
+        then(LocalDateTime.parse("1970-01-01T08:00:00.000+08:00", ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")).format(ISO_LOCAL_DATE_TIME))
+                .isEqualTo("1970-01-01T08:00:00");
+        then(LocalDateTime.parse("1970-01-01T08:00:00.000+08:00", ISO_ZONED_DATE_TIME).format(ISO_LOCAL_DATE_TIME))
+                .isEqualTo("1970-01-01T08:00:00");
+        then(LocalDateTime.parse("1970-01-01T08:00:00.000+08:00", ISO_OFFSET_DATE_TIME).format(ISO_LOCAL_DATE_TIME))
+                .isEqualTo("1970-01-01T08:00:00");
     }
 
     /**
@@ -510,7 +504,7 @@ class JSR310DateTest {
         log.info("now=>{}, future=>{}", now, future);
         Period period = Period.between(now, future);
         log.info("period=>{}, year=>{}, month=>{}, day=>{}", period, period.getYears(), period.getMonths(),
-            period.getDays());
+                period.getDays());
     }
 
     @Test

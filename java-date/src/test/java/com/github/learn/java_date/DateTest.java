@@ -1,19 +1,20 @@
 package com.github.learn.java_date;
 
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.BDDAssertions.then;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.learn.java_date.jackson.DateTimeBean;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 /**
  * @author : zhanfeng.zhang@icloud.com
@@ -197,7 +198,7 @@ public class DateTest {
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date _1hUtc = df.parse("1970-01-01 01:00:00");
         DateTimeBean b = new DateTimeBean().setCreatedAt(_1hUtc)// 默认序列化成 unix time 数字 3600000
-            ;
+                ;
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDefaultPropertyInclusion(Include.NON_NULL);
         String jsonStr = mapper.writeValueAsString(b);
@@ -444,12 +445,12 @@ public class DateTest {
         //
         then(TimeZone.getDefault().getID()).isEqualTo("Asia/Shanghai");
         then(new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01T08Z").getTime())
-            .isNotEqualTo(0L)
-            .isEqualTo(-28800000L);
+                .isNotEqualTo(0L)
+                .isEqualTo(-28800000L);
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH").parse("1970-01-01T08Z").getTime())
-            .isEqualTo(0L);
+                .isEqualTo(0L);
         then(new SimpleDateFormat("yyyy-MM-dd'T'HHXXX").parse("1970-01-01T08Z").getTime())
-            .isEqualTo(28800000L);
+                .isEqualTo(28800000L);
     }
 
     /**
@@ -504,8 +505,7 @@ public class DateTest {
         // XX 解析 +0800
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX").parse("1970-01-01T08:00:00+0800").getTime()).isEqualTo(0L);
         // XXX 解析 +08:00
-        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(
-            0L);
+        then(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse("1970-01-01T08:00:00+08:00").getTime()).isEqualTo(0L);
     }
 
     /**

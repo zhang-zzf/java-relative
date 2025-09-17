@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.text.SimpleDateFormat;
@@ -39,11 +40,20 @@ public class RedisConfig {
 
     public static ObjectMapper optimizeForRedis(ObjectMapper mapper) {
         mapper.registerModule(new JavaTimeModule());
-        // java.util.Date / java.time.* 生效
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // 会把 LocalDateTime 序列化成 []
+        // 默认会把 LocalDateTime 序列化成 []
         // mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);// 序列化成 timestamp
+        // 设置默认按 ISO 格式把时间对象序列化成 str
+        String isoDefaultFormat = "{" +
+                // Date 类型默认序列化成 ISO 8601 格式，默认 UTC 时区
+                "\"date\":\"1970-01-01T00:00:00.000+00:00\"," +
+                "\"instant\":\"1970-01-01T00:00:00Z\"," +
+                "\"localDateTime\":\"1970-01-01T08:00:00\"," +
+                "\"zonedDateTime\":\"1970-01-01T08:00:00+08:00\"," +
+                "\"offsetDateTime\":\"1970-01-01T08:00:00+08:00\"," +
+                "\"localDate\":\"1970-01-01\"," +
+                "\"localTime\":\"08:00:00\"}";
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(Include.NON_NULL);
         // 这里有大坑，会吞掉异常
         // mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);

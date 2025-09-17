@@ -23,6 +23,52 @@ import static org.assertj.core.api.BDDAssertions.then;
 @Slf4j
 class JSR310DateTest {
 
+
+    /**
+     * 夏令时期间安排会议
+     * <pre>
+     * 2025年美国夏令时重要时间点
+     * 开始时间：2025年3月9日（星期日）当地时间凌晨2点。此时钟表需要拨快1小时（从2点变为3点），意味着人们会“失去”一小时睡眠。
+     *
+     * 结束时间：2025年11月2日（星期日）当地时间凌晨2点。此时钟表需要拨慢1小时（从2点拨回1点），可以多睡一小时。
+     * </pre>
+     */
+    @Test
+    void givenZonedDateTime_whenScheduledMeeting_then() {
+        // 美国纽约的会议时间
+        LocalDateTime newYorkMeetingTime = LocalDateTime.parse("2025-03-10T09:00:00");
+        // 美国纽约的同事告诉你会议定在 2025-03-10T09:00:00，用时 1h ，纽约位于 UTC-05:00 时区，转换成中国本地时间为 2025-03-10T22:00:00。
+        // 你和老板熬夜到晚上 22:00 打开电脑登陆视频会议，结果 ·会议已结束·，然后你被炒了鱿鱼。。。
+        // 使用 OffsetDateTime
+        LocalDateTime chinaMeetingTimeUseOffset = newYorkMeetingTime.atOffset(ZoneOffset.of("-05:00")) /* 美国本地时间转世界时间 */
+                .atZoneSameInstant(ZoneId.of("Asia/Shanghai")) /* 同一个时刻在中国的世界时间 */
+                .toLocalDateTime();/* 中国本地时间 */
+        then(chinaMeetingTimeUseOffset.format(ISO_DATE_TIME)).isEqualTo("2025-03-10T22:00:00");
+        //
+        // 美国纽约的同事告诉你会议定在 2025-03-10T09:00:00，在夏令时期间，纽约位于 UTC-04:00 时区，转换成中国本地时间为 2025-03-10T21:00:00
+        // 使用 ZonedDateTime
+        LocalDateTime chinaMeetingTime = newYorkMeetingTime.atZone(ZoneId.of("America/New_York")) /* 美国本地时间转世界时间 */
+                .withZoneSameInstant(ZoneId.of("Asia/Shanghai")) /* 同一个时刻在中国的世界时间 */
+                .toLocalDateTime();/* 中国本地时间 */
+        then(chinaMeetingTime.format(ISO_DATE_TIME)).isEqualTo("2025-03-10T21:00:00");
+        //
+        //
+        // 中国定会议时间
+        // 你的老板告诉你定一个2025-03-12 下午4点～5点的会议，你告诉你的美国纽约的同事 2025-03-12 早上 03:00 起来开会哈
+        // 你和老板4点打开电脑登陆视频会议，结果没有一个美国同事参加会议，然后你又被炒了鱿鱼。。。
+        LocalDateTime beijingMeetingTime = LocalDateTime.parse("2025-03-12T16:00:00");
+        // 使用 ZoneOffset
+        LocalDateTime newYorkMeetingTimeUseOffset = beijingMeetingTime.atZone(ZoneId.of("Asia/Shanghai"))
+                .withZoneSameInstant(ZoneOffset.ofHours(-5))
+                .toLocalDateTime();
+        then(newYorkMeetingTimeUseOffset.format(ISO_DATE_TIME)).isEqualTo("2025-03-12T03:00:00");
+        // 使用 ZoneId
+        LocalDateTime newYorkMeetingTimeUseZoneId = beijingMeetingTime.atZone(ZoneId.of("Asia/Shanghai"))
+                .withZoneSameInstant(ZoneId.of("America/New_York"))
+                .toLocalDateTime();
+        then(newYorkMeetingTimeUseZoneId.format(ISO_DATE_TIME)).isEqualTo("2025-03-12T04:00:00");
+    }
+
     /**
      * 跨时区转换 1.
      *
@@ -32,7 +78,11 @@ class JSR310DateTest {
     void givenZonedDateTime_whenString_then() {
         // ZonedDateTime -> String
         ZonedDateTime zdt = Instant.EPOCH.atZone(ZoneId.of("Asia/Shanghai"));
+        then(zdt.toString()).isEqualTo("1970-01-01T08:00+08:00[Asia/Shanghai]");
         then(zdt.format(ISO_INSTANT)).isEqualTo("1970-01-01T00:00:00Z");
+        // Instant -> String 报错
+        then(catchThrowable(() -> ISO_DATE_TIME.format(zdt.toInstant()))).isNotNull();
+        then(zdt.toInstant().toString()).isEqualTo("1970-01-01T00:00:00Z");
         then(zdt.format(ISO_OFFSET_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00");
         then(zdt.format(ISO_ZONED_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]");
         then(zdt.format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00[Asia/Shanghai]")
@@ -101,6 +151,7 @@ class JSR310DateTest {
         // LocalDateTime -> String
         LocalDateTime ldt = LocalDateTime.ofInstant(Instant.EPOCH, ZoneId.of("Asia/Shanghai"));
         then(ldt.toString()).isEqualTo("1970-01-01T08:00");
+        then(ldt.format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00");
         then(ldt.format(ISO_LOCAL_DATE_TIME)).isEqualTo("1970-01-01T08:00:00");
         then(ldt.format(ISO_DATE)).isEqualTo("1970-01-01");
         then(ldt.format(ISO_TIME)).isEqualTo("08:00:00");
@@ -117,7 +168,9 @@ class JSR310DateTest {
                 .isEqualTo(Instant.EPOCH);
         then(LocalDateTime.parse("1970-01-01T08:00:00.000").atZone(ZoneId.of("Asia/Shanghai")).toInstant())
                 .isEqualTo(Instant.EPOCH);
-        then(LocalDateTime.parse("1970-01-01 08:00", ofPattern("yyyy-MM-dd HH:mm")).atZone(ZoneId.of("Asia/Shanghai")).toInstant())
+        then(LocalDateTime.parse("1970-01-01 08:00", ofPattern("yyyy-MM-dd HH:mm"))
+                .atZone(ZoneId.of("Asia/Shanghai"))
+                .toInstant())
                 .isEqualTo(Instant.EPOCH);
         // 无法解析
         then(catchThrowable(() -> LocalDateTime.parse("1970-01-01"))).isNotNull();
@@ -374,6 +427,18 @@ class JSR310DateTest {
         then(nyzdt.toInstant().toEpochMilli() - cstzdt.toInstant().toEpochMilli()).isEqualTo(12 * 60 * 60 * 1000);
     }
 
+    @Test
+    void givenZonedDateTime_whenFloor_then() {
+        ZonedDateTime zdt = ZonedDateTime.parse("2025-09-15T00:00:00.555+08:00");
+        for (int i = 0; i < 23; i++) {
+            ZonedDateTime tmp = zdt.plusHours(i);
+            ZonedDateTime flooredZdt = tmp.withHour(0).withMinute(0).withSecond(0).withNano(0);
+            log.info("\nbizTime: {}, bizFloorTime: {}\nutcTime: {}, utcFlooredTime: {}",
+                    tmp, flooredZdt, tmp.withZoneSameInstant(ZoneOffset.UTC),
+                    flooredZdt.withZoneSameInstant(ZoneOffset.UTC));
+            then(flooredZdt.toString()).isEqualTo("2025-09-15T00:00+08:00");
+        }
+    }
 
     @Test
     void givenOffsetDateTime_when_then() {
@@ -392,6 +457,7 @@ class JSR310DateTest {
         then(odt8.toInstant()).isEqualTo(Instant.EPOCH);
         then(odt8.format(ISO_INSTANT)).isEqualTo("1970-01-01T00:00:00Z");
         then(odt8.format(ISO_OFFSET_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00");
+        then(odt8.format(ISO_DATE_TIME)).isEqualTo("1970-01-01T08:00:00+08:00");
         then(odt8.toLocalDateTime().format(ISO_LOCAL_DATE_TIME)).isEqualTo("1970-01-01T08:00:00");
         //
         // OffsetDateTime <-> ZonedDateTime

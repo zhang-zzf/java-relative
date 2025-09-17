@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.zzf.dd.repo.mysql.iot_card.mapper.EventsMapper">
+  <resultMap id="BaseResultMap" type="com.github.zzf.dd.repo.mysql.iot_card.entity.Events">
+    <!--@mbg.generated-->
+    <!--@Table events-->
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="ds_local_time" jdbcType="TIMESTAMP" property="dsLocalTime"/>
+    <result column="tz" jdbcType="VARCHAR" property="tz"/>
+    <result column="ds_utc_time" jdbcType="TIMESTAMP" property="dsUtcTime"/>
+    <result column="ts_utc_time" jdbcType="TIMESTAMP" property="tsUtcTime"/>
+    <result column="ds_created_at" jdbcType="TIMESTAMP" property="dsCreatedAt"/>
+    <result column="ds_updated_at" jdbcType="TIMESTAMP" property="dsUpdatedAt"/>
+    <result column="ts_created_at" jdbcType="TIMESTAMP" property="tsCreatedAt"/>
+    <result column="ts_updated_at" jdbcType="TIMESTAMP" property="tsUpdatedAt"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id,
+    ds_local_time,
+    tz,
+    ds_utc_time,
+    ts_utc_time,
+    ds_created_at,
+    ds_updated_at,
+    ts_created_at,
+    ts_updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List"/>
+    from events
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete
+    from events
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id"
+    parameterType="com.github.zzf.dd.repo.mysql.iot_card.entity.Events" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into events (ds_local_time, tz, ds_utc_time, ts_utc_time)
+    values (#{dsLocalTime}, #{tz}, #{dsUtcTime}, #{tsUtcTime})
+  </insert>
+
+  <select id="selectLatest" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from events
+    order by id desc
+    limit 1
+  </select>
+</mapper>

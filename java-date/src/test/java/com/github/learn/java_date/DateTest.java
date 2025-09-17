@@ -246,7 +246,7 @@ public class DateTest {
      * </pre>
      *
      * <pre>
-     *    "1970-01-01 00:00:00 CST" utc8时间
+     *    "1970-01-01 00:00:00" 这是一个字符串，没有时区信息，不能表示一个时间。
      *    1. 按 utc8 解析成 timestamp -28800000L
      *          1. 按东8区格式化 "1970-01-01 00:00:00 CST"
      *          1. 按 utc0 区格式化 "1969-12-31 16:00:00 UTC"
@@ -423,9 +423,9 @@ public class DateTest {
         then(date.getTime()).isEqualTo(-10800000L);
         // 在东8区是 5 点
         then(date.toString()).isEqualTo("Thu Jan 01 05:00:00 CST 1970");
-        // 截断成 `1970-01-01 00:00:00`
+        // 截断成 `1970-01-01`
         then(new SimpleDateFormat("yyyy-MM-dd").parse(utcTime).getTime()).isEqualTo(-28800000L);
-        // 截断成 `1970-01-01 00:00:00`
+        // 截断成 `1970-01-01T00`
         then(new SimpleDateFormat("yyyy-MM-dd'T'HH").parse(utcTime).getTime()).isEqualTo(-28800000L);
         then(catchThrowable(() -> {
             new SimpleDateFormat("yyyy-MM-dd").parse(utcTime);

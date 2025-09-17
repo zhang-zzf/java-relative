@@ -63,13 +63,50 @@ spring:
     hikari:
       iot-card:
         maximum-pool-size: 4
-        jdbc-url: jdbc:mysql://localhost:3306/iot_card
+        # jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=Asia/Shanghai&sslMode=DISABLED&useServerPrepStmts=true&cachePrepStmts=true
+        jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=Asia/Shanghai&sslMode=DISABLED
         username: root
         password: test
         driver-class-name: com.mysql.cj.jdbc.Driver
       my-db:
         maximum-pool-size: 4
         jdbc-url: jdbc:mysql://localhost:3307/my_db
+        username: root
+        password: test
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+spring:
+  profiles: utc_tz
+  datasource:
+    hikari:
+      iot-card:
+        maximum-pool-size: 4
+        jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=UTC&sslMode=DISABLED&useServerPrepStmts=true&cachePrepStmts=true
+        username: root
+        password: test
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+spring:
+  profiles: serverTimeZoneUTC_MySQLUTC
+  datasource:
+    hikari:
+      iot-card:
+        maximum-pool-size: 4
+        #jdbc-url: jdbc:mysql://localhost:3307/iot_card?serverTimezone=UTC&sslMode=DISABLED&useServerPrepStmts=true&cachePrepStmts=true
+        jdbc-url: jdbc:mysql://localhost:3307/iot_card?serverTimezone=UTC&sslMode=DISABLED
+        username: root
+        password: test
+        driver-class-name: com.mysql.cj.jdbc.Driver
+---
+spring:
+  profiles: utc_tz_text
+  datasource:
+    hikari:
+      iot-card:
+        maximum-pool-size: 4
+        jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=UTC&sslMode=DISABLED
         username: root
         password: test
         driver-class-name: com.mysql.cj.jdbc.Driver

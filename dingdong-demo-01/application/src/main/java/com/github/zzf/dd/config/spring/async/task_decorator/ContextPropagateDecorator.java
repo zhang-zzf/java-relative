@@ -1,4 +1,4 @@
-package com.github.zzf.dd.common.spring.async.task_decorator;
+package com.github.zzf.dd.config.spring.async.task_decorator;
 
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;

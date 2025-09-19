@@ -1,78 +1,30 @@
 package com.github.zzf.dd.common;
 
-import com.github.zzf.dd.common.ConfigService.UserAuthorities;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import lombok.Getter;
 
-@Service
-@Configuration
-@Slf4j
-@Validated
-@RequiredArgsConstructor
-@EnableConfigurationProperties(UserAuthorities.class)
-public class ConfigService {
+import javax.validation.constraints.NotNull;
+import java.util.concurrent.ThreadLocalRandom;
 
-    @Value("${verification.code.period:600}")
-    Long verificationCodePeriod;
+@Getter
+public abstract class ConfigService {
 
-    @Value("${verification.code.limit:90}")
-    Integer verificationCodeLimit;
+    public abstract String queryStr(String key, String defaultVal);
 
-    @Value("${jwt.token.key:n909LRkfBMZq}")
-    String jwtTokenKey;
+    /**
+     * 获取 int 类型配置
+     */
+    public abstract int queryInt(@NotNull String key, int defaultVal);
 
-    @Value("${jwt.token.period:180}")
-    Integer jwtTokenPeriod;
+    /**
+     * 获取开关。 配置的值可以为 [0,100]。 0-关闭，100-开启，50-50% 开启
+     */
+    public abstract boolean querySwitchOn(String key, boolean defaultVal);
 
-    @Value("${username.encrypt.key:GpyuEvTWOoxCSyL5}")
-    String usernameEncryptKey;
-
-    final UserAuthorities userAuthorities;
-
-    public long queryVerificationCodePeriod() {
-        return verificationCodePeriod;
+    /**
+     * @return [0, 99]
+     */
+    public static int randomBetween0And100() {
+        return ThreadLocalRandom.current().nextInt(100);
     }
 
-    public int queryVerificationCodeLimit() {
-        return verificationCodeLimit;
-    }
-
-    public byte[] queryJWTTokenKey() {
-        return jwtTokenKey.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public int queryJWTTokenPeriod() {
-        return jwtTokenPeriod;
-    }
-
-    public List<String> userAuthority(String username) {
-        if (userAuthorities != null) {
-            return userAuthorities.getConfigs().getOrDefault(username, List.of());
-        }
-        return List.of();
-    }
-
-    public boolean userIsAdmin(String username) {
-        return userAuthority(username).contains("ROLE_ADMIN");
-    }
-
-    public byte[] getUsernameEncryptKey() {
-        return usernameEncryptKey.getBytes(StandardCharsets.UTF_8);
-    }
-
-    @Data
-    @ConfigurationProperties(prefix = "user.authority")
-    public static class UserAuthorities {
-        Map<String, List<String>> configs;
-    }
 }

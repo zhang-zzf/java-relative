@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
-public class UserRepoImpl implements UserRepo {
+public class UserRepoMySQLImpl implements UserRepo {
 
     final TbUserMapper tbUserMapper;
 

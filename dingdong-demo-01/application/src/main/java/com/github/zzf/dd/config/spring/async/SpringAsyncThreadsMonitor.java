@@ -1,7 +1,7 @@
-package com.github.zzf.dd.common.spring.async;
+package com.github.zzf.dd.config.spring.async;
 
 
-import com.github.zzf.dd.common.spring.async.SpringAsyncConfig.NamedThreadFactory;
+import com.github.zzf.dd.config.spring.async.SpringAsyncConfig.NamedThreadFactory;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadFactory;

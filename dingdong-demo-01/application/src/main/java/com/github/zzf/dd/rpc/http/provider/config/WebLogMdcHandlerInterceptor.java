@@ -1,9 +1,9 @@
 package com.github.zzf.dd.rpc.http.provider.config;
 
 
-import static com.github.zzf.dd.common.log.LogTracer.X_TRACE_ID;
+import static com.github.zzf.dd.config.log.LogTracer.X_TRACE_ID;
 
-import com.github.zzf.dd.common.log.LogTracer;
+import com.github.zzf.dd.config.log.LogTracer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

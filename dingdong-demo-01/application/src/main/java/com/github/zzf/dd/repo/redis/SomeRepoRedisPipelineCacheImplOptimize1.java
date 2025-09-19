@@ -1,6 +1,6 @@
 package com.github.zzf.dd.repo.redis;
 
-import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
+import static com.github.zzf.dd.config.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.APP_PREFIX_TTL_5_MINUTES;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_MANAGER;
 import static com.github.zzf.dd.repo.redis.config.SpringRedisCacheConfig.CACHE_REDIS_TTL_30_MINUTES;

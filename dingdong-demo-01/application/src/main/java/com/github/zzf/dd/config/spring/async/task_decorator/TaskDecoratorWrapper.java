@@ -1,4 +1,4 @@
-package com.github.zzf.dd.common.spring.async.task_decorator;
+package com.github.zzf.dd.config.spring.async.task_decorator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.task.TaskDecorator;

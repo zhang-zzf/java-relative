@@ -1,6 +1,5 @@
 package com.github.zzf.dd.config.log;
 
-import com.github.zzf.dd.common.log.LogTracer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -1,4 +1,4 @@
-package com.github.zzf.dd.common.log;
+package com.github.zzf.dd.config.log;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

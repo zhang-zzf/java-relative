@@ -1,4 +1,4 @@
-package com.github.zzf.dd.common.spring.async.task_decorator;
+package com.github.zzf.dd.config.spring.async.task_decorator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.TaskDecorator;

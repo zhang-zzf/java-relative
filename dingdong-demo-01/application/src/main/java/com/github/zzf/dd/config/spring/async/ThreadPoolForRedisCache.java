@@ -1,7 +1,7 @@
-package com.github.zzf.dd.common.spring.async;
+package com.github.zzf.dd.config.spring.async;
 
-import com.github.zzf.dd.common.spring.async.SpringAsyncConfig.NamedThreadFactory;
-import com.github.zzf.dd.common.spring.async.task_decorator.ContextPropagateDecorator;
+import com.github.zzf.dd.config.spring.async.SpringAsyncConfig.NamedThreadFactory;
+import com.github.zzf.dd.config.spring.async.task_decorator.ContextPropagateDecorator;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.github.zzf.dd.repo.mysql;
 
-import static com.github.zzf.dd.common.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
+import static com.github.zzf.dd.config.spring.async.ThreadPoolForRedisCache.ASYNC_THREAD;
 import static com.github.zzf.dd.repo.mysql.SomeRepoImpl.BEAN_NAME;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.supplyAsync;

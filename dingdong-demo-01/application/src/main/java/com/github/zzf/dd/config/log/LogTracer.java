@@ -1,4 +1,4 @@
-package com.github.zzf.dd.common.log;
+package com.github.zzf.dd.config.log;
 
 
 import com.github.zzf.dd.common.annotation.Idempotent;

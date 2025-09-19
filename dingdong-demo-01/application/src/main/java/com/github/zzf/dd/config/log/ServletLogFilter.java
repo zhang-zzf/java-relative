@@ -2,9 +2,8 @@ package com.github.zzf.dd.config.log;
 
 
 
-import static com.github.zzf.dd.common.log.LogTracer.X_TRACE_ID;
+import static com.github.zzf.dd.config.log.LogTracer.X_TRACE_ID;
 
-import com.github.zzf.dd.common.log.LogTracer;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

@@ -4,34 +4,44 @@ package com.github.zzf.dd.repo.mysql;
 import com.github.zzf.dd.common.ConfigService;
 import com.github.zzf.dd.config.spring.async.SpringAsyncConfig;
 import com.github.zzf.dd.repo.mongo.UserRepoMongoDBImpl;
+import com.github.zzf.dd.repo.mysql.iot_card.mapper.TbUserMapper;
 import com.github.zzf.dd.user.model.User;
-import com.github.zzf.dd.user.repo.UserRepo;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.concurrent.Executor;
 
-@Repository
+/**
+ * <pre>
+ * 继承 MySQL 实现，
+ * 优势: 仅需 override 需要迁移的接口
+ * </pre>
+ */
+//@Repository
 @Slf4j
-@RequiredArgsConstructor
 @Validated
-@Primary
-public class UserRepoMySQL2MongoDBImpl implements UserRepo, Migrate {
+public class UserRepoMySQL2MongoDBClassImpl extends UserRepoMySQLImpl implements Migrate {
 
-    final UserRepoMySQLImpl v1;
     final UserRepoMongoDBImpl v2;
     final ConfigService config;
-    @Qualifier(SpringAsyncConfig.ASYNC_THREAD)
     final Executor executor;
+
+    public UserRepoMySQL2MongoDBClassImpl(
+            TbUserMapper tbUserMapper, UserRepoMongoDBImpl v2,
+            ConfigService config,
+            @Qualifier(SpringAsyncConfig.ASYNC_THREAD) Executor executor) {
+        super(tbUserMapper);
+        this.v2 = v2;
+        this.config = config;
+        this.executor = executor;
+    }
 
     @Override
     public User queryUserByUserNo(String userNo) {
         return migrate(
-                () -> v1.queryUserByUserNo(userNo),
+                () -> super.queryUserByUserNo(userNo),
                 () -> v2.queryUserByUserNo(userNo),
                 config.querySwitchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.v2", false),
                 config.querySwitchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.check", false),
@@ -39,10 +49,4 @@ public class UserRepoMySQL2MongoDBImpl implements UserRepo, Migrate {
         );
     }
 
-    @Override
-    public long tryCreateUser(User user) {
-        long ret = v1.tryCreateUser(user);
-        v2.tryCreateUser(user);
-        return ret;
-    }
 }

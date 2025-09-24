@@ -1,6 +1,5 @@
 package com.github.zzf.dd.utils;
 
-import com.ddmc.fdc.base.info.domain.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -10,9 +9,10 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Named;
+import org.springframework.util.StringUtils;
 
+import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;

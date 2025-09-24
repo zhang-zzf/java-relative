@@ -64,7 +64,7 @@ spring:
       iot-card:
         maximum-pool-size: 4
         # jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=Asia/Shanghai&sslMode=DISABLED&useServerPrepStmts=true&cachePrepStmts=true
-        jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=Asia/Shanghai&sslMode=DISABLED
+        jdbc-url: jdbc:mysql://localhost:3306/iot_card?serverTimezone=Asia/Shanghai&sslMode=DISABLED&allowPublicKeyRetrieval=true
         username: root
         password: test
         driver-class-name: com.mysql.cj.jdbc.Driver

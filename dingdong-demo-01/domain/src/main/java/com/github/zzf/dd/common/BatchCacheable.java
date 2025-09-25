@@ -6,10 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
@@ -22,7 +19,7 @@ import static java.util.stream.Collectors.*;
 
 @SuppressWarnings({"UnusedReturnValue", "unchecked", "unused"})
 @Validated
-public interface BatchCacheable<REQ, ID, E> extends BatchQueryOfList {
+public interface BatchCacheable<ID, E> extends BatchQueryOfList {
 
     Duration TTL_5_MINUTES = Duration.ofMinutes(5);
 
@@ -57,14 +54,14 @@ public interface BatchCacheable<REQ, ID, E> extends BatchQueryOfList {
         };
     }
 
-    default List<E> batchCacheable(@NotNull Set<ID> idSet,
+    default List<E> batchCacheable(@NotNull Collection<ID> idSet,
                                    @NotNull Function<ID, String> toCacheKeyFunc,
                                    @NotNull Function<E, ID> entityIdFunc,
                                    @NotNull Function<Set<ID>, List<E>> sourceFunc) {
         return batchCacheable(idSet, toCacheKeyFunc, entityIdFunc, sourceFunc, 400);
     }
 
-    default List<E> batchCacheable(@NotNull Set<ID> idSet,
+    default List<E> batchCacheable(@NotNull Collection<ID> idSet,
                                    @NotNull Function<ID, String> toCacheKeyFunc,
                                    @NotNull Function<E, ID> entityIdFunc,
                                    @NotNull Function<Set<ID>, List<E>> sourceFunc,
@@ -72,15 +69,13 @@ public interface BatchCacheable<REQ, ID, E> extends BatchQueryOfList {
         return batchCacheable(idSet, toCacheKeyFunc, entityIdFunc, sourceFunc, null, batchSize);
     }
 
-    @SuppressWarnings("unchecked")
-    default List<E> batchCacheable(@NotNull Set<ID> idSet,
+    default List<E> batchCacheable(@NotNull Collection<ID> idSet,
                                    @NotNull Function<ID, String> toCacheKeyFunc,
                                    @NotNull Function<E, ID> entityIdFunc,
                                    @NotNull Function<Set<ID>, List<E>> sourceFunc,
                                    @Nullable Executor executor,
                                    @Max(8192) int batchSize) {
-        return batchCacheable((REQ) idSet,
-                ids -> (Set<ID>) ids,
+        return batchCacheable(idSet,
                 toCacheKeyFunc,
                 entityIdFunc,
                 sourceFunc,
@@ -104,8 +99,7 @@ public interface BatchCacheable<REQ, ID, E> extends BatchQueryOfList {
         }
     }
 
-    default List<E> batchCacheable(@NotNull REQ req,
-                                   @NotNull Function<REQ, Set<ID>> idSetFunc,
+    default List<E> batchCacheable(@NotNull Collection<ID> idSet,
                                    @NotNull Function<ID, String> toCacheKeyFunc,
                                    @NotNull Function<E, ID> entityIdFunc,
                                    @NotNull Function<Set<ID>, List<E>> sourceFunc,
@@ -113,13 +107,12 @@ public interface BatchCacheable<REQ, ID, E> extends BatchQueryOfList {
                                    @Max(8192) int batchSize,
                                    @NotNull Duration ttl
     ) {
-        Set<ID> idSet = idSetFunc.apply(req);
         if (idSet.isEmpty()) {
             return emptyList();
         }
         timer("batchCacheable", idSet.size(), "clazz", clazz(), "stage", "query");
         // fetch from cache
-        List<E> cachedData = fetchFromCache(req, idSetFunc, toCacheKeyFunc, executor, batchSize);
+        List<E> cachedData = fetchFromCache(idSet, toCacheKeyFunc, executor, batchSize);
         if (cachedData.size() == idSet.size()) {// all hit cache
             return cachedData;
         }
@@ -144,11 +137,10 @@ public interface BatchCacheable<REQ, ID, E> extends BatchQueryOfList {
         }
     }
 
-    private List<E> fetchFromCache(REQ req, Function<REQ, Set<ID>> idSetFunc,
+    private List<E> fetchFromCache(Collection<ID> idSet,
                                    Function<ID, String> toCacheKey,
                                    Executor executor,
                                    int batchSize) {
-        Set<ID> idSet = idSetFunc.apply(req);
         if (idSet == null || idSet.isEmpty()) {
             return emptyList();
         }

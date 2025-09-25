@@ -12,6 +12,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 import static com.github.zzf.dd.utils.LogUtils.json;
 
 @Repository
@@ -31,6 +33,16 @@ public class UserRepoMongoDBImpl implements UserRepo {
         int rows = tbUserMapper.insert(entity);// userName has unique key
         log.info("tryCreateUser resp -> {}", rows);
         return entity.getId();
+    }
+
+    @Override
+    public List<User> queryUserByUserNoList(List<String> userNoList) {
+        return List.of();
+    }
+
+    @Override
+    public List<String> queryByMultiCondition() {
+        return List.of();
     }
 
     @Override

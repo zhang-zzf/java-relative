@@ -8,7 +8,6 @@ import com.github.zzf.dd.repo.mysql.iot_card.mapper.TbUserMapper;
 import com.github.zzf.dd.user.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.concurrent.Executor;
@@ -17,6 +16,7 @@ import java.util.concurrent.Executor;
  * <pre>
  * 继承 MySQL 实现，
  * 优势: 仅需 override 需要迁移的接口
+ * 劣势：父类的构造器依赖
  * </pre>
  */
 //@Repository
@@ -29,7 +29,8 @@ public class UserRepoMySQL2MongoDBClassImpl extends UserRepoMySQLImpl implements
     final Executor executor;
 
     public UserRepoMySQL2MongoDBClassImpl(
-            TbUserMapper tbUserMapper, UserRepoMongoDBImpl v2,
+            TbUserMapper tbUserMapper,
+            UserRepoMongoDBImpl v2,
             ConfigService config,
             @Qualifier(SpringAsyncConfig.ASYNC_THREAD) Executor executor) {
         super(tbUserMapper);

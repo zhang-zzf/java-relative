@@ -14,7 +14,7 @@ import static java.util.Optional.ofNullable;
 
 @SuppressWarnings({"UnusedReturnValue", "NullableProblems", "unchecked", "unused"})
 @Validated
-public interface BatchCacheableRedis<ID, E> extends BatchCacheable<Set<ID>, ID, E> {
+public interface BatchCacheableRedis<ID, E> extends BatchCacheable<ID, E> {
 
     RedisTemplate<String, E> redisTemplate();
 

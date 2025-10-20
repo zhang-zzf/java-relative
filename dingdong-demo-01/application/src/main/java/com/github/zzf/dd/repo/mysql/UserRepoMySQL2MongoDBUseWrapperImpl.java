@@ -41,8 +41,8 @@ public class UserRepoMySQL2MongoDBUseWrapperImpl extends UserRepo.Wrapper implem
         return migrate(
                 () -> v1.queryUserByUserNo(userNo),
                 () -> v2.queryUserByUserNo(userNo),
-                config.querySwitchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.v2", false),
-                config.querySwitchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.check", false),
+                config.switchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.v2", false),
+                config.switchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.check", false),
                 executor
         );
     }

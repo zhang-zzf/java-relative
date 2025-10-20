@@ -30,13 +30,5 @@ public class ConfigServiceSpringEnvImp extends ConfigService {
         }
     }
 
-    @Override
-    public boolean querySwitchOn(String key, boolean b) {
-        try {
-            return randomBetween0And100() <= queryInt(key, 0);
-        } catch (Exception e) {
-           return b;
-        }
-    }
-    
+
 }

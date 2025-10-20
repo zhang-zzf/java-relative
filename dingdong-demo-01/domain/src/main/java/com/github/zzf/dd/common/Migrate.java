@@ -43,7 +43,6 @@ public interface Migrate {
             T v1Data = ofNullable(v1Func).map(Supplier::get).orElse(v1);
             T v2Data = ofNullable(v2Func).map(Supplier::get).orElse(v2);
             if (!com.github.zzf.dd.utils.Objects.equals(v1Data, v2Data, Set.of())) {
-                // todo logEvent
             }
         };
         if (executor == null) {
@@ -64,13 +63,13 @@ public interface Migrate {
         if (!useV2) {
             List<T> v1Data = v1Func.get();
             if (check) {
-                doCheck(new ArrayList<>(v1Data), null, v1Func, v2Func, executor, identifier);
+                doCheck(v1Data, null, null, v2Func, executor, identifier);
             }
             return v1Data.stream();
         } else {
             List<T> v2Data = v2Func.get();
             if (check) {
-                doCheck(null, new ArrayList<>(v2Data), v1Func, v2Func, executor, identifier);
+                doCheck(null, v2Data, v1Func, null, executor, identifier);
             }
             return v2Data.stream();
         }
@@ -84,8 +83,8 @@ public interface Migrate {
             Executor executor,
             Function<T, String> identifier) {
         Runnable task = () -> {
-            List<T> v1Data = ofNullable(v1).orElseGet(v1Func);
-            List<T> v2Data = ofNullable(v2).orElseGet(v2Func);
+            List<T> v1Data = ofNullable(v1Func).map(Supplier::get).orElse(v1);
+            List<T> v2Data = ofNullable(v2Func).map(Supplier::get).orElse(v2);
             if (v1Data.size() != v2Data.size()) {
                 // todo logEvent
             }

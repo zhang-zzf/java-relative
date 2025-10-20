@@ -36,8 +36,8 @@ public class ConfigCenterController implements Migrate {
         return migrate(
                 () -> getConfigByName(name),
                 () -> v2.getConfigByName(name),
-                config.querySwitchOn("ConfigCenterController.getConfigByName.v2", false),
-                config.querySwitchOn("ConfigCenterController.getConfigByName.check", false),
+                config.switchOn("ConfigCenterController.getConfigByName.v2", false),
+                config.switchOn("ConfigCenterController.getConfigByName.check", false),
                 executor
         );
     }

@@ -3,6 +3,7 @@ package com.github.zzf.learn.app.utils;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
+
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,13 +37,13 @@ public class MetricUtil {
         Timer timer = timers.get(id);
         if (timer == null) {
             timers.putIfAbsent(id, Timer.builder(metricName)
-                .tags(tags)
-                // .publishPercentileHistogram()
-                // .minimumExpectedValue(Duration.ofNanos(1))
-                // .maximumExpectedValue(Duration.ofNanos(64))
-                .serviceLevelObjectives(Duration.ofNanos(1000), Duration.ofNanos(2000))
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .register(Metrics.globalRegistry));
+                    .tags(tags)
+                    // .publishPercentileHistogram()
+                    // .minimumExpectedValue(Duration.ofNanos(1))
+                    // .maximumExpectedValue(Duration.ofNanos(64))
+                    .publishPercentiles(0.5, 0.9, 0.95, 0.99)
+                    .serviceLevelObjectives(Duration.ofNanos(1000), Duration.ofNanos(2000))
+                    .register(Metrics.globalRegistry));
             timer = timers.get(id);
         }
         timer.record(value, TimeUnit.NANOSECONDS);
@@ -59,15 +60,16 @@ public class MetricUtil {
         if (!metricOn) {
             return;
         }
+        Metrics.timer(metricName, tags).record(value, TimeUnit.MILLISECONDS);
         String id = id(metricName, tags);
         Timer timer = timers.get(id);
         if (timer == null) {
             timers.putIfAbsent(id, Timer.builder(metricName)
-                .tags(tags)
-                .publishPercentileHistogram()
-                .minimumExpectedValue(Duration.ofMillis(1))
-                .maximumExpectedValue(Duration.ofSeconds(10))
-                .register(Metrics.globalRegistry));
+                    .tags(tags)
+                    .publishPercentileHistogram()
+                    .minimumExpectedValue(Duration.ofMillis(1))
+                    .maximumExpectedValue(Duration.ofSeconds(10))
+                    .register(Metrics.globalRegistry));
             timer = timers.get(id);
         }
         timer.record(value, TimeUnit.MILLISECONDS);

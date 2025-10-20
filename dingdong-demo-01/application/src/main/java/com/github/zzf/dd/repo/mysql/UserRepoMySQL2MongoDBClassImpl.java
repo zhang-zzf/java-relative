@@ -44,8 +44,8 @@ public class UserRepoMySQL2MongoDBClassImpl extends UserRepoMySQLImpl implements
         return migrate(
                 () -> super.queryUserByUserNo(userNo),
                 () -> v2.queryUserByUserNo(userNo),
-                config.querySwitchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.v2", false),
-                config.querySwitchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.check", false),
+                config.switchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.v2", false),
+                config.switchOn("UserRepoMySQL2MongoDBImpl.queryUserByUserNo.check", false),
                 executor
         );
     }

@@ -20,3 +20,6 @@ ssh -L :3307:192.168.56.20:8307 -N -f "$(hostname)"
 
 # Redis
 ssh -L :6379:192.168.56.20:6379 -N -f "$(hostname)"
+
+# start consul in background
+bash ~/workspace/consul/start_agent_in_mac.sh
